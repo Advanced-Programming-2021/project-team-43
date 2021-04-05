@@ -3,5 +3,5 @@
 
 ### Team Members:
 - Foroozan Iraji 99105272
-- Student2 99100000
+- Amirali Moghadasi 99170564
 - Student3 99100000
