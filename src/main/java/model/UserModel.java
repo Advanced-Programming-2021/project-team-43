@@ -1,167 +1,175 @@
-package main.java.model;
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
+package model;
 
 public class UserModel {
-
-    private final String username;
-    private String password;
-    private String nickname;
-    private int userScore;
-    private int userCoin;
-    public HashMap<String, Integer> userAllCards = new HashMap<>();
-    public HashMap<String, DeckModel> userAllDecks = new HashMap<>();
-    private String activeDeck;
-    public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
-    public static ArrayList<String> allUsernames = new ArrayList<>();
-    public static ArrayList<String> allUsersNicknames = new ArrayList<>();
-
-    public UserModel(String username, String password, String nickname) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-        this.userScore = 0;
-        this.userCoin = 100000;
-        this.activeDeck="";
-
-    }
+    class UserModel {
+        private String username;
+        private String password;
+        private String nickname;
+        private int userScore;
+        private int userCoin;
+        private HashMap<String, Integer> userAllCards;
+        private ArrayList<DeckModel> userAllDecks;
+        private String activeDeck;
+        private String currentMenu;
+        private String onlineUser;
+        public HashMap<String, UserModel> allUsersInfo;
+        public ArrayList<String> allUsernames;
+        public ArrayList<String> allUsersNicknames;
 
 
-    public int getUserCoin() {
-        return userCoin;
-    }
+        public UserModel(String username, String password, String nickname) {
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public int getUserScore() {
-        return userScore;
-    }
-
-    public void changePassword(String password) {
-        this.password = password;
-        allUsersInfo.replace(username, this);
-    }
-
-
-    public void changeNickname(String nickname) {
-
-        allUsersNicknames.remove(this.nickname);
-        allUsersNicknames.add(nickname);
-        this.nickname = nickname;
-        allUsersInfo.replace(username, this);
-
-    }
-
-
-    public void setUserScore(int userScore) {
-        this.userScore = userScore;
-        allUsersInfo.replace(username, this);
-
-    }
-
-
-    public void changeUserScore(int userScore) {
-        this.userScore = userScore + this.userScore;
-        allUsersInfo.replace(username, this);
-    }
-
-
-    public void changeUserCoin(int amount) {
-
-        this.userCoin = this.userCoin + amount;
-        allUsersInfo.replace(username, this);
-    }
-
-
-    public void setActiveDeck(String deckName) {
-        this.activeDeck = deckName;
-        allUsersInfo.replace(username, this);
-    }
-
-
-    public void addDeck(DeckModel deckModel) {
-        userAllDecks.put(deckModel.getDeckName(), deckModel);
-        allUsersInfo.replace(username, this);
-    }
-
-    public void deleteDeck(String deckName) {
-        userAllDecks.remove(deckName);
-        allUsersInfo.replace(username, this);
-    }
-
-
-    public static UserModel getUserByUsername(String username) {
-        return allUsersInfo.get(username);
-    }
-
-
-    public static boolean isRepeatedUsername(String username) {
-
-        for (String allUsername : allUsernames) {
-            if (allUsername.equals(username)) {
-
-                return true;
-            }
         }
 
-        return false;
 
-    }
+        public final HashMap<String, Integer> getUserAllCards() {
 
-    public static boolean isRepeatedNickname(String nickname) {
-        for (String allUsersNickname : allUsersNicknames) {
-            if (allUsersNickname.equals(nickname)) {
-                return true;
-            }
         }
-        return false;
-
-    }
 
 
-    public void addCardToUserAllCards(String cardName) {
-        if (null == this.userAllCards.get(cardName)) {
-            userAllCards.put(cardName, 1);
-        } else {
-            int cardNumbers = userAllCards.get(cardName) + 1;
-            userAllCards.replace(cardName, cardNumbers);
+        public final int getUserCoin() {
+
         }
-        allUsersInfo.replace(username, this);
-    }
 
-    public void removeCardFromUserAllCards(String cardName) {
-        if (isUserHaveCard(cardName)) {
-            int i = userAllCards.get(cardName) - 1;
-            if (i == 0) {
-                userAllCards.remove(cardName);
-            } else {
-                userAllCards.replace(cardName, i);
-            }
+
+        public final void setUserState(String state) {
+
         }
-        allUsersInfo.replace(username, this);
+
+
+        public final String getUserState() {
+
+        }
+
+
+        public final String getUsername() {
+
+        }
+
+
+        public final void setUsername(String username) {
+
+        }
+
+
+        public final String getPassword() {
+
+        }
+
+
+        public final void setPassword(String password) {
+
+        }
+
+
+        public final String getNickname() {
+
+        }
+
+
+        public final void setNickname(String nickname) {
+
+        }
+
+
+        public final int getUserScore() {
+
+        }
+
+
+        public final void setUserScore(int userScore) {
+
+        }
+
+
+        public final DeckModel getUserAllDecks() {
+
+        }
+
+
+        public final void addDeck(DeckModel deck) {
+
+        }
+
+
+        public final void changeUserScore(int userScore) {
+
+        }
+
+
+        public final void changePassword(String newPassword) {
+
+        }
+
+
+        public final void changeNickname(String nickname) {
+
+        }
+
+
+        public final void decreaseUserCard(int amount) {
+
+        }
+
+
+        public final void increaseUserCard(int amount) {
+
+        }
+
+
+        public final void changeUserCoin(int amount) {
+
+        }
+
+
+        public final void setActiveDeck(String deckName) {
+
+        }
+
+
+        public final String getActiveDeck() {
+
+        }
+
+
+        public final void deleteDeck(String deckName) {
+
+        }
+
+
+        public final String getCurrentMenu() {
+
+        }
+
+
+        public final void setCurrentMenu(String currentMenu) {
+
+        }
+
+
+        public final void setOnlineUser(String onlineUser) {
+
+        }
+
+
+        public final String getOnlineUser() {
+
+        }
+
+
+        public final UserModel getUserByUsername(String username) {
+
+        }
+
+
+        public final boolean isRepeatedUsername(String username) {
+
+        }
+
+
+        public final boolean isRepeatedNickname(String nickname) {
+
+        }
     }
 
-    public boolean isUserHaveCard(String cardName) {
-        return null != this.userAllCards.get(cardName);
-    }
-
-    public String getActiveDeck() {
-        return activeDeck;
-    }
-
-    public boolean isUserHaveThisDeck(String deckName) {
-        return userAllDecks.get(deckName) != null;
-    }
 }

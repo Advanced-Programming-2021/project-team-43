@@ -1,14 +1,16 @@
-package main.java.controller;
-
-public class MainMenuController {
-
-    public static String username ;
-    public static void findMatcher(String username)
-    {
-        MainMenuController.username=username;
-
-
-    }
+//package controller;
+//import view.*;
+//class MainMenuController
+//{
+//
+//    public static String username ;
+//
+//    public static void findMatcher(String username)
+//    {
+//        MainMenuController.username=username;
+//
+//
+//    }
 //
 //    private static void enterMenu(String menu)
 //    {
@@ -42,5 +44,3 @@ public class MainMenuController {
 //
 //    }
 //}
-
-}
