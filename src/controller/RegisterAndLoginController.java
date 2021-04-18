@@ -1,10 +1,6 @@
+package controller;
 
 public class RegisterAndLoginController {
-
-
-
-
-
         private void enterMenu(String menu)
         {
 
