@@ -2,7 +2,7 @@ package model;
 
 import java.util.HashMap;
 
-public class TrapCard {
+public class TrapCard extends Card {
     private String cardName;
     private String type;
     private int cardNumber;
@@ -12,6 +12,7 @@ public class TrapCard {
     private static HashMap<String, TrapCard> trapCards = new HashMap<>();
 
     public TrapCard(String cardName, String type, int cardNumber, String icon, String cardDescription,String cardOwner) {
+        super();
         this.cardName = cardName;
         this.type = type;
         this.cardNumber = cardNumber;
@@ -29,9 +30,9 @@ public class TrapCard {
         return type;
     }
 
-    public int getCardNumber() {
-        return cardNumber;
-    }
+   public int getCardNumber() {
+       return cardNumber;
+   }
 
     public String getIcon() {
         return icon;
