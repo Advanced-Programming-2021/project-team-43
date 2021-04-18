@@ -1,7 +1,8 @@
-package controller;
+package main.java.controller;
 
+import main.java.view.*;
 import model.UserModel;
-import view.*;
+
 
 import java.util.regex.*;
 

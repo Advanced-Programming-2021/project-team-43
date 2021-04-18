@@ -1,7 +1,6 @@
-package view;
+package main.java.view;
 
-import controller.*;
-import model.*;
+
 
 import java.util.Scanner;
 
