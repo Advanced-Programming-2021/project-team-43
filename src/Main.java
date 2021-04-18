@@ -1,14 +1,7 @@
-import controller.SetCards;
-import model.MonsterCard;
-import model.SpellCard;
-import model.TrapCard;
+import controller.RegisterAndLoginController;
 
 public class Main {
-
     public static void main(String[] args) {
-        SetCards.readingCSVFileMonster();
-        SetCards.readingCSVFileTrapSpell();
-
-
+        RegisterAndLoginController.findMatcher();
     }
 }
