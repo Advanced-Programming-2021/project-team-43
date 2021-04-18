@@ -1,9 +1,7 @@
-import main.java.model.UserModel;
+import controller.RegisterAndLoginController;
 
 public class Main {
     public static void main(String[] args) {
-
-
-
+        RegisterAndLoginController.findMatcher();
     }
 }
