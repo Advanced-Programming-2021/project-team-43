@@ -72,7 +72,7 @@ public class MonsterCard {
         return description;
     }
 
-    public HashMap<String, MonsterCard> getMonster() {
-        return allMonsters;
+    public static MonsterCard getMonsterByName(String name) {
+        return allMonsters.get(name);
     }
 }
