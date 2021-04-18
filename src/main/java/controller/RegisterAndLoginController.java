@@ -79,6 +79,7 @@ public class RegisterAndLoginController {
             RegisterAndLoginView.showInput("invalid command");
 
 
+
         }
     }
 
