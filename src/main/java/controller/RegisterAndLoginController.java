@@ -1,12 +1,14 @@
 package main.java.controller;
 
+import main.java.model.UserModel;
 import main.java.view.*;
-import model.UserModel;
+
 
 
 import java.util.regex.*;
 
 public class RegisterAndLoginController {
+
 
 
     public static void findMatcher() {
