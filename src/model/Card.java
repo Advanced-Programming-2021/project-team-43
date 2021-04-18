@@ -28,6 +28,10 @@ public class Card {
         cards.put(cardName, this);
     }
 
+    public Card() {
+
+    }
+
     public String getCardName() {
         return cardName;
     }

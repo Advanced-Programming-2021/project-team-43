@@ -2,7 +2,7 @@ package model;
 
 import java.util.HashMap;
 
-public class MonsterCard {
+public class MonsterCard extends Card{
     private  String name;
     private int level;
     private String monsterType;
@@ -19,6 +19,7 @@ public class MonsterCard {
     public MonsterCard (String name, int level, String type, int attack, int defend, String description,
                         int shield,boolean isEpic,boolean isRitual, boolean isScanner)
     {
+        super();
         this.attack=attack;
         this.name=name;
         this.level=level;
