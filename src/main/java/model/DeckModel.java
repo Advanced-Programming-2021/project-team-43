@@ -34,19 +34,19 @@ public class DeckModel {
     }
 
 
-    public  String getMainDeck() {
-
-    }
-
-
-    public HashMap<String, Integer> getCardNumberChecker() {
-
-    }
+//    public  String getMainDeck() {
+//
+//    }
 
 
-    public  int getCardNumber() {
+//    public HashMap<String, Integer> getCardNumberChecker() {
+//
+//    }
 
-    }
+
+//    public  int getCardNumber() {
+//
+//    }
 
 
     public  void setSideDeck(String sideDeck) {
@@ -54,17 +54,17 @@ public class DeckModel {
     }
 
 
-    public String getSideDeck() {
-
-    }
+//    public String getSideDeck() {
+//
+//    }
 
     public void setDeckName(String deckName) {
         this.deckName = deckName;
     }
 
-    public int getCardNumber() {
-        return cardNumber;
-    }
+//    public int getCardNumber() {
+//        return cardNumber;
+//    }
 
 
 

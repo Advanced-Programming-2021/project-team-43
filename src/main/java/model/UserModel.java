@@ -17,9 +17,9 @@ public class UserModel {
     private String activeDeck;
     private String currentMenu;
     private String onlineUser;
-    public static HashMap<String, UserModel> allUsersInfo;
-    public static ArrayList<String> allUsernames;
-    public static ArrayList<String> allUsersNicknames;
+    public static HashMap<String, UserModel> allUsersInfo=new HashMap<>();
+    public static ArrayList<String> allUsernames=new ArrayList<>();
+    public static ArrayList<String> allUsersNicknames=new ArrayList<>();
 
 
     public UserModel(String username, String password, String nickname) {
@@ -137,8 +137,8 @@ public class UserModel {
     }
 
     public static void main(String[] args) {
-        DeckModel a =new DeckModel();
-        userAllDecks.add(a);
+//        DeckModel a =new DeckModel();
+//        userAllDecks.add("ad",a);
     }
 
     public static UserModel getUserByUsername(String username) {
@@ -147,11 +147,14 @@ public class UserModel {
 
 
     public static boolean isRepeatedUsername(String username) {
+
         for (int i = 0; i < allUsernames.size(); i++) {
             if (allUsernames.get(i).equals(username)){
+                System.out.println("true");
                 return true;
             }
         }
+        System.out.println("false");
         return false;
 
     }

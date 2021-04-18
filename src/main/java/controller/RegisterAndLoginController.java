@@ -4,11 +4,9 @@ import main.java.model.UserModel;
 import main.java.view.*;
 
 
-
 import java.util.regex.*;
 
 public class RegisterAndLoginController {
-
 
 
     public static void findMatcher() {
@@ -35,51 +33,56 @@ public class RegisterAndLoginController {
             pattern = Pattern.compile("^user create --username (.+?) --nickname (.+?) --password (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                registerInGame(matcher.group(1), matcher.group(2), matcher.group(3));continue;
+                registerInGame(matcher.group(1), matcher.group(2), matcher.group(3));
+                continue;
             }
 
 
             pattern = Pattern.compile("^user create --username (.+?) --password (.+?) --nickname (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                registerInGame(matcher.group(1), matcher.group(3), matcher.group(2));continue;
+                registerInGame(matcher.group(1), matcher.group(3), matcher.group(2));
+                continue;
             }
 
 
             pattern = Pattern.compile("^user create --nickname (.+?) --username (.+?) --password (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                registerInGame(matcher.group(2), matcher.group(1), matcher.group(3));continue;
+                registerInGame(matcher.group(2), matcher.group(1), matcher.group(3));
+                continue;
             }
 
 
-            pattern = Pattern.compile("^user create --nickname (.+?) --password (.+?) --username (.+?)$");
+            pattern = Pattern.compile("^user create --nickname (.+?) --password (.+?)--usaername (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                registerInGame(matcher.group(2), matcher.group(3), matcher.group(1));continue;
+                registerInGame(matcher.group(2), matcher.group(3), matcher.group(1));
+                continue;
             }
 
 
             pattern = Pattern.compile("^user create --password (.+?) --username (.+?) --nickname (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                registerInGame(matcher.group(3), matcher.group(1), matcher.group(2));continue;
+                registerInGame(matcher.group(3), matcher.group(1), matcher.group(2));
+                continue;
             }
             pattern = Pattern.compile("^user create --password (.+?) --nickname (.+?) --username (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                registerInGame(matcher.group(3), matcher.group(2), matcher.group(1));continue;
+                registerInGame(matcher.group(3), matcher.group(2), matcher.group(1));
+                continue;
             }
 
             pattern = Pattern.compile("^menu enter .+?$");
             matcher = pattern.matcher(command);
-            if (matcher.find()){
+            if (matcher.find()) {
                 RegisterAndLoginView.showInput("please login first");
                 continue;
             }
 
             RegisterAndLoginView.showInput("invalid command");
-
 
 
         }
@@ -88,6 +91,7 @@ public class RegisterAndLoginController {
 
     private static void registerInGame(String username, String nickname, String password) {
         if (UserModel.isRepeatedUsername(username)) {
+            System.out.println("A");
             RegisterAndLoginView.showInput("user with username " + username + " already exists");
             findMatcher();
             return;
@@ -98,6 +102,9 @@ public class RegisterAndLoginController {
             return;
         }
         UserModel.allUsersInfo.put(username, new UserModel(username, password, nickname));
+        UserModel.allUsernames.add(username);
+        UserModel.allUsersNicknames.add(nickname);
+        RegisterAndLoginView.showInput("user created successfully!");
         findMatcher();
     }
 
@@ -108,7 +115,7 @@ public class RegisterAndLoginController {
                 RegisterAndLoginView.showInput("user logged in successfully!");
                 MainMenuController.findMatcher(username);
             } else {
-                RegisterAndLoginView.showInput("Username and password didn’t match!");
+                RegisterAndLoginView.showInput("Username and password didn’t match!11");
 
 
             }
