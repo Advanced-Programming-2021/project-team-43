@@ -1,7 +1,7 @@
-package model;
+package main.java.model;
 
-import controller.*;
-import view.*;
+import main.java.view.*;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class UserModel {
     private int userScore;
     private int userCoin;
     private HashMap<String, Integer> userAllCards;
-    //    private ArrayList<DeckModel> userAllDecks;
+    private ArrayList<DeckModel> userAllDecks;
     private String activeDeck;
     private String currentMenu;
     private String onlineUser;
@@ -101,14 +101,6 @@ public class UserModel {
     }
 
 
-//    public void changePassword(String newPassword) {
-//
-//    }
-
-
-//    public void changeNickname(String nickname) {
-//
-//    }
 
 
     public void decreaseUserCard(int amount) {
@@ -132,9 +124,22 @@ public class UserModel {
 
 
     public void deleteDeck(String deckName) {
+        for (int i = 0; i <userAllDecks.size() ; i++) {
+            if(userAllDecks.get(i).equals(deckName)){
+                userAllDecks.remove(i);
+            }
+
+        }
+
+
+
 
     }
 
+    public static void main(String[] args) {
+        DeckModel a =new DeckModel();
+        userAllDecks.add(a);
+    }
 
     public static UserModel getUserByUsername(String username) {
      return allUsersInfo.get(username);
