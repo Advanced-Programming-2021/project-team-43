@@ -13,8 +13,9 @@ public class SpellCard extends Card{
     private static HashMap<String, SpellCard> spellCards = new HashMap<>();
 
     public SpellCard(String cardName, String type, int cardNumber, String icon,
-                     String cardDescription, String cardOwner) {
-        super();
+                     String cardDescription, String cardOwner, String cardSide, String cardLocation, String backAndForth,
+                     String description, String attribute, String cardModel ) {
+        super(cardName, cardSide, cardLocation, backAndForth, description, attribute, cardModel, cardNumber, cardOwner);
         this.cardName = cardName;
         this.type = type;
         this.cardNumber = cardNumber;

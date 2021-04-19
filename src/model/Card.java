@@ -12,7 +12,7 @@ public class Card {
     protected String attribute;
     protected String cardOwner;
     protected int cardNumber;
-    protected HashMap<String, Card> cards = new HashMap<>();
+    protected static HashMap<String, Card> cards = new HashMap<>();
 
     public Card(String cardName, String cardSide, String cardLocation, String backAndForth,
                 String description, String attribute, String cardModel, int cardNumber, String cardOwner) {
@@ -26,10 +26,6 @@ public class Card {
         this.attribute = attribute;
         this.cardOwner = cardOwner;
         cards.put(cardName, this);
-    }
-
-    public Card() {
-
     }
 
     public String getCardName() {
@@ -66,5 +62,9 @@ public class Card {
 
     public String getCardOwner() {
         return cardOwner;
+    }
+
+    public static Card getCardsByName(String name) {
+        return cards.get(name);
     }
 }
