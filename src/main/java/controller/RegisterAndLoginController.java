@@ -106,7 +106,6 @@ public class RegisterAndLoginController {
 
     private static void registerInGame(String username, String nickname, String password) {
         if (UserModel.isRepeatedUsername(username)) {
-            System.out.println("A");
             RegisterAndLoginView.showInput("user with username " + username + " already exists");
 //            findMatcher();
             return;
