@@ -12,20 +12,22 @@ public class UserModel {
     private String nickname;
     private int userScore;
     private int userCoin;
-    private HashMap<String, Integer> userAllCards;
-    private ArrayList<DeckModel> userAllDecks;
+    private HashMap<String, Integer> userAllCards = new HashMap<>();
+    private ArrayList<DeckModel> userAllDecks = new ArrayList<>();
     private String activeDeck;
+    private String sideDeck;
     private String currentMenu;
-    private String onlineUser;
-    public static HashMap<String, UserModel> allUsersInfo=new HashMap<>();
-    public static ArrayList<String> allUsernames=new ArrayList<>();
-    public static ArrayList<String> allUsersNicknames=new ArrayList<>();
+//    private String onlineUser;
+    public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
+    public static ArrayList<String> allUsernames = new ArrayList<>();
+    public static ArrayList<String> allUsersNicknames = new ArrayList<>();
 
 
     public UserModel(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.userScore= 0;
     }
 
 //    public  HashMap<String,Integer> getUserAllCards()
@@ -58,9 +60,9 @@ public class UserModel {
         return currentMenu;
     }
 
-    public String getOnlineUser() {
-        return onlineUser;
-    }
+//    public String getOnlineUser() {
+//        return onlineUser;
+//    }
     //    public  void setUserState(String state)
 //    {
 //
@@ -101,8 +103,6 @@ public class UserModel {
     }
 
 
-
-
     public void decreaseUserCard(int amount) {
 
     }
@@ -114,7 +114,7 @@ public class UserModel {
 
 
     public void changeUserCoin(int amount) {
-        this.userCoin=this.userCoin+amount;
+        this.userCoin = this.userCoin + amount;
     }
 
 
@@ -124,45 +124,39 @@ public class UserModel {
 
 
     public void deleteDeck(String deckName) {
-        for (int i = 0; i <userAllDecks.size() ; i++) {
-            if(userAllDecks.get(i).equals(deckName)){
+        for (int i = 0; i < userAllDecks.size(); i++) {
+            if (userAllDecks.get(i).equals(deckName)) {
                 userAllDecks.remove(i);
             }
 
         }
 
 
-
-
     }
 
-    public static void main(String[] args) {
-//        DeckModel a =new DeckModel();
-//        userAllDecks.add("ad",a);
-    }
+//    public static void main(String[] args) {
+//    }
 
     public static UserModel getUserByUsername(String username) {
-     return allUsersInfo.get(username);
+        return allUsersInfo.get(username);
     }
 
 
     public static boolean isRepeatedUsername(String username) {
 
         for (int i = 0; i < allUsernames.size(); i++) {
-            if (allUsernames.get(i).equals(username)){
-                System.out.println("true");
+            if (allUsernames.get(i).equals(username)) {
+
                 return true;
             }
         }
-        System.out.println("false");
+
         return false;
 
     }
-
-
     public static boolean isRepeatedNickname(String nickname) {
         for (int i = 0; i < allUsersNicknames.size(); i++) {
-            if (allUsersNicknames.get(i).equals(nickname)){
+            if (allUsersNicknames.get(i).equals(nickname)) {
                 return true;
             }
         }

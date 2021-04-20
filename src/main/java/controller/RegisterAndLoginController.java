@@ -82,6 +82,21 @@ public class RegisterAndLoginController {
                 continue;
             }
 
+            pattern = Pattern.compile("menu exit");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                break;
+            }
+
+
+            pattern = Pattern.compile("menu show-current");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                RegisterAndLoginView.showInput("Login Menu");
+                continue;
+            }
+
+
             RegisterAndLoginView.showInput("invalid command");
 
 
@@ -93,19 +108,19 @@ public class RegisterAndLoginController {
         if (UserModel.isRepeatedUsername(username)) {
             System.out.println("A");
             RegisterAndLoginView.showInput("user with username " + username + " already exists");
-            findMatcher();
+//            findMatcher();
             return;
         }
         if (UserModel.isRepeatedNickname(nickname)) {
             RegisterAndLoginView.showInput("user with nickname " + nickname + " already exists");
-            findMatcher();
+//            findMatcher();
             return;
         }
         UserModel.allUsersInfo.put(username, new UserModel(username, password, nickname));
         UserModel.allUsernames.add(username);
         UserModel.allUsersNicknames.add(nickname);
         RegisterAndLoginView.showInput("user created successfully!");
-        findMatcher();
+//        findMatcher();
     }
 
 
@@ -113,7 +128,8 @@ public class RegisterAndLoginController {
         if (UserModel.isRepeatedUsername(username)) {
             if (UserModel.getUserByUsername(username).getPassword().equals(password)) {
                 RegisterAndLoginView.showInput("user logged in successfully!");
-                MainMenuController.findMatcher(username);
+                MainMenuController.username = username;
+                MainMenuController.findMatcher();
             } else {
                 RegisterAndLoginView.showInput("Username and password didn’t match!11");
 
@@ -121,7 +137,7 @@ public class RegisterAndLoginController {
             }
         } else {
             RegisterAndLoginView.showInput("Username and password didn’t match!");
-            findMatcher();
+//            findMatcher();
         }
 
     }
