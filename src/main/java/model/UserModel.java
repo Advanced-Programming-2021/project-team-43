@@ -1,175 +1,166 @@
-package model;
+package main.java.model;
+
+import main.java.view.*;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserModel {
-    class UserModel {
-        private String username;
-        private String password;
-        private String nickname;
-        private int userScore;
-        private int userCoin;
-        private HashMap<String, Integer> userAllCards;
-        private ArrayList<DeckModel> userAllDecks;
-        private String activeDeck;
-        private String currentMenu;
-        private String onlineUser;
-        public HashMap<String, UserModel> allUsersInfo;
-        public ArrayList<String> allUsernames;
-        public ArrayList<String> allUsersNicknames;
-
-
-        public UserModel(String username, String password, String nickname) {
-
-        }
-
-
-        public final HashMap<String, Integer> getUserAllCards() {
-
-        }
-
-
-        public final int getUserCoin() {
-
-        }
-
-
-        public final void setUserState(String state) {
-
-        }
-
-
-        public final String getUserState() {
-
-        }
-
-
-        public final String getUsername() {
-
-        }
-
-
-        public final void setUsername(String username) {
-
-        }
-
-
-        public final String getPassword() {
-
-        }
-
-
-        public final void setPassword(String password) {
-
-        }
-
-
-        public final String getNickname() {
-
-        }
-
-
-        public final void setNickname(String nickname) {
-
-        }
-
-
-        public final int getUserScore() {
-
-        }
-
-
-        public final void setUserScore(int userScore) {
-
-        }
-
-
-        public final DeckModel getUserAllDecks() {
-
-        }
-
-
-        public final void addDeck(DeckModel deck) {
-
-        }
-
-
-        public final void changeUserScore(int userScore) {
-
-        }
-
-
-        public final void changePassword(String newPassword) {
-
-        }
-
-
-        public final void changeNickname(String nickname) {
-
-        }
-
-
-        public final void decreaseUserCard(int amount) {
-
-        }
-
-
-        public final void increaseUserCard(int amount) {
-
-        }
-
-
-        public final void changeUserCoin(int amount) {
-
-        }
-
-
-        public final void setActiveDeck(String deckName) {
-
-        }
-
-
-        public final String getActiveDeck() {
-
-        }
-
-
-        public final void deleteDeck(String deckName) {
-
-        }
-
-
-        public final String getCurrentMenu() {
-
-        }
-
-
-        public final void setCurrentMenu(String currentMenu) {
-
-        }
-
-
-        public final void setOnlineUser(String onlineUser) {
-
-        }
-
-
-        public final String getOnlineUser() {
-
-        }
-
-
-        public final UserModel getUserByUsername(String username) {
-
-        }
-
-
-        public final boolean isRepeatedUsername(String username) {
-
-        }
-
-
-        public final boolean isRepeatedNickname(String nickname) {
-
-        }
+    private String username;
+    private String password;
+    private String nickname;
+    private int userScore;
+    private int userCoin;
+    private HashMap<String, Integer> userAllCards = new HashMap<>();
+    private ArrayList<DeckModel> userAllDecks = new ArrayList<>();
+    private String activeDeck;
+    private String sideDeck;
+    private String currentMenu;
+//    private String onlineUser;
+    public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
+    public static ArrayList<String> allUsernames = new ArrayList<>();
+    public static ArrayList<String> allUsersNicknames = new ArrayList<>();
+
+
+    public UserModel(String username, String password, String nickname) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.userScore= 0;
     }
 
+//    public  HashMap<String,Integer> getUserAllCards()
+//    {
+//
+//    }
+
+
+    public int getUserCoin() {
+        return userCoin;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public int getUserScore() {
+        return userScore;
+    }
+
+    public String getCurrentMenu() {
+        return currentMenu;
+    }
+
+//    public String getOnlineUser() {
+//        return onlineUser;
+//    }
+    //    public  void setUserState(String state)
+//    {
+//
+//    }
+
+
+//    public  String getUserState()
+//    {
+//
+//    }
+
+
+    public void setUsername(String username) {
+        this.username = username;
+
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
+
+    }
+
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+
+    }
+
+
+    public void setUserScore(int userScore) {
+        this.userScore = userScore;
+    }
+
+
+    public void changeUserScore(int userScore) {
+        this.userScore = userScore + this.userScore;
+    }
+
+
+    public void decreaseUserCard(int amount) {
+
+    }
+
+
+    public void increaseUserCard(int amount) {
+
+    }
+
+
+    public void changeUserCoin(int amount) {
+        this.userCoin = this.userCoin + amount;
+    }
+
+
+    public void setActiveDeck(String deckName) {
+
+    }
+
+
+    public void deleteDeck(String deckName) {
+        for (int i = 0; i < userAllDecks.size(); i++) {
+            if (userAllDecks.get(i).equals(deckName)) {
+                userAllDecks.remove(i);
+            }
+
+        }
+
+
+    }
+
+//    public static void main(String[] args) {
+//    }
+
+    public static UserModel getUserByUsername(String username) {
+        return allUsersInfo.get(username);
+    }
+
+
+    public static boolean isRepeatedUsername(String username) {
+
+        for (int i = 0; i < allUsernames.size(); i++) {
+            if (allUsernames.get(i).equals(username)) {
+
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+    public static boolean isRepeatedNickname(String nickname) {
+        for (int i = 0; i < allUsersNicknames.size(); i++) {
+            if (allUsersNicknames.get(i).equals(nickname)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
 }
