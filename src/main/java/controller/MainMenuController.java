@@ -20,7 +20,7 @@ public class MainMenuController {
             String command;
             command = MainMenuView.getCommand();
 
-            Pattern pattern = Pattern.compile("^menu enter (.+?)>$");
+            Pattern pattern = Pattern.compile("^menu enter (.+?)$");
             Matcher matcher = pattern.matcher(command);
             if (matcher.find()) {
                 if (matcher.group(1).equals("duel")) {
@@ -33,9 +33,10 @@ public class MainMenuController {
                     break;
 
                 } else if (matcher.group(1).equals("profile")) {
+                    profile();
 
                 } else if (matcher.group(1).equals("shop")) {
-                    ShopController.findMatcher();
+                    //ShopController.findMatcher();
                     break;
                 } else {
                     MainMenuView.showInput("invalid command");
@@ -51,6 +52,87 @@ public class MainMenuController {
         }
     }
 
+    private static void profile() {
+        while (true) {
+            String command = MainMenuView.getCommand();
+            Pattern pattern = Pattern.compile("^menu exit$");
+            Matcher matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                findMatcher();
+                break;
+            }
+            pattern = Pattern.compile("^menu enter (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                    MainMenuView.showInput("menu navigation is not possible");
+                } else {
+                    MainMenuView.showInput("invalid command");
+                }
+                continue;
+            }
+
+
+            pattern = Pattern.compile("^profile change --nickname (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                if (UserModel.isRepeatedNickname(matcher.group(1))) {
+                    MainMenuView.showInput("user with nickname " + matcher.group(1) + " already exists");
+                } else {
+                    UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+                    user.setNickname(matcher.group(1));
+                    UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                }
+                continue;
+            }
+
+
+            pattern = Pattern.compile("^profile change --password --current (.+?) --new (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                changePassword(matcher.group(1), matcher.group(2));
+                continue;
+            }
+
+            pattern = Pattern.compile("^profile change --current (.+?) --password --new (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                changePassword(matcher.group(1), matcher.group(2));
+                continue;
+            }
+            pattern = Pattern.compile("^profile change --current (.+?) --new (.+?) --password$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                changePassword(matcher.group(1), matcher.group(2));
+                continue;
+            }
+            pattern = Pattern.compile("^profile change --password --new (.+?) --current (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                changePassword(matcher.group(2), matcher.group(1));
+                continue;
+            }
+            pattern = Pattern.compile("^profile change --new (.+?) --password --current (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                changePassword(matcher.group(2), matcher.group(1));
+                continue;
+            }
+            pattern = Pattern.compile("^profile change --new (.+?) --current (.+?) --password$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                changePassword(matcher.group(2), matcher.group(1));
+                continue;
+            }
+
+
+            MainMenuView.showInput("invalid command");
+
+
+        }
+
+    }
+
 
     private static void scoreboard() {
         while (true) {
@@ -59,7 +141,7 @@ public class MainMenuController {
             Matcher matcher = pattern.matcher(command);
             if (matcher.find()) {
                 showScoreboard();
-                break;
+                continue;
             }
 
             pattern = Pattern.compile("^menu exit$");
@@ -68,49 +150,45 @@ public class MainMenuController {
                 findMatcher();
                 break;
             }
-
-
-        }
-    }
-
-
-    private static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
-        // Create a list from elements of HashMap
-        List<Map.Entry<String, Integer>> list =
-                new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
-
-        // Sort the list
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
+            pattern = Pattern.compile("^menu enter (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                    MainMenuView.showInput("menu navigation is not possible");
+                } else {
+                    MainMenuView.showInput("invalid command");
+                }
+                continue;
             }
-        });
-
-        // put data from sorted list to hashmap
-        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
-        for (Map.Entry<String, Integer> aa : list) {
-            temp.put(aa.getKey(), aa.getValue());
+            MainMenuView.showInput("invalid command");
         }
-        return temp;
     }
 
 
     private static void showScoreboard() {
+        String[] keysUsers;
+        String temp = "";
+        keysUsers = UserModel.allUsernames.toArray(new String[0]);
+        for (int x = 0; x < keysUsers.length; x++) {
+            for (int y = x + 1; y < keysUsers.length; y++) {
+                if (UserModel.getUserByUsername(keysUsers[x]).getUserScore() < UserModel.getUserByUsername(keysUsers[y]).getUserScore()) {
+                    temp = keysUsers[y];
+                    keysUsers[y] = keysUsers[x];
+                    keysUsers[x] = temp;
+                }
 
-        HashMap<String, Integer> hm = new HashMap<String, Integer>();
-
-        // enter data into hashmap
-        for (int i = 0; i < UserModel.allUsernames.size(); i++) {
-            hm.put(UserModel.allUsernames.get(i), UserModel.getUserByUsername(UserModel.allUsernames.get(i)).getUserScore() * (-1));
+                if (UserModel.getUserByUsername(keysUsers[x]).getUserScore() == UserModel.getUserByUsername(keysUsers[y]).getUserScore()) {
+                    if (keysUsers[x].compareToIgnoreCase(keysUsers[y]) > 0) {
+                        temp = keysUsers[x];
+                        keysUsers[x] = keysUsers[y];
+                        keysUsers[y] = temp;
+                    }
+                }
+            }
         }
-        Map<String, Integer> hm1 = sortByValue(hm);
 
-        // print the sorted hashmap
-        int counter = 1;
-        for (Map.Entry<String, Integer> en : hm1.entrySet()) {
-            MainMenuView.showInput(counter + "_" + en.getKey() + ": " + en.getValue());
-            counter++;
+        for (int i = 0; i < keysUsers.length; i++) {
+            MainMenuView.showInput((i + 1) + "_" + keysUsers[i] + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
         }
     }
 
@@ -119,32 +197,33 @@ public class MainMenuController {
 
     }
 
+    private static void changePassword(String currentPassword, String newPassword) {
+        if (currentPassword.equals(newPassword)){
+            MainMenuView.showInput("please enter a new password");
+            return;
+        }
+
+
+        if (UserModel.getUserByUsername(MainMenuController.username).getPassword().equals(currentPassword)){
+            UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+            user.setPassword(newPassword);
+            UserModel.allUsersInfo.replace(MainMenuController.username,user);
+            MainMenuView.showInput("password changed successfully!");
+        }
+        else {
+            MainMenuView.showInput("current password is invalid");
+        }
+
+    }
+
 
 //    public final String chooseFirstPlayer(String rivalName)
 //    {
 //
 //    }
-//
-//
-//
-//
-//
 //    private void logout()
 //    {
-//
 //    }
-//
-//
-//    private static void scoreboard()
-//    {
-//
-//    }
-//
-//
-//    private static void profile()
-//    {
-//
-//    }
-//}
+
 
 }
