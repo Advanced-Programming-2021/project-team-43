@@ -1,11 +1,9 @@
 package main.java.controller;
 
-import main.java.model.DeckModel;
 import main.java.model.UserModel;
 import main.java.view.MainMenuView;
 import main.java.view.RegisterAndLoginView;
 
-import java.util.*;
 import java.lang.*;
 
 import java.util.regex.Matcher;
@@ -76,13 +74,7 @@ public class MainMenuController {
             pattern = Pattern.compile("^profile change --nickname (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                if (UserModel.isRepeatedNickname(matcher.group(1))) {
-                    MainMenuView.showInput("user with nickname " + matcher.group(1) + " already exists");
-                } else {
-                    UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-                    user.setNickname(matcher.group(1));
-                    UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                }
+                changeNickname(matcher);
                 continue;
             }
 
@@ -131,6 +123,16 @@ public class MainMenuController {
 
         }
 
+    }
+
+    private static void changeNickname(Matcher matcher) {
+        if (UserModel.isRepeatedNickname(matcher.group(1))) {
+            MainMenuView.showInput("user with nickname " + matcher.group(1) + " already exists");
+        } else {
+            UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+            user.setNickname(matcher.group(1));
+            UserModel.allUsersInfo.replace(MainMenuController.username, user);
+        }
     }
 
 
@@ -193,9 +195,6 @@ public class MainMenuController {
     }
 
 
-    private static void enterMenu(String menu) {
-
-    }
 
     private static void changePassword(String currentPassword, String newPassword) {
         if (currentPassword.equals(newPassword)){
