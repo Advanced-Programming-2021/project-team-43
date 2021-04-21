@@ -1,15 +1,16 @@
 package main.java.model;
 
 import main.java.controller.MainMenuController;
-import main.java.view.*;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 
 public class DeckModel {
     private String deckName;
-    private int cardNumber = 0;
-    private int cardNumberSide=0;
+    private int mainAllCardNumber = 0;
+    private int sideAllCardNumber = 0;
+    private HashMap<String, Integer> cardsInMainDeck = new HashMap<>();
+    public HashMap<String, Integer> cardsInSideDeck = new HashMap<>();
 
     public DeckModel(String deckName) {
         this.deckName = deckName;
@@ -20,81 +21,66 @@ public class DeckModel {
     }
 
 
-    public HashMap<String, Integer> cardsInMaindeck;
-    public HashMap<String, Integer> cardsInSidedeck;
-    private ArrayList<String> cardName;
-    public void addCardTomain(String cardName){
-        if(cardsInMaindeck.get(cardName)==null){
-            cardsInSidedeck.put(cardName,1);
+    public void addCardToMain(String cardName) {
+        if (cardsInMainDeck.get(cardName) == null) {
+            cardsInSideDeck.put(cardName, 1);
+        } else {
+            cardsInMainDeck.replace(cardName, cardsInMainDeck.get(cardName) + 1);
         }
-        else {
-            cardsInMaindeck.replace(cardName,cardsInMaindeck.get(cardName)+1);
-        }
-        cardNumber=cardNumber+1;
+        mainAllCardNumber = mainAllCardNumber + 1;
+
+        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
     }
 
-
-
-
-
-
-
-
-
-    public void removeCardToMain(String cardName) {
-        cardsInMaindeck.replace(cardName,cardsInMaindeck.get(cardName)-1);
-        if (cardsInMaindeck.get(cardName)==0){
-            cardsInMaindeck.remove(cardName);
+    public void removeCardMain(String cardName) {
+        cardsInMainDeck.replace(cardName, cardsInMainDeck.get(cardName) - 1);
+        if (cardsInMainDeck.get(cardName) == 0) {
+            cardsInMainDeck.remove(cardName);
         }
-        cardNumber=cardNumber-1;
-
+        mainAllCardNumber = mainAllCardNumber - 1;
+        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
     }
 
     public void addCardToSide(String cardName) {
-        if(cardsInSidedeck.get(cardName)==null){
-            cardsInSidedeck.put(cardName,1);
+        if (cardsInSideDeck.get(cardName) == null) {
+            cardsInSideDeck.put(cardName, 1);
+        } else {
+            cardsInSideDeck.replace(cardName, cardsInSideDeck.get(cardName) + 1);
         }
-        else {
-            cardsInSidedeck.replace(cardName,cardsInSidedeck.get(cardName)+1);
-        }
-        cardNumberSide=cardNumberSide+1;
-
+        sideAllCardNumber = sideAllCardNumber + 1;
+        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
     }
 
     public void removeCardToSide(String cardName) {
-        cardsInSidedeck.replace(cardName,cardsInSidedeck.get(cardName)-1);
-        if (cardsInSidedeck.get(cardName)==0){
-            cardsInSidedeck.remove(cardName);
+        cardsInSideDeck.replace(cardName, cardsInSideDeck.get(cardName) - 1);
+        if (cardsInSideDeck.get(cardName) == 0) {
+            cardsInSideDeck.remove(cardName);
         }
-        cardNumberSide=cardNumberSide-1;
+        sideAllCardNumber = sideAllCardNumber - 1;
+        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
     }
 
-
-//    public  String getMainDeck() {
-//
-//    }
-
-
-//    public HashMap<String, Integer> getCardNumberChecker() {
-//
-//    }
-
-
-//    public  int getCardNumber() {
-//
-//    }
-
-
-    public void setSideDeck(String sideDeck) {
-
+    public int getNumberOfCardInMainDeck(String cardName) {
+        if (cardsInMainDeck.get(cardName) == null) {
+            return 0;
+        }
+        return cardsInMainDeck.get(cardName);
     }
 
-
-    public void setDeckName(String deckName) {
-
-        this.deckName = deckName;
+    public int getNumberOfCardInSideDeck(String cardName) {
+        if (cardsInSideDeck.get(cardName) == null) {
+            return 0;
+        }
+        return cardsInSideDeck.get(cardName);
     }
 
+    public int getMainAllCardNumber() {
+        return mainAllCardNumber;
+    }
+
+    public int getSideAllCardNumber() {
+        return sideAllCardNumber;
+    }
 }
 
 
