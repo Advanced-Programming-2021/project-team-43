@@ -3,23 +3,18 @@ package model;
 import java.util.HashMap;
 
 public class TrapCard extends Card {
-    private String cardName;
-    private String type;
-    private int cardNumber;
+    // private String cardName;
+    // private String type;
     private String icon;
-    private String cardDescription;
-    private String cardOwner;
+    private String status;
     private static HashMap<String, TrapCard> trapCards = new HashMap<>();
 
-    public TrapCard(String cardName, String type, int cardNumber, String icon, String cardDescription, String cardOwner
-            , String cardSide, String cardLocation, String backAndForth, String description, String attribute, String cardModel) {
-        super(cardName, cardSide, cardLocation, backAndForth, description, attribute, cardModel, cardNumber, cardOwner);
+    public TrapCard(String cardName, String cardModel, String icon, String description, int price, String status) {
+        super(cardName, cardModel, description, price);
         this.cardName = cardName;
-        this.type = type;
-        this.cardNumber = cardNumber;
+        //  this.type = type;
         this.icon = icon;
-        this.cardDescription = cardDescription;
-        this.cardOwner = cardOwner;
+        this.status = status;
         trapCards.put(cardName, this);
     }
 
@@ -27,24 +22,12 @@ public class TrapCard extends Card {
         return cardName;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public int getCardNumber() {
-        return cardNumber;
-    }
+//    public String getType() {
+//        return type;
+//    }
 
     public String getIcon() {
         return icon;
-    }
-
-    public String getCardDescription() {
-        return cardDescription;
-    }
-
-    public String getCardOwner() {
-        return cardOwner;
     }
 
     public static TrapCard getTrapCardByName(String cardName) {
