@@ -1,41 +1,38 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class MonsterCard extends Card {
-    private String name;
     private int level;
     private String monsterType;
     private int attack;
     private int defend;
-    private int shield;
-    private static boolean isEpic;
-    private static boolean isRitual;
+    private String cardType;
     private boolean isScanner;
-    private String description;
+    private String attribute;
     private static HashMap<String, MonsterCard> allMonsters = new HashMap<>();
 
 
-    public MonsterCard(String cardSide, String cardLocation, String backAndForth, String attribute, String name, int level, String type, int attack, int defend, String description,
-                       String cardModel, int cardNumber, String cardOwner, int shield, boolean isEpic, boolean isRitual, boolean isScanner) {
-        super(name, cardSide, cardLocation, backAndForth, description, attribute, cardModel, cardNumber, cardOwner);
+    public MonsterCard( String attribute, String name, int level, String type, int attack, int defend,
+                       String cardModel, String cardType, boolean isScanner,String description,int price) {
+        super(name, cardModel, description,price);
         this.attack = attack;
-        this.name = name;
         this.level = level;
         this.defend = defend;
-        this.description = description;
         this.monsterType = type;
-        this.shield = shield;
-        MonsterCard.isEpic = isEpic;
-        MonsterCard.isRitual = isRitual;
+        this.cardType=cardType;
         this.isScanner = isScanner;
+        this.attribute=attribute;
         allMonsters.put(name, this);
     }
 
-    public String getName() {
-        return name;
+    public void addScanner(){
+        allMonsters.put("Scanner",this);
     }
-
     public int getLevel() {
         return level;
     }
@@ -52,42 +49,28 @@ public class MonsterCard extends Card {
         return defend;
     }
 
-    public int getShield() {
-        return shield;
-    }
-
     public boolean isEpic() {
-        return isEpic;
+        return cardName.equals("Command knight");
     }
 
     public boolean isRitual() {
-        return isRitual;
+        return cardType.equals("Ritual");
     }
 
     public boolean isScanner() {
         return isScanner;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public static MonsterCard getMonsterByName(String name) {
         return allMonsters.get(name);
-    }
-
-    public static void setEpic(boolean epic) {
-        isEpic = epic;
-    }
-
-    public static void setRitual(boolean ritual) {
-        isRitual = ritual;
     }
 
     public static HashMap<String, MonsterCard> getAllMonsters() {
         return allMonsters;
     }
-    public void changeAttack(int change){
+    public void setAttack(int change){
         this.attack+=change;
     }
+
+
 }

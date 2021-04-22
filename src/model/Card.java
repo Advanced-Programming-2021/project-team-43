@@ -7,24 +7,19 @@ public class Card {
     protected String cardLocation;
     protected String cardSide;
     protected String backAndForth;
-    protected String description;
     protected String cardModel;
-    protected String attribute;
-    protected String cardOwner;
-    protected int cardNumber;
+  //  protected String attribute;
+   // protected String cardNumber;
+    protected String description;
+    protected int price;
     protected static HashMap<String, Card> cards = new HashMap<>();
 
-    public Card(String cardName, String cardSide, String cardLocation, String backAndForth,
-                String description, String attribute, String cardModel, int cardNumber, String cardOwner) {
+    public Card(String cardName, String cardModel,String description,int price) {
         this.cardName = cardName;
-        this.cardSide = cardSide;
-        this.backAndForth = backAndForth;
-        this.cardLocation = cardLocation;
-        this.description = description;
-        this.cardNumber = cardNumber;
+       // this.cardNumber = cardNumber;
         this.cardModel = cardModel;
-        this.attribute = attribute;
-        this.cardOwner = cardOwner;
+     //   this.attribute = attribute;
+        this.description=description;
         cards.put(cardName, this);
     }
 
@@ -39,14 +34,9 @@ public class Card {
     public String getCardSide() {
         return cardSide;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getAttribute() {
-        return attribute;
-    }
+//    public String getAttribute() {
+//        return attribute;
+//    }
 
     public String getCardModel() {
         return cardModel;
@@ -56,13 +46,6 @@ public class Card {
         return backAndForth;
     }
 
-    public int getCardNumber() {
-        return cardNumber;
-    }
-
-    public String getCardOwner() {
-        return cardOwner;
-    }
 
     public static Card getCardsByName(String name) {
         return cards.get(name);

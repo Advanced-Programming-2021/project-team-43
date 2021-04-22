@@ -2,54 +2,36 @@ package model;
 
 import java.util.HashMap;
 
-public class SpellCard extends Card{
+public class SpellCard extends Card {
 
-    private String cardName;
-    private String type;
-    private int cardNumber;
+   // private String cardName;
+   // private String type;
     private String icon;
-    private String cardDescription;
-    private String cardOwner;
+    String status;
     private static HashMap<String, SpellCard> spellCards = new HashMap<>();
 
-    public SpellCard(String cardName, String type, int cardNumber, String icon,
-                     String cardDescription, String cardOwner, String cardSide, String cardLocation, String backAndForth,
-                     String description, String attribute, String cardModel ) {
-        super(cardName, cardSide, cardLocation, backAndForth, description, attribute, cardModel, cardNumber, cardOwner);
+    public SpellCard(String cardName, String cardModel,  String icon,String description,int price, String status) {
+        super(cardName, cardModel,description,price);
         this.cardName = cardName;
-        this.type = type;
-        this.cardNumber = cardNumber;
+      //  this.type = type;
         this.icon = icon;
-        this.cardDescription = cardDescription;
-        this.cardOwner = cardOwner;
-        spellCards.put(cardName,this);
+        this.status=status;
+        spellCards.put(cardName, this);
     }
 
     public String getCardName() {
         return cardName;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public int getCardNumber() {
-        return cardNumber;
-    }
+//    public String getType() {
+//        return type;
+//    }
 
     public String getIcon() {
         return icon;
     }
 
-    public String getCardDescription() {
-        return cardDescription;
-    }
-
-    public String getCardOwner() {
-        return cardOwner;
-    }
-
-    public static  SpellCard getSpellCardByName(String cardName) {
+    public static SpellCard getSpellCardByName(String cardName) {
         return spellCards.get(cardName);
     }
 }
