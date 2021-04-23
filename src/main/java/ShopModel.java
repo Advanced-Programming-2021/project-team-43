@@ -2,6 +2,7 @@ import java.util.*;
 
 
 public class ShopModel {
+
     private static Map<String,Integer> cardInfo= new HashMap<>();
 
     public static int getCardPriceByName(String cardName) {
@@ -10,7 +11,6 @@ public class ShopModel {
                 return entry.getValue();
         return 0;
     }
-
 
     public static HashMap<String,Integer> getCardInfo() {
         return (HashMap<String, Integer>) cardInfo;
