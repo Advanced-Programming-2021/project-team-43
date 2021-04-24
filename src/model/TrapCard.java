@@ -3,8 +3,6 @@ package model;
 import java.util.HashMap;
 
 public class TrapCard extends Card {
-    // private String cardName;
-    // private String type;
     private String icon;
     private String status;
     private static HashMap<String, TrapCard> trapCards = new HashMap<>();
@@ -12,7 +10,6 @@ public class TrapCard extends Card {
     public TrapCard(String cardName, String cardModel, String icon, String description, int price, String status) {
         super(cardName, cardModel, description, price);
         this.cardName = cardName;
-        //  this.type = type;
         this.icon = icon;
         this.status = status;
         trapCards.put(cardName, this);
@@ -22,12 +19,16 @@ public class TrapCard extends Card {
         return cardName;
     }
 
-//    public String getType() {
-//        return type;
-//    }
-
     public String getIcon() {
         return icon;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public static HashMap<String, TrapCard> getTrapCards() {
+        return trapCards;
     }
 
     public static TrapCard getTrapCardByName(String cardName) {
