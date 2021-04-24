@@ -4,6 +4,7 @@ import model.MonsterCard;
 import model.SpellCard;
 import model.TrapCard;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,48 +14,58 @@ public class SetCards {
 
     //////////CSV
     public static void readingCSVFileMonster() {
-        String filePath = "C:\\Users\\Partiran\\IdeaProjects\\ap11\\Monster.csv";
+        String filePath = "C:\\Users\\Partiran\\IdeaProjects\\project-team-43\\Monster.csv";
         try {
             BufferedReader readFile = new BufferedReader(new FileReader(filePath));
             String readFileRow;
+            int r = 0;
+            String[] data = new String[10];
             while ((readFileRow = readFile.readLine()) != null) {
-                String[] data = readFileRow.split(",");
-                int level = Integer.parseInt(data[1]);
-                int attack = Integer.parseInt(data[5]);
-                int defend = Integer.parseInt(data[6]);
-                int price = Integer.parseInt(data[8]);
-                boolean isScanner = false;
-                if (data[0].equals("Scanner")) {
-                    isScanner = true;
+                data[r] = readFileRow;
+                if (r == 8) {
+                    int level = Integer.parseInt(data[1]);
+                    int attack = Integer.parseInt(data[5]);
+                    int defend = Integer.parseInt(data[6]);
+                    int price = Integer.parseInt(data[8]);
+                    boolean isScanner = false;
+                    if (data[0].equals("Scanner")) {
+                        isScanner = true;
+                    }
+                    new MonsterCard(data[2], data[0], level, data[3], attack, defend, "Monster", data[4], isScanner, data[7], price);
+                    r = 0;
+                    continue;
                 }
-                new MonsterCard(data[2], data[0], level, data[3], attack, defend, "Monster", data[4], isScanner, data[7], price);
+                r++;
             }
             readFile.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void readingCSVFileTrapSpell() {
-        String filePath = "C:\\Users\\Partiran\\IdeaProjects\\ap11\\SpellTrap.csv";
+        String filePath = "C:\\Users\\Partiran\\IdeaProjects\\project-team-43\\SpellTrap.csv";
         try {
             BufferedReader readFile = new BufferedReader(new FileReader(filePath));
             String readFileRow;
+            int t = 0;
+            String[] data = new String[6];
             while ((readFileRow = readFile.readLine()) != null) {
-                String[] data = readFileRow.split(",");
-                int price = Integer.parseInt(data[5]);
-                if (data[1].equals("Trap")) {
-                    new TrapCard(data[0], data[1], data[2], data[3], price, data[4]);
+                data[t] = readFileRow;
+                if (t == 5) {
+                    int price = Integer.parseInt(data[5]);
+                    if (data[1].equals("Trap")) {
+                        new TrapCard(data[0], data[1], data[2], data[3], price, data[4]);
+                    }
+                    if (data[1].equals("Spell")) {
+                        new SpellCard(data[0], data[1], data[2], data[3], price, data[4]);
+                    }
+                    t = 0;
+                    continue;
                 }
-                if (data[1].equals("Spell")) {
-                    new SpellCard(data[0], data[1], data[2], data[3], price, data[4]);
-                }
+                t++;
             }
             readFile.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

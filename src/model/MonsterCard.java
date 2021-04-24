@@ -1,9 +1,5 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class MonsterCard extends Card {
@@ -17,22 +13,35 @@ public class MonsterCard extends Card {
     private static HashMap<String, MonsterCard> allMonsters = new HashMap<>();
 
 
-    public MonsterCard( String attribute, String name, int level, String type, int attack, int defend,
-                       String cardModel, String cardType, boolean isScanner,String description,int price) {
-        super(name, cardModel, description,price);
+    public MonsterCard(String attribute, String name, int level, String MonsterType, int attack, int defend,
+                       String cardModel, String cardType, boolean isScanner, String description, int price) {
+        super(name, cardModel, description, price);
         this.attack = attack;
         this.level = level;
         this.defend = defend;
-        this.monsterType = type;
-        this.cardType=cardType;
+        this.monsterType = MonsterType;
+        this.cardType = cardType;
         this.isScanner = isScanner;
-        this.attribute=attribute;
+        this.attribute = attribute;
         allMonsters.put(name, this);
     }
 
-    public void addScanner(){
-        allMonsters.put("Scanner",this);
+    public static void deleteScanner() {
+        allMonsters.remove("Scanner");
     }
+
+    public String getAttribute() {
+        return attribute;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public void addScanner() {
+        allMonsters.put("Scanner", this);
+    }
+
     public int getLevel() {
         return level;
     }
@@ -68,8 +77,9 @@ public class MonsterCard extends Card {
     public static HashMap<String, MonsterCard> getAllMonsters() {
         return allMonsters;
     }
-    public void setAttack(int change){
-        this.attack+=change;
+
+    public void setAttack(int change) {
+        this.attack += change;
     }
 
 

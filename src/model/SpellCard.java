@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 public class SpellCard extends Card {
 
-   // private String cardName;
-   // private String type;
     private String icon;
     String status;
     private static HashMap<String, SpellCard> spellCards = new HashMap<>();
@@ -13,19 +11,23 @@ public class SpellCard extends Card {
     public SpellCard(String cardName, String cardModel,  String icon,String description,int price, String status) {
         super(cardName, cardModel,description,price);
         this.cardName = cardName;
-      //  this.type = type;
         this.icon = icon;
         this.status=status;
         spellCards.put(cardName, this);
+
+    }
+
+    public static HashMap<String, SpellCard> getSpellCards() {
+        return spellCards;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public String getCardName() {
         return cardName;
     }
-
-//    public String getType() {
-//        return type;
-//    }
 
     public String getIcon() {
         return icon;
