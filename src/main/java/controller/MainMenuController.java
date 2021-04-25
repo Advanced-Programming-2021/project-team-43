@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.UserModel;
+import main.java.view.DeckView;
 import main.java.view.MainMenuView;
 import main.java.view.RegisterAndLoginView;
 
@@ -60,6 +61,26 @@ public class MainMenuController {
                 duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
                 continue;
             }
+            pattern = Pattern.compile("^menu exit$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                findMatcher();
+                break;
+            }
+
+            pattern = Pattern.compile("^menu enter (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                    MainMenuView.showInput("menu navigation is not possible");
+                } else {
+                    MainMenuView.showInput("invalid command");
+                }
+                continue;
+            }
+            MainMenuView.showInput("invalid command");
+
+
 
         }
     }
@@ -78,6 +99,7 @@ public class MainMenuController {
                         if (user2.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
 
                             if (roundNumber == 1 || roundNumber == 3) {
+                                PickFirstPlayer.chose(MainMenuController.username,playerName);
 
 
                             } else {
@@ -224,7 +246,7 @@ public class MainMenuController {
 
     private static void showScoreboard() {
         String[] keysUsers;
-        String temp = "";
+        String temp ;
         keysUsers = UserModel.allUsernames.toArray(new String[0]);
         for (int x = 0; x < keysUsers.length; x++) {
             for (int y = x + 1; y < keysUsers.length; y++) {
@@ -269,10 +291,7 @@ public class MainMenuController {
     }
 
 
-//    public final String chooseFirstPlayer(String rivalName)
-//    {
-//
-//    }
+
 //    private void logout()
 //    {
 //    }
