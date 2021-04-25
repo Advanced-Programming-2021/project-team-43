@@ -24,6 +24,7 @@ public class UserModel {
         this.nickname = nickname;
         this.userScore = 0;
         this.userCoin = 100000;
+        this.activeDeck="";
 
     }
 
@@ -48,14 +49,16 @@ public class UserModel {
         return userScore;
     }
 
-    public void setPassword(String password) {
+    public void changePassword(String password) {
         this.password = password;
         allUsersInfo.replace(username, this);
     }
 
 
-    public void setNickname(String nickname) {
+    public void changeNickname(String nickname) {
 
+        allUsersNicknames.remove(this.nickname);
+        allUsersNicknames.add(nickname);
         this.nickname = nickname;
         allUsersInfo.replace(username, this);
 
@@ -138,7 +141,7 @@ public class UserModel {
         allUsersInfo.replace(username, this);
     }
 
-    public void removeCardfromUserAllCards(String cardName) {
+    public void removeCardFromUserAllCards(String cardName) {
         if (isUserHaveCard(cardName)) {
             int i = userAllCards.get(cardName) - 1;
             if (i == 0) {
