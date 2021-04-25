@@ -107,19 +107,19 @@ public class RegisterAndLoginController {
     private static void registerInGame(String username, String nickname, String password) {
         if (UserModel.isRepeatedUsername(username)) {
             RegisterAndLoginView.showInput("user with username " + username + " already exists");
-//            findMatcher();
+
             return;
         }
         if (UserModel.isRepeatedNickname(nickname)) {
             RegisterAndLoginView.showInput("user with nickname " + nickname + " already exists");
-//            findMatcher();
+
             return;
         }
         UserModel.allUsersInfo.put(username, new UserModel(username, password, nickname));
         UserModel.allUsernames.add(username);
         UserModel.allUsersNicknames.add(nickname);
         RegisterAndLoginView.showInput("user created successfully!");
-//        findMatcher();
+
     }
 
 
@@ -136,7 +136,7 @@ public class RegisterAndLoginController {
             }
         } else {
             RegisterAndLoginView.showInput("Username and password didn’t match!");
-//            findMatcher();
+
         }
 
     }
