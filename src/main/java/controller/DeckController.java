@@ -344,7 +344,7 @@ public class DeckController {
             cardNames=deck.cardsInMainDeck.keySet().toArray(new String[0]);
             Arrays.sort(cardNames);
             for (String cardName : cardNames){
-                DeckView.showInput(cardName+": "+MonsterCard.getCardsByName(cardName).getDescription+" ("+deck.cardsInMainDeck.get(cardName));
+                //DeckView.showInput(cardName+": "+MonsterCard.getCardsByName(cardName).getDescription+" ("+deck.cardsInMainDeck.get(cardName));
             }
 
 
