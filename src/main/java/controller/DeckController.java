@@ -182,7 +182,7 @@ public class DeckController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
-                    MainMenuView.showInput("menu navigation is not possible");
+                    DeckView.showInput("menu navigation is not possible");
                 } else {
                     MainMenuView.showInput("invalid command");
                 }
