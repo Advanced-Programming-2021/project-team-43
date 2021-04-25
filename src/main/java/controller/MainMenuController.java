@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.UserModel;
+import main.java.view.DeckView;
 import main.java.view.MainMenuView;
 import main.java.view.RegisterAndLoginView;
 
@@ -22,6 +23,7 @@ public class MainMenuController {
             Matcher matcher = pattern.matcher(command);
             if (matcher.find()) {
                 if (matcher.group(1).equals("duel")) {
+                    duelFindMatcher();
 
                 } else if (matcher.group(1).equals("deck")) {
                     DeckController.findMatcher();
@@ -47,6 +49,81 @@ public class MainMenuController {
                 RegisterAndLoginView.showInput("Main Menu");
             }
 
+        }
+    }
+
+    private static void duelFindMatcher() {
+        while (true) {
+            String command = MainMenuView.getCommand();
+            Pattern pattern = Pattern.compile("duel --new --second-player (.+?) --rounds (\\d)");
+            Matcher matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
+                continue;
+            }
+            pattern = Pattern.compile("^menu exit$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                findMatcher();
+                break;
+            }
+
+            pattern = Pattern.compile("^menu enter (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                    MainMenuView.showInput("menu navigation is not possible");
+                } else {
+                    MainMenuView.showInput("invalid command");
+                }
+                continue;
+            }
+            MainMenuView.showInput("invalid command");
+
+
+
+        }
+    }
+
+    private static void duelMenu(String playerName, int roundNumber) {
+        if (UserModel.isRepeatedUsername(playerName)) {
+            UserModel user1 = UserModel.getUserByUsername(MainMenuController.username);
+            UserModel user2 = UserModel.getUserByUsername(playerName);
+
+            if (!user1.getActiveDeck().equals("")) {
+
+                if (!user2.getActiveDeck().equals("")) {
+
+                    if (user1.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
+
+                        if (user2.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
+
+                            if (roundNumber == 1 || roundNumber == 3) {
+                                PickFirstPlayer.chose(MainMenuController.username,playerName);
+
+
+                            } else {
+                                MainMenuView.showInput("number of rounds is not supported");
+                            }
+
+
+                        } else {
+                            MainMenuView.showInput(user2.getUsername() + "’s deck is invalid");
+                        }
+
+                    } else {
+                        MainMenuView.showInput(user1.getUsername() + "’s deck is invalid");
+                    }
+
+                } else {
+                    MainMenuView.showInput(user2.getUsername() + " has no active deck");
+                }
+            } else {
+                MainMenuView.showInput(user1.getUsername() + " has no active deck");
+            }
+
+        } else {
+            MainMenuView.showInput("there is no player with this username");
         }
     }
 
@@ -169,7 +246,7 @@ public class MainMenuController {
 
     private static void showScoreboard() {
         String[] keysUsers;
-        String temp = "";
+        String temp ;
         keysUsers = UserModel.allUsernames.toArray(new String[0]);
         for (int x = 0; x < keysUsers.length; x++) {
             for (int y = x + 1; y < keysUsers.length; y++) {
@@ -195,31 +272,26 @@ public class MainMenuController {
     }
 
 
-
     private static void changePassword(String currentPassword, String newPassword) {
-        if (currentPassword.equals(newPassword)){
+        if (currentPassword.equals(newPassword)) {
             MainMenuView.showInput("please enter a new password");
             return;
         }
 
 
-        if (UserModel.getUserByUsername(MainMenuController.username).getPassword().equals(currentPassword)){
+        if (UserModel.getUserByUsername(MainMenuController.username).getPassword().equals(currentPassword)) {
             UserModel user = UserModel.getUserByUsername(MainMenuController.username);
             user.changePassword(newPassword);
-            UserModel.allUsersInfo.replace(MainMenuController.username,user);
+            UserModel.allUsersInfo.replace(MainMenuController.username, user);
             MainMenuView.showInput("password changed successfully!");
-        }
-        else {
+        } else {
             MainMenuView.showInput("current password is invalid");
         }
 
     }
 
 
-//    public final String chooseFirstPlayer(String rivalName)
-//    {
-//
-//    }
+
 //    private void logout()
 //    {
 //    }
