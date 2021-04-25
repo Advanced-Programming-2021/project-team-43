@@ -1,12 +1,10 @@
-package controller;
+package main.java.controller;
 
-import model.MonsterCard;
-import model.SpellCard;
-import model.TrapCard;
+import main.java.model.MonsterCard;
+import main.java.model.SpellCard;
+import main.java.model.TrapCard;
 
-import javax.swing.*;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 

@@ -1,9 +1,4 @@
-package controller;
-import model.Card;
-import model.MonsterCard;
-import model.SpellCard;
-import java.util.HashMap;
-import java.util.Random;
+package main.java.controller;
 
 public class MonsterEffect {
 

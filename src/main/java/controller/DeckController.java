@@ -1,5 +1,6 @@
 package main.java.controller;
 
+import main.java.model.Card;
 import main.java.model.DeckModel;
 import main.java.model.UserModel;
 import main.java.view.DeckView;
@@ -150,6 +151,23 @@ public class DeckController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 showMainDeck(matcher.group(1));
+                continue;
+            }
+
+
+
+
+            pattern = Pattern.compile("^deck show --side --deck-name (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                showSideDeck(matcher.group(1));
+                continue;
+            }
+            pattern = Pattern.compile("^deck show --deck-name (.+?) --side$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                showSideDeck(matcher.group(1));
+                continue;
             }
 
 
@@ -344,7 +362,43 @@ public class DeckController {
             cardNames=deck.cardsInMainDeck.keySet().toArray(new String[0]);
             Arrays.sort(cardNames);
             for (String cardName : cardNames){
-                //DeckView.showInput(cardName+": "+MonsterCard.getCardsByName(cardName).getDescription+" ("+deck.cardsInMainDeck.get(cardName));
+                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")){continue;}
+                DeckView.showInput(cardName+": "+ Card.getCardsByName(cardName).getDescription()+" ("+deck.cardsInMainDeck.get(cardName)+")");
+            }
+            DeckView.showInput("Spell and Traps:");
+            for (String cardName : cardNames){
+                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")){continue;}
+                DeckView.showInput(cardName+": "+ Card.getCardsByName(cardName).getDescription()+" ("+deck.cardsInMainDeck.get(cardName)+")");
+            }
+
+
+
+        } else {
+            DeckView.showInput("deck with name " + deckName + " does not exist");
+        }
+
+    }
+
+
+    private static void showSideDeck(String deckName) {
+        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
+
+            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
+
+            DeckView.showInput("Deck: " + deckName);
+            DeckView.showInput("Side deck:");
+            DeckView.showInput("Monsters:");
+            String[] cardNames;
+            cardNames=deck.cardsInSideDeck.keySet().toArray(new String[0]);
+            Arrays.sort(cardNames);
+            for (String cardName : cardNames){
+                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")){continue;}
+                DeckView.showInput(cardName+": "+ Card.getCardsByName(cardName).getDescription()+" ("+deck.cardsInSideDeck.get(cardName)+")");
+            }
+            DeckView.showInput("Spell and Traps:");
+            for (String cardName : cardNames){
+                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")){continue;}
+                DeckView.showInput(cardName+": "+ Card.getCardsByName(cardName).getDescription()+" ("+deck.cardsInSideDeck.get(cardName)+")");
             }
 
 
