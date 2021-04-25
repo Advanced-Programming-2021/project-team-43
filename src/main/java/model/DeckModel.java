@@ -9,7 +9,7 @@ public class DeckModel {
     private String deckName;
     private int mainAllCardNumber = 0;
     private int sideAllCardNumber = 0;
-    private HashMap<String, Integer> cardsInMainDeck = new HashMap<>();
+    public HashMap<String, Integer> cardsInMainDeck = new HashMap<>();
     public HashMap<String, Integer> cardsInSideDeck = new HashMap<>();
 
     public DeckModel(String deckName) {
@@ -32,7 +32,7 @@ public class DeckModel {
         UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
     }
 
-    public void removeCardMain(String cardName) {
+    public void removeCardFromMain(String cardName) {
         cardsInMainDeck.replace(cardName, cardsInMainDeck.get(cardName) - 1);
         if (cardsInMainDeck.get(cardName) == 0) {
             cardsInMainDeck.remove(cardName);
@@ -51,7 +51,7 @@ public class DeckModel {
         UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
     }
 
-    public void removeCardToSide(String cardName) {
+    public void removeCardFromSide(String cardName) {
         cardsInSideDeck.replace(cardName, cardsInSideDeck.get(cardName) - 1);
         if (cardsInSideDeck.get(cardName) == 0) {
             cardsInSideDeck.remove(cardName);
@@ -80,6 +80,23 @@ public class DeckModel {
 
     public int getSideAllCardNumber() {
         return sideAllCardNumber;
+    }
+
+    public boolean isMainDeckHaveThisCard(String cardName){
+        return cardsInMainDeck.get(cardName) != null;
+    }
+
+    public boolean isSideDeckHaveThisCard(String cardName){
+        return cardsInSideDeck.get(cardName) != null;
+    }
+
+
+    public String validOrInvalid(){
+        if (getMainAllCardNumber()>40){
+
+            return "valid";}
+
+        return "invalid";
     }
 }
 

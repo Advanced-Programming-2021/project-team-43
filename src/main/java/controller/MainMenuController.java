@@ -130,7 +130,7 @@ public class MainMenuController {
             MainMenuView.showInput("user with nickname " + matcher.group(1) + " already exists");
         } else {
             UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-            user.setNickname(matcher.group(1));
+            user.changeNickname(matcher.group(1));
             UserModel.allUsersInfo.replace(MainMenuController.username, user);
         }
     }
@@ -205,7 +205,7 @@ public class MainMenuController {
 
         if (UserModel.getUserByUsername(MainMenuController.username).getPassword().equals(currentPassword)){
             UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-            user.setPassword(newPassword);
+            user.changePassword(newPassword);
             UserModel.allUsersInfo.replace(MainMenuController.username,user);
             MainMenuView.showInput("password changed successfully!");
         }
