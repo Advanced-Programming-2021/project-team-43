@@ -7,19 +7,11 @@ public class ShopController {
     public static String onlineUser = MainMenuController.username;
 
     public static void findMatcher() {
-        String shopBuy = "shop\\s+buy\\s+(\\w+)";
-        String shopShow = "shop\\s+show\s+--all";
-        String enterMenu = "menu\\s+enter\\s+(\\w+)";
-        String currentMenu = "menu\\s+show-current";
-        String back = "menu\\s+exit";
         String command = ShopView.getCommand();
-        Pattern pattern = Pattern.compile(command);
-        Matcher matcher;
 
         while (true) {
-            matcher = pattern.matcher(shopBuy);
-            if (matcher.find()) {
-                String cardName = matcher.group(1);
+            if (getMatcher(command,"shop\\s+buy\\s+(\\w+)").find()) {
+                String cardName = getMatcher(command,"shop\\s+buy\\s+(\\w+)").group(1);
                 if (ShopModel.getCardPriceByName(cardName) == 0)
                     ShopView.showInput("there is no card with this name");
                 else if (UserModel.getUserByUsername(onlineUser).getUserCoin() < ShopModel.getCardPriceByName(cardName))
@@ -28,34 +20,35 @@ public class ShopController {
                     shopBuy(cardName);
                 continue;
             }
-            matcher = pattern.matcher(shopShow);
-            if (matcher.find()) {
+            if (getMatcher(command,"shop\\s+show\\s+--all").find()) {
                 shopShow();
                 continue;
             }
-            matcher = pattern.matcher(enterMenu);
-            if (matcher.find()) {
-                String menuName = matcher.group(1);
+            if (getMatcher(command,"menu\\s+enter\\s+(\\w+)").find()) {
+                String menuName = getMatcher(command,"menu\\s+enter\\s+(\\w+)").group(1);
                 if (menuName.equals("Main Menu"))
                     MainMenuController.findMatcher();
-                else if (menuName.equals("deck"))
-                    DeckController.findMatcher();
+                else if (menuName.equals("Deck") || menuName.equals("Profile") || menuName.equals("Scoreboard") || menuName.equals("Duel") || menuName.equals("Import/Export"))
+                    ShopView.showInput("menu navigation is not possible");
                 else
                     ShopView.showInput("invalid command");
                 continue;
             }
-            matcher = pattern.matcher(currentMenu);
-            if (matcher.find()) {
+            if (getMatcher(command,"menu\\s+show-current").find()) {
                 ShopView.showInput("shop");
                 continue;
             }
-            matcher = pattern.matcher(back);
-            if (matcher.find()) {
+            if (getMatcher(command,"menu\\s+exit").find()) {
                 MainMenuController.findMatcher();
                 break;
             }
             ShopView.showInput("invalid command");
         }
+    }
+
+    public static Matcher getMatcher(String command, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(command);
     }
 
     private static void shopShow() {
