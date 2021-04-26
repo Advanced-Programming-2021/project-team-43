@@ -1,6 +1,6 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.UserModel;
+import model.UserModel;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -16,6 +16,8 @@ public class PickFirstPlayer {
             rockPaperScissors(player1, player2);
         }
     }
+
+
 
     private static void rockPaperScissors(String player1, String player2) {
         Scanner scanner = new Scanner(System.in);
@@ -71,6 +73,7 @@ public class PickFirstPlayer {
 
                 if (t2.equals("scissors")) {
                     System.out.println(UserModel.getUserByUsername(player2).getNickname()+" is win");
+
 
                 }
 

@@ -1,9 +1,9 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.UserModel;
-import main.java.view.DeckView;
-import main.java.view.MainMenuView;
-import main.java.view.RegisterAndLoginView;
+import model.UserModel;
+
+import view.MainMenuView;
+
 
 import java.lang.*;
 
@@ -36,7 +36,7 @@ public class MainMenuController {
                     profile();
 
                 } else if (matcher.group(1).equals("shop")) {
-                    //ShopController.findMatcher();
+                    //controller.ShopController.findMatcher();
                     break;
                 } else {
                     MainMenuView.showInput("invalid command");
@@ -46,7 +46,7 @@ public class MainMenuController {
             pattern = Pattern.compile("^menu show-current$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                RegisterAndLoginView.showInput("Main Menu");
+                MainMenuView.showInput("Main Menu");
             }
 
         }
@@ -99,6 +99,8 @@ public class MainMenuController {
                         if (user2.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
 
                             if (roundNumber == 1 || roundNumber == 3) {
+
+
                                 PickFirstPlayer.chose(MainMenuController.username,playerName);
 
 

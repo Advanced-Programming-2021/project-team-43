@@ -1,8 +1,10 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.MonsterCard;
-import main.java.model.SpellCard;
-import main.java.model.TrapCard;
+
+
+import model.MonsterCard;
+import model.SpellCard;
+import model.TrapCard;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,7 +1,9 @@
-package main.java.model;
+package model;
 
-import main.java.controller.MainMenuController;
 
+
+
+import controller.MainMenuController;
 
 import java.util.HashMap;
 

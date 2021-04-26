@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 public class SpellEffect {
 
@@ -15,9 +15,9 @@ public class SpellEffect {
     }
 
 //    public static void raigeki() {//6
-//        String[] keys = GameMatModel.getGameMatModelByNumber(2).getAllMonstersZone().keySet();
+//        String[] keys = model.GameMatModel.getGameMatModelByNumber(2).getAllMonstersZone().keySet();
 //        for (String key : keys) {
-//            GameMatModel.getGameMatModelByNumber(2).deleteMonsterZone(key);
+//            model.GameMatModel.getGameMatModelByNumber(2).deleteMonsterZone(key);
 //        }
 //
 //    }
@@ -28,26 +28,26 @@ public class SpellEffect {
 //    }
 //
 //    public static void harpieFeatherDuster() {//6
-//        String[] spell = GameMatModel.getGameMatModelByNumber(2).getAllSpellsZone().keySet();
-//        String[] trap = GameMatModel.getGameMatModelByNumber(2).getAllTrapZone().keySet();
+//        String[] spell = model.GameMatModel.getGameMatModelByNumber(2).getAllSpellsZone().keySet();
+//        String[] trap = model.GameMatModel.getGameMatModelByNumber(2).getAllTrapZone().keySet();
 //        for (String key :spell) {
-//            GameMatModel.getGameMatModelByNumber(2).deleteSpellZone(key);
+//            model.GameMatModel.getGameMatModelByNumber(2).deleteSpellZone(key);
 //        }
 //        for (String key :trap) {
-//            GameMatModel.getGameMatModelByNumber(2).deleteTrapZone(key);
+//            model.GameMatModel.getGameMatModelByNumber(2).deleteTrapZone(key);
 //        }
 //
 //    }
 //
 //    public static void swordsOfRevealingLight() {//naghes 6
-//        String[] keys = GameMatModel.getGameMatModelByNumber(2).getAllMonstersZone().keySet();
+//        String[] keys = model.GameMatModel.getGameMatModelByNumber(2).getAllMonstersZone().keySet();
 //        for (String key : keys) {
-//            GameMatModel.getGameMatModelByNumber(2).getMonsterByName(key).setBackAndForth("face up");
+//            model.GameMatModel.getGameMatModelByNumber(2).getMonsterByName(key).setBackAndForth("face up");
 //        }
-//        if(  GameMatModel.getGameMatModelByNumber(1).getMonsterByName("Swords of Revealing Light").getBackAndForth().equals("face up"))
+//        if(  model.GameMatModel.getGameMatModelByNumber(1).getMonsterByName("Swords of Revealing Light").getBackAndForth().equals("face up"))
 //        {
 //            for (String key : keys) {
-//                GameMatModel.getGameMatModelByNumber(2).getMonsterByName(key).setCanAttack(false);
+//                model.GameMatModel.getGameMatModelByNumber(2).getMonsterByName(key).setCanAttack(false);
 //            }
 //        }
 //    }
