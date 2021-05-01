@@ -1,3 +1,7 @@
+package main.java.model;
+
+import main.java.controller.Phase;
+
 import java.util.*;
 
 public class GameMatModel {

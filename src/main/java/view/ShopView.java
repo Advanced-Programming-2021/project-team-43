@@ -1,3 +1,5 @@
+package main.java.view;
+
 import java.util.Scanner;
 
 

@@ -1,8 +1,8 @@
-package model;
+package main.java.model;
 
 import java.util.HashMap;
 
-public class Card {
+public class GameCard {
     protected String cardName;
     protected String cardLocation;
     protected String cardSide;
@@ -12,10 +12,10 @@ public class Card {
     protected String attribute;
     protected String cardOwner;
     protected int cardNumber;
-    protected HashMap<String, Card> cards = new HashMap<>();
+    protected HashMap<String, GameCard> cards = new HashMap<>();
 
-    public Card(String cardName, String cardSide, String cardLocation, String backAndForth,
-                String description, String attribute, String cardModel, int cardNumber, String cardOwner) {
+    public GameCard(String cardName, String cardSide, String cardLocation, String backAndForth,
+                    String description, String attribute, String cardModel, int cardNumber, String cardOwner) {
         this.cardName = cardName;
         this.cardSide = cardSide;
         this.backAndForth = backAndForth;

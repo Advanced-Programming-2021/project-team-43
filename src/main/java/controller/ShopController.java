@@ -1,3 +1,8 @@
+package main.java.controller;
+
+import main.java.model.*;
+import main.java.view.*;
+
 import java.util.*;
 import java.util.regex.*;
 

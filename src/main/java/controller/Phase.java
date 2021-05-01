@@ -1,3 +1,5 @@
+package main.java.controller;
+
 public enum Phase {
     Draw_Phase,
     Standby_Phase,

@@ -1,6 +1,8 @@
+package main.java.controller;
+
+import main.java.model.*;
+import main.java.view.*;
 import java.util.regex.*;
-
-
 
 public class GameMatController {
 
@@ -98,13 +100,13 @@ public class GameMatController {
             if (isOwnMonsterCard) {
                 MonsterZoneCard monsterCard = MonsterZoneCard.getMonsterCardByAddress(address, "online user");
                 selectedOwnCard = "monster " + monsterCard.getMonsterName() + " " + address;
-                //GameMatModel.getGameMatByNickname("").setOwnMonsterZoneSelected(address);
+                //main.java.model.GameMatModel.getGameMatByNickname("").setOwnMonsterZoneSelected(address);
                 monsterCard.setIsSelected(true);
             }
             else {
                 MonsterZoneCard monsterCard = MonsterZoneCard.getMonsterCardByAddress(address, "rival name");
                 selectedRivalCard = "monster " + monsterCard.getMonsterName() + " " + address;
-                //GameMatModel.getGameMatByNickname("").setRivalMonsterZoneSelected(address);
+                //main.java.model.GameMatModel.getGameMatByNickname("").setRivalMonsterZoneSelected(address);
                 monsterCard.setIsSelected(true);
             }
         }
@@ -121,13 +123,13 @@ public class GameMatController {
             if (isOwnSpellCard) {
                 SpellZoneCard spellCard = SpellZoneCard.getSpellCardByAddress(address, "onlineuser");
                 selectedOwnCard = "spell " + spellCard.getSpellName() + " " + address;
-                //GameMatModel.getGameMatByNickname("").setOwnSpellZoneSelected(address);
+                //main.java.model.GameMatModel.getGameMatByNickname("").setOwnSpellZoneSelected(address);
                 spellCard.setIsSelected(true);
             }
             else {
                 SpellZoneCard spellCard = SpellZoneCard.getSpellCardByAddress(address, "rivalname");
                 selectedRivalCard = "spell " + spellCard.getSpellName() + " " + address;
-                //GameMatModel.getGameMatByNickname("").setRivalSpellZoneSelected(address);
+                //main.java.model.GameMatModel.getGameMatByNickname("").setRivalSpellZoneSelected(address);
                 spellCard.setIsSelected(true);
             }
         }
@@ -156,7 +158,7 @@ public class GameMatController {
             GameMatView.showInput("card selected");
             HandCardZone handCard = HandCardZone.getHandCardByAddress(address, "onlineuser");
             selectedOwnCard = "hand " + handCard.getCardName() + " " + address;
-            //GameMatModel.getGameMatByNickname("").setHandCardSelected(address);
+            //main.java.model.GameMatModel.getGameMatByNickname("").setHandCardSelected(address);
             handCard.setIsSelected(true);
         }
     }
@@ -249,7 +251,7 @@ public class GameMatController {
         else {
             ///should get level of card from monster name
             /*if () {
-                GameMatView.showInput("there are not enough cards for tribute");
+                main.java.view.GameMatView.showInput("there are not enough cards for tribute");
             }*/
             int whichHouse = MonsterZoneCard.getNumberOfFullHouse();
             new MonsterZoneCard("onlineuser", split[1], whichHouse + 1, "summon");

@@ -1,9 +1,7 @@
 package main.java.controller;
 
-import main.java.model.UserModel;
-import main.java.view.DeckView;
-import main.java.view.MainMenuView;
-import main.java.view.RegisterAndLoginView;
+import main.java.model.*;
+import main.java.view.*;
 
 import java.lang.*;
 

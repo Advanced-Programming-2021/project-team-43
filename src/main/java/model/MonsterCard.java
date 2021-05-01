@@ -36,7 +36,7 @@ public class MonsterCard extends Card {
 
     public String getCardType() {
         return cardType;
-    }
+    }//Normal
 
     public void addScanner() {
         allMonsters.put("Scanner", this);
@@ -48,7 +48,7 @@ public class MonsterCard extends Card {
 
     public String getMonsterType() {
         return monsterType;
-    }
+    }//Fair
 
     public int getAttack() {
         return attack;
