@@ -101,7 +101,7 @@ public class MainMenuController {
                             if (roundNumber == 1 || roundNumber == 3) {
 
 
-                                PickFirstPlayer.chose(MainMenuController.username,playerName);
+                                GameMatController.findMatcher(MainMenuController.username,playerName,roundNumber);
 
 
                             } else {
