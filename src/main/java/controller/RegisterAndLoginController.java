@@ -75,10 +75,14 @@ public class RegisterAndLoginController {
                 continue;
             }
 
-            pattern = Pattern.compile("^menu enter .+?$");
+            pattern = Pattern.compile("^menu enter (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                RegisterAndLoginView.showInput("please login first");
+                if (matcher.group(1).equals("duel")||matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                    RegisterAndLoginView.showInput("menu navigation is not possible");
+                } else {
+                    RegisterAndLoginView.showInput("invalid command");
+                }
                 continue;
             }
 
