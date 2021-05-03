@@ -6,13 +6,48 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class PickFirstPlayer { public static String chose(String player1, String player2) {
-        Random rand = new Random();
+    Scanner scanner= new Scanner(System.in);
+    Random rand = new Random();
         int n = rand.nextInt(2);
         if (n == 0) {
-            return chanceCoin(player1, player2);
+            String winner =chanceCoin(player1, player2);
+            System.out.println(UserModel.getUserByUsername(winner)+" do you want play first ? (yes or no)");
+            while (true){
+                if (scanner.nextLine().equals("yes")){
+                    return winner;
+                }
+                if (scanner.nextLine().equals("no")){
+                    if (winner.equals(player1)){
+                        return player2;
+                    }
+                    return player1;
+                }
+
+                System.out.println("invalid command");
+
+            }
+
+
+
+
         }
 
-        return rockPaperScissors(player1, player2);
+    String winner =rockPaperScissors(player1, player2);
+    System.out.println(UserModel.getUserByUsername(winner)+" do you want play first ? (yes or no)");
+    while (true){
+        if (scanner.nextLine().equals("yes")){
+            return winner;
+        }
+        if (scanner.nextLine().equals("no")){
+            if (winner.equals(player1)){
+                return player2;
+            }
+            return player1;
+        }
+
+        System.out.println("invalid command");
+
+    }
 
     }
 
