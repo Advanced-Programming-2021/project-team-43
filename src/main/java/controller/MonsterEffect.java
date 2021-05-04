@@ -1,166 +1,153 @@
 package main.java.controller;
+
 import main.java.model.*;
+
 import java.util.HashMap;
+import java.util.Map;
 
-public class MonsterEffect {
-//   public static void monsterEffectController(String monsterCardName, String player1, String rival, String nameOfAttackerCard, String victim1, String victim2, String victim3
-//           , String nameOfHostCardOfScanner, String kindOfSummonOfBeastCard,String mode,int address) {
-//       if (monsterCardName.equals("Command knight")) {
-//           commandKnight(player1, rival);
-//       }
-//       if (monsterCardName.equals("Yomi Ship")) {
-//           yomiShip(nameOfAttackerCard,rival);
-//       }
-//       if (monsterCardName.equals("Suijin")) {
-//           suijin(nameOfAttackerCard,player1,rival);
-//       }
-//       if (monsterCardName.equals("Man-Eater Bug")) {
-//           manEaterBug(victim1,rival);
-//       }
-//       if (monsterCardName.equals("Gate Guardian")) {
-//           gateGuardian(victim1, victim2, victim3,rival);
-//       }
-//       if (monsterCardName.equals("Scanner")) {
-//           scanner(nameOfHostCardOfScanner,player1,address,mode);
-//       }
-//       if (monsterCardName.equals("Marshmallon")) {
-//           marshmallon(rival,player1);
-//       }
-//       if (monsterCardName.equals("Beast King Barbaros")) {
-//           beastKingBarbaros(rival,player1,kindOfSummonOfBeastCard, victim1, victim2, victim3);
-//       }
-//       if (monsterCardName.equals("The Calculator")) {
-//           theCalculator(player1);
-//       }
-//       if (monsterCardName.equals("Mirage Dragon")) {
-//           mirageDragon(player1);
-//       }
-//       if (monsterCardName.equals("Exploder Dragon")) {
-//           exploderDragon(nameOfAttackerCard,rival);
-//       }
-//   }
+//public class MonsterEffect {
+//    public static void monsterEffectController( int rivalsAddress, String player1, String rival, int victim1Address, int victim2Address, int victim3Address
+//            , String kindOfSummonOfBeastCard, int ownAddress) {
 //
-//   public static void commandKnight(String player1, String rival) {
-//       int counter = 0;
-//       if (MonsterZoneCard.getMonsterCardByName("Command knight", player1).getMode().equals("summon") ||
-//               MonsterZoneCard.getMonsterCardByName("Command knight", player1).getMode().equals("defend")) {//5
-//           HashMap<String, MonsterZoneCard> monsters;
-//           monsters = GameMatModel.getMonsters();
-//           String[] keys;
-//           keys = monsters.keySet().toArray(new String[0]);
-//           for (String key : keys) {
-//               MonsterZoneCard.getMonsterCardByName(key, player1).changeDefend(400);
-//               if (!key.equals("Command knight")) {
-//                   counter++;
-//               }
-//           }
-//           if (counter != 0) {
-//               MonsterZoneCard.getMonsterCardByName("Command knight", player1).canAttacktoThisCard(false);
-//           }
-//       }
-//   }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Command knight")) {
+//            commandKnight(player1, rival, ownAddress);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Yomi Ship")) {
+//            yomiShip(rival, rivalsAddress);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Suijin")) {
+//            suijin(player1, rival, ownAddress, rivalsAddress);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Man-Eater Bug")) {
+//            manEaterBug(victim1Address, rival);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Gate Guardian")) {
+//            gateGuardian(victim1Address, victim2Address, victim3Address, rival);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Scanner")) {
+//            scanner(player1, ownAddress);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Marshmallon")) {
+//            marshmallon(rival, player1, ownAddress);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Beast King Barbaros")) {
+//            beastKingBarbaros(rival, player1, kindOfSummonOfBeastCard, victim1Address, victim2Address, victim3Address, ownAddress);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("The Calculator")) {
+//            theCalculator(player1, ownAddress);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Mirage Dragon")) {
+//            mirageDragon(player1, ownAddress, rival);
+//        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Exploder Dragon")) {
+//            exploderDragon(rivalsAddress, rival);
+//        }
+//    }
 //
-//   public static void yomiShip(String nameOfAttackerCard, String rival) {
-//       MonsterZoneCard.deleteCard(nameOfAttackerCard, rival);
-//   }
+//    public static void commandKnight(String player1, String rival, int ownAddress) {//kamel
+//        int counter = 0;
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("OO") ||
+//                MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("DO")) {
+//            Map<Integer, MonsterZoneCard> monsters;
+//            monsters = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+//            Integer[] keys;
+//            Map<Integer, MonsterZoneCard> rivalsMonsters;
+//            rivalsMonsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
+//            Integer[] rivalsKeys;
+//            keys = monsters.keySet().toArray(new Integer[0]);
+//            rivalsKeys = rivalsMonsters.keySet().toArray(new Integer[0]);
+//            for (Integer key : keys) {
+//                MonsterZoneCard.getMonsterCardByAddress(key, player1).changeAttack(400);
+//                if (!MonsterZoneCard.getMonsterCardByAddress(key, player1).getMonsterName().equals("Command knight")) {
+//                    counter++;
+//                }
+//            }
+//            if (counter != 0) {
+//                MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).setCanAttackToThisMonster(false);
+//            }
+//            for (int i = 0; i < rivalsMonsters.size(); i++) {
+//                MonsterZoneCard.getMonsterCardByAddress(rivalsKeys[i], rival).changeAttack(400);
+//            }
+//        }
+//    }
 //
-//   public static void suijin(String nameOfAttacker, String player1,String rival) {
-//       if (!MonsterZoneCard.getMonsterCardByName("Suijin", player1).getIsUsed &&
-//               MonsterZoneCard.getMonsterCardByName("Suijin", player1).getMode.equals("defend") ||
-//               MonsterZoneCard.getMonsterCardByName("Suijin", player1).getMode.equals("summon")) {
-//           MonsterZoneCard.getMonsterCardByName(nameOfAttacker, rival).setAttack(0);
-//       }
-//   }
+//    public static void yomiShip(String rival, int rivalsAddress) {//kamel
+//        MonsterZoneCard.getMonsterCardByAddress(rivalsAddress, rival).removeMonsterFromZone();
+//    }
+//
+//    public static void suijin(String player1, String rival, int ownAddress, int rivalsAddress) {
+//        if (!MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getIsUsed &&
+//                (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("OO") ||
+//                        MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("DO"))) {
+//            MonsterZoneCard.getMonsterCardByAddress(rivalsAddress, rival).setAttack(0);
+//        }
+//    }
 //
 //
-//   public static void manEaterBug(String victim, String rival) {
-//       MonsterZoneCard.deleteCard(victim, rival);
-//   }
+//    public static void manEaterBug(int victimAddress, String rival) {//kamel
+//        MonsterZoneCard.getMonsterCardByAddress(victimAddress, rival).removeMonsterFromZone();
+//    }
 //
-//   public static void gateGuardian(String victim1, String victim2, String victim3, String rival) {
-//       MonsterZoneCard.delelteCard(victim1, rival);
-//       MonsterZoneCard.deleteCard(victim2, rival);
-//       MonsterZoneCard.deleteCard(victim3, rival);
-//   }
+//    public static void gateGuardian(int victim1Address, int victim2Address, int victim3Address, String rival) {//kamel
+//        MonsterZoneCard.getMonsterCardByAddress(victim1Address, rival).removeMonsterFromZone();
+//        MonsterZoneCard.getMonsterCardByAddress(victim2Address, rival).removeMonsterFromZone();
+//        MonsterZoneCard.getMonsterCardByAddress(victim3Address, rival).removeMonsterFromZone();
+//    }
 //
-//   public static void scanner(String nameOfHostCard, String player1, int address, String mode) {
-//       MonsterZoneCard.deleteScanner();
-//       String Attribute = MonsterCard.getMonsterByName(nameOfHostCard).getAttribute();
-//       int level = MonsterCard.getMonsterByName(nameOfHostCard).getLevel();
-//       String type = MonsterCard.getMonsterByName(nameOfHostCard).getMonsterType();
-//       int attack = MonsterCard.getMonsterByName(nameOfHostCard).getAttack();
-//       int defend = MonsterCard.getMonsterByName(nameOfHostCard).getDefend();
-//       String cardType = MonsterCard.getMonsterByName(nameOfHostCard).getCardType();
-//       String description = MonsterCard.getMonsterByName(nameOfHostCard).getDescription();
-//       int price = MonsterCard.getMonsterByName(nameOfHostCard).getPrice();
-//       new MonsterZoneCard(player1, nameOfHostCard, address, mode);
-///        Card( attack, defend
-///         , true);
-//   }
+//    public static void scanner(String player1, int address) {
+//     //////////////////////////////////////////////////////////////////
+//    }
 //
-//   public static void marshmallon(String rivalName, String player1) {
-//       if (MonsterZoneCard.getMonsterCardByName("Marshmallon", player1).getMode.equals("set")) {
-//           Player.getPlayerByName(rivalName).changeLifePoint(-1000);
-//       }
-//   }
+//    public static void marshmallon(String rivalName, String player1, int ownAddress) {//kamel
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("DH")) {
+//            Player.getPlayerByName(rivalName).changeLifePoint(-1000);
+//        }
+//    }
 //
-//   public static void beastKingBarbaros(String rival, String player1, String kindOfSummon, String victim1, String victim2, String victim3) {//kodoom haula?
-//       if (kindOfSummon.equals("Normal")) {
-//           MonsterZoneCard.getMonsterCardByName("Beast King Barbaros", player1).setAttack(1900);
-//       }
-//       if (kindOfSummon.equals("notNormal")) {
-//           MonsterZoneCard.deleteCard(victim1, player1);
-//           MonsterZoneCard.deleteCard(victim2, player1);
-//           MonsterZoneCard.deleteCard(victim3, player1);
-//           HashMap<String, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonsterZone(rival);
-//           HashMap<String, SpellZoneCard> spells = MonsterZoneCard.getAllSpellZone(rival);
-//           HashMap<String, TrapZoneCard> traps = MonsterZoneCard.getAllTrapZone(rival);
-//           String[] monster = monsters.keySet().toArray(new String[0]);
-//           String[] trap = traps.keySet().toArray(new String[0]);
-//           String[] spell = spells.keySet().toArray(new String[0]);
-//           for (String s : monster) {
-//               MonsterZoneCard.deleteMonsterZone(s, rival);
+//    public static void beastKingBarbaros(String rival, String player1, String kindOfSummon, int victim1Address, int victim2Address, int victim3Address, int ownAddress) {//kamel
+//        if (kindOfSummon.equals("Normal")) {
+//            MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).setAttack(1900);
+//        }
+//        if (kindOfSummon.equals("notNormal")) {
+//            MonsterZoneCard.getMonsterCardByAddress(victim1Address, player1).removeMonsterFromZone();
+//            MonsterZoneCard.getMonsterCardByAddress(victim2Address, player1).removeMonsterFromZone();
+//            MonsterZoneCard.getMonsterCardByAddress(victim3Address, player1).removeMonsterFromZone();
+//            Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
+//            Map<Integer, SpellTrapZoneCard> spellsTraps = SpellTrapZoneCard.getAllSpellsByPlayerName(rival);
+//            Integer[] monster = monsters.keySet().toArray(new Integer[0]);
+//            Integer[] spellTraps = spellsTraps.keySet().toArray(new Integer[0]);
+//            for (int s : monster) {
+//                MonsterZoneCard.getMonsterCardByAddress(s, rival).removeMonsterFromZone();
+//            }
+//            for (int s : spellTraps) {
+//                SpellTrapZoneCard.getSpellCardByAddress(s, rival).removeSpellTrapFromZone();
+//            }
+//        }
+//    }
 //
-//           }
-//           for (String s : trap) {
-//               TrapZoneCard.deleteTrapZone(s, rival);
+//    public static void theCalculator(String player1, int ownAddress) {//kamel
+//        Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+//        Integer[] monster = monsters.keySet().toArray(new Integer[0]);
+//        int attack = 0;
+//        for (int s : monster) {
+//            if (MonsterZoneCard.getMonsterCardByAddress(s, player1).getMode().equals("OO") ||
+//                    MonsterZoneCard.getMonsterCardByAddress(s, player1).getMode().equals("DO")) {
+//                attack += MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(s, player1).getMonsterName()).getLevel();
+//            }
+//        }
+//        attack *= 300;
+//        MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).setAttack(attack);
+//    }
 //
-//           }
-//           for (String s : spell) {
-//               SpellZoneCard.deleteSpellZone(s, rival);
+//    public static void mirageDragon(String player1, int ownAddress, String rival) {//kamel
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("DO") ||
+//                MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("OO")) {
+//            Player.getPlayerByName(rival).setCanUseTrap(false);
+//        }
+//    }
 //
-//           }
-//       }
-//   }
+//    public static void exploderDragon(int addressOfAttacker, String rival) {//kamel
+//        MonsterZoneCard.getMonsterCardByAddress(addressOfAttacker, rival).removeMonsterFromZone();
+//    }
+//}
 //
-//   public static void theCalculator(String player1) {//6
-//       HashMap<String, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonsterZone(player1);
-//       String[] monster = monsters.keySet().toArray(new String[0]);
-//       int attack = 0;
-//       for (String s : monster) {
-//           if (MonsterZoneCard.getMonsterCardByName(s, player1).getMode().equals("summon") ||
-//                   MonsterZoneCard.getMonsterCardByName(s, player1).getMode().equals("defend")) {
-//               attack += MonsterZoneCard.getMonsterCardByName(s, player1).getLevel();
-//           }
-//       }
-//       attack *= 300;
-//       MonsterZoneCard.getMonsterCardByName("The Calculator", player1).setAttack(attack);
-//   }
-//
-//   public static void mirageDragon(String player1) {//6
-//       if (MonsterZoneCard.getMonsterCardByName("Mirage Dragon", player1).getMode().equals("defend") ||
-//               MonsterZoneCard.getMonsterCardByName("Mirage Dragon", player1).getMode().equals("summon")) {
-//           HashMap<String, TrapZoneCard> allTraps = TrapZoneCard.getTraps();
-//           String[] trapNames = allTraps.keySet().toArray(new String[0]);
-//           for (int i = 0; i < allTraps.size(); i++) {
-//               TrapZoneCard.getTrapByName(trapNames[i]).canActivate(false);
-//           }
-//       }
-//   }
-//
-//   public static void exploderDragon(String nameOfAttacker, String rival) {//seda kardanesh shart dare
-//       MonsterZoneCard.deleteCard(nameOfAttacker, rival);
-//
-//   }
-}
-
