@@ -14,11 +14,11 @@ public class HandCardZone {
     private static final Map<Integer,HandCardZone> eachHandCard = new HashMap<>();
     private static final Map<String, Map<Integer,HandCardZone>> allHandCards = new HashMap<>();
 
-    public HandCardZone(String playerNickname, String cardName, String kind) {
+    public HandCardZone(String playerNickname, String cardName) {
         this.playerNickname = playerNickname;
         this.cardName = cardName;
         this.address = ++addressCounter;
-        this.kind = kind;
+        this.kind = Card.getCardsByName(cardName).getCardModel();
         eachHandCard.put(address,this);
         allHandCards.put(playerNickname,eachHandCard);
     }
@@ -51,7 +51,7 @@ public class HandCardZone {
         this.isRemoved = isRemoved;
     }
 
-    public void removeFromHandCard() {
+    public void removeFromHandCard() {///////?????????
         allHandCards.get(playerNickname).remove(address);
         eachHandCard.remove(address);
     }
@@ -69,7 +69,6 @@ public class HandCardZone {
         for (HandCardZone eachCard : allHandCards.get(playerNickname).values())
             if (eachCard.getCardName().equals("Crab Turtle") || eachCard.getCardName().equals("Skull Guardian"))
                 return eachCard.getAddress();
-
         return 0;
     }
 
