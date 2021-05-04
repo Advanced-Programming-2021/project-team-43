@@ -51,15 +51,26 @@ public class HandCardZone {
         this.isRemoved = isRemoved;
     }
 
-    public void removeFromHandCard(int address, String playerNickname) {
+    public void removeFromHandCard() {
         allHandCards.get(playerNickname).remove(address);
+        eachHandCard.remove(address);
     }
+
     public static int getNumberOfFullHouse(String playerNickname) {
         return allHandCards.get(playerNickname).size();
     }
 
     public static HandCardZone getHandCardByAddress(int address, String playerNickname) {
         return allHandCards.get(playerNickname).get(address);
+    }
+
+
+    public static int doIHaveAnyRitualMonster(String playerNickname) {
+        for (HandCardZone eachCard : allHandCards.get(playerNickname).values())
+            if (eachCard.getCardName().equals("Crab Turtle") || eachCard.getCardName().equals("Skull Guardian"))
+                return eachCard.getAddress();
+
+        return 0;
     }
 
 }
