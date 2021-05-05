@@ -4,16 +4,17 @@ import java.util.*;
 
 public class Player {
 
-    private String nickname;
+    private final String nickname;
     private int lifePoint;
-    private int counterOfTurn;
     private boolean isYourTurn;
+    private int counterOfTurn;
     private boolean isYourMoveFinished;
     private boolean canUseTrap;
     private boolean canSetSummonMonster;
     private int numberOfRound;
     private int numberOfWin;
     private boolean canDrawCard;
+    private int counterOfMainDeck;
     private final Map<Integer,String> playerMainDeck = new HashMap<>();
     private final Map<Integer,String> playerSideDeck = new HashMap<>();
     public static Map<String,Player> allPlayers = new HashMap<>();
@@ -27,14 +28,17 @@ public class Player {
         this.canSetSummonMonster = true;
         this.numberOfRound = numberOfRound;
         this.numberOfWin = 0;
-        this.canDrawCard = true;
+        this.canDrawCard = !isYourTurn;
+        if (isYourTurn)
+            this.counterOfMainDeck = 0;
+        else
+            this.counterOfMainDeck = 1;
         for (String key : activeDeck.cardsInMainDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInMainDeck.get(key); i++)
-                playerMainDeck.put(i, key);
-
+                playerMainDeck.put(playerMainDeck.size() + 1, key);
         for (String key : activeDeck.cardsInSideDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInSideDeck.get(key); i++)
-                playerSideDeck.put(i, key);
+                playerSideDeck.put(playerSideDeck.size() + 1, key);
 
         allPlayers.put(this.nickname, this);
     }
@@ -119,7 +123,13 @@ public class Player {
     }
 
     public String drawCard() {
-        return playerMainDeck.get(1);
+       while (!playerMainDeck.containsKey(counterOfMainDeck))
+           counterOfMainDeck++;
+       return playerMainDeck.get(counterOfMainDeck);
+    }
+
+    public void removeFromMainDeck() {
+        playerMainDeck.remove(counterOfMainDeck);
     }
 
     public int getNumberOfMainDeckCards() {
@@ -130,20 +140,12 @@ public class Player {
         playerMainDeck.put(playerMainDeck.size()+1, cardName);
     }
 
-    public void removeFromMainDeck() {
-        playerMainDeck.remove(1);
-    }
-
     public int getNumberOfSideDeckCards() {
         return playerSideDeck.size();
     }
 
     public void addToSideDeck(String cardName) {
         playerSideDeck.put(playerSideDeck.size()+1, cardName);
-    }
-
-    public void removeFromSideDeck() {
-        playerSideDeck.remove(1);
     }
 
     public static Player getPlayerByName(String playerNickname) {

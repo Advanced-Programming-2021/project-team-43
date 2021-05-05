@@ -74,88 +74,61 @@ public class GameMatController {
         }
     }
 
+    public static Matcher getMatcher(String command, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(command);
+    }
 
-
-    public static int summon(String command, Phase currentPhase) {
-        if (getMatcher(command, "summon").find()) {
-            if (errorOfNoCardSelected("own")) {
-                String monsterName = getSpecificPartOfSelectedCard(1);
-                HandCardZone handCard = HandCardZone.getHandCardByAddress(Integer.parseInt(getSpecificPartOfSelectedCard(2)), onlineUser);
-                if (!selectedOwnCard.startsWith("Hand") || !handCard.getKind().equals("Monster"))
-                    GameMatView.showInput("You can’t summon this card");
-                else if (errorOfWrongPhase("summon", currentPhase)) {
-                    if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 5)
-                        GameMatView.showInput("Monster card zone is full");
-                    else if (!Player.getPlayerByName(onlineUser).getCanSetSummonMonster())
-                        GameMatView.showInput("You already summoned/set on this turn");
-                    else {
-                        int monsterLevel = MonsterCard.getMonsterByName(monsterName).getLevel();
-                        String response;
-                        if (monsterLevel <= 4) {
-                            selectedOwnCard = "";
-                            Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
-                            addToMonsterZoneCard(monsterName, "OO");//new
-                            handCard.removeFromHandCard();
-                            GameMatView.showInput("Summoned successfully");
-                            MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
-                        }
-                        else if (monsterLevel == 5 || monsterLevel == 6) {
-                            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 0)
-                                GameMatView.showInput("There are not enough cards for tribute");
-                            else {
-                                response = GameMatView.getCommand();
-                                if (response.equals("cancel")) {
-                                    selectedOwnCard = "";
-                                    return 1;
-                                }
-                                int victimAddress = Integer.parseInt(response);
-                                if (MonsterZoneCard.getMonsterCardByAddress(victimAddress, onlineUser) == null)
-                                    GameMatView.showInput("There is no monster in this address");
-                                else {
-                                    selectedOwnCard = "";
-                                    MonsterZoneCard.getAllMonstersByPlayerName(onlineUser).get(victimAddress).removeMonsterFromZone();
-                                    Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
-                                    addToMonsterZoneCard(monsterName, "OO");
-                                    GameMatView.showInput("Summoned successfully");
-                                    MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, victimAddress, -1, -1, "NotNormal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
-                                }
-                            }
-                        }
-                        else {
-                            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 2)
-                                GameMatView.showInput("There are not enough cards for tribute");
-                            else {
-                                response = GameMatView.getCommand();
-                                if (command.equals("cancel")) {
-                                    selectedOwnCard = "";
-                                    return 1;
-                                }
-                                int victimOneAddress = Integer.parseInt(response);
-                                response = GameMatView.getCommand();
-                                if (response.equals("cancel")) {
-                                    selectedOwnCard = "";
-                                    return 1;
-                                }
-                                int victimTwoAddress = Integer.parseInt(response);
-                                if (MonsterZoneCard.getMonsterCardByAddress(victimOneAddress, onlineUser) == null || MonsterZoneCard.getMonsterCardByAddress(victimTwoAddress, onlineUser) == null)
-                                    GameMatView.showInput("There is no monster in one of these addresses");
-                                else {
-                                    selectedOwnCard = "";
-                                    MonsterZoneCard.getAllMonstersByPlayerName(onlineUser).get(victimOneAddress).removeMonsterFromZone();
-                                    MonsterZoneCard.getAllMonstersByPlayerName(onlineUser).get(victimTwoAddress).removeMonsterFromZone();
-                                    Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
-                                    addToMonsterZoneCard(monsterName, "OO");
-                                    GameMatView.showInput("Summoned successfully");
-                                    MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, victimOneAddress, victimTwoAddress, -1, "NotNormal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
-                                }
-                            }
-                        }
+    public static void ritualSummon(Phase currentPhase) {
+        int ritualMonsterAddress = HandCardZone.doIHaveAnyRitualMonster(onlineUser);
+        if (ritualMonsterAddress == 0)
+            GameMatView.showInput("There is no way you could ritual summon a monster");
+        else {
+            HandCardZone handCard = HandCardZone.getHandCardByAddress(ritualMonsterAddress, onlineUser);
+            String ritualMonsterName = handCard.getCardName();
+            if (MonsterZoneCard.getSumOfMonstersLevel(onlineUser) < MonsterCard.getMonsterByName(ritualMonsterName).getLevel())
+                GameMatView.showInput("There is no way you could ritual summon a monster");
+            else {
+                GameMatView.showInput("Please select a Ritual Monster to summon!");
+                while (true) {
+                    command = GameMatView.getCommand();
+                    if (!getMatcher(command, "select\\s+--hand\\s+(\\d+)").find()) {
+                        GameMatView.showInput("You should ritual summon right now");
+                        continue;
                     }
+                    int address = Integer.parseInt(getMatcher(command, "select\\s+--hand\\s+(\\d+)").group());
+                    if (address == ritualMonsterAddress)
+                        break;
                 }
-                return 1;
+                selectHandCard(ritualMonsterAddress);
+                GameMatView.showInput("Please enter the number of Monsters you want to tribute (Maximum 3 Monsters):");
+                command = GameMatView.getCommand();
+                while (!command.matches("\\d+")) {
+                    if (command.equals("cancel")) {
+                        selectedOwnCard = "";
+                        return;
+                    }
+                    command = GameMatView.getCommand();
+                }
+                int numberOfTribute = Integer.parseInt(command);
+                GameMatView.showInput("Please enter some Monster address to tribute:");
+                if (tributeMonster(numberOfTribute, "ritual") == 1) {
+                    GameMatView.showInput("Please enter Ritual Monster mode (defensive/attacking):");
+                    command = GameMatView.getCommand();
+                    while (!command.matches("defensive") && !command.matches("attacking")) {
+                        command = GameMatView.getCommand();
+                    }
+                    if (command.equals("defensive"))
+                        new MonsterZoneCard(onlineUser, ritualMonsterName, "DO", false);
+                    else
+                        new MonsterZoneCard(onlineUser, ritualMonsterName, "OO", false);
+
+                    handCard.removeFromHandCard();
+                }
+                else
+                    selectedOwnCard = "";
             }
         }
-        return 0;
     }
 
 
@@ -213,12 +186,6 @@ public class GameMatController {
             }
         }
         return 0;
-    }
-
-
-    public static Matcher getMatcher(String command, String regex) {
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(command);
     }
 
     public static void selectMonsterCard(int address, boolean isOwnMonsterCard) {
@@ -367,6 +334,7 @@ public class GameMatController {
         if (monsterName.equals("Scanner")) {
             GameMatView.showInput("Which card for Scanner?");
             String whichCard = GameMatView.getCommand();
+            //remove from hand
             new MonsterZoneCard(onlineUser, whichCard, mode, true);
         }
         else
@@ -384,7 +352,7 @@ public class GameMatController {
     }
 
     public static boolean errorOfWrongPhase(String whichAction, Phase currentPhase) {
-        if (whichAction.equals("summon") || whichAction.equals("set")) {
+        if (whichAction.equals("summon") || whichAction.equals("set") || whichAction.equals("change")) {
             if (!currentPhase.name().equals("Main_Phase1") && !currentPhase.name().equals("Main_Phase2")) {
                 GameMatView.showInput("Action not allowed in this phase");
                 return false;//wrong Phase
@@ -394,6 +362,64 @@ public class GameMatController {
         }
         return false;
     }
+
+    public static int summon(String command, Phase currentPhase) {
+        if (getMatcher(command, "summon").find()) {
+            if (errorOfNoCardSelected("own")) {
+                String monsterName = getSpecificPartOfSelectedCard(1);
+                HandCardZone handCard = HandCardZone.getHandCardByAddress(Integer.parseInt(getSpecificPartOfSelectedCard(2)), onlineUser);
+                if (!selectedOwnCard.startsWith("Hand") || !handCard.getKind().equals("Monster"))
+                    GameMatView.showInput("You can’t summon this card");
+                else if (errorOfWrongPhase("summon", currentPhase)) {
+                    if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 5)
+                        GameMatView.showInput("Monster card zone is full");
+                    else if (!Player.getPlayerByName(onlineUser).getCanSetSummonMonster())
+                        GameMatView.showInput("You already summoned/set on this turn");
+                    else {
+                        selectedOwnCard = "";
+                        int monsterLevel = MonsterCard.getMonsterByName(monsterName).getLevel();
+                        if (monsterLevel <= 4) {
+                            Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
+                            addToMonsterZoneCard(monsterName, "OO");//new
+                            handCard.removeFromHandCard();
+                            GameMatView.showInput("Summoned successfully");
+                            if (monsterName.equals("Command knight") || monsterName.equals("Man-Eater Bug") || monsterName.equals("Mirage Dragon") || monsterName.equals("The Calculator"))
+                                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
+                        }
+                        else if (monsterLevel == 5 || monsterLevel == 6) {
+                            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 0)
+                                GameMatView.showInput("There are not enough cards for tribute");
+                            else {
+                                GameMatView.showInput("Please enter a Monster address to tribute:");
+                                if (tributeMonster(1,monsterName) == 1) {
+                                    Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
+                                    addToMonsterZoneCard(monsterName, "OO");
+                                    GameMatView.showInput("Summoned successfully");
+                                }
+                            }
+                        }
+                        else {
+                            if (checkBeastKing(monsterName) == 0) {
+                                if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 2)
+                                    GameMatView.showInput("There are not enough cards for tribute");
+                                else {
+                                    GameMatView.showInput("Please select 2 monsters to tribute:");
+                                    if (tributeMonster(2, monsterName) == 1) {
+                                        Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
+                                        addToMonsterZoneCard(monsterName, "OO");
+                                        GameMatView.showInput("Summoned successfully");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return 1;
+            }
+        }
+        return 0;
+    }
+
 
     public static int set(String command, Phase currentPhase) {
         if (getMatcher(command,"set").find()) {
@@ -409,11 +435,13 @@ public class GameMatController {
                         else if (Player.getPlayerByName(onlineUser).getCanSetSummonMonster())
                             GameMatView.showInput("You already summoned/set on this turn");
                         else {
-                            selectedOwnCard = "";
                             handCard.removeFromHandCard();
                             addToMonsterZoneCard(cardName, "DH");
                             Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
                             GameMatView.showInput("Set successfully");
+                            selectedOwnCard = "";
+                            if (cardName.equals("Man-Eater Bug") || cardName.equals("Mirage Dragon") || cardName.equals("The Calculator"))
+                                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
                         }
                     }
                     else if (handCard.getKind().equals("Spell")) {
@@ -447,22 +475,31 @@ public class GameMatController {
                     return 1;
                 }
                 MonsterZoneCard monsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(getSpecificPartOfSelectedCard(2)), onlineUser);
-                if (!currentPhase.name().equals("Main_Phase1") && !currentPhase.name().equals("Main_Phase2"))
-                    GameMatView.showInput("You can’t do this action in this phase");
-                else if (mode.equals("attack") && !monsterCard.getMode().equals("DO"))
-                    GameMatView.showInput("This card is already in the wanted position");
-                else if (mode.equals("defend") && !monsterCard.getMode().equals("OO"))
-                    GameMatView.showInput("This card is already in the wanted position");
-                else if (monsterCard.getHaveChangedPositionThisTurn())
-                    GameMatView.showInput("You already changed this card position in this turn");
-                else {
-                    selectedOwnCard = "";
-                    GameMatView.showInput("Monster card position changed successfully");
-                    monsterCard.setHaveChangedPositionThisTurn(true);
-                    if (mode.equals("attack"))
-                        monsterCard.setMode("OO");
-                    else
-                        monsterCard.setMode("DO");
+                if (errorOfWrongPhase("change", currentPhase)) {
+                    if (mode.equals("attack") && !monsterCard.getMode().equals("DO"))
+                        GameMatView.showInput("This card is already in the wanted position");
+                    else if (mode.equals("defend") && !monsterCard.getMode().equals("OO"))
+                        GameMatView.showInput("This card is already in the wanted position");
+                    else if (monsterCard.getHaveChangedPositionThisTurn())
+                        GameMatView.showInput("You already changed this card position in this turn");
+                    else {
+                        String monsterName = monsterCard.getMonsterName();
+                        selectedOwnCard = "";
+                        GameMatView.showInput("Monster card position changed successfully");
+                        monsterCard.setHaveChangedPositionThisTurn(true);
+                        if (mode.equals("attack")) {
+                            monsterCard.setMode("OO");
+                            if (monsterName.equals("Command knight") || monsterName.equals("Man-Eater Bug") || monsterName.equals("Mirage Dragon") || monsterName.equals("The Calculator"))
+                                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
+
+                        }
+                        else {
+                            monsterCard.setMode("DO");
+                            if (monsterName.equals("Command knight") || monsterName.equals("Man-Eater Bug") || monsterName.equals("Mirage Dragon"))
+                                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
+
+                        }
+                    }
                 }
             }
         }
@@ -514,19 +551,24 @@ public class GameMatController {
                 MonsterZoneCard rivalMonsterCard = MonsterZoneCard.getMonsterCardByAddress(address, rivalUser);
                 int damage;
                 String rivalMonsterMode = rivalMonsterCard.getMode();
+                if (rivalMonsterCard.getMonsterName().equals("Yomi Ship"))/////////???????????/
+                    MonsterEffect.monsterEffectController(Integer.parseInt(getSpecificPartOfSelectedCard(2)), rivalUser, onlineUser, -1, -1, -1, "Normal", address);
+
                 if (rivalMonsterMode.equals("OO")) {
                     if (ownMonsterCard.getAttack() > rivalMonsterCard.getAttack()) {
                         damage = ownMonsterCard.getAttack() - rivalMonsterCard.getAttack();
                         Player.getPlayerByName(rivalUser).changeLifePoint(-1 * damage);
                         GameMatView.showInput("Your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
-                    } else if (ownMonsterCard.getAttack() == rivalMonsterCard.getAttack()) {
+                    }
+                    else if (ownMonsterCard.getAttack() == rivalMonsterCard.getAttack())
                         GameMatView.showInput("Both you and your opponent monster cards are destroyed and no one receives damage");
-                    } else {
+                    else {
                         damage = rivalMonsterCard.getAttack() - ownMonsterCard.getAttack();
                         Player.getPlayerByName(onlineUser).changeLifePoint(-1 * damage);
                         GameMatView.showInput("Your monster card is destroyed and you received " + damage + " battle damage");
                     }
-                } else {
+                }
+                else {
                     if (ownMonsterCard.getAttack() > rivalMonsterCard.getDefend()) {
                         if (rivalMonsterMode.equals("DH"))
                             GameMatView.showInput("Opponent’s monster card was " + rivalMonsterCard.getMonsterName() + " and the defense position monster is destroyed");
@@ -629,26 +671,7 @@ public class GameMatController {
         }
     }
 
-    public static void ritualSummon(Phase currentPhase) {
-        if (HandCardZone.doIHaveAnyRitualMonster(onlineUser) == 0) {
-            GameMatView.showInput("There is no way you could ritual summon a monster");
-        }
-        else {
-            HandCardZone handCard = HandCardZone.getHandCardByAddress(HandCardZone.doIHaveAnyRitualMonster(onlineUser), onlineUser);
-            String ritualMonsterName = handCard.getCardName();
-            if (MonsterZoneCard.getSumOfMonstersLevel(onlineUser) < MonsterCard.getMonsterByName(ritualMonsterName).getLevel())
-                GameMatView.showInput("There is no way you could ritual summon a monster");
-            GameMatView.showInput("Please select a Ritual Monster to summon!");
-            String command = GameMatView.getCommand();
-            while (!getMatcher(command,"select\\s+--hand\\s+(\\d+)").find()) {
-                GameMatView.showInput("Please select a Ritual Monster from your HandCards to summon!");
-                command = GameMatView.getCommand();
-            }
-            int ritualMonsterAddress = Integer.parseInt(getMatcher(command,"select\\s+--hand\\s+(\\d+)").group(1));
-            selectHandCard(ritualMonsterAddress);
 
-        }
-    }
 
 
     public static void specialSummon() {
@@ -675,47 +698,6 @@ public class GameMatController {
     public static void surrender() {
 
     }
-
-
-    public static void showGameBoard() {
-        GameMatView.showInput(rivalUser + " : " + Player.getPlayerByName(rivalUser).getLifePoint());
-        for (int i = 0; i < HandCardZone.getNumberOfFullHouse(rivalUser); i++)
-            System.out.print("   " + HandCardZone.getNumberOfFullHouse(rivalUser));
-        GameMatView.showInput(String.valueOf(Player.getPlayerByName(rivalUser).getNumberOfMainDeckCards()));
-        String[] rivalSpellsMode = SpellTrapZoneCard.getAllSpellTrapMode(rivalUser);
-        for (int i = 4; i > -1; i--)
-            System.out.print("  " + rivalSpellsMode[i]);
-        System.out.println("");
-        String[] rivalMonstersMode = MonsterZoneCard.getAllMonstersMode(rivalUser);
-        for (int i = 4; i > -1; i--)
-            System.out.print("  " + rivalMonstersMode[i]);
-        if (GameMatModel.getGameMatByNickname(onlineUser).getFieldZone().isEmpty())
-            GameMatView.showInput("\n" + GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards() + "                        E\n");
-        else
-            GameMatView.showInput("\n" + GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards() + "                        O\n");
-
-        GameMatView.showInput("--------------------------\n");
-
-        if (GameMatModel.getGameMatByNickname(onlineUser).getFieldZone().isEmpty())
-            GameMatView.showInput("E                        " + GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards() + "\n");
-        else
-            GameMatView.showInput("O                        " + GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards() + "\n");
-
-        String[] ownMonstersMode = MonsterZoneCard.getAllMonstersMode(onlineUser);
-        for (int i = 0; i < 5; i++)
-            System.out.print("  " + ownMonstersMode[i]);
-        System.out.println("");
-        String[] ownSpellsMode = SpellTrapZoneCard.getAllSpellTrapMode(onlineUser);
-        for (int i = 0; i < 5; i++)
-            System.out.print("  " + ownSpellsMode[i]);
-        GameMatView.showInput("\n                         " + Player.getPlayerByName(onlineUser).getNumberOfMainDeckCards());
-        for (int i = 0; i < HandCardZone.getNumberOfFullHouse(onlineUser); i++)
-            System.out.print(HandCardZone.getNumberOfFullHouse(onlineUser) + "  ");
-        GameMatView.showInput(onlineUser + " : " + Player.getPlayerByName(onlineUser).getLifePoint());
-    }
-
-
-
 
     public static int changePhase(String command, Phase currentPhase) {
         if (getMatcher(command,"next\\s+phase").find()) {
@@ -787,5 +769,129 @@ public class GameMatController {
                 GameMatView.showInput("invalid command");
         }
     }
+
+    public static void showGameBoard() {
+        GameMatView.showInput(rivalUser + " : " + Player.getPlayerByName(rivalUser).getLifePoint());
+        for (int i = 0; i < HandCardZone.getNumberOfFullHouse(rivalUser); i++)
+            System.out.print("   " + HandCardZone.getNumberOfFullHouse(rivalUser));
+        GameMatView.showInput(String.valueOf(Player.getPlayerByName(rivalUser).getNumberOfMainDeckCards()));
+        String[] rivalSpellsMode = SpellTrapZoneCard.getAllSpellTrapMode(rivalUser);
+        for (int i = 4; i > -1; i--)
+            System.out.print("  " + rivalSpellsMode[i]);
+        System.out.println("");
+        String[] rivalMonstersMode = MonsterZoneCard.getAllMonstersMode(rivalUser);
+        for (int i = 4; i > -1; i--)
+            System.out.print("  " + rivalMonstersMode[i]);
+        if (GameMatModel.getGameMatByNickname(onlineUser).getFieldZone().isEmpty())
+            GameMatView.showInput("\n" + GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards() + "                        E\n");
+        else
+            GameMatView.showInput("\n" + GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards() + "                        O\n");
+
+        GameMatView.showInput("--------------------------\n");
+
+        if (GameMatModel.getGameMatByNickname(onlineUser).getFieldZone().isEmpty())
+            GameMatView.showInput("E                        " + GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards() + "\n");
+        else
+            GameMatView.showInput("O                        " + GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards() + "\n");
+
+        String[] ownMonstersMode = MonsterZoneCard.getAllMonstersMode(onlineUser);
+        for (int i = 0; i < 5; i++)
+            System.out.print("  " + ownMonstersMode[i]);
+        System.out.println("");
+        String[] ownSpellsMode = SpellTrapZoneCard.getAllSpellTrapMode(onlineUser);
+        for (int i = 0; i < 5; i++)
+            System.out.print("  " + ownSpellsMode[i]);
+        GameMatView.showInput("\n                         " + Player.getPlayerByName(onlineUser).getNumberOfMainDeckCards());
+        for (int i = 0; i < HandCardZone.getNumberOfFullHouse(onlineUser); i++)
+            System.out.print(HandCardZone.getNumberOfFullHouse(onlineUser) + "  ");
+        GameMatView.showInput(onlineUser + " : " + Player.getPlayerByName(onlineUser).getLifePoint());
+    }
+
+
+    public static int checkBeastKing(String monsterName) {
+        if (monsterName.equals("Beast King Barbaros")) {
+            GameMatView.showInput("Do you want to summon Beast King Barbaros without tributing? (yes/no)");
+            String response = GameMatView.getCommand();
+            selectedOwnCard = "";
+            if (response.equals("yes")) {
+                addToMonsterZoneCard(monsterName, "OO");
+                GameMatView.showInput("Summoned successfully");
+                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
+            }
+            else {
+                if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3)
+                    GameMatView.showInput("There are not enough cards for tribute");
+                else {
+                    GameMatView.showInput("Please select 3 monsters to tribute:");
+                    if (tributeMonster(3, monsterName) == 1) {
+                        Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
+                        addToMonsterZoneCard(monsterName, "OO");
+                        GameMatView.showInput("Summoned successfully");
+                        MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "NotNormal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
+                    }
+                }
+            }
+            return 1;
+        }
+        return 0;
+    }
+
+
+    public static int tributeMonster(int numberOfTribute, String monsterName) {
+        int[] victimAddress = new int[3];
+        for (int i = 0; i < numberOfTribute; i++) {
+            victimAddress[i] = getAddressOfTributeMonster(numberOfTribute);
+            if (victimAddress[i] == 0)
+                return 0;
+        }
+        if (monsterName.equals("ritual")) {
+            int monstersLevel = 0;
+            for (int i = 0; i < numberOfTribute; i++) {
+                monstersLevel += MonsterZoneCard.getMonsterCardByAddress(victimAddress[i],onlineUser).getLevel();
+            }
+            if (monstersLevel < 7) {
+                GameMatView.showInput("selected monsters levels don’t match with ritual monster");
+                GameMatView.showInput("Please enter the number of Monsters you want to tribute (Maximum 3 Monsters):");
+                command = GameMatView.getCommand();
+                while (!command.matches("\\d+")) {
+                    if (command.equals("cancel")) {
+                        selectedOwnCard = "";
+                        return 0;
+                    }
+                    command = GameMatView.getCommand();
+                }
+                numberOfTribute = Integer.parseInt(command);
+                GameMatView.showInput("Please enter some Monster address to tribute:");
+                tributeMonster(numberOfTribute, "ritual");
+            }
+        }
+        for (int i = 0; i < numberOfTribute; i++) {
+            MonsterZoneCard.getAllMonstersByPlayerName(onlineUser).get(victimAddress[i]).removeMonsterFromZone();
+        }
+        return 1;
+    }
+
+
+    public static int getAddressOfTributeMonster(int numberOfTribute) {
+        String response = GameMatView.getCommand();
+        while (!response.matches("[1-5]")) {
+            if (response.equals("cancel")) {
+                selectedOwnCard = "";
+                return 0;
+            }
+            GameMatView.showInput("Please enter the correct address of a monster to tribute:");
+            response = GameMatView.getCommand();
+        }
+        if (MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser) == null) {
+            if (numberOfTribute == 2)
+                GameMatView.showInput("There is no monster on one of these addresses");
+            else
+                GameMatView.showInput("There is no monster in this address");
+            GameMatView.showInput("Please enter the correct address of a monster to tribute:");
+            getAddressOfTributeMonster(numberOfTribute);
+        }
+        return Integer.parseInt(response);
+    }
+
 
 }
