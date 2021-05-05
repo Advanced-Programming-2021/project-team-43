@@ -4,307 +4,289 @@ import main.java.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-//public class SpellEffect {
-//    public static void spellEffectController(String spellCardName, String player1, String rival, String victim1, String victim2,
-//                                             boolean deleteMyCard) {
-//        if (spellCardName.equals("Raigeki")) {
-//            raigeki(rival);
-//        }
-//        if (spellCardName.equals("Harpie’s Feather Duster")) {
-//            harpieFeatherDuster(rival);
-//        }
-//
-//        if (spellCardName.equals("Swords of Revealing Light")) {
-//            swordsOfRevealingLight();
-//        }
-//        if (spellCardName.equals("Dark Hole")) {
-//            darkHole(rival, player1);
-//        }
-//        if (spellCardName.equals("Spell Absorption")) {
-//            spellAbsorption(player1);
-//        }
-//        if (spellCardName.equals("Messenger of peace")) {
-//            messengerOfPeace(player1, rival);
-//        }
-//        if (spellCardName.equals("Twin Twisters")) {
-//            twinTwisters(victim1, victim2, rival, deleteMyCard, player1);
-//        }
-//
-//        if (spellCardName.equals("Mystical space typhoon")) {
-//            mysticalSpaceTyphoon(victim1, rival, deleteMyCard, player1);
-//        }
-//        if (spellCardName.equals("Yami")) {
-//            yami(rival, player1);
-//        }
-//        if (spellCardName.equals("Forest")) {
-//            forest(player1, rival);
-//        }
-//        if (spellCardName.equals("Closed Forest")) {
-//            closedForest(player1);
-//        }
-//
-//        if (spellCardName.equals("UMIIRUKA")) {
-//            UMIIRUKA(player1, rival);
-//        }
-//
-//        if (spellCardName.equals("Sword of Dark Destruction")) {
-//            swordOfDarkDestruction(player1);
-//        }
-//
-//        if (spellCardName.equals("Black Pendant")) {
-//            blackPendant(player1);
-//        }
-//
-//        if (spellCardName.equals("United We Stand")) {
-//            unitedWeStand(player1);
-//        }
-//        if (spellCardName.equals("Magnum Shield")) {
-//            magnumShield(player1);
-//        }
-//
-//    }
-//
-//
-//    public static void raigeki(String rival) {
-//        String[] keys = MonsterZoneCard.getMonstersZoneCard(rival).keySet();
-//        for (String key : keys) {
-//            MonsterZoneCard.deleteCard(key, rival);
-//        }
-//    }
-//
-//    public static void harpieFeatherDuster(String rival) {
-//        String[] spell = SpellZoneCard.getSpellsZone(rival).keySet();
-//        String[] trap = TrapZoneCard.getAllTrapZone(rival).keySet();
-//        for (String key : spell) {
-//            SpellZoneCard.deleteSpellZone(key, rival);
-//        }
-//        for (String key : trap) {
-//            TrapZoneCard.deleteTrapZone(key, rival);
-//        }
-//    }
-//
-//    public static void swordsOfRevealingLight() {//naghes
-//        String[] keys = GameMatModel.getGameMatModelByNumber(2).getAllMonstersZone().keySet();
-//        for (String key : keys) {
-//            GameMatModel.getGameMatModelByNumber(2).getMonsterByName(key).setBackAndForth("face up");//defend
-//        }
-//        if (GameMatModel.getGameMatModelByNumber(1).getMonsterByName("Swords of Revealing Light").getBackAndForth().equals("face up")) {
-//            for (String key : keys) {
-//                GameMatModel.getGameMatModelByNumber(2).getMonsterByName(key).setCanAttack(false);
-//            }
-//        }
-//    }
-//
-//    public static void darkHole(String rival, String player1) {
-//        HashMap<String, MonsterZoneCard> rivalsMonster = MonsterZoneCard.getMonsters(rival);
-//        String[] monsterNames = rivalsMonster.keySet().toArray(new String[0]);
-//        for (int i = 0; i < rivalsMonster.size(); i++) {
-//            MonsterZoneCard.deleteCard(monsterNames[i], rival);
-//        }
-//        HashMap<String, MonsterZoneCard> ownMonster = MonsterZoneCard.getMonsters(player1);
-//        String[] ownMonsterNames = ownMonster.keySet().toArray(new String[0]);
-//        for (int i = 0; i < ownMonster.size(); i++) {
-//            MonsterZoneCard.deleteCard(ownMonsterNames[i], player1);
-//        }
-//    }
-//
-//
-//    public static void spellAbsorption(String player1) {
-//        Player.getPlayerByName(player1).changeLifePoint(500);
-//    }
-//
-//    public static void messengerOfPeace(String player1, String rival) {//naghes
-//        HashMap<String, MonsterZoneCard> monsters = MonsterZoneCard.getMonsters(player1);
-//        String[] monsterNames = monsters.keySet().toArray(new String[0]);
-//        for (int i = 0; i < monsters.size(); i++) {
-//            if (MonsterZoneCard.getMonsterCardByName(monsterNames[i], player1).getAttack() >= 1500) {
-//                MonsterZoneCard.getMonsterCardByName(monsterNames[i], player1).canAttack(false);
-//            }
-//        }
-//
-//        HashMap<String, MonsterZoneCard> rivalMonsters = MonsterZoneCard.getMonsters(rival);
-//        String[] rivalMonsterNames = rivalMonsters.keySet().toArray(new String[0]);
-//        for (int i = 0; i < rivalMonsters.size(); i++) {
-//            if (MonsterZoneCard.getMonsterCardByName(rivalMonsterNames[i], rival).getAttack() >= 1500) {
-//                MonsterZoneCard.getMonsterCardByName(rivalMonsterNames[i], rival).canAttack(false);
-//            }
-//        }
-//    }
-//
-//    public static void twinTwisters(String victim1, String victim2, String rival, boolean mine, String player1) {
-//        if (Card.getCardsByName(victim1).getCardModel().equals("Spell")) {
-//            if (mine) {
-//                SpellZoneCard.deleteCard(victim1, player1);
-//            }
-//            SpellZoneCard.deleteCard(victim1, rival);
-//        }
-//        if (Card.getCardsByName(victim1).getCardModel().equals("Trap")) {
-//            if (mine) {
-//                TrapZoneCard.deleteCard(victim1, player1);
-//            }
-//            TrapZoneCard.deleteCard(victim1, rival);
-//        }
-//        if (Card.getCardsByName(victim2).getCardModel().equals("Spell")) {
-//            if (mine) {
-//                SpellZoneCard.deleteCard(victim2, player1);
-//            }
-//            SpellZoneCard.deleteCard(victim2, rival);
-//        }
-//        if (Card.getCardsByName(victim2).getCardModel().equals("Trap")) {
-//            if (mine) {
-//                TrapZoneCard.deleteCard(victim2, player1);
-//            }
-//            TrapZoneCard.deleteCard(victim2, rival);
-//        }
-//    }
-//
-//    public static void mysticalSpaceTyphoon(String victim, String rival, boolean mine, String player1) {
-//        if (Card.getCardsByName(victim).getCardModel().equals("Spell")) {
-//            if (mine) {
-//                SpellZoneCard.deleteCard(victim, player1);
-//            }
-//            SpellZoneCard.deleteCard(victim, rival);
-//        }
-//        if (Card.getCardsByName(victim).getCardModel().equals("Trap")) {
-//            if (mine) {
-//                TrapZoneCard.deleteCard(victim, player1);
-//            }
-//            TrapZoneCard.deleteCard(victim, rival);
-//        }
-//    }
-//
-//    public static void yami(String rival, String player1) {
-//        HashMap<String, MonsterZoneCard> ownMonsters = MonsterZoneCard.getMonsters(player1);
-//        String[] ownMonsterNames = ownMonsters.keySet().toArray(new String[0]);
-//        HashMap<String, MonsterZoneCard> rivalsMonsters = MonsterZoneCard.getMonsters(rival);
-//        String[] rivalMonsterNames = rivalsMonsters.keySet().toArray(new String[0]);
-//        for (int i = 0; i < ownMonsters.size(); i++) {
-//            if (MonsterCard.getMonsterByName(ownMonsterNames[i]).getMonsterType().equals("Fiend") ||
-//                    MonsterCard.getMonsterByName(ownMonsterNames[i]).getMonsterType().equals("Spellcaster")) {
-//                MonsterZoneCard.getMonsterCardByName(ownMonsterNames[i], player1).changeAttack(200);
-//                MonsterZoneCard.getMonsterCardByName(ownMonsterNames[i], player1).changeDefend(200);
-//            }
-//            if (MonsterCard.getMonsterByName(ownMonsterNames[i]).getMonsterType().equals("Fairy")) {
-//                MonsterZoneCard.getMonsterCardByName(ownMonsterNames[i], player1).changeAttack(-200);
-//                MonsterZoneCard.getMonsterCardByName(ownMonsterNames[i], player1).changeDefend(-200);
-//            }
-//        }
-//        for (int i = 0; i < rivalsMonsters.size(); i++) {
-//            if (MonsterCard.getMonsterByName(rivalMonsterNames[i]).getMonsterType().equals("Fiend") ||
-//                    MonsterCard.getMonsterByName(rivalMonsterNames[i]).getMonsterType().equals("Spellcaster")) {
-//                MonsterZoneCard.getMonsterCardByName(rivalMonsterNames[i], rival).changeAttack(200);
-//                MonsterZoneCard.getMonsterCardByName(rivalMonsterNames[i], rival).changeDefend(200);
-//            }
-//            if (MonsterCard.getMonsterByName(rivalMonsterNames[i]).getMonsterType().equals("Fairy")) {
-//                MonsterZoneCard.getMonsterCardByName(rivalMonsterNames[i], rival).changeAttack(-200);
-//                MonsterZoneCard.getMonsterCardByName(rivalMonsterNames[i], rival).changeDefend(-200);
-//            }
-//        }
-//    }
-//
-//    public static void forest(String player1, String rival) {
-//        HashMap<String, MonsterZoneCard> ownMonsters = MonsterZoneCard.getMonsters(player1);
-//        String[] ownMonsterNames = ownMonsters.keySet().toArray(new String[0]);
-//        HashMap<String, MonsterZoneCard> rivalsMonsters = MonsterZoneCard.getMonsters(rival);
-//        String[] rivalMonsterNames = rivalsMonsters.keySet().toArray(new String[0]);
-//        for (int i = 0; i < ownMonsters.size(); i++) {
-//            if (MonsterCard.getMonsterByName(ownMonsterNames[i]).getMonsterType().equals("Insect") ||
-//                    MonsterCard.getMonsterByName(ownMonsterNames[i]).getMonsterType().equals("Beast") ||
-//                    MonsterCard.getMonsterByName(ownMonsterNames[i]).getMonsterType().equals("Beast-Warrior")) {
-//                MonsterZoneCard.getMonsterCardByName(ownMonsterNames[i], player1).changeAttack(200);
-//                MonsterZoneCard.getMonsterCardByName(ownMonsterNames[i], player1).changeDefend(200);
-//            }
-//        }
-//        for (int i = 0; i < rivalsMonsters.size(); i++) {
-//            if (MonsterCard.getMonsterByName(rivalMonsterNames[i]).getMonsterType().equals("Insect") ||
-//                    MonsterCard.getMonsterByName(rivalMonsterNames[i]).getMonsterType().equals("Beast") ||
-//                    MonsterCard.getMonsterByName(rivalMonsterNames[i]).getMonsterType().equals("Beast-Warrior")) {
-//                MonsterZoneCard.getMonsterCardByName(rivalMonsterNames[i], rival).changeAttack(200);
-//                MonsterZoneCard.getMonsterCardByName(rivalMonsterNames[i], rival).changeDefend(200);
-//            }
-//        }
-//    }
-//
-//    public static void closedForest(String player1) {
-//        HashMap<String, MonsterZoneCard> monsters = MonsterZoneCard.getMonsters(player1);
-//        String[] monsterNames = monsters.keySet().toArray(new String[0]);
-//        int increaseAttack = MonsterZoneCard.getMonsterGraveYardNumber() * 100;
-//        for (int i = 0; i < monsters.size(); i++) {
-//            if (MonsterCard.getMonsterByName(monsterNames[i]).getMonsterType().equals("Beast-Type")) {
-//                MonsterZoneCard.getMonsterCardByName(monsterNames[i], player1).changeAttack(increaseAttack);
-//            }
-//        }
-//    }
-//
-//    public static void UMIIRUKA(String player1, String rival) {
-//        HashMap<String, MonsterZoneCard> monsters = MonsterZoneCard.getMonsters(player1);
-//        String[] monsterNames = monsters.keySet().toArray(new String[0]);
-//        for (int i = 0; i < monsters.size(); i++) {
-//            if (MonsterCard.getMonsterByName(monsterNames[i]).getMonsterType().equals("Aqua")) {
-//                MonsterZoneCard.getMonsterCardByName(monsterNames[i], player1).changeAttack(500);
-//                MonsterZoneCard.getMonsterCardByName(monsterNames[i], player1).changeDefend(-400);
-//            }
-//        }
-//        HashMap<String, MonsterZoneCard> rivalsMonsters = MonsterZoneCard.getMonsters(rival);
-//        String[] rivalsMonsterNames = rivalsMonsters.keySet().toArray(new String[0]);
-//        for (int i = 0; i < rivalsMonsters.size(); i++) {
-//            if (MonsterCard.getMonsterByName(rivalsMonsterNames[i]).getMonsterType().equals("Aqua")) {
-//                MonsterZoneCard.getMonsterCardByName(rivalsMonsterNames[i], rival).changeAttack(500);
-//                MonsterZoneCard.getMonsterCardByName(rivalsMonsterNames[i], rival).changeDefend(-400);
-//            }
-//        }
-//    }
-//
-//    public static void swordOfDarkDestruction(String player1) {
-//        ArrayList<String> monsters = SpellZoneCard.getSpellCardByName("Sword of Dark Destruction", player1).getRelatedMonsters();
-//        for (int i = 0; i < monsters.size(); i++) {
-//            if (MonsterCard.getMonsterByName(monsters.get(i)).getMonsterType().equals("Spellcaster") ||
-//                    MonsterCard.getMonsterByName(monsters.get(i)).getMonsterType().equals("Fiend")) {
-//                MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).changeAttack(400);
-//                MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).changeDefend(-200);
-//            }
-//        }
-//    }
-//
-//    public static void blackPendant(String player1) {
-//        ArrayList<String> monsters = SpellZoneCard.getSpellCardByName("Black Pendant", player1).getRelatedMonsters();
-//        for (int i = 0; i < monsters.size(); i++) {
-//            MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).changeAttack(500);
-//        }
-//    }
-//
-//    public static void unitedWeStand(String player1) {
-//        ArrayList<String> monsters = SpellZoneCard.getSpellCardByName("Black Pendant", player1).getRelatedMonsters();
-//        HashMap<String, MonsterZoneCard> monstersZone = MonsterZoneCard.getMonsters(player1);
-//        String[] namesOfMonstersInZone = monstersZone.keySet().toArray(new String[0]);
-//        int counter = 0;
-//        for (int i = 0; i < monstersZone.size(); i++) {
-//            if (MonsterZoneCard.getMonsterCardByName(namesOfMonstersInZone[i], player1).getMode().equals("defend") ||
-//                    MonsterZoneCard.getMonsterCardByName(namesOfMonstersInZone[i], player1).getMode().equals("summon")) {
-//                counter++;
-//            }
-//        }
-//        int increaseAttackAndDefend = 800 * counter;
-//        for (int i = 0; i < monsters.size(); i++) {
-//            MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).changeAttack(increaseAttackAndDefend);
-//            MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).changeDefend(increaseAttackAndDefend);
-//        }
-//    }
-//
-//    public static void magnumShield(String player1) {
-//        ArrayList<String> monsters = SpellZoneCard.getSpellCardByName("Black Pendant", player1).getRelatedMonsters();
-//        for (int i = 0; i < monsters.size(); i++) {
-//            if (MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).getMode().equals("summon")) {
-//                MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).changeAttack(
-//                        MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).getDefend());
-//            }
-//            if (MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).getMode().equals("defend")) {
-//                MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).changeDefend(
-//                        MonsterZoneCard.getMonsterCardByName(monsters.get(i), player1).getAttack());
-//            }
-//        }
-//    }
-//}
+public class SpellEffect {
+    public static void spellEffectController(int spellCardAddress, String player1, String rival, int victim1Address, int victim2Address,
+                                             boolean deleteMyCard) {
+
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Raigeki")) {
+            raigeki(rival);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Harpie’s Feather Duster")) {
+            harpieFeatherDuster(rival);
+        }
+
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Swords of Revealing Light")) {
+            swordsOfRevealingLight(rival, spellCardAddress, player1);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Dark Hole")) {
+            darkHole(rival, player1);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Spell Absorption")) {
+            spellAbsorption(player1);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Messenger of peace")) {
+            messengerOfPeace(player1, rival);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Twin Twisters")) {
+            twinTwisters(victim1Address, victim2Address, rival, deleteMyCard, player1);
+        }
+
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Mystical space typhoon")) {
+            mysticalSpaceTyphoon(victim1Address, rival, deleteMyCard, player1);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Yami")) {
+            yami(rival, player1);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Forest")) {
+            forest(player1, rival);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Closed Forest")) {
+            closedForest(player1, rival);
+        }
+
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("UMIIRUKA")) {
+            UMIIRUKA(player1, rival);
+        }
+
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Sword of Dark Destruction")) {
+            swordOfDarkDestruction(player1,spellCardAddress);
+        }
+
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Black Pendant")) {
+            blackPendant(player1,spellCardAddress);
+        }
+
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("United We Stand")) {
+            unitedWeStand(player1,spellCardAddress);
+        }
+        if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Magnum Shield")) {
+            magnumShield(player1,spellCardAddress);
+        }
+
+    }
+
+    public static void raigeki(String rival) {//kamel3
+        Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rival).keySet().toArray(new Integer[0]);
+        for (int key : keys) {
+            MonsterZoneCard.getMonsterCardByAddress(key, rival).removeMonsterFromZone();
+        }
+    }
+
+    public static void harpieFeatherDuster(String rival) {//kamel3
+        Integer[] spell = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rival).keySet().toArray(new Integer[0]);
+        for (int key : spell) {
+            SpellTrapZoneCard.getSpellCardByAddress(key, rival).removeSpellTrapFromZone();
+        }
+    }
+
+    public static void swordsOfRevealingLight(String rival, int ownAddress, String player1) {//Kamel3
+        Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rival).keySet().toArray(new Integer[0]);
+        for (int key : keys) {
+            MonsterZoneCard.getMonsterCardByAddress(key, rival).setMode("DO");
+        }
+        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("OO") ||
+                MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("DO")) {
+            for (int key : keys) {
+                MonsterZoneCard.getMonsterCardByAddress(key, rival).setCanAttack(false);
+            }
+        }
+    }
+
+    public static void darkHole(String rival, String player1) {//kamel3
+        Map<Integer, MonsterZoneCard> rivalsMonster = MonsterZoneCard.getAllMonstersByPlayerName(rival);
+        Integer[] monsterAddress = rivalsMonster.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < rivalsMonster.size(); i++) {
+            MonsterZoneCard.getMonsterCardByAddress(monsterAddress[i], rival).removeMonsterFromZone();
+        }
+        Map<Integer, MonsterZoneCard> ownMonster = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+        Integer[] ownMonsterAddress = ownMonster.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < ownMonster.size(); i++) {
+            MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).removeMonsterFromZone();
+        }
+    }
 
 
+    public static void spellAbsorption(String player1) {//kamel3
+        Player.getPlayerByName(player1).changeLifePoint(500);
+    }
+
+    public static void messengerOfPeace(String player1, String rival) {//kamel3
+        Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+        Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < monsters.size(); i++) {
+            if (MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], player1).getAttack() >= 1500) {
+                MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], player1).setCanAttack(false);
+            }
+        }
+
+        Map<Integer, MonsterZoneCard> rivalMonsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
+        Integer[] rivalMonsterNames = rivalMonsters.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < rivalMonsters.size(); i++) {
+            if (MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rival).getAttack() >= 1500) {
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rival).setCanAttack(false);
+            }
+        }
+    }
+
+    public static void twinTwisters(int victim1Address, int victim2Address, String rival, boolean mine, String player1) {//kamel3
+        if (mine) {
+            if (victim1Address != -1) {
+                SpellTrapZoneCard.getSpellCardByAddress(victim1Address, player1).removeSpellTrapFromZone();
+            }
+            if (victim2Address != -1) {
+                SpellTrapZoneCard.getSpellCardByAddress(victim2Address, player1).removeSpellTrapFromZone();
+            }
+        }
+        if (!mine) {
+            if (victim1Address != -1) {
+                SpellTrapZoneCard.getSpellCardByAddress(victim1Address, rival).removeSpellTrapFromZone();
+            }
+            if (victim2Address != -1) {
+                SpellTrapZoneCard.getSpellCardByAddress(victim2Address, rival).removeSpellTrapFromZone();
+            }
+        }
+    }
+
+    public static void mysticalSpaceTyphoon(int victimAddress, String rival, boolean mine, String player1) {//kamel3
+        if (mine) {
+            SpellTrapZoneCard.getSpellCardByAddress(victimAddress, player1);
+        }
+        if (!mine) {
+            SpellTrapZoneCard.getSpellCardByAddress(victimAddress, rival);
+        }
+    }
+
+    public static void yami(String rival, String player1) {//kamel3
+        Map<Integer, MonsterZoneCard> ownMonsters = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+        Integer[] ownMonsterAddress = ownMonsters.keySet().toArray(new Integer[0]);
+        Map<Integer, MonsterZoneCard> rivalsMonsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
+        Integer[] rivalMonsterAddress = rivalsMonsters.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < ownMonsters.size(); i++) {
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).getMonsterName()).getMonsterType().equals("Fiend") ||
+                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).getMonsterName()).getMonsterType().equals("Spellcaster")) {
+                MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).changeAttack(200);
+                MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).changeDefend(200);
+            }
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).getMonsterName()).getMonsterType().equals("Fairy")) {
+                MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).changeAttack(-200);
+                MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).changeDefend(-200);
+            }
+        }
+        for (int i = 0; i < rivalsMonsters.size(); i++) {
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rival).getMonsterName()).getMonsterType().equals("Fiend") ||
+                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rival).getMonsterName()).getMonsterType().equals("Spellcaster")) {
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rival).changeAttack(200);
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rival).changeDefend(200);
+            }
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rival).getMonsterName()).getMonsterType().equals("Fairy")) {
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rival).changeAttack(-200);
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rival).changeDefend(-200);
+            }
+        }
+    }
+
+    public static void forest(String player1, String rival) {//kamel3
+        Map<Integer, MonsterZoneCard> ownMonsters = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+        Integer[] ownMonsterNames = ownMonsters.keySet().toArray(new Integer[0]);
+        Map<Integer, MonsterZoneCard> rivalsMonsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
+        Integer[] rivalMonsterNames = rivalsMonsters.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < ownMonsters.size(); i++) {
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(ownMonsterNames[i], player1).getMonsterName()).getMonsterType().equals("Insect") ||
+                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(ownMonsterNames[i], player1).getMonsterName()).getMonsterType().equals("Beast") ||
+                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(ownMonsterNames[i], player1).getMonsterName()).getMonsterType().equals("Beast-Warrior")) {
+                MonsterZoneCard.getMonsterCardByAddress(ownMonsterNames[i], player1).changeAttack(200);
+                MonsterZoneCard.getMonsterCardByAddress(ownMonsterNames[i], player1).changeDefend(200);
+            }
+        }
+        for (int i = 0; i < rivalsMonsters.size(); i++) {
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rival).getMonsterName()).getMonsterType().equals("Insect") ||
+                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rival).getMonsterName()).getMonsterType().equals("Beast") ||
+                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rival).getMonsterName()).getMonsterType().equals("Beast-Warrior")) {
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rival).changeAttack(200);
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rival).changeDefend(200);
+            }
+        }
+    }
+
+    public static void closedForest(String player1, String rival) {//kamel3
+        Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+        Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
+        int increaseAttack = (GameMatModel.getGameMatByNickname(player1).getNumberOfDeadMonster() + GameMatModel.getGameMatByNickname(rival).getNumberOfDeadMonster()) * 100;
+        for (int i = 0; i < monsters.size(); i++) {
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], player1).getMonsterName()).getMonsterType().equals("Beast-Type")) {
+                MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], player1).changeAttack(increaseAttack);
+            }
+        }
+    }
+
+    public static void UMIIRUKA(String player1, String rival) {//kamel3
+        Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+        Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < monsters.size(); i++) {
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], player1).getMonsterName()).getMonsterType().equals("Aqua")) {
+                MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], player1).changeAttack(500);
+                MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], player1).changeDefend(-400);
+            }
+        }
+        Map<Integer, MonsterZoneCard> rivalsMonsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
+        Integer[] rivalsMonsterNames = rivalsMonsters.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < rivalsMonsters.size(); i++) {
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(rivalsMonsterNames[i], rival).getMonsterName()).getMonsterType().equals("Aqua")) {
+                MonsterZoneCard.getMonsterCardByAddress(rivalsMonsterNames[i], rival).changeAttack(500);
+                MonsterZoneCard.getMonsterCardByAddress(rivalsMonsterNames[i], rival).changeDefend(-400);
+            }
+        }
+    }
+
+    public static void swordOfDarkDestruction(String player1,int ownAddress) {//kamel3
+        ArrayList<Integer> monsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsters();
+        for (Integer monster : monsters) {
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(monster, player1).getMonsterName()).getMonsterType().equals("Spellcaster") ||
+                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(monster, player1).getMonsterName()).getMonsterType().equals("Fiend")) {
+                MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeAttack(400);
+                MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeDefend(-200);
+            }
+        }
+    }
+
+    public static void blackPendant(String player1,int ownAddress) {//kamel3
+        ArrayList<Integer> monsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsters();
+        for (Integer monster : monsters) {
+            MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeAttack(500);
+        }
+    }
+
+    public static void unitedWeStand(String player1,int ownAddress) {//kamel3
+        ArrayList<Integer> monsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsters();
+        Map<Integer, MonsterZoneCard> monstersZone = MonsterZoneCard.getAllMonstersByPlayerName(player1);
+        Integer[] namesOfMonstersInZone = monstersZone.keySet().toArray(new Integer[0]);
+        int counter = 0;
+        for (int i = 0; i < monstersZone.size(); i++) {
+            if (MonsterZoneCard.getMonsterCardByAddress(namesOfMonstersInZone[i], player1).getMode().equals("DO") ||
+                    MonsterZoneCard.getMonsterCardByAddress(namesOfMonstersInZone[i], player1).getMode().equals("OO")) {
+                counter++;
+            }
+        }
+        int increaseAttackAndDefend = 800 * counter;
+        for (Integer monster : monsters) {
+            MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeAttack(increaseAttackAndDefend);
+            MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeDefend(increaseAttackAndDefend);
+        }
+    }
+
+    public static void magnumShield(String player1,int ownAddress) {//kamel3
+        ArrayList<Integer> monsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsters();
+        for (Integer monster : monsters) {
+            if (MonsterZoneCard.getMonsterCardByAddress(monster, player1).getMode().equals("OO")) {
+                MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeAttack(
+                        MonsterZoneCard.getMonsterCardByAddress(monster, player1).getDefend());
+            }
+            if (MonsterZoneCard.getMonsterCardByAddress(monster, player1).getMode().equals("DO")) {
+                MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeDefend(
+                        MonsterZoneCard.getMonsterCardByAddress(monster, player1).getAttack());
+            }
+        }
+    }
+}
