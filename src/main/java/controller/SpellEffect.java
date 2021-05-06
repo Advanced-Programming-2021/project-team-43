@@ -8,7 +8,7 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SpellEffect {
     public static void spellEffectController(int spellCardAddress, String player1, String rival, int victim1Address, int victim2Address,
-                                             boolean deleteMyCard1, boolean deleteMyCard2) {
+                                             boolean deleteMyCard1, boolean deleteMyCard2,int addressOfHandRemove) {
 
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Raigeki")) {
             raigeki(rival, player1, spellCardAddress);
@@ -30,7 +30,7 @@ public class SpellEffect {
             messengerOfPeace(player1, rival);
         }
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Twin Twisters")) {
-            twinTwisters(victim1Address, victim2Address, rival, deleteMyCard1, player1, deleteMyCard2);
+            twinTwisters(victim1Address, victim2Address, rival, deleteMyCard1, player1, deleteMyCard2,addressOfHandRemove);
         }
 
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Mystical space typhoon")) {
@@ -135,7 +135,8 @@ public class SpellEffect {
         }
     }
 
-    public static void twinTwisters(int victim1Address, int victim2Address, String rival, boolean mine1, String player1, boolean mine2) {//kamel3
+    public static void twinTwisters(int victim1Address, int victim2Address, String rival, boolean mine1, String player1, boolean mine2,int addressOfHandRemove) {//kamel3
+       HandCardZone.getHandCardByAddress(addressOfHandRemove,player1).removeFromHandCard(addressOfHandRemove,player1);
         if (mine1) {
             if (victim1Address != -1) {
                 SpellTrapZoneCard.getSpellCardByAddress(victim1Address, player1).removeSpellTrapFromZone();
