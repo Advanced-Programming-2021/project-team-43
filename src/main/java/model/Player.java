@@ -39,7 +39,7 @@ public class Player {
         for (String key : activeDeck.cardsInSideDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInSideDeck.get(key); i++)
                 playerSideDeck.add(++counter, key);
-
+        firstDrawCard();
         allPlayers.put(this.nickname, this);
     }
 
@@ -123,6 +123,14 @@ public class Player {
         playerMainDeck.remove(randomCardNumber);
     }
 
+    public void removeFromMainDeckByAddress(int address) {
+        playerMainDeck.remove(address);
+    }
+
+    public String getCardNameByAddress(int address) {
+        return playerMainDeck.get(address);
+    }
+
     public int getNumberOfMainDeckCards() {
         return playerMainDeck.size();
     }
@@ -143,6 +151,22 @@ public class Player {
         else
             randomCardNumber = 0;
         return playerMainDeck.get(randomCardNumber);
+    }
+
+    public void firstDrawCard() {
+        for (int i = 0; i < 5; i++) {
+            new HandCardZone(nickname, playerMainDeck.get(i));
+            playerMainDeck.remove(0);
+        }
+    }
+
+    public int getAddressOfFieldSpellFromDeck() {
+        for (int i = 0; i < playerMainDeck.size(); i++) {
+            if (Card.getCardsByName(playerMainDeck.get(i)).getCardModel().equals("Spell"))
+                if (SpellCard.getSpellCardByName(playerMainDeck.get(i)).getIcon().equals("Field"))
+                    return i;
+        }
+        return -1;
     }
 
     public ArrayList<String> getPlayerDeck(String whichDeck) {

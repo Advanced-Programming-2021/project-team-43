@@ -30,8 +30,8 @@ public class GameMatModel {
         graveyard.add(cardName);
     }
 
-    public void removeFromGraveyard(String cardName) {
-        graveyard.removeIf(eachCard -> eachCard.equals(cardName));
+    public void removeFromGraveyardByAddress(int whichCard) {
+        graveyard.remove(whichCard);
     }
 
     public void addToFieldZone(String cardName) {
@@ -56,6 +56,14 @@ public class GameMatModel {
 
     public int getNumberOfDeadCards() {
         return graveyard.size();
+    }
+
+    public int getNumberOfDeadMonster() {
+        int numberOfDeadMonsters = 0;
+        for (String deadCardName : graveyard)
+            if (Card.getCardsByName(deadCardName).getCardModel().equals("Monster"))
+                numberOfDeadMonsters++;
+        return numberOfDeadMonsters;
     }
 
     public void showGraveyard() {

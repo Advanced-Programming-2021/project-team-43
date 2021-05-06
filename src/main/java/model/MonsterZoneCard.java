@@ -13,7 +13,6 @@ public class MonsterZoneCard {
     private int defend;
     private final int level;
     private boolean isScanner;
-    private boolean isSelected;
     private boolean haveChangedPositionThisTurn;
     private boolean haveAttackThisTurn;
     private boolean canAttack;
@@ -79,14 +78,6 @@ public class MonsterZoneCard {
 
     public int getLevel() {
         return level;
-    }
-
-    public boolean getIsSelected() {
-        return isSelected;
-    }
-
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
     }
 
     public boolean getHaveChangedPositionThisTurn() {

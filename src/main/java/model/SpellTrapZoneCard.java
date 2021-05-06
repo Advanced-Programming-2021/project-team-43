@@ -8,8 +8,8 @@ public class SpellTrapZoneCard {
     private final String spellTrapName;
     private String mode;
     private final int address;
-    private boolean isSelected;
     private int numberOfFullHouse = 0;
+    private int relatedMonsterAddress;
     private static final Map<Integer,SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
     private static final Map<String, Map<Integer,SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
 
@@ -39,20 +39,20 @@ public class SpellTrapZoneCard {
         this.mode = mode;
     }
 
-    public boolean getIsSelected() {
-        return isSelected;
-    }
-
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
-    }
-
     public static int getNumberOfFullHouse(String playerNickname) {
         return allSpellTrapCards.get(playerNickname).size();
     }
 
     public void changeNumberOfFullHouse(int amount) {
         numberOfFullHouse += amount;
+    }
+
+    public int getRelatedMonsterAddress() {
+        return relatedMonsterAddress;
+    }
+
+    public void setRelatedMonsterAddress(int relatedMonsterAddress) {
+        this.relatedMonsterAddress = relatedMonsterAddress;
     }
 
     public void removeSpellTrapFromZone() {

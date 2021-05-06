@@ -8,7 +8,6 @@ public class HandCardZone {
     private final String cardName;
     private final int address;
     private final String kind;
-    private boolean isSelected;
     private static final List<HandCardZone> eachHandCard = new ArrayList<>();
     private static final Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
 
@@ -31,14 +30,6 @@ public class HandCardZone {
 
     public String getKind() {
         return kind;
-    }
-
-    public boolean getIsSelected() {
-        return isSelected;
-    }
-
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
     }
 
     public void removeFromHandCard() {
