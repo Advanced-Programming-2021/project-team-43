@@ -8,7 +8,8 @@ import java.io.IOException;
 public class SetCards {
     //////////CSV
     public static void readingCSVFileMonster() {
-        String filePath = "C:\\Users\\Partiran\\IdeaProjects\\project-team-43\\Monster.csv";
+        String filePath = "Monster.csv";
+        //C:\Users\Partiran\IdeaProjects\project-team-43\
         try {
             BufferedReader readFile = new BufferedReader(new FileReader(filePath));
             String readFileRow;
@@ -38,7 +39,8 @@ public class SetCards {
     }
 
     public static void readingCSVFileTrapSpell() {
-        String filePath = "C:\\Users\\Partiran\\IdeaProjects\\project-team-43\\SpellTrap.csv";
+        String filePath = "SpellTrap.csv";
+//C:\Users\Partiran\IdeaProjects\project-team-43\
         try {
             BufferedReader readFile = new BufferedReader(new FileReader(filePath));
             String readFileRow;
