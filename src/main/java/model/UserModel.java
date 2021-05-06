@@ -1,7 +1,7 @@
 package main.java.model;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class UserModel {
 
     private final String username;

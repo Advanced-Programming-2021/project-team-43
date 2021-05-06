@@ -1,11 +1,8 @@
 package main.java.controller;
-
 import main.java.model.*;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SpellEffect {
     public static void spellEffectController(int spellCardAddress, String player1, String rival, int victim1Address, int victim2Address,
                                              boolean deleteMyCard) {

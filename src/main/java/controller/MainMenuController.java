@@ -1,13 +1,10 @@
 package main.java.controller;
-
-import main.java.model.*;
 import main.java.view.*;
-
+import main.java.model.*;
 import java.lang.*;
+import java.util.regex.*;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class MainMenuController {
 
     public static String username;
@@ -34,7 +31,7 @@ public class MainMenuController {
                     profile();
 
                 } else if (matcher.group(1).equals("shop")) {
-                    //ShopController.findMatcher();
+                    //controller.ShopController.findMatcher();
                     break;
                 } else {
                     MainMenuView.showInput("invalid command");
@@ -287,12 +284,5 @@ public class MainMenuController {
         }
 
     }
-
-
-
-//    private void logout()
-//    {
-//    }
-
 
 }

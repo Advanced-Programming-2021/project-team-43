@@ -1,26 +1,26 @@
 package main.java.model;
-
 import java.util.*;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class HandCardZone {
 
-    private String playerNickname;
-    private String cardName;
+    private final String playerNickname;
+    private final String cardName;
     private int address;
-    private String kind;//monster, spell, trap
+    private final String kind;
     private boolean isSelected;
-    private static List<HandCardZone> allHandCard = new ArrayList<>();
-    private static int addressCounter = 1;
+    private boolean isRemoved;
+    private int addressCounter = 0;
+    private static final Map<Integer,HandCardZone> eachHandCard = new HashMap<>();
+    private static final Map<String, Map<Integer,HandCardZone>> allHandCards = new HashMap<>();
 
     public HandCardZone(String playerNickname, String cardName, String kind) {
         this.playerNickname = playerNickname;
         this.cardName = cardName;
-        this.address = addressCounter;
+        this.address = ++addressCounter;
         this.kind = kind;
-        addressCounter++;
-        if (addressCounter == 7)
-            addressCounter = 1;
-        allHandCard.add(this);
+        eachHandCard.put(address,this);
+        allHandCards.put(playerNickname,eachHandCard);
     }
 
     public String getCardName() {
@@ -29,10 +29,6 @@ public class HandCardZone {
 
     public int getAddress() {
         return address;
-    }
-
-    public void setAddress(int address) {
-        this.address = address;
     }
 
     public String getKind() {
@@ -47,22 +43,23 @@ public class HandCardZone {
         this.isSelected = isSelected;
     }
 
-    public static int getNumberOfHandCard() {
-        return addressCounter - 1;
+    public boolean getIsRemoved() {
+        return isRemoved;
     }
 
-    public static HandCardZone getHandCardByName(String cardName, String playerNickname) {
-        for (HandCardZone eachCard: allHandCard)
-            if (eachCard.cardName.equals(cardName) && eachCard.playerNickname.equals(playerNickname))
-                return eachCard;
-        return null;
+    public void setIsRemoved(boolean isRemoved) {
+        this.isRemoved = isRemoved;
+    }
+
+    public void removeFromHandCard(int address, String playerNickname) {
+        allHandCards.get(playerNickname).remove(address);
+    }
+    public static int getNumberOfFullHouse(String playerNickname) {
+        return allHandCards.get(playerNickname).size();
     }
 
     public static HandCardZone getHandCardByAddress(int address, String playerNickname) {
-        for (HandCardZone eachCard: allHandCard)
-            if (eachCard.address == address && eachCard.playerNickname.equals(playerNickname))
-                return eachCard;
-        return null;
+        return allHandCards.get(playerNickname).get(address);
     }
 
 }

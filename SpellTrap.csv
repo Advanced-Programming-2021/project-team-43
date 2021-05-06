@@ -31,13 +31,13 @@ Unlimited
 Time Seal
 Trap
 Normal
-Skip the Draw main.java.controller.Phase of your opponent's next turn.
+Skip the Draw main.java.model.Phase of your opponent's next turn.
 Limited
 2000
 Negate Attack
 Trap
 Counter
-"When an opponent's monster declares an attack: Target the attacking monster; negate the attack, then end the Battle main.java.controller.Phase."
+"When an opponent's monster declares an attack: Target the attacking monster; negate the attack, then end the Battle main.java.model.Phase."
 Unlimited
 3000
 Solemn Warning
@@ -97,13 +97,13 @@ Limited
 Change of Heart
 Spell
 Normal
-Target 1 monster your opponent controls; take control of it until the End main.java.controller.Phase.
+Target 1 monster your opponent controls; take control of it until the End main.java.model.Phase.
 Limited
 2500
 Swords of Revealing Light
 Spell
 Normal
-"After this card's activation, it remains on the field, but destroy it during the End main.java.controller.Phase of your opponent's 3rd turn. When this card is activated: If your opponent controls a face-down monster, flip all monsters they control face-up. While this card is face-up on the field, your opponent's monsters cannot declare an attack."
+"After this card's activation, it remains on the field, but destroy it during the End main.java.model.Phase of your opponent's 3rd turn. When this card is activated: If your opponent controls a face-down monster, flip all monsters they control face-up. While this card is face-up on the field, your opponent's monsters cannot declare an attack."
 Unlimited
 2500
 Harpie's Feather Duster
@@ -133,7 +133,7 @@ Unlimited
 Messenger of peace
 Spell
 Continuous
-"Monsters with 1500 or more ATK cannot declare an attack. Once per turn, during your Standby main.java.controller.Phase, pay 100 LP or destroy this card."
+"Monsters with 1500 or more ATK cannot declare an attack. Once per turn, during your Standby main.java.model.Phase, pay 100 LP or destroy this card."
 Unlimited
 4000
 Twin Twisters

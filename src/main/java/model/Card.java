@@ -1,7 +1,7 @@
 package main.java.model;
 
 import java.util.HashMap;
-
+////////////////////////////////////////////////////////////////////////////////////////
 public class Card {
     protected String cardName;
     protected String cardModel;

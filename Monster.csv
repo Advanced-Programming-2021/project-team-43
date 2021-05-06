@@ -212,7 +212,7 @@ Machine
 Effect
 0
 0
-"Once per turn, you can select 1 of your opponent's monsters that is removed from play. Until the End main.java.controller.Phase, this card's name is treated as the selected monster's name, and this card has the same Attribute, Level, ATK, and DEF as the selected monster. If this card is removed from the field while this effect is applied, remove it from play."
+"Once per turn, you can select 1 of your opponent's monsters that is removed from play. Until the End main.java.model.Phase, this card's name is treated as the selected monster's name, and this card has the same Attribute, Level, ATK, and DEF as the selected monster. If this card is removed from the field while this effect is applied, remove it from play."
 8000
 Bitron
 2
@@ -284,7 +284,7 @@ Dragon
 Effect
 1600
 600
-Your opponent cannot activate Trap Cards during the Battle main.java.controller.Phase.
+Your opponent cannot activate Trap Cards during the Battle main.java.model.Phase.
 2500
 Herald of Creation
 4

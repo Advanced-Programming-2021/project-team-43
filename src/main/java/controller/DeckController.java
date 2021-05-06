@@ -1,17 +1,10 @@
 package main.java.controller;
+import main.java.model.*;
+import main.java.view.*;
+import java.util.*;
+import java.util.regex.*;
 
-import main.java.model.Card;
-import main.java.model.DeckModel;
-import main.java.model.UserModel;
-import main.java.view.DeckView;
-import main.java.view.MainMenuView;
-
-import java.util.Arrays;
-
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class DeckController {
     public static void findMatcher() {
         while (true) {
@@ -171,8 +164,8 @@ public class DeckController {
             }
 
 
-             pattern = Pattern.compile("^menu exit$");
-             matcher = pattern.matcher(command);
+            pattern = Pattern.compile("^menu exit$");
+            matcher = pattern.matcher(command);
             if (matcher.find()) {
                 findMatcher();
                 break;

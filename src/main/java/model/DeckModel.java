@@ -1,10 +1,7 @@
 package main.java.model;
-
-import main.java.controller.MainMenuController;
-
-
+import main.java.controller.*;
 import java.util.HashMap;
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class DeckModel {
     private String deckName;
     private int mainAllCardNumber = 0;

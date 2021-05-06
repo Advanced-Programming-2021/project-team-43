@@ -1,20 +1,17 @@
 package main.java.model;
-
 import java.util.*;
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class ShopModel {
 
-    private static Map<String,Integer> cardInfo= new HashMap<>();
+    private static final Map<String,Integer> cardInfo= new HashMap<>();
 
-    public static int getCardPriceByName(String cardName) {
-        for (Map.Entry<String,Integer> entry : cardInfo.entrySet())
-            if (entry.getKey().equals(cardName))
-                return entry.getValue();
-        return 0;
+    public static Integer getCardPriceByName(String cardName) {
+        return cardInfo.get(cardName);
     }
 
     public static HashMap<String,Integer> getCardInfo() {
-        return (HashMap<String, Integer>) cardInfo;
+        return (HashMap<String,Integer>) cardInfo;
     }
+
 }

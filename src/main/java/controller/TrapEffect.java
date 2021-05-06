@@ -1,10 +1,12 @@
 package main.java.controller;
-
 import main.java.model.Card;
 import main.java.model.MonsterZoneCard;
-import main.java.model.*;
+import main.java.model.Player;
+import main.java.model.SpellTrapZoneCard;
 import java.util.Map;
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 public class TrapEffect {
     public static void trapEffectController(int addressOfTrapCard, String rival, int addressOfSummonCard, String player1,
                                             boolean summonMine) {
@@ -52,7 +54,7 @@ public class TrapEffect {
     }
 
     public static void timeSeal(String rival) {//
-        Player.getPlayerByName(rival).setPermit(false);
+        Player.getPlayerByName(rival).setCanDrawCard(false);
     }
 
 

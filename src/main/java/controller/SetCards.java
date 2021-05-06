@@ -1,15 +1,11 @@
 package main.java.controller;
-
-import main.java.model.MonsterCard;
-import main.java.model.SpellCard;
-import main.java.model.TrapCard;
-
+import main.java.model.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SetCards {
-
     //////////CSV
     public static void readingCSVFileMonster() {
         String filePath = "C:\\Users\\Partiran\\IdeaProjects\\project-team-43\\Monster.csv";

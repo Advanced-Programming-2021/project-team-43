@@ -1,7 +1,7 @@
 package main.java.controller;
 import main.java.model.*;
 import java.util.Map;
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class MonsterEffect {
     public static void monsterEffectController( int rivalsAddress, String player1, String rival, int victim1Address, int victim2Address, int victim3Address
             , String kindOfSummonOfBeastCard, int ownAddress) {
@@ -12,9 +12,9 @@ public class MonsterEffect {
         if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Yomi Ship")) {
             yomiShip(rival, rivalsAddress);
         }
-        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Suijin")) {
-            suijin(player1, rival, ownAddress, rivalsAddress);
-        }
+//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Suijin")) {
+//            suijin(player1, rival, ownAddress, rivalsAddress);
+//        }
         if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Man-Eater Bug")) {
             manEaterBug(victim1Address, rival);
         }
@@ -72,13 +72,13 @@ public class MonsterEffect {
         MonsterZoneCard.getMonsterCardByAddress(rivalsAddress, rival).removeMonsterFromZone();
     }
 
-    public static void suijin(String player1, String rival, int ownAddress, int rivalsAddress) {//moshkel
-        if (!MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getIsEffectUsed() &&
-                (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("OO") ||
-                        MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("DO"))) {
-            MonsterZoneCard.getMonsterCardByAddress(rivalsAddress, rival).setAttack(0);
-        }
-    }
+//    public static void suijin(String player1, String rival, int ownAddress, int rivalsAddress) {//moshkel
+//        if (!MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getIsEffectUsed() &&
+//                (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("OO") ||
+//                        MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMode().equals("DO"))) {
+//            MonsterZoneCard.getMonsterCardByAddress(rivalsAddress, rival).setAttack(0);
+//        }
+//    }
 
 
     public static void manEaterBug(int victimAddress, String rival) {//kamel3
@@ -91,7 +91,7 @@ public class MonsterEffect {
         MonsterZoneCard.getMonsterCardByAddress(victim3Address, rival).removeMonsterFromZone();
     }
 
-//    public static void scanner(String player1, int address) {//moshkel
+//    public static void scanner(String player1, int address) {
 //        //////////////////////////////////////////////////////////////////
 //    }
 

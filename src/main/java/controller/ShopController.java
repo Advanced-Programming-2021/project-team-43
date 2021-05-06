@@ -1,28 +1,20 @@
 package main.java.controller;
-
 import main.java.model.*;
 import main.java.view.*;
-
 import java.util.*;
 import java.util.regex.*;
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class ShopController {
 
     public static String onlineUser = MainMenuController.username;
 
     public static void findMatcher() {
-        String command = ShopView.getCommand();
-
+        String command;
         while (true) {
+            command = ShopView.getCommand();
             if (getMatcher(command,"shop\\s+buy\\s+(\\w+)").find()) {
-                String cardName = getMatcher(command,"shop\\s+buy\\s+(\\w+)").group(1);
-                if (ShopModel.getCardPriceByName(cardName) == 0)
-                    ShopView.showInput("there is no card with this name");
-                else if (UserModel.getUserByUsername(onlineUser).getUserCoin() < ShopModel.getCardPriceByName(cardName))
-                    ShopView.showInput("not enough money");
-                else
-                    shopBuy(cardName);
+                shopBuy(getMatcher(command,"shop\\s+buy\\s+(\\w+)").group(1));
                 continue;
             }
             if (getMatcher(command,"shop\\s+show\\s+--all").find()) {
@@ -34,7 +26,7 @@ public class ShopController {
                 if (menuName.equals("Main Menu"))
                     MainMenuController.findMatcher();
                 else if (menuName.equals("Deck") || menuName.equals("Profile") || menuName.equals("Scoreboard") || menuName.equals("Duel") || menuName.equals("Import/Export"))
-                    ShopView.showInput("menu navigation is not possible");
+                    ShopView.showInput("Menu navigation is not possible");
                 else
                     ShopView.showInput("invalid command");
                 continue;
@@ -63,9 +55,16 @@ public class ShopController {
     }
 
     private static void shopBuy(String cardName) {
-        int cardPrice = ShopModel.getCardPriceByName(cardName);
-        UserModel.getUserByUsername(onlineUser).changeUserCoin(cardPrice * -1);
-        UserModel.getUserByUsername(onlineUser).addCardToUserAllCards(cardName);
+        Integer cardPrice = ShopModel.getCardPriceByName(cardName);
+        if (cardPrice == null) {
+            ShopView.showInput("There is no card with this name");
+            return;
+        }
+        UserModel user = UserModel.getUserByUsername(onlineUser);
+        if (user.getUserCoin() < cardPrice)
+            ShopView.showInput("Not enough money");
+        user.changeUserCoin(-1 * cardPrice);
+        user.addCardToUserAllCards(cardName);
     }
 
 }

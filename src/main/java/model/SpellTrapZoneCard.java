@@ -1,10 +1,7 @@
 package main.java.model;
-
-import main.java.controller.GameMatController;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.*;
+import main.java.controller.*;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SpellTrapZoneCard {
 
     private final String playerNickname;
@@ -106,5 +103,3 @@ public class SpellTrapZoneCard {
     }
 
 }
-
-
