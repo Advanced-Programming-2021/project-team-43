@@ -8,20 +8,20 @@ public class SpellEffect {
                                              boolean deleteMyCard) {
 
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Raigeki")) {
-            raigeki(rival);
+            raigeki(rival,player1,spellCardAddress);
         }
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Harpie’s Feather Duster")) {
-            harpieFeatherDuster(rival);
+            harpieFeatherDuster(rival,player1,spellCardAddress);
         }
 
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Swords of Revealing Light")) {
             swordsOfRevealingLight(rival, spellCardAddress, player1);
         }
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Dark Hole")) {
-            darkHole(rival, player1);
+            darkHole(rival, player1,spellCardAddress);
         }
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Spell Absorption")) {
-            spellAbsorption(player1);
+            spellAbsorption(player1,spellCardAddress);
         }
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Messenger of peace")) {
             messengerOfPeace(player1, rival);
@@ -64,18 +64,20 @@ public class SpellEffect {
 
     }
 
-    public static void raigeki(String rival) {//kamel3
+    public static void raigeki(String rival,String player1,int ownAddress) {//kamel3
         Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rival).keySet().toArray(new Integer[0]);
         for (int key : keys) {
             MonsterZoneCard.getMonsterCardByAddress(key, rival).removeMonsterFromZone();
         }
+        SpellTrapZoneCard.getSpellCardByAddress(ownAddress,player1).removeSpellTrapFromZone();
     }
 
-    public static void harpieFeatherDuster(String rival) {//kamel3
+    public static void harpieFeatherDuster(String rival,String player1,int ownAddress) {//kamel3
         Integer[] spell = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rival).keySet().toArray(new Integer[0]);
         for (int key : spell) {
             SpellTrapZoneCard.getSpellCardByAddress(key, rival).removeSpellTrapFromZone();
         }
+        SpellTrapZoneCard.getSpellCardByAddress(ownAddress,player1).removeSpellTrapFromZone();
     }
 
     public static void swordsOfRevealingLight(String rival, int ownAddress, String player1) {//Kamel3
@@ -89,9 +91,10 @@ public class SpellEffect {
                 MonsterZoneCard.getMonsterCardByAddress(key, rival).setCanAttack(false);
             }
         }
+        SpellTrapZoneCard.getSpellCardByAddress(ownAddress,player1).removeSpellTrapFromZone();
     }
 
-    public static void darkHole(String rival, String player1) {//kamel3
+    public static void darkHole(String rival, String player1,int ownAddress) {//kamel3
         Map<Integer, MonsterZoneCard> rivalsMonster = MonsterZoneCard.getAllMonstersByPlayerName(rival);
         Integer[] monsterAddress = rivalsMonster.keySet().toArray(new Integer[0]);
         for (int i = 0; i < rivalsMonster.size(); i++) {
@@ -102,11 +105,13 @@ public class SpellEffect {
         for (int i = 0; i < ownMonster.size(); i++) {
             MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], player1).removeMonsterFromZone();
         }
+        SpellTrapZoneCard.getSpellCardByAddress(ownAddress,player1).removeSpellTrapFromZone();
     }
 
 
-    public static void spellAbsorption(String player1) {//kamel3
+    public static void spellAbsorption(String player1,int ownAddress) {//kamel3
         Player.getPlayerByName(player1).changeLifePoint(500);
+        SpellTrapZoneCard.getSpellCardByAddress(ownAddress,player1).removeSpellTrapFromZone();
     }
 
     public static void messengerOfPeace(String player1, String rival) {//kamel3
