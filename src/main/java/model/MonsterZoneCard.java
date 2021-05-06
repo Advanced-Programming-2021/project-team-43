@@ -8,7 +8,7 @@ public class MonsterZoneCard {
     private final String playerNickname;
     private final String monsterName;
     private String mode;
-    private int address;
+    private final int address;
     private int attack;
     private int defend;
     private final int level;

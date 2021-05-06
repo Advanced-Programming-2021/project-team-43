@@ -7,7 +7,7 @@ public class SpellTrapZoneCard {
     private final String playerNickname;
     private final String spellTrapName;
     private String mode;
-    private int address;
+    private final int address;
     private boolean isSelected;
     private int numberOfFullHouse = 0;
     private static final Map<Integer,SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
