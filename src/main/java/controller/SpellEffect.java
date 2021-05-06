@@ -5,7 +5,7 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SpellEffect {
     public static void spellEffectController(int spellCardAddress, String player1, String rival, int victim1Address, int victim2Address,
-                                             boolean deleteMyCard) {
+                                             boolean deleteMyCard1,boolean deleteMyCard2) {
 
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Raigeki")) {
             raigeki(rival,player1,spellCardAddress);
@@ -27,11 +27,11 @@ public class SpellEffect {
             messengerOfPeace(player1, rival);
         }
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Twin Twisters")) {
-            twinTwisters(victim1Address, victim2Address, rival, deleteMyCard, player1);
+            twinTwisters(victim1Address, victim2Address, rival, deleteMyCard1, player1,deleteMyCard2);
         }
 
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Mystical space typhoon")) {
-            mysticalSpaceTyphoon(victim1Address, rival, deleteMyCard, player1);
+            mysticalSpaceTyphoon(victim1Address, rival, deleteMyCard1, player1,deleteMyCard2);
         }
         if (SpellTrapZoneCard.getSpellCardByAddress(spellCardAddress, player1).getSpellTrapName().equals("Yami")) {
             yami(rival, player1);
@@ -132,7 +132,7 @@ public class SpellEffect {
         }
     }
 
-    public static void twinTwisters(int victim1Address, int victim2Address, String rival, boolean mine, String player1) {//kamel3
+    public static void twinTwisters(int victim1Address, int victim2Address, String rival, boolean mine1, String player1,boolean mine2) {//kamel3
         if (mine) {
             if (victim1Address != -1) {
                 SpellTrapZoneCard.getSpellCardByAddress(victim1Address, player1).removeSpellTrapFromZone();
@@ -151,7 +151,7 @@ public class SpellEffect {
         }
     }
 
-    public static void mysticalSpaceTyphoon(int victimAddress, String rival, boolean mine, String player1) {//kamel3
+    public static void mysticalSpaceTyphoon(int victimAddress, String rival, boolean mine1, String player1,boolean mine2) {//kamel3
         if (mine) {
             SpellTrapZoneCard.getSpellCardByAddress(victimAddress, player1);
         }
