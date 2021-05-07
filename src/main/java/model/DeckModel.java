@@ -3,6 +3,7 @@ package model;
 
 
 
+import controller.JSON;
 import controller.MainMenuController;
 
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class DeckModel {
         mainAllCardNumber = mainAllCardNumber + 1;
 
         UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromMain(String cardName) {
@@ -41,6 +43,7 @@ public class DeckModel {
         }
         mainAllCardNumber = mainAllCardNumber - 1;
         UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void addCardToSide(String cardName) {

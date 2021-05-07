@@ -90,16 +90,38 @@ public class MainMenuController {
             }
             pattern = Pattern.compile("export card (.+?)");
             matcher = pattern.matcher(command);
-            if (matcher.find()){
+            if (matcher.find()) {
 
 
+                continue;
+            }
+            pattern = Pattern.compile("^menu exit$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                break;
+            }
+
+            pattern = Pattern.compile("^menu show-current$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                MainMenuView.showInput("import/export Menu");
+                continue;
+            }
+
+
+            pattern = Pattern.compile("^menu enter (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                    MainMenuView.showInput("menu navigation is not possible");
+                } else {
+                    MainMenuView.showInput("invalid command");
+                }
                 continue;
             }
 
 
             MainMenuView.showInput("invalid command");
-
-
 
 
         }
@@ -130,7 +152,7 @@ public class MainMenuController {
             pattern = Pattern.compile("^menu enter (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")||matcher.group(1).equals("Import/Export")) {
+                if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard") || matcher.group(1).equals("Import/Export")) {
                     MainMenuView.showInput("menu navigation is not possible");
                 } else {
                     MainMenuView.showInput("invalid command");
@@ -208,7 +230,7 @@ public class MainMenuController {
             pattern = Pattern.compile("^menu enter (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                if (matcher.group(1).equals("duel") ||matcher.group(1).equals("Import/Export")|| matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
                     MainMenuView.showInput("menu navigation is not possible");
                 } else {
                     MainMenuView.showInput("invalid command");
@@ -309,7 +331,7 @@ public class MainMenuController {
             pattern = Pattern.compile("^menu enter (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                if (matcher.group(1).equals("duel")||matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
                     MainMenuView.showInput("menu navigation is not possible");
                 } else {
                     MainMenuView.showInput("invalid command");

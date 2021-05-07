@@ -10,6 +10,16 @@ public class RegisterAndLoginController {
 
 
     public static void findMatcher() {
+        if (JSON.readUserInfo()==null){
+            JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        }
+        else {
+            UserModel.allUsersInfo=JSON.readUserInfo();
+            UserModel.allUsernames=JSON.readUsernames();
+            UserModel.allUsersNicknames=JSON.readUserNicknames();
+        }
+
+
         while (true) {
             String command;
             command = RegisterAndLoginView.getCommand();
@@ -122,6 +132,7 @@ public class RegisterAndLoginController {
         UserModel.allUsersInfo.put(username, new UserModel(username, password, nickname));
         UserModel.allUsernames.add(username);
         UserModel.allUsersNicknames.add(nickname);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
         RegisterAndLoginView.showInput("user created successfully!");
 
     }
