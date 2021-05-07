@@ -21,9 +21,7 @@ public class MonsterEffect {
         if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Gate Guardian")) {
             gateGuardian(victim1Address, victim2Address, victim3Address, rival);
         }
-//        if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Scanner")) {
-//            scanner(player1, ownAddress);
-//        }
+
         if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, player1).getMonsterName().equals("Marshmallon")) {
             marshmallon(rival, player1, ownAddress);
         }

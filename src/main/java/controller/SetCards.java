@@ -1,5 +1,7 @@
 package main.java.controller;
+
 import main.java.model.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -40,7 +42,7 @@ public class SetCards {
 
     public static void readingCSVFileTrapSpell() {
         String filePath = "SpellTrap.csv";
-//C:\Users\Partiran\IdeaProjects\project-team-43\
+        //C:\Users\Partiran\IdeaProjects\project-team-43\
         try {
             BufferedReader readFile = new BufferedReader(new FileReader(filePath));
             String readFileRow;

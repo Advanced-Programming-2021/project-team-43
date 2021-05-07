@@ -74,9 +74,6 @@ public class MainMenuController {
                 continue;
             }
             MainMenuView.showInput("invalid command");
-
-
-
         }
     }
 

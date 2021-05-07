@@ -252,25 +252,23 @@ public class SpellEffect {
     }
 
     public static void swordOfDarkDestruction(String player1, int ownAddress) {//kamel3
-        ArrayList<Integer> monsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsters();
-        for (Integer monster : monsters) {
-            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(monster, player1).getMonsterName()).getMonsterType().equals("Spellcaster") ||
-                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(monster, player1).getMonsterName()).getMonsterType().equals("Fiend")) {
-                MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeAttack(400);
-                MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeDefend(-200);
-            }
+        int relatedMonsterAddress = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsterAddress();
+
+            if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).getMonsterName()).getMonsterType().equals("Spellcaster") ||
+                    MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).getMonsterName()).getMonsterType().equals("Fiend")) {
+                MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).changeAttack(400);
+                MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).changeDefend(-200);
+
         }
     }
 
     public static void blackPendant(String player1, int ownAddress) {//kamel3
-        ArrayList<Integer> monsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsters();
-        for (Integer monster : monsters) {
-            MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeAttack(500);
-        }
+        int relatedMonsterAddress = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsterAddress();
+            MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).changeAttack(500);
     }
 
     public static void unitedWeStand(String player1, int ownAddress) {//kamel3
-        ArrayList<Integer> monsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsters();
+       int relatedMonsterAddress = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsterAddress();
         Map<Integer, MonsterZoneCard> monstersZone = MonsterZoneCard.getAllMonstersByPlayerName(player1);
         Integer[] namesOfMonstersInZone = monstersZone.keySet().toArray(new Integer[0]);
         int counter = 0;
@@ -281,22 +279,19 @@ public class SpellEffect {
             }
         }
         int increaseAttackAndDefend = 800 * counter;
-        for (Integer monster : monsters) {
-            MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeAttack(increaseAttackAndDefend);
-            MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeDefend(increaseAttackAndDefend);
-        }
+            MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).changeAttack(increaseAttackAndDefend);
+            MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).changeDefend(increaseAttackAndDefend);
     }
 
     public static void magnumShield(String player1, int ownAddress) {//kamel3
-        ArrayList<Integer> monsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsters();
-        for (Integer monster : monsters) {
-            if (MonsterZoneCard.getMonsterCardByAddress(monster, player1).getMode().equals("OO")) {
-                MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeAttack(
-                        MonsterZoneCard.getMonsterCardByAddress(monster, player1).getDefend());
-            }
-            if (MonsterZoneCard.getMonsterCardByAddress(monster, player1).getMode().equals("DO")) {
-                MonsterZoneCard.getMonsterCardByAddress(monster, player1).changeDefend(
-                        MonsterZoneCard.getMonsterCardByAddress(monster, player1).getAttack());
+        int relatedMonsterAddress = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, player1).getRelatedMonsterAddress();
+            if (MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).getMode().equals("OO")) {
+                MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).changeAttack(
+                        MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).getDefend());
+
+            if (MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).getMode().equals("DO")) {
+                MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).changeDefend(
+                        MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, player1).getAttack());
             }
         }
     }

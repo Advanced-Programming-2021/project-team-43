@@ -1,12 +1,12 @@
-import main.java.controller.SetCards;
-import main.java.model.MonsterCard;
+import main.java.controller.*;
+import main.java.model.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        SetCards.readingCSVFileMonster();
+        RegisterAndLoginController.findMatcher();
         SetCards.readingCSVFileTrapSpell();
-        System.out.println(MonsterCard.getMonsterByName("Yomi Ship").getAttack());
+        SetCards.readingCSVFileMonster();
 
     }
 }
