@@ -5,15 +5,12 @@ import java.util.*;
 
 public class GameMatModel {
 
-    private String playerNickname;
     private Phase phase;
-    private List<String> graveyard = new ArrayList<>();
+    private final List<String> graveyard = new ArrayList<>();
     private String fieldZone = "";
-    private boolean isOwnFieldZoneSelected;
-    private static Map<String,GameMatModel> playerGameMat = new HashMap<>();
+    private static final Map<String,GameMatModel> playerGameMat = new HashMap<>();
 
     public GameMatModel (String playerNickname) {
-        this.playerNickname = playerNickname;
         this.phase = Phase.Draw_Phase;
         playerGameMat.put(playerNickname, this);
     }
@@ -34,26 +31,6 @@ public class GameMatModel {
         graveyard.remove(whichCard);
     }
 
-    public void addToFieldZone(String cardName) {
-        fieldZone = cardName;
-    }
-
-    public void removeFromFieldZone(String cardName) {
-        fieldZone = "";
-    }
-
-    public void setOwnFieldZoneSelected() {
-        this.isOwnFieldZoneSelected = true;
-    }
-
-    public boolean getOwnFieldZoneSelected() {
-        return isOwnFieldZoneSelected;
-    }
-
-    public String getFieldZone() {
-        return fieldZone;
-    }
-
     public int getNumberOfDeadCards() {
         return graveyard.size();
     }
@@ -68,7 +45,7 @@ public class GameMatModel {
 
     public void showGraveyard() {
         if (graveyard.isEmpty())
-            GameMatView.showInput("graveyard empty");
+            GameMatView.showInput("Graveyard Empty");
         else {
             int counter = 1;
             for (String eachDeadCard : graveyard) {
@@ -76,6 +53,18 @@ public class GameMatModel {
                 counter++;
             }
         }
+    }
+
+    public String getFieldZone() {
+        return fieldZone;
+    }
+
+    public void addToFieldZone(String cardName) {
+        fieldZone = cardName;
+    }
+
+    public void removeFromFieldZone() {
+        fieldZone = "";
     }
 
     public static GameMatModel getGameMatByNickname(String playerNickname) {

@@ -64,7 +64,7 @@ public class GameMatController {
                 continue;
             }
             if (getMatcher(command, "surrender").find()) {
-                endGame(true);
+                endGame("surrender", roundNumber == 1, onlineUser);
                 continue;
             }
             if (getMatcher(command,"menu exit").find()) {
@@ -315,10 +315,8 @@ public class GameMatController {
                             addToMonsterZoneCard(monsterName, "OO");//new
                             handCard.removeFromHandCard();
                             GameMatView.showInput("Summoned successfully");
-                            if (checkManEaterBug(monsterName) == 1)
-                                return 1;
-                            if (monsterName.equals("Command knight") || monsterName.equals("Mirage Dragon") || monsterName.equals("The Calculator"))
-                                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
+//                            if (monsterName.equals("Command knight") || monsterName.equals("Mirage Dragon") || monsterName.equals("The Calculator"))
+//                                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
                         }
                         else if (monsterLevel == 5 || monsterLevel == 6) {
                             if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 0)
@@ -333,7 +331,7 @@ public class GameMatController {
                             }
                         }
                         else {
-                            if (checkBeastKing(monsterName) == 0) {
+
                                 if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 2)
                                     GameMatView.showInput("There are not enough cards for tribute");
                                 else {
@@ -344,12 +342,12 @@ public class GameMatController {
                                         GameMatView.showInput("Summoned successfully");
                                     }
                                 }
-                            }
+
                         }
                     }
                 }
-                return 1;
             }
+            return 1;
         }
         return 0;
     }
@@ -448,8 +446,8 @@ public class GameMatController {
                             Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
                             GameMatView.showInput("Set successfully");
                             selectedOwnCard = "";
-                            if (cardName.equals("Man-Eater Bug") || cardName.equals("Mirage Dragon") || cardName.equals("The Calculator"))
-                                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
+//                            if (cardName.equals("Man-Eater Bug") || cardName.equals("Mirage Dragon") || cardName.equals("The Calculator"))
+//                                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
                         }
                     }
                     else if (handCard.getKind().equals("Spell")) {
@@ -504,8 +502,8 @@ public class GameMatController {
                             monsterCard.setMode("OO");
                         else
                             monsterCard.setMode("DO");
-                        if (monsterName.equals("Command knight") || monsterName.equals("Mirage Dragon") || monsterName.equals("The Calculator"))
-                            MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
+//                        if (monsterName.equals("Command knight") || monsterName.equals("Mirage Dragon") || monsterName.equals("The Calculator"))
+//                            MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
 
                     }
                 }
@@ -536,8 +534,8 @@ public class GameMatController {
                 MonsterZoneCard rivalMonsterCard = MonsterZoneCard.getMonsterCardByAddress(address, rivalUser);
                 int damage;
                 String rivalMonsterMode = rivalMonsterCard.getMode();
-                if (rivalMonsterCard.getMonsterName().equals("Yomi Ship"))/////////???????????/
-                    MonsterEffect.monsterEffectController(Integer.parseInt(getSpecificPartOfSelectedCard(2)), rivalUser, onlineUser, -1, -1, -1, "Normal", address);
+//                if (rivalMonsterCard.getMonsterName().equals("Yomi Ship"))/////////???????????/
+//                    MonsterEffect.monsterEffectController(Integer.parseInt(getSpecificPartOfSelectedCard(2)), rivalUser, onlineUser, -1, -1, -1, "Normal", address);
 
                 if (rivalMonsterMode.equals("OO")) {
                     if (ownMonsterCard.getAttack() > rivalMonsterCard.getAttack()) {
@@ -683,21 +681,48 @@ public class GameMatController {
                     GameMatView.showInput("its " + rivalUser + "’s turn");
                     GameMatView.showInput("phase: " + Phase.Draw_Phase);
                     changeTurn();
-                    if (onlinePlayer.getNumberOfMainDeckCards() == 0)
-                        endGame(false);
-                    else if (onlinePlayer.getCanDrawCard()) {
-                        String cardName = onlinePlayer.drawCard(false);
-                        GameMatView.showInput("new card added to the hand : " + cardName);
-                        onlinePlayer.removeFromMainDeck();
-                        new HandCardZone(onlineUser, cardName);
-                    }
+//                    if (onlinePlayer.getNumberOfMainDeckCards() == 0)
+//                        endGame(false);
+//                    else if (onlinePlayer.getCanDrawCard()) {
+//                        String cardName = onlinePlayer.drawCard(false);
+//                        GameMatView.showInput("new card added to the hand : " + cardName);
+//                        onlinePlayer.removeFromMainDeck();
+//                        new HandCardZone(onlineUser, cardName);
+//                    }
                 }
             }
         }
         return 0;
     }
 
-    public static void endGame(boolean isSurrender) {
+    public static void endGame(String reason, boolean isOneRound, String loser) {
+        String winner;
+        if (loser.equals(onlineUser))
+            winner = rivalUser;
+        else
+            winner = onlineUser;
+
+        if (isOneRound) {
+            GameMatView.showInput("The Duel is Over!");
+            //UserModel.getUserByNickname(winner).changeUserCoin(1000 + Player.getPlayerByName(winner).getLifePoint());
+            //UserModel.getUserByNickname(loser).changeUserCoin(100);
+            //numberofwin
+            if (reason.equals("surrender")) {
+
+            }
+            else if (reason.equals("nocard")) {
+
+            }
+            else if (reason.equals("lp")) {
+
+            }
+            else if (reason.equals("effect")) {
+
+            }
+        }
+        else {
+
+        }
 
     }
 
@@ -782,17 +807,7 @@ public class GameMatController {
         return 1;
     }
 
-    public static int checkManEaterBug(String monsterName) {
-        if (monsterName.equals("Man-Eater Bug")) {
-            GameMatView.showInput("Please select a rival monster to destroy: ");
-            int address = getAddressOfTributeMonster(0);
-            if (address != 0) {
-                MonsterZoneCard.getAllMonstersByPlayerName(onlineUser).get(address).removeMonsterFromZone();
-                return 1;
-            }
-        }
-        return 0;
-    }
+
 
     public static void backCommand() {
         while (true) {
@@ -855,32 +870,6 @@ public class GameMatController {
         return 0;
     }
 
-    public static int checkBeastKing(String monsterName) {
-        if (monsterName.equals("Beast King Barbaros")) {
-            GameMatView.showInput("Do you want to summon Beast King Barbaros without tributing? (yes/no)");
-            String response = GameMatView.getCommand();
-            selectedOwnCard = "";
-            if (response.equals("yes")) {
-                addToMonsterZoneCard(monsterName, "OO");
-                GameMatView.showInput("Summoned successfully");
-                MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "Normal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
-            }
-            else {
-                if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3)
-                    GameMatView.showInput("There are not enough cards for tribute");
-                else {
-                    GameMatView.showInput("Please select 3 monsters to tribute:");
-                    if (tributeMonster(3, monsterName) == 1) {
-                        Player.getPlayerByName(onlineUser).setCanSetSummonMonster(false);
-                        addToMonsterZoneCard(monsterName, "OO");
-                        GameMatView.showInput("Summoned successfully");
-                        MonsterEffect.monsterEffectController(-1, onlineUser, rivalUser, -1, -1, -1, "NotNormal", MonsterZoneCard.getNumberOfFullHouse(onlineUser));
-                    }
-                }
-            }
-            return 1;
-        }
-        return 0;
-    }
+
 
 }

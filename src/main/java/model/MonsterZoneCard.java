@@ -12,6 +12,7 @@ public class MonsterZoneCard {
     private int attack;
     private int defend;
     private final int level;
+    private final String monsterType;
     private boolean isScanner;
     private boolean haveChangedPositionThisTurn;
     private boolean haveAttackThisTurn;
@@ -19,7 +20,6 @@ public class MonsterZoneCard {
     private boolean canAttackToThisMonster;
     private boolean isEffectUsed;//change turn false
     private int numberOfFullHouse = 0;
-    private List<Integer> allRelatedMonsters = new ArrayList<>();
     private static final Map<Integer,MonsterZoneCard> eachMonsterCard = new HashMap<>();
     private static final Map<String, Map<Integer,MonsterZoneCard>> allMonsterCards = new HashMap<>();
 
@@ -32,6 +32,7 @@ public class MonsterZoneCard {
         this.attack = MonsterCard.getMonsterByName(monsterName).getAttack();
         this.defend = MonsterCard.getMonsterByName(monsterName).getDefend();
         this.level = MonsterCard.getMonsterByName(monsterName).getLevel();
+        this.monsterType = MonsterCard.getMonsterByName(monsterName).getMonsterType();
         this.isScanner = isScanner;
         this.haveChangedPositionThisTurn = true;
         this.canAttack = true;
@@ -78,6 +79,10 @@ public class MonsterZoneCard {
 
     public int getLevel() {
         return level;
+    }
+
+    public String getMonsterType() {
+        return monsterType;
     }
 
     public boolean getHaveChangedPositionThisTurn() {
@@ -134,14 +139,6 @@ public class MonsterZoneCard {
         changeNumberOfFullHouse(-1);
     }
 
-    public void setRelatedMonsters(ArrayList<Integer> allRelatedMonsters) {
-        this.allRelatedMonsters.addAll(allRelatedMonsters);
-    }
-
-    public ArrayList<Integer> getRelatedMonsters() {
-        return (ArrayList<Integer>) allRelatedMonsters;
-    }
-
     @Override
     public String toString() {
         return "Name: " + monsterName + "\n" +
@@ -175,6 +172,15 @@ public class MonsterZoneCard {
         else
             allMonstersMode[4] = getAllMonstersByPlayerName(playerNickname).get(4).getMode();
         return allMonstersMode;
+    }
+
+    public static boolean isThisMonsterTypeExisted(String monsterType, String playerNickname) {
+        for (int i = 1; i < 6; i++)
+            if (allMonsterCards.get(playerNickname).get(i) != null)
+                if (allMonsterCards.get(playerNickname).get(i).getMonsterType().equals(monsterType))
+                    return true;
+        return false;
+
     }
 
     public static MonsterZoneCard getMonsterCardByAddress(int address, String playerNickname) {

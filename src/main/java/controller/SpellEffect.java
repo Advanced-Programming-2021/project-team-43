@@ -5,7 +5,7 @@ import java.util.*;
 
 public class SpellEffect {
 
-    private static String command;
+    private static String response;
     private static int chosenAddress;
 
 
@@ -68,40 +68,40 @@ public class SpellEffect {
             case "ownGraveyard" -> {
                 numberOfDeadCard = GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadCards();
                 GameMatView.showInput("Please enter the number of a Dead Monster from your graveyard to reborn: (from 1 to " + numberOfDeadCard);
-                command = GameMatView.getCommand();
-                while (!command.matches("\\d+")) {
+                response = GameMatView.getCommand();
+                while (!response.matches("\\d+")) {
                     GameMatView.showInput("Please enter correctly the number of your own Dead Monster to reborn: (from 1 to " + numberOfDeadCard);
-                    command = GameMatView.getCommand();
+                    response = GameMatView.getCommand();
                 }
-                return Integer.parseInt(command);
+                return Integer.parseInt(response);
             }
             case "rivalGraveyard" -> {
                 numberOfDeadCard = GameMatModel.getGameMatByNickname(rivalUser).getNumberOfDeadCards();
                 GameMatView.showInput("Please enter the number of a Dead Monster from rival graveyard to reborn: (from 1 to " + numberOfDeadCard);
-                command = GameMatView.getCommand();
-                while (!command.matches("\\d+")) {
+                response = GameMatView.getCommand();
+                while (!response.matches("\\d+")) {
                     GameMatView.showInput("Please enter correctly the number of rival Dead Monster to reborn: (from 1 to " + numberOfDeadCard);
-                    command = GameMatView.getCommand();
+                    response = GameMatView.getCommand();
                 }
-                return Integer.parseInt(command);
+                return Integer.parseInt(response);
             }
             case "rivalMonsterZone" -> {
                 GameMatView.showInput("Please enter the address of one of the Rival Monster: ");
-                command = GameMatView.getCommand();
-                while (!command.matches("[1-5]") || MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).get(Integer.parseInt(command)) == null) {
+                response = GameMatView.getCommand();
+                while (!response.matches("[1-5]") || MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).get(Integer.parseInt(response)) == null) {
                     GameMatView.showInput("Please enter the correct address of one of the Rival Monster:");
-                    command = GameMatView.getCommand();
+                    response = GameMatView.getCommand();
                 }
-                return Integer.parseInt(command);
+                return Integer.parseInt(response);
             }
             case "hand" -> {
                 GameMatView.showInput("Please enter the address of one of your Hand Cards: ");
-                command = GameMatView.getCommand();
-                while (!command.matches("\\d+") || HandCardZone.getNumberOfFullHouse(onlineUser) < Integer.parseInt(command)) {
+                response = GameMatView.getCommand();
+                while (!response.matches("\\d+") || HandCardZone.getNumberOfFullHouse(onlineUser) < Integer.parseInt(response)) {
                     GameMatView.showInput("Please enter the correct address of one of your Hand Cards:");
-                    command = GameMatView.getCommand();
+                    response = GameMatView.getCommand();
                 }
-                return Integer.parseInt(command);
+                return Integer.parseInt(response);
             }
         }
         return 0;
@@ -112,48 +112,48 @@ public class SpellEffect {
         switch (spellName) {
             case "Twin Twisters":
                 GameMatView.showInput("Please enter the number of Spell/Trap card you want to destroy: (1 or 2)");
-                command = GameMatView.getCommand();
-                while (!command.matches("[1-2]")) {
+                response = GameMatView.getCommand();
+                while (!response.matches("[1-2]")) {
                     GameMatView.showInput("Please enter the number of Spell/Trap card you want to destroy: (1 or 2)");
-                    command = GameMatView.getCommand();
+                    response = GameMatView.getCommand();
                 }
-                int counter = Integer.parseInt(command);
+                int counter = Integer.parseInt(response);
                 StringBuilder result = new StringBuilder();
                 for (int i = 0; i < counter; i++) {
                     GameMatView.showInput("Please enter the address of Spell card you want to destroy: (own 1/rival 1)");
-                    command = GameMatView.getCommand();
-                    while (!command.matches("own\\s+\\d+") && !command.matches("rival\\s+\\d+")) {
+                    response = GameMatView.getCommand();
+                    while (!response.matches("own\\s+\\d+") && !response.matches("rival\\s+\\d+")) {
                         GameMatView.showInput("Please enter the address of Spell card you want to destroy: (own 1/rival 1)");
-                        command = GameMatView.getCommand();
+                        response = GameMatView.getCommand();
                     }
-                    result.append(command);
+                    result.append(response);
                 }
                 return result.toString();
             case "Mystical space typhoon":
                 GameMatView.showInput("Please enter the address of Spell card you want to destroy: (own 1/rival 1)");
-                command = GameMatView.getCommand();
-                while (!command.matches("own\\s+\\d+") && !command.matches("rival\\s+\\d+")) {
+                response = GameMatView.getCommand();
+                while (!response.matches("own\\s+\\d+") && !response.matches("rival\\s+\\d+")) {
                     GameMatView.showInput("Please enter the address of Spell card you want to destroy: (own 1/rival 1)");
-                    command = GameMatView.getCommand();
+                    response = GameMatView.getCommand();
                 }
-                return command;
+                return response;
             case "Sword of Dark Destruction":
                 if (!MonsterZoneCard.isThisMonsterTypeExisted("Fiend", onlineUser) && !MonsterZoneCard.isThisMonsterTypeExisted("Spellcaster", onlineUser)) {
                     GameMatView.showInput("You dont have any related Monster Type to equip!");
                     ownSpell.setRelatedMonsterAddress(-1);
                 } else {
                     GameMatView.showInput("Please enter the address of a Fiend or Spellcaster Monster card you want to equip:");
-                    command = GameMatView.getCommand();
-                    MonsterZoneCard relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(command), onlineUser);
-                    while (!command.matches("[1-5]") || relatedMonsterCard == null) {
+                    response = GameMatView.getCommand();
+                    MonsterZoneCard relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
+                    while (!response.matches("[1-5]") || relatedMonsterCard == null) {
                         if (!relatedMonsterCard.getMonsterType().equals("Fiend") && !relatedMonsterCard.getMonsterType().equals("Spellcaster"))
                             GameMatView.showInput("Please enter the address of a Spellcaster/Fiend Monster card to equip:");
                         else
                             GameMatView.showInput("Please enter the correct address of a Monster card to equip:");
-                        command = GameMatView.getCommand();
-                        relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(command), onlineUser);
+                        response = GameMatView.getCommand();
+                        relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
                     }
-                    ownSpell.setRelatedMonsterAddress(Integer.parseInt(command));
+                    ownSpell.setRelatedMonsterAddress(Integer.parseInt(response));
                 }
                 break;
             case "Magnum Shield":
@@ -162,29 +162,29 @@ public class SpellEffect {
                     ownSpell.setRelatedMonsterAddress(-1);
                 } else {
                     GameMatView.showInput("Please enter the address of a Warrior Monster card you want to equip:");
-                    command = GameMatView.getCommand();
-                    MonsterZoneCard relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(command), onlineUser);
-                    while (!command.matches("[1-5]") || relatedMonsterCard == null) {
+                    response = GameMatView.getCommand();
+                    MonsterZoneCard relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
+                    while (!response.matches("[1-5]") || relatedMonsterCard == null) {
                         if (!relatedMonsterCard.getMonsterType().equals("Warrior"))
                             GameMatView.showInput("Please enter the address of a Warrior Monster card to equip:");
                         else
                             GameMatView.showInput("Please enter the correct address of a Monster card to equip:");
-                        command = GameMatView.getCommand();
-                        relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(command), onlineUser);
+                        response = GameMatView.getCommand();
+                        relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
                     }
-                    ownSpell.setRelatedMonsterAddress(Integer.parseInt(command));
+                    ownSpell.setRelatedMonsterAddress(Integer.parseInt(response));
                 }
                 break;
             default:
                 GameMatView.showInput("Please enter the address of a Monster card you want to equip:");
-                command = GameMatView.getCommand();
-                MonsterZoneCard relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(command), onlineUser);
-                while (!command.matches("[1-5]") || relatedMonsterCard == null) {
+                response = GameMatView.getCommand();
+                MonsterZoneCard relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
+                while (!response.matches("[1-5]") || relatedMonsterCard == null) {
                     GameMatView.showInput("Please enter the correct address of a Monster card to equip:");
-                    command = GameMatView.getCommand();
-                    relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(command), onlineUser);
+                    response = GameMatView.getCommand();
+                    relatedMonsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
                 }
-                ownSpell.setRelatedMonsterAddress(Integer.parseInt(command));
+                ownSpell.setRelatedMonsterAddress(Integer.parseInt(response));
                 break;
         }
         return null;
@@ -192,15 +192,15 @@ public class SpellEffect {
 
     private static void monsterReborn(String onlineUser, String rivalUser, GameMatModel ownGameMat) {
         GameMatView.showInput("Please choose from which graveyard you want to pick a Monster? (own/rival)");
-        command = GameMatView.getCommand();
-        while (!command.matches("own|rival")) {
+        response = GameMatView.getCommand();
+        while (!response.matches("own|rival")) {
             GameMatView.showInput("Please choose correctly from which graveyard you want to pick a Monster? (own/rival)");
-            command = GameMatView.getCommand();
+            response = GameMatView.getCommand();
         }
-        chosenAddress = chooseCardAddressFromZone(command + "Graveyard", onlineUser, rivalUser);
+        chosenAddress = chooseCardAddressFromZone(response + "Graveyard", onlineUser, rivalUser);
         ownGameMat.removeFromGraveyardByAddress(chosenAddress);
         ownGameMat.addToGraveyard("Monster Reborn");
-        GameMatController.specialSummon("ownGraveyard", Integer.parseInt(command));
+        GameMatController.specialSummon("ownGraveyard", Integer.parseInt(response));
     }
 
     private static void terraforming(String onlineUser, Player player, GameMatModel ownGameMat) {

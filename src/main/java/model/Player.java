@@ -43,6 +43,26 @@ public class Player {
         allPlayers.put(this.nickname, this);
     }
 
+    public void newGame(DeckModel activeDeck, boolean isYourTurn) {
+        changeNumberOfRound();
+        this.lifePoint = 8000;
+        this.isYourTurn = isYourTurn;
+        this.counterOfTurn = 0;
+        this.canUseTrap = true;
+        this.canSetSummonMonster = true;
+        this.canDrawCard = !isYourTurn;
+        int counter = -1;
+        for (String key : activeDeck.cardsInMainDeck.keySet())
+            for (int i = 0; i < activeDeck.cardsInMainDeck.get(key); i++)
+                playerMainDeck.add(++counter, key);
+
+        counter = -1;
+        for (String key : activeDeck.cardsInSideDeck.keySet())
+            for (int i = 0; i < activeDeck.cardsInSideDeck.get(key); i++)
+                playerSideDeck.add(++counter, key);
+        firstDrawCard();
+    }
+
     public int getLifePoint() {
         return lifePoint;
     }
