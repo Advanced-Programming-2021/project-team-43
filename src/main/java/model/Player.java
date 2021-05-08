@@ -1,4 +1,6 @@
 package model;
+import view.GameMatView;
+
 import java.util.*;
 
 
@@ -14,6 +16,7 @@ public class Player {
     private boolean canSetSummonMonster;
     private int numberOfWin;
     private boolean canDrawCard;
+    private int numberOfDeadMonsterThisTurn = 0;
     private final List<String> playerMainDeck = new ArrayList<>();
     private final List<String> playerSideDeck = new ArrayList<>();
     private static final Map<String,Player> allPlayers = new HashMap<>();
@@ -135,6 +138,14 @@ public class Player {
         this.canDrawCard = canDrawCard;
     }
 
+    public int getNumberOfDeadMonsterThisTurn() {
+        return numberOfDeadMonsterThisTurn;
+    }
+
+    public void changeNumberOfDeadMonsterThisTurn() {///use it
+        numberOfDeadMonsterThisTurn++;
+    }
+
     public void addToMainDeck(String cardName) {
         playerMainDeck.add(playerMainDeck.size(), cardName);
     }
@@ -180,15 +191,38 @@ public class Player {
         }
     }
 
-    public int getAddressOfFieldSpellFromDeck() {
-        for (int i = 0; i < playerMainDeck.size(); i++) {
-            if (Card.getCardsByName(playerMainDeck.get(i)).getCardModel().equals("Spell"))
-                if (SpellCard.getSpellCardByName(playerMainDeck.get(i)).getIcon().equals("Field"))
-                    return i;
+    public void showMainDeck() {
+        if (playerMainDeck.isEmpty())
+            GameMatView.showInput("Main Deck Empty!");
+        else {
+            for (int i = 0; i < playerMainDeck.size(); i++)
+                GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
         }
-        return -1;
     }
 
+    public void showSideDeck() {
+        for (int i = 0; i < playerSideDeck.size(); i++)
+            GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
+    }
+
+    public boolean doesAddressIconMatchInMainDeck(int address, String icon) {
+        String cardName = playerMainDeck.get(address);
+        if (icon.equals("Field")) {
+            if (!Card.getCardsByName(cardName).getCardModel().equals("Spell"))
+                return false;
+            else
+                return SpellCard.getSpellCardByName(cardName).getIcon().equals(icon);
+        }
+        return false;
+    }
+
+    public boolean doesThisIconExistInMainDeck(String icon) {
+        for (String cardName : playerMainDeck) {
+            if (Card.getCardsByName(cardName).getCardModel().equals("Spell") && SpellCard.getSpellCardByName(cardName).getIcon().equals(icon))
+                return true;
+        }
+        return false;
+    }
     public ArrayList<String> getPlayerDeck(String whichDeck) {
         if (whichDeck.equals("main"))
             return (ArrayList<String>)playerMainDeck;

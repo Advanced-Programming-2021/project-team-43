@@ -6,10 +6,13 @@ public class SpellTrapZoneCard {
 
     private final String playerNickname;
     private final String spellTrapName;
+    private final String kind;
+    private final String icon;
     private String mode;
     private final int address;
-    private int numberOfFullHouse = 0;
+    private int numberOfFullHouse = 0;///
     private int relatedMonsterAddress;
+    private int turnCounter = 0;
     private static final Map<Integer,SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
     private static final Map<String, Map<Integer,SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
 
@@ -17,6 +20,14 @@ public class SpellTrapZoneCard {
     public SpellTrapZoneCard(String playerNickname, String spellTrapName, String mode) {
         this.playerNickname = playerNickname;
         this.spellTrapName = spellTrapName;
+        if (Card.getCardsByName(spellTrapName).getCardModel().equals("Spell")) {
+            this.kind = "Spell";
+            this.icon = SpellCard.getSpellCardByName(spellTrapName).getIcon();
+        }
+        else {
+            this.kind = "Trap";
+            this.icon = TrapCard.getTrapCardByName(spellTrapName).getIcon();
+        }
         this.mode = mode;
         this.address = ++numberOfFullHouse;
         eachSpellTrapCard.put(address, this);
@@ -25,6 +36,14 @@ public class SpellTrapZoneCard {
 
     public String getSpellTrapName() {
         return spellTrapName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public String getIcon() {
+        return icon;
     }
 
     public int getAddress() {
@@ -55,11 +74,34 @@ public class SpellTrapZoneCard {
         this.relatedMonsterAddress = relatedMonsterAddress;
     }
 
+    public int getTurnCounter() {
+        return turnCounter;
+    }
+
+    public void setTurnCounter(int turnCounter) {
+        this.turnCounter = turnCounter;
+    }
+
+    public void changeTurnCounter() {
+        turnCounter--;
+    }
+
     public void removeSpellTrapFromZone() {
         GameMatModel.getGameMatByNickname(GameMatController.onlineUser).addToGraveyard(this.spellTrapName);
         allSpellTrapCards.get(this.playerNickname).remove(this.address);
         changeNumberOfFullHouse(-1);
     }
+
+    public static int getAddressOfSpellByIcon(String playerNickname, String icon, String spellName) {
+        for (int i = 1; i < 6; i++)
+            if (allSpellTrapCards.get(playerNickname).get(i) != null && allSpellTrapCards.get(playerNickname).get(i).getIcon().equals(icon))
+                if (allSpellTrapCards.get(playerNickname).get(i).getSpellTrapName().equals(spellName))
+                    return i;
+        return 0;
+    }
+
+
+
 
     @Override
     public String toString() {

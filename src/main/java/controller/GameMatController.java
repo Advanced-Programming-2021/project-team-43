@@ -12,13 +12,13 @@ public class GameMatController {
     public static String rivalUser = "";
     private static String command;
 
-    public static void findMatcher(String ownName, String rivalName, int roundNumber) {
-        onlineUser = ownName;
-        rivalUser = rivalName;
+    public static void commandController(String firstPlayer, String secondPlayer, int roundNumber) {
+        onlineUser = firstPlayer;
+        rivalUser = secondPlayer;
         Phase currentPhase;
         while (true) {
-            command = GameMatView.getCommand();
             currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
+            command = GameMatView.getCommand();
             if (selectCommand(command) == 1) {
                 continue;
             }
@@ -60,6 +60,16 @@ public class GameMatController {
             }
             if (getMatcher(command, "show\\s+graveyard").find()) {
                 GameMatModel.getGameMatByNickname(onlineUser).showGraveyard();
+                backCommand();
+                continue;
+            }
+            if (getMatcher(command, "show\\s+graveyard\\s+--opponent").find()) {
+                GameMatModel.getGameMatByNickname(rivalUser).showGraveyard();
+                backCommand();
+                continue;
+            }
+            if (getMatcher(command, "show\\s+main\\s+deck").find()) {
+                Player.getPlayerByName(onlineUser).showMainDeck();
                 backCommand();
                 continue;
             }
@@ -627,10 +637,11 @@ public class GameMatController {
                                 ritualSummon(currentPhase);
                             ownSpellCard.setMode("O");
                             if (spellIcon.equals("Normal")) {
-                                GameMatView.showInput("I want to activate a Spell!");
-                                ///destroy card
+                                GameMatView.showInput("I want to activate a Spell!\nSpell activated");
+                                SpellEffect.normalEffectController(Integer.parseInt(split[2]), onlineUser, rivalUser);
+                                ownSpellCard.removeSpellTrapFromZone();
+                                GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard(split[1]);
                             }
-                            GameMatView.showInput("Spell activated");
                         }
                     } else if (split[0].equals("hand")) {
                         if (SpellTrapZoneCard.getNumberOfFullHouse(onlineUser) == 5)
@@ -646,8 +657,8 @@ public class GameMatController {
         return 0;
     }
 
-    public static void specialSummon(String whoseCard, int deadMonsterNumber) {
-
+    public static void specialSummon(String monsterName) {
+        //new MonsterZoneCard(onlineUser, monsterName, "OO", false);
     }
 
     public static int changePhase(String command, Phase currentPhase) {

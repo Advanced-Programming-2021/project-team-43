@@ -31,6 +31,20 @@ public class GameMatModel {
         graveyard.remove(whichCard);
     }
 
+    public String getKindOfDeadCardByAddress(int address) {
+        if (graveyard.get(address).isEmpty())
+            return null;
+        else
+            return Card.getCardsByName(graveyard.get(address)).getCardModel();
+    }
+
+    public String getNameOfDeadCardByAddress(int address) {
+        if (graveyard.get(address).isEmpty())
+            return null;
+        else
+            return graveyard.get(address);
+    }
+
     public int getNumberOfDeadCards() {
         return graveyard.size();
     }

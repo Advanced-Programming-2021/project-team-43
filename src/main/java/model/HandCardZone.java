@@ -35,6 +35,7 @@ public class HandCardZone {
     public void removeFromHandCard() {
         allHandCards.get(playerNickname).remove(address);
         eachHandCard.remove(address);
+        //add to graveyard
     }
 
     public static int getNumberOfFullHouse(String playerNickname) {
