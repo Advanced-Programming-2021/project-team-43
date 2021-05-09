@@ -93,19 +93,11 @@ public class TrapEffect {
                 if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).getMonsterName()).getCardModel().equals("Monster")) {
                     MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).removeMonsterFromZone();
                 }
-//            if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).getMonsterName()).getCardModel().equals("Spell") ||
-//                    Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).getMonsterName()).getCardModel().equals("Trap")) {
-//                SpellTrapZoneCard.getSpellCardByAddress(addressOfSummonCard, player1).removeSpellTrapFromZone();
-//            }
             }
             if (!summonMine) {
                 if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).getMonsterName()).getCardModel().equals("Monster")) {
                     MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).removeMonsterFromZone();
                 }
-//            if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).getMonsterName()).getCardModel().equals("Spell") ||
-//                    Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).getMonsterName()).getCardModel().equals("Trap")) {
-//                SpellTrapZoneCard.getSpellCardByAddress(addressOfSummonCard, rival).removeSpellTrapFromZone();
-//            }
             }
         }
     }
