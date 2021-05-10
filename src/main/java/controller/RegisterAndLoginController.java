@@ -19,6 +19,11 @@ public class RegisterAndLoginController {
             UserModel.allUsersNicknames=JSON.readUserNicknames();
         }
 
+        if (JSON.exportCad()!=null)
+        {
+            UserModel.importedCards =JSON.exportCad();
+        }
+
 
         while (true) {
             String command;
