@@ -205,6 +205,19 @@ public class Player {
             GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
     }
 
+    public boolean doesThisCardTypeExist(String model, String type) {
+        for (String cardName : playerMainDeck) {
+            if (Card.getCardsByName(cardName).getCardModel().equals(model)) {
+                if (model.equals("Monster"))
+                    return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
+                if (model.equals("Spell"))
+                    return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
+            }
+
+        }
+        return false;
+    }
+
     public boolean doesAddressIconMatchInMainDeck(int address, String icon) {
         String cardName = playerMainDeck.get(address);
         if (icon.equals("Field")) {
@@ -223,6 +236,7 @@ public class Player {
         }
         return false;
     }
+
     public ArrayList<String> getPlayerDeck(String whichDeck) {
         if (whichDeck.equals("main"))
             return (ArrayList<String>)playerMainDeck;

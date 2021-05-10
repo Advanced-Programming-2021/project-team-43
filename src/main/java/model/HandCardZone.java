@@ -1,4 +1,6 @@
 package model;
+import view.GameMatView;
+
 import java.util.*;
 
 
@@ -42,10 +44,37 @@ public class HandCardZone {
         return allHandCards.get(playerNickname).size();
     }
 
+    public static boolean doesThisCardTypeExist(String playerNickname, String model, String type) {
+        String cardName;
+        for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
+            cardName = allHandCards.get(playerNickname).get(i).getCardName();
+            if (model.equals("Monster"))
+                return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
+            if (model.equals("Spell"))
+                return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
+        }
+        return false;
+    }
+
+    public static boolean doesAnyLevelFourMonsterExisted(String playerNickname) {
+        String cardName;
+        for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
+            cardName = allHandCards.get(playerNickname).get(i).getCardName();
+            if (allHandCards.get(playerNickname).get(i).getKind().equals("Monster"))
+                if (MonsterCard.getMonsterByName(cardName).getLevel() < 5)
+                    return true;
+        }
+        return false;
+    }
+
+    public static void showHandCard(String playerNickname) {
+        for (int i = 0; i < allHandCards.get(playerNickname).size(); i++)
+            GameMatView.showInput(i + 1 + ". " + allHandCards.get(playerNickname).get(i));
+    }
+
     public static HandCardZone getHandCardByAddress(int address, String playerNickname) {
         return allHandCards.get(playerNickname).get(address - 1);
     }
-
 
     public static int doIHaveAnyRitualMonster(String playerNickname) {
         for (HandCardZone eachCard : allHandCards.get(playerNickname))

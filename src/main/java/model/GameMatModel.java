@@ -73,8 +73,8 @@ public class GameMatModel {
         return fieldZone;
     }
 
-    public void addToFieldZone(String cardName) {
-        fieldZone = cardName;
+    public void addToFieldZone(String cardName, String mode) {
+        fieldZone = cardName + " " + mode;
     }
 
     public void removeFromFieldZone() {

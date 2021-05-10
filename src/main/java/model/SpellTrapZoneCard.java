@@ -13,6 +13,7 @@ public class SpellTrapZoneCard {
     private int numberOfFullHouse = 0;///
     private int relatedMonsterAddress;
     private int turnCounter = 0;
+    private final Map<String,List<Integer>> allEffectedMonster = new HashMap<>();
     private static final Map<Integer,SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
     private static final Map<String, Map<Integer,SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
 
@@ -85,6 +86,15 @@ public class SpellTrapZoneCard {
     public void changeTurnCounter() {
         turnCounter--;
     }
+
+    public List<Integer> getAllEffectedMonster(String playerNickname) {
+        return allEffectedMonster.get(playerNickname);
+    }
+
+    public void setAllEffectedMonster(String playerNickname, List<Integer> eachMonster) {
+        allEffectedMonster.put(playerNickname, eachMonster);
+    }
+
 
     public void removeSpellTrapFromZone() {
         GameMatModel.getGameMatByNickname(GameMatController.onlineUser).addToGraveyard(this.spellTrapName);

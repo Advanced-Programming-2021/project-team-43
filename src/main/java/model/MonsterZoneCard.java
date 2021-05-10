@@ -20,16 +20,21 @@ public class MonsterZoneCard {
     private boolean canAttackToThisMonster;
     private boolean isEffectUsed;//change turn false
     private int numberOfFullHouse = 0;
+    private boolean isForOneTurn;
+    private boolean isSummonedByTribute;
     private static final Map<Integer,MonsterZoneCard> eachMonsterCard = new HashMap<>();
     private static final Map<String, Map<Integer,MonsterZoneCard>> allMonsterCards = new HashMap<>();
 
 
-    public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner) {
+    public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn, boolean isSummonedByTribute) {
         this.playerNickname = playerNickname;
         this.monsterName = monsterName;
         this.mode = mode;
         this.address = ++numberOfFullHouse;
-        this.attack = MonsterCard.getMonsterByName(monsterName).getAttack();
+        if (isSummonedByTribute && monsterName.equals("Beast King Barbaros"))
+            this.attack = 1900;
+        else
+            this.attack = MonsterCard.getMonsterByName(monsterName).getAttack();
         this.defend = MonsterCard.getMonsterByName(monsterName).getDefend();
         this.level = MonsterCard.getMonsterByName(monsterName).getLevel();
         this.monsterType = MonsterCard.getMonsterByName(monsterName).getMonsterType();
@@ -37,12 +42,18 @@ public class MonsterZoneCard {
         this.haveChangedPositionThisTurn = true;
         this.canAttack = true;
         this.canAttackToThisMonster = true;
+        this.isForOneTurn = isForOneTurn;
+        this.isSummonedByTribute = isSummonedByTribute;
         eachMonsterCard.put(address,this);
         allMonsterCards.put(playerNickname,eachMonsterCard);
     }
 
     public String getMonsterName() {
         return monsterName;
+    }
+
+    public int getAddress() {
+        return address;
     }
 
     public String getMode() {
@@ -125,6 +136,10 @@ public class MonsterZoneCard {
         this.isEffectUsed = isEffectUsed;
     }
 
+    public boolean getIsForOneTurn() {
+        return isForOneTurn;
+    }
+
     public static int getNumberOfFullHouse(String playerNickname) {
         return allMonsterCards.get(playerNickname).size();
     }
@@ -181,6 +196,12 @@ public class MonsterZoneCard {
                     return true;
         return false;
 
+    }
+
+    public static void removeUselessMonster(String playerNickname) {
+        for (int i = 1; i < 6; i++)
+            if (allMonsterCards.get(playerNickname).get(i) != null && allMonsterCards.get(playerNickname).get(i).getIsForOneTurn())
+                allMonsterCards.get(playerNickname).get(i).removeMonsterFromZone();
     }
 
     public static MonsterZoneCard getMonsterCardByAddress(int address, String playerNickname) {
