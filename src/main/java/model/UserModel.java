@@ -19,7 +19,7 @@ public class UserModel {
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
-
+    public static ArrayList <String> importedCards = new ArrayList<>();
     public UserModel(String username, String password, String nickname) {
         this.username = username;
         this.password = password;

@@ -82,7 +82,11 @@ public class MainMenuController {
             String command = MainMenuView.getCommand();
             Pattern pattern = Pattern.compile("import card (.+?)");
             Matcher matcher = pattern.matcher(command);
+
+
             if (matcher.find()) {
+                UserModel.importedCards.add(matcher.group(1));
+                JSON.importCard(UserModel.importedCards);
 
 
                 continue;
@@ -91,6 +95,7 @@ public class MainMenuController {
             pattern = Pattern.compile("export card (.+?)");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
+                UserModel.importedCards=JSON.exportCad();
 
 
                 continue;
