@@ -32,5 +32,4 @@ public class JSONTest {
         ArrayList<String> cardsAfterWriting=JSON.exportCad();
         assertEquals(cards,cardsAfterWriting);
     }
-
 }
