@@ -55,15 +55,13 @@ public class MonsterEffect {
                 MonsterZoneCard.getMonsterCardByAddress(rivalsKeys[i], rivalUser).changeAttack(400);
             }
             ownMonster.setIsEffectUsed(true);
-            return 1;
         }
         ownMonster.setCanAttackToThisMonster(MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 1);
         if (ownMonster.getMode().equals("DH")) {
             ownMonster.setCanAttackToThisMonster(true);
             ownMonster.setIsEffectUsed(false);
-            return 1;
         }
-        return 0;
+        return 1;
     }
 
     private static int manEaterBug(MonsterZoneCard ownMonsterCard, String rivalUser) {
@@ -213,7 +211,7 @@ public class MonsterEffect {
         return 0;
     }
 
-    public static int beastKingBarbaros(MonsterZoneCard ownMonster, String onlineUser, String rivalUser) {
+    public static int beastKingBarbaros(MonsterZoneCard ownMonster, HandCardZone handCard, String onlineUser, String rivalUser) {
         GameMatView.showInput("Do you want to summon Beast King Barbaros without tributing? (yes/no)");
         response = GameMatView.getCommand();
         while (!response.matches("yes|no")) {
@@ -223,8 +221,10 @@ public class MonsterEffect {
             response = GameMatView.getCommand();
         }
         if (response.equals("yes")) {
-            if (ownMonster == null)
+            if (handCard != null) {
                 new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false, true);
+                handCard.removeFromHandCard();
+            }
             else
                 ownMonster.setAttack(1900);
         }

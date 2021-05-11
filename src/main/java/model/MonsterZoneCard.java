@@ -22,6 +22,7 @@ public class MonsterZoneCard {
     private int numberOfFullHouse = 0;
     private boolean isForOneTurn;
     private boolean isSummonedByTribute;
+    private final Map<String,List<Integer>> allEffectiveSpell = new HashMap<>();
     private static final Map<Integer,MonsterZoneCard> eachMonsterCard = new HashMap<>();
     private static final Map<String, Map<Integer,MonsterZoneCard>> allMonsterCards = new HashMap<>();
 
@@ -144,12 +145,20 @@ public class MonsterZoneCard {
         return allMonsterCards.get(playerNickname).size();
     }
 
+    public List<Integer> getAllEffectedMonster(String playerNickname) {
+        return allEffectiveSpell.get(playerNickname);
+    }
+
+    public void setAllEffectedMonster(String playerNickname, List<Integer> eachMonster) {
+        allEffectiveSpell.put(playerNickname, eachMonster);
+    }
+
     public void changeNumberOfFullHouse(int amount) {
         numberOfFullHouse += amount;
     }
 
     public void removeMonsterFromZone() {
-        GameMatModel.getGameMatByNickname(GameMatController.onlineUser).addToGraveyard(this.monsterName);
+        GameMatModel.getGameMatByNickname(this.playerNickname).addToGraveyard(this.monsterName);
         allMonsterCards.get(this.playerNickname).remove(this.address);
         changeNumberOfFullHouse(-1);
     }

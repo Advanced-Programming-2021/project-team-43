@@ -13,7 +13,6 @@ public class SpellTrapZoneCard {
     private int numberOfFullHouse = 0;///
     private int relatedMonsterAddress;
     private int turnCounter = 0;
-    private final Map<String,List<Integer>> allEffectedMonster = new HashMap<>();
     private static final Map<Integer,SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
     private static final Map<String, Map<Integer,SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
 
@@ -87,20 +86,25 @@ public class SpellTrapZoneCard {
         turnCounter--;
     }
 
-    public List<Integer> getAllEffectedMonster(String playerNickname) {
-        return allEffectedMonster.get(playerNickname);
-    }
 
-    public void setAllEffectedMonster(String playerNickname, List<Integer> eachMonster) {
-        allEffectedMonster.put(playerNickname, eachMonster);
-    }
 
 
     public void removeSpellTrapFromZone() {
-        GameMatModel.getGameMatByNickname(GameMatController.onlineUser).addToGraveyard(this.spellTrapName);
+        GameMatModel.getGameMatByNickname(this.playerNickname).addToGraveyard(this.spellTrapName);
         allSpellTrapCards.get(this.playerNickname).remove(this.address);
         changeNumberOfFullHouse(-1);
     }
+
+    public static boolean doesThisCardNameExist(String playerNickname, String cardName) {
+        for (int i = 0; i < 6; i++) {
+            if (allSpellTrapCards.get(playerNickname).get(i) != null)
+                if (allSpellTrapCards.get(playerNickname).get(i).getSpellTrapName().equals(cardName))
+                    return true;
+        }
+        return false;
+    }
+
+
 
     public static int getAddressOfSpellByIcon(String playerNickname, String icon, String spellName) {
         for (int i = 1; i < 6; i++)
