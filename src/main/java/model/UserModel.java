@@ -27,6 +27,10 @@ public class UserModel {
         this.userScore = 0;
         this.userCoin = 100000;
         this.activeDeck="";
+        allUsersInfo.put(username,this);
+        allUsernames.add(username);
+        allUsersNicknames.add(nickname);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
 
     }
 

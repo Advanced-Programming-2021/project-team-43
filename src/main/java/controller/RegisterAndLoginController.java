@@ -134,10 +134,7 @@ public class RegisterAndLoginController {
 
             return;
         }
-        UserModel.allUsersInfo.put(username, new UserModel(username, password, nickname));
-        UserModel.allUsernames.add(username);
-        UserModel.allUsersNicknames.add(nickname);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+         new UserModel(username, password, nickname);
         RegisterAndLoginView.showInput("user created successfully!");
 
     }
