@@ -11,7 +11,6 @@ public class SpellEffect {
     private static int chosenAddress;
     private static SpellTrapZoneCard spellCard;
 
-
     public static void normalEffectController(int spellAddress, String onlineUser, String rivalUser) {
         spellCard = SpellTrapZoneCard.getSpellCardByAddress(spellAddress, onlineUser);
         String spellName = spellCard.getSpellTrapName();
@@ -38,6 +37,15 @@ public class SpellEffect {
         }
     }
 
+    public static void equipEffectController(String spellName, String onlineUser, int ownAddress) {
+        switch (spellName) {
+            case "Sword of Dark Destruction" -> swordOfDarkDestruction(onlineUser, ownAddress);
+            case "Black Pendant" -> blackPendant(onlineUser, ownAddress);
+            case "United We Stand" -> unitedWeStand(onlineUser, ownAddress);
+            case "Magnum Shield" -> magnumShield(onlineUser, ownAddress);
+        }
+    }
+
     public static void fieldEffectController(String spellName, String onlineUser, String rivalUser) {
         switch (spellName) {
             case "Yami" -> yami(onlineUser, rivalUser);
@@ -47,16 +55,7 @@ public class SpellEffect {
         }
     }
 
-    public static void equipEffectController(String spellName, String onlineUser,int ownAddress) {
-        switch (spellName) {
-            case "Sword of Dark Destruction" -> swordOfDarkDestruction(onlineUser, ownAddress);
-            case "Black Pendant" -> blackPendant(onlineUser,ownAddress);
-            case "United We Stand" -> unitedWeStand(onlineUser,ownAddress);
-            case "Magnum Shield" -> magnumShield(onlineUser,ownAddress);
-        }
-    }
-
-    private static void monsterReborn(String onlineUser, String rivalUser, GameMatModel ownGameMat) {//kamel0
+    private static void monsterReborn(String onlineUser, String rivalUser, GameMatModel ownGameMat) {
         if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 5) {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no free space in Your Monster Zone!");
         } else {
@@ -98,7 +97,7 @@ public class SpellEffect {
         }
     }
 
-    private static void terraforming(String onlineUser, Player player) {//kamel0
+    private static void terraforming(String onlineUser, Player player) {
         if (!player.doesThisIconExistInMainDeck("Field")) {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no Field Spell in Your Main Deck!");
         } else {
@@ -116,27 +115,23 @@ public class SpellEffect {
         }
     }
 
-    private static void potOfGreed(String onlineUser, Player player) {//kamel0
-        if (HandCardZone.getNumberOfFullHouse(onlineUser) <= 4) {
-            String cardName = player.drawCard(false);
-            player.removeFromMainDeck();
-            new HandCardZone(onlineUser, cardName);
-            cardName = player.drawCard(false);
-            player.removeFromMainDeck();
-            new HandCardZone(onlineUser, cardName);
-        } else {
-            GameMatView.showInput("Oops! your hand is full!");
-        }
+    private static void potOfGreed(String onlineUser, Player player) {
+        String cardName = player.drawCard(false);
+        player.removeFromMainDeck();
+        new HandCardZone(onlineUser, cardName);
+        cardName = player.drawCard(false);
+        player.removeFromMainDeck();
+        new HandCardZone(onlineUser, cardName);
     }
 
-    private static void raigeki(String rivalUser) {//kamel0
+    private static void raigeki(String rivalUser) {
         Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).keySet().toArray(new Integer[0]);
         for (int key : keys) {
             MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).removeMonsterFromZone();
         }
     }
 
-    private static void changeOfHeart(String onlineUser, String rivalUser) {//not completed!
+    private static void changeOfHeart(String onlineUser, String rivalUser) {
         if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 5)
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no free space in Your Monster Zone!");
         else {
@@ -150,36 +145,34 @@ public class SpellEffect {
             }
             chosenAddress = Integer.parseInt(response);
             MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).get(chosenAddress).removeMonsterFromZone();
-            new MonsterZoneCard(onlineUser, MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).get(chosenAddress).getMonsterName(), "OO", false);
-            ///set one property
+            new MonsterZoneCard(onlineUser, MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).get(chosenAddress).getMonsterName(), "OO", false, true, false);
         }
     }
 
-    private static void harpieFeatherDuster(String rivalUser) {//kamel0
+    private static void harpieFeatherDuster(String rivalUser) {
         Integer[] spell = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rivalUser).keySet().toArray(new Integer[0]);
         for (int key : spell) {
             SpellTrapZoneCard.getSpellCardByAddress(key, rivalUser).removeSpellTrapFromZone();
         }
     }
 
-    private static void swordsOfRevealingLight(String rivalUser, int ownAddress, String onlineUser) {//not completed!
+    private static void swordsOfRevealingLight(String rivalUser, int ownAddress, String onlineUser) {
         Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).keySet().toArray(new Integer[0]);
         for (int key : keys) {
             MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).setMode("DO");
         }
         if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, onlineUser).getMode().equals("OO") ||
                 MonsterZoneCard.getMonsterCardByAddress(ownAddress, onlineUser).getMode().equals("DO")) {
+            List<Integer> effectedMonsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, rivalUser).getAllEffectedMonster(rivalUser);
             for (int key : keys) {
-//                ArrayList<Integer> spells = MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).getSpellsToForbid();
-//                spells.add(ownAddress);
-                MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).setCanAttack(false
-                        // , spells
-                );
+                MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).setCanAttack(false);
+                effectedMonsters.add(key);
             }
+            SpellTrapZoneCard.getSpellCardByAddress(ownAddress, rivalUser).setAllEffectedMonster(rivalUser, effectedMonsters);
         }
     }
 
-    private static void darkHole(String rivalUser, String onlineUser) {//kamel0
+    private static void darkHole(String rivalUser, String onlineUser) {
         Map<Integer, MonsterZoneCard> monster;
         monster = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
         Integer[] monsterAddress = monster.keySet().toArray(new Integer[0]);
@@ -193,7 +186,7 @@ public class SpellEffect {
         }
     }
 
-    public static void supplySquad(String onlineUser) {//not completed!
+    public static void supplySquad(String onlineUser) {///////////
         int continuousSpellAddress = SpellTrapZoneCard.getAddressOfSpellByIcon(onlineUser, "Continuous", "Supply Squad");
         Player player = Player.getPlayerByName(onlineUser);
         if (continuousSpellAddress != 0) {
@@ -206,31 +199,37 @@ public class SpellEffect {
         }
     }
 
-    public static void spellAbsorption(String onlineUser) {//not completed!
+    public static void spellAbsorption(String onlineUser) {////////
         Player.getPlayerByName(onlineUser).changeLifePoint(500);
         //just check is this spell exist in activate method and call this
     }
 
-    public static void messengerOfPeace(String onlineUser, String rivalUser) {//not completed!
+    public static void messengerOfPeace(String onlineUser, String rivalUser, int ownAddress) {////////
         Map<Integer, MonsterZoneCard> monsters;
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
-        Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
+        Integer[] monsterAddress = monsters.keySet().toArray(new Integer[0]);
+        List<Integer> onlineUserEffectedMonsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, onlineUser).getAllEffectedMonster(onlineUser);
         for (int i = 0; i < monsters.size(); i++) {
-            if (MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], onlineUser).getAttack() >= 1500) {
-                MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], onlineUser).setCanAttack(false);
+            if (MonsterZoneCard.getMonsterCardByAddress(monsterAddress[i], onlineUser).getAttack() >= 1500) {
+                MonsterZoneCard.getMonsterCardByAddress(monsterAddress[i], onlineUser).setCanAttack(false);
+                onlineUserEffectedMonsters.add(monsterAddress[i]);
             }
         }
+        SpellTrapZoneCard.getSpellCardByAddress(ownAddress, onlineUser).setAllEffectedMonster(onlineUser, onlineUserEffectedMonsters);
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
-        Integer[] rivalMonsterNames = monsters.keySet().toArray(new Integer[0]);
+        Integer[] rivalMonsterAddress = monsters.keySet().toArray(new Integer[0]);
+        List<Integer> rivalUserEffectedMonsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, rivalUser).getAllEffectedMonster(rivalUser);
         for (int i = 0; i < monsters.size(); i++) {
-            if (MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).getAttack() >= 1500) {
-                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).setCanAttack(false);
+            if (MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rivalUser).getAttack() >= 1500) {
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rivalUser).setCanAttack(false);
+                rivalUserEffectedMonsters.add(rivalMonsterAddress[i]);
             }
         }
+        SpellTrapZoneCard.getSpellCardByAddress(ownAddress, rivalUser).setAllEffectedMonster(rivalUser, rivalUserEffectedMonsters);
         //need standby phase change after it its dead set attack true
     }
 
-    private static void twinTwisters(String onlineUser, String rivalUser) {//kamel0
+    private static void twinTwisters(String onlineUser, String rivalUser) {
         GameMatView.showInput("Please enter the address of one of your Hand Card to remove:");
         response = GameMatView.getCommand();
         while (Integer.parseInt(response) < 1 || Integer.parseInt(response) > HandCardZone.getNumberOfFullHouse(onlineUser)) {
@@ -284,9 +283,9 @@ public class SpellEffect {
                 SpellTrapZoneCard.getSpellCardByAddress(Integer.parseInt(spellTrapAddress), rivalUser).removeSpellTrapFromZone();
             }
         }
-    }
+    }///refactor
 
-    private static void mysticalSpaceTyphoon(String onlineUser, String rivalUser) {//kamel0
+    private static void mysticalSpaceTyphoon(String onlineUser, String rivalUser) {
         GameMatView.showInput("Whose Spell/Trap you want to destroy: (own or rival)");
         response = GameMatView.getCommand();
         while (!response.matches("own|rival")) {
@@ -318,7 +317,7 @@ public class SpellEffect {
         }
     }
 
-    private static void yami(String onlineUser, String rivalUser) {//kamel0
+    private static void yami(String onlineUser, String rivalUser) {
         Map<Integer, MonsterZoneCard> ownMonsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] ownMonsterAddress = ownMonsters.keySet().toArray(new Integer[0]);
         Map<Integer, MonsterZoneCard> rivalsMonsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
@@ -347,7 +346,7 @@ public class SpellEffect {
         }
     }
 
-    private static void forest(String onlineUser, String rivalUser) {//kamel0
+    private static void forest(String onlineUser, String rivalUser) {
         Map<Integer, MonsterZoneCard> ownMonsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] ownMonsterNames = ownMonsters.keySet().toArray(new Integer[0]);
         Map<Integer, MonsterZoneCard> rivalsMonsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
@@ -370,7 +369,7 @@ public class SpellEffect {
         }
     }
 
-    private static void closedForest(String onlineUser, String rivalUser) {//kamel0
+    private static void closedForest(String onlineUser, String rivalUser) {
         Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
         int increaseAttack = (GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadMonster() + GameMatModel.getGameMatByNickname(rivalUser).getNumberOfDeadMonster()) * 100;
@@ -381,7 +380,7 @@ public class SpellEffect {
         }
     }
 
-    private static void umiiruka(String onlineUser, String rivalUser) {//kamel0
+    private static void umiiruka(String onlineUser, String rivalUser) {
         Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
         for (int i = 0; i < monsters.size(); i++) {
@@ -400,7 +399,7 @@ public class SpellEffect {
         }
     }
 
-    private static void swordOfDarkDestruction(String onlineUser, int ownAddress) {//kamel0
+    private static void swordOfDarkDestruction(String onlineUser, int ownAddress) {
         int relatedMonsterAddress = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, onlineUser).getRelatedMonsterAddress();
         if (MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).getMonsterName()).getMonsterType().equals("Spellcaster") ||
                 MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).getMonsterName()).getMonsterType().equals("Fiend")) {
@@ -409,12 +408,12 @@ public class SpellEffect {
         }
     }
 
-    private static void blackPendant(String onlineUser, int ownAddress) {//kamel0
+    private static void blackPendant(String onlineUser, int ownAddress) {
         int relatedMonsterAddress = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, onlineUser).getRelatedMonsterAddress();
         MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).changeAttack(500);
     }
 
-    private static void unitedWeStand(String onlineUser, int ownAddress) {//kamel0
+    private static void unitedWeStand(String onlineUser, int ownAddress) {
         int relatedMonsterAddress = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, onlineUser).getRelatedMonsterAddress();
         Map<Integer, MonsterZoneCard> monstersZone = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] namesOfMonstersInZone = monstersZone.keySet().toArray(new Integer[0]);
@@ -428,14 +427,14 @@ public class SpellEffect {
         int increaseAttackAndDefend = 800 * counter;
         MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).changeAttack(increaseAttackAndDefend);
         MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).changeDefend(increaseAttackAndDefend);
-
     }
 
-    private static void magnumShield(String onlineUser, int ownAddress) {//kamel0
+    private static void magnumShield(String onlineUser, int ownAddress) {
         int relatedMonsterAddress = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, onlineUser).getRelatedMonsterAddress();
         if (MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).getMode().equals("OO")) {
             MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).changeAttack(
                     MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).getDefend());
+
             if (MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).getMode().equals("DO")) {
                 MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).changeDefend(
                         MonsterZoneCard.getMonsterCardByAddress(relatedMonsterAddress, onlineUser).getAttack());
