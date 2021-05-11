@@ -124,7 +124,7 @@ public class SpellEffect {
         new HandCardZone(onlineUser, cardName);
     }
 
-    private static void raigeki(String rivalUser) {
+    public static void raigeki(String rivalUser) {
         Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).keySet().toArray(new Integer[0]);
         for (int key : keys) {
             MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).removeMonsterFromZone();
@@ -163,12 +163,12 @@ public class SpellEffect {
         }
         if (MonsterZoneCard.getMonsterCardByAddress(ownAddress, onlineUser).getMode().equals("OO") ||
                 MonsterZoneCard.getMonsterCardByAddress(ownAddress, onlineUser).getMode().equals("DO")) {
-            List<Integer> effectedMonsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, rivalUser).getAllEffectedMonster(rivalUser);
             for (int key : keys) {
                 MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).setCanAttack(false);
-                effectedMonsters.add(key);
+                List<Integer> effectedMonsters = MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).getAllEffectedMonster(rivalUser);
+                effectedMonsters.add(ownAddress);
+                MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).setAllEffectedMonster(rivalUser, effectedMonsters);
             }
-            SpellTrapZoneCard.getSpellCardByAddress(ownAddress, rivalUser).setAllEffectedMonster(rivalUser, effectedMonsters);
         }
     }
 
@@ -208,24 +208,24 @@ public class SpellEffect {
         Map<Integer, MonsterZoneCard> monsters;
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] monsterAddress = monsters.keySet().toArray(new Integer[0]);
-        List<Integer> onlineUserEffectedMonsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, onlineUser).getAllEffectedMonster(onlineUser);
         for (int i = 0; i < monsters.size(); i++) {
             if (MonsterZoneCard.getMonsterCardByAddress(monsterAddress[i], onlineUser).getAttack() >= 1500) {
                 MonsterZoneCard.getMonsterCardByAddress(monsterAddress[i], onlineUser).setCanAttack(false);
-                onlineUserEffectedMonsters.add(monsterAddress[i]);
+                List<Integer> onlineUserEffectedMonsters = MonsterZoneCard.getMonsterCardByAddress(monsterAddress[i], onlineUser).getAllEffectedMonster(onlineUser);
+                onlineUserEffectedMonsters.add(ownAddress);
+                MonsterZoneCard.getMonsterCardByAddress(monsterAddress[i],onlineUser).setAllEffectedMonster(onlineUser,onlineUserEffectedMonsters);
             }
         }
-        SpellTrapZoneCard.getSpellCardByAddress(ownAddress, onlineUser).setAllEffectedMonster(onlineUser, onlineUserEffectedMonsters);
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
         Integer[] rivalMonsterAddress = monsters.keySet().toArray(new Integer[0]);
-        List<Integer> rivalUserEffectedMonsters = SpellTrapZoneCard.getSpellCardByAddress(ownAddress, rivalUser).getAllEffectedMonster(rivalUser);
         for (int i = 0; i < monsters.size(); i++) {
             if (MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rivalUser).getAttack() >= 1500) {
                 MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rivalUser).setCanAttack(false);
-                rivalUserEffectedMonsters.add(rivalMonsterAddress[i]);
+                List<Integer> rivalUserEffectedMonsters = MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i], rivalUser).getAllEffectedMonster(rivalUser);
+                rivalUserEffectedMonsters.add(ownAddress);
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterAddress[i],rivalUser).setAllEffectedMonster(rivalUser,rivalUserEffectedMonsters);
             }
         }
-        SpellTrapZoneCard.getSpellCardByAddress(ownAddress, rivalUser).setAllEffectedMonster(rivalUser, rivalUserEffectedMonsters);
         //need standby phase change after it its dead set attack true
     }
 
