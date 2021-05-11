@@ -163,6 +163,18 @@ public class MonsterZoneCard {
         changeNumberOfFullHouse(-1);
     }
 
+    public static void changeOneTurnMonstersIsEffectUsed(String playerNickname) {
+        String cardName;
+        for (int i = 1; i < 6; i++) {
+            if (allMonsterCards.get(playerNickname).get(i) != null) {
+                cardName = allMonsterCards.get(playerNickname).get(i).getMonsterName();
+                if (cardName.equals("Texchanger") || cardName.equals("Herald of Creation"))
+                    allMonsterCards.get(playerNickname).get(i).setIsEffectUsed(false);
+            }
+        }
+    }
+
+
     @Override
     public String toString() {
         return "Name: " + monsterName + "\n" +

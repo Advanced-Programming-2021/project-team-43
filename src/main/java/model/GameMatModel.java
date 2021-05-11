@@ -6,8 +6,8 @@ import java.util.*;
 public class GameMatModel {
 
     private Phase phase;
-    private final List<String> graveyard = new ArrayList<>();
     private String fieldZone = "";
+    private final List<String> graveyard = new ArrayList<>();
     private static final Map<String,GameMatModel> playerGameMat = new HashMap<>();
 
     public GameMatModel (String playerNickname) {
@@ -44,6 +44,17 @@ public class GameMatModel {
         else
             return graveyard.get(address);
     }
+
+    public boolean isAnySevenLevelMonsterInGraveyard() {
+        for (String deadCardName : graveyard) {
+            if (Card.getCardsByName(deadCardName).getCardModel().equals("Monster")) {
+                if (MonsterCard.getMonsterByName(deadCardName).getLevel() > 6)
+                    return true;
+            }
+        }
+        return false;
+    }
+
 
     public int getNumberOfDeadCards() {
         return graveyard.size();

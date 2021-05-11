@@ -10,7 +10,7 @@ public class SpellTrapZoneCard {
     private final String icon;
     private String mode;
     private final int address;
-    private int numberOfFullHouse = 0;///
+    private int numberOfFullHouse = 0;
     private int relatedMonsterAddress;
     private int turnCounter = 0;
     private static final Map<Integer,SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();

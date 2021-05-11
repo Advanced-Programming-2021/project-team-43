@@ -140,7 +140,7 @@ public class MonsterEffect {
         }
         attack *= 300;
         ownMonster.setAttack(attack);
-    }//call this when it comes to monster zone
+    }
 
     public static int terratiger(MonsterZoneCard ownMonster, String onlineUser) {
         GameMatView.showInput("Do you want Summon another Monster in Defend position? (yes/no)");
@@ -229,8 +229,10 @@ public class MonsterEffect {
                 ownMonster.setAttack(1900);
         }
         else {
-            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3)
+            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3) {
                 GameMatView.showInput("Oops! You cant summon this Monster because of lack of Monster to tribute");
+                return -1;
+            }
             else {
                 GameMatView.showInput("Please enter the address of three Monster to tribute: ");
                 for (int i = 1; i < 4; i++) {
@@ -244,7 +246,12 @@ public class MonsterEffect {
                     }
                     MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser).removeMonsterFromZone();
                 }
-                new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false,false, false);
+                if (handCard != null) {
+                    new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false, false);
+                    handCard.removeFromHandCard();
+                }
+                else
+                    ownMonster.setMode("OO");
                 Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
                 Map<Integer, SpellTrapZoneCard> spellsTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rivalUser);
                 Integer[] monster = monsters.keySet().toArray(new Integer[0]);
@@ -263,6 +270,7 @@ public class MonsterEffect {
     public static int gateGuardian(String onlineUser, String rivalUser) {
         if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3) {
             GameMatView.showInput("Oops! You cant summon this Monster because of lack of Monster to tribute");
+            return -1;//cant summon
         }
         else {
             GameMatView.showInput("Please enter the address of three Monster to tribute: ");
@@ -328,11 +336,44 @@ public class MonsterEffect {
             return 1;
         }
         return 0;
-    }//////???????
+    }//////scanning input is really confusing???
 
-    public static void heraldOfCreation() {//???
+    public static int heraldOfCreation(MonsterZoneCard ownMonster, String onlineUser) {
+        GameMatModel ownGameMat = GameMatModel.getGameMatByNickname(onlineUser);
+        if (!ownMonster.getIsEffectUsed()) {
+            if (!ownGameMat.isAnySevenLevelMonsterInGraveyard()) {
+                GameMatView.showInput("Oops! You cant use Herald of Creation effect because of no seven level or higher level monster in your graveyard!");
+                return 0;
+            }
+            else if (HandCardZone.getNumberOfFullHouse(onlineUser) == 0) {
+                GameMatView.showInput("Oops! You cant use Herald of Creation effect because of lack of Hand Card!");
+                return 0;
+            }
+            else {
+                GameMatView.showInput("Please enter the address of a hand card to remove: ");
+                response = GameMatView.getCommand();
+                while (!response.matches("[1-6]") || HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser) == null) {
+                    if (response.equals("cancel"))
+                        return 0;
+                    GameMatView.showInput("Please enter the correct address of your hand card: ");
+                    response = GameMatView.getCommand();
+                }
+                HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
 
-    }////?????
+                GameMatView.showInput("Please enter the address of a seven level or higher level in your graveyard to add to your hand:");
+                response = GameMatView.getCommand();
+                while (!response.matches("\\d") || ownGameMat.getNameOfDeadCardByAddress(Integer.parseInt(response)).isEmpty()) {
+                    if (response.equals("cancel"))
+                        return 0;
+                    GameMatView.showInput("Please enter the correct address of a dead monster from your own graveyard: ");
+                    response = GameMatView.getCommand();
+                }
+                new HandCardZone(onlineUser, ownGameMat.getNameOfDeadCardByAddress(Integer.parseInt(response)));
+                ownGameMat.removeFromGraveyardByAddress(Integer.parseInt(response));
+            }
+        }
+        return 1;
+    }//where should i call this??
 
 }
 
