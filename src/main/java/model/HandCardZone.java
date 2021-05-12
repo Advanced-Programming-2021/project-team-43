@@ -44,7 +44,7 @@ public class HandCardZone {
         return allHandCards.get(playerNickname).size();
     }
 
-    public static boolean doesThisCardTypeExist(String playerNickname, String model, String type) {
+    public static boolean doesThisModelAndTypeExist(String playerNickname, String model, String type) {
         String cardName;
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
             cardName = allHandCards.get(playerNickname).get(i).getCardName();
@@ -55,6 +55,7 @@ public class HandCardZone {
         }
         return false;
     }
+
 
     public static boolean doesAnyLevelFourMonsterExisted(String playerNickname) {
         String cardName;

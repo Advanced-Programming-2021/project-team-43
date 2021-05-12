@@ -11,8 +11,9 @@ public class SpellTrapZoneCard {
     private String mode;
     private final int address;
     private int numberOfFullHouse = 0;
-    private int relatedMonsterAddress;
     private int turnCounter = 0;
+    private boolean isSetInThisTurn;//change in change turn method
+    private final Map<String,Integer> relatedMonsterAddress = new HashMap<>();
     private static final Map<Integer,SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
     private static final Map<String, Map<Integer,SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
 
@@ -66,12 +67,12 @@ public class SpellTrapZoneCard {
         numberOfFullHouse += amount;
     }
 
-    public int getRelatedMonsterAddress() {
+    public Map<String,Integer> getRelatedMonsterAddress() {
         return relatedMonsterAddress;
     }
 
-    public void setRelatedMonsterAddress(int relatedMonsterAddress) {
-        this.relatedMonsterAddress = relatedMonsterAddress;
+    public void setRelatedMonsterAddress(String whoseMonster, int address) {
+        this.relatedMonsterAddress.put(whoseMonster, address);
     }
 
     public int getTurnCounter() {
@@ -86,8 +87,13 @@ public class SpellTrapZoneCard {
         turnCounter--;
     }
 
+    public boolean getIsSetInThisTurn() {
+        return isSetInThisTurn;
+    }
 
-
+    public void setIsSetInThisTurn(boolean isSetInThisTurn) {
+        this.isSetInThisTurn = isSetInThisTurn;
+    }
 
     public void removeSpellTrapFromZone() {
         GameMatModel.getGameMatByNickname(this.playerNickname).addToGraveyard(this.spellTrapName);

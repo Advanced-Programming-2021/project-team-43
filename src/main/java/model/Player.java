@@ -1,22 +1,20 @@
 package model;
 import view.GameMatView;
-
 import java.util.*;
 
 
 public class Player {
 
     private final String nickname;
-    private int lifePoint;
+    private int lifePoint = 8000;
     private boolean isYourTurn;
     private int numberOfRound;
-    private int counterOfTurn;
+    private int counterOfTurn = 1;
     private boolean isYourMoveFinished;
-    private boolean canUseTrap;
-    private boolean canSetSummonMonster;
-    private int numberOfWin;
+    private boolean canUseTrap = true;
+    private boolean canSetSummonMonster = true;
     private boolean canDrawCard;
-    private int numberOfDeadMonsterThisTurn = 0;
+    private int numberOfWin = 0;
     private final List<String> playerMainDeck = new ArrayList<>();
     private final List<String> playerSideDeck = new ArrayList<>();
     private static final Map<String,Player> allPlayers = new HashMap<>();
@@ -25,35 +23,29 @@ public class Player {
 
     public Player (String nickname, DeckModel activeDeck, boolean isYourTurn, int numberOfRound) {
         this.nickname = nickname;
-        this.lifePoint = 8000;
         this.isYourTurn = isYourTurn;
         this.numberOfRound = numberOfRound;
-        this.counterOfTurn = 0;
-        this.canUseTrap = true;
-        this.canSetSummonMonster = true;
-        this.numberOfWin = 0;
         this.canDrawCard = !isYourTurn;
-        int counter = -1;
-        for (String key : activeDeck.cardsInMainDeck.keySet())
-            for (int i = 0; i < activeDeck.cardsInMainDeck.get(key); i++)
-                playerMainDeck.add(++counter, key);
-
-        counter = -1;
-        for (String key : activeDeck.cardsInSideDeck.keySet())
-            for (int i = 0; i < activeDeck.cardsInSideDeck.get(key); i++)
-                playerSideDeck.add(++counter, key);
+        fillTheGameDecks(activeDeck);
         firstDrawCard();
         allPlayers.put(this.nickname, this);
-    }
+    } //call this when duel command is called
 
-    public void newGame(DeckModel activeDeck, boolean isYourTurn) {
-        changeNumberOfRound();
+    public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
+        playerMainDeck.clear();
+        playerSideDeck.clear();
+        numberOfRound--;
         this.lifePoint = 8000;
         this.isYourTurn = isYourTurn;
         this.counterOfTurn = 0;
         this.canUseTrap = true;
         this.canSetSummonMonster = true;
         this.canDrawCard = !isYourTurn;
+        fillTheGameDecks(activeDeck);
+        firstDrawCard();
+    }// call this for next round
+
+    public void fillTheGameDecks(DeckModel activeDeck) {
         int counter = -1;
         for (String key : activeDeck.cardsInMainDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInMainDeck.get(key); i++)
@@ -63,7 +55,25 @@ public class Player {
         for (String key : activeDeck.cardsInSideDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInSideDeck.get(key); i++)
                 playerSideDeck.add(++counter, key);
-        firstDrawCard();
+    }
+
+    public void firstDrawCard() {
+        for (int i = 0; i < 5; i++) {
+            new HandCardZone(nickname, playerMainDeck.get(0));
+            playerMainDeck.remove(0);
+        }
+    }
+
+    public String drawCard(boolean isRandom) {
+        if (isRandom) {
+            Random random = new Random();
+            randomCardNumber = random.nextInt(playerMainDeck.size() - 1);
+        }
+        else
+            randomCardNumber = 0;
+        String cardName = playerMainDeck.get(randomCardNumber);
+        removeFromMainDeck();
+        return cardName;
     }
 
     public int getLifePoint() {
@@ -84,23 +94,19 @@ public class Player {
 
     private int getNumberOfRound() {
         return numberOfRound;
-    }
-
-    public void changeNumberOfRound() {
-        numberOfRound--;
-    }
+    }//use this in end game if game should be continued or not
 
     public int getCounterOfTurn() {
         return counterOfTurn;
-    }
+    }//useless
 
     public void changeCounterOfTurn() {
         counterOfTurn++;
-    }
+    }//call it in change turn
 
     public boolean getIsYourMoveFinished() {
         return isYourMoveFinished;
-    }
+    }//use this in calling method
 
     public void setIsYourMoveFinished(boolean isYourMoveFinished) {
         this.isYourMoveFinished = isYourMoveFinished;
@@ -108,7 +114,7 @@ public class Player {
 
     public boolean getCanUseTrap() {
         return canUseTrap;
-    }
+    }//use when trap is activated
 
     public void setCanUseTrap(boolean canUseTrap) {
         this.canUseTrap = canUseTrap;
@@ -128,22 +134,14 @@ public class Player {
 
     public void changeNumberOfWin() {
         numberOfWin++;
-    }
+    }//call this in endgame
 
     public boolean getCanDrawCard() {
         return canDrawCard;
-    }
+    }//check in change phase
 
     public void setCanDrawCard(boolean canDrawCard) {
         this.canDrawCard = canDrawCard;
-    }
-
-    public int getNumberOfDeadMonsterThisTurn() {
-        return numberOfDeadMonsterThisTurn;
-    }
-
-    public void changeNumberOfDeadMonsterThisTurn() {///use it
-        numberOfDeadMonsterThisTurn++;
     }
 
     public void addToMainDeck(String cardName) {
@@ -166,31 +164,6 @@ public class Player {
         return playerMainDeck.size();
     }
 
-    public void addToSideDeck(String cardName) {
-        playerSideDeck.add(playerSideDeck.size(), cardName);
-    }
-
-    public int getNumberOfSideDeckCards() {
-        return playerSideDeck.size();
-    }
-
-    public String drawCard(boolean isRandom) {
-        if (isRandom) {
-            Random random = new Random();
-            randomCardNumber = random.nextInt(playerMainDeck.size() - 1);
-        }
-        else
-            randomCardNumber = 0;
-        return playerMainDeck.get(randomCardNumber);
-    }
-
-    public void firstDrawCard() {
-        for (int i = 0; i < 5; i++) {
-            new HandCardZone(nickname, playerMainDeck.get(i));
-            playerMainDeck.remove(0);
-        }
-    }
-
     public void showMainDeck() {
         if (playerMainDeck.isEmpty())
             GameMatView.showInput("Main Deck Empty!");
@@ -200,39 +173,47 @@ public class Player {
         }
     }
 
+    public void addToSideDeck(String cardName) {
+        playerSideDeck.add(playerSideDeck.size(), cardName);
+    }
+
+    public void removeFromSideDeckByAddress(int address) {
+        playerSideDeck.remove(address);
+    }
+
+    public int getNumberOfSideDeckCards() {
+        return playerSideDeck.size();
+    }
+
     public void showSideDeck() {
         for (int i = 0; i < playerSideDeck.size(); i++)
             GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
     }
 
-    public boolean doesThisCardTypeExist(String model, String type) {
-        for (String cardName : playerMainDeck) {
-            if (Card.getCardsByName(cardName).getCardModel().equals(model)) {
-                if (model.equals("Monster"))
-                    return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
-                if (model.equals("Spell"))
-                    return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
+    public boolean doesThisModelAndTypeExist(String model, String type) {
+        String kind;
+        for (String eachCard : playerMainDeck) {
+            kind = Card.getCardsByName(eachCard).getCardModel();
+            if (kind.equals("Monster") && model.equals("Monster")) {
+                if (MonsterCard.getMonsterByName(eachCard).getMonsterType().equals(type))
+                    return true;
             }
-
+            else if (kind.equals("Spell") && model.equals("Spell")) {
+                if (SpellCard.getSpellCardByName(eachCard).getIcon().equals(type))
+                    return true;
+            }
         }
         return false;
     }
 
-    public boolean doesAddressIconMatchInMainDeck(int address, String icon) {
+    public boolean doesAddressTypeMatchInMainDeck(int address, String model, String type) {
         String cardName = playerMainDeck.get(address);
-        if (icon.equals("Field")) {
-            if (!Card.getCardsByName(cardName).getCardModel().equals("Spell"))
-                return false;
-            else
-                return SpellCard.getSpellCardByName(cardName).getIcon().equals(icon);
+        String cardModel = Card.getCardsByName(cardName).getCardModel();
+        if (cardModel.equals("Monster") && model.equals("Monster")) {
+            return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
         }
-        return false;
-    }
-
-    public boolean doesThisIconExistInMainDeck(String icon) {
-        for (String cardName : playerMainDeck) {
-            if (Card.getCardsByName(cardName).getCardModel().equals("Spell") && SpellCard.getSpellCardByName(cardName).getIcon().equals(icon))
-                return true;
+        else if (cardModel.equals("Spell") && model.equals("Spell")) {
+            return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
         }
         return false;
     }
@@ -250,7 +231,8 @@ public class Player {
         setCanUseTrap(true);
         setCanSetSummonMonster(true);
         setCanDrawCard(true);
-    }
+        GameMatModel.getGameMatByNickname(nickname).resetNumberOfDeadMonsterThisTurn();
+    }//may have some changes
 
     public static Player getPlayerByName(String playerNickname) {
         return allPlayers.get(playerNickname);

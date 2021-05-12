@@ -14,8 +14,8 @@ public class MonsterZoneCard {
     private final int level;
     private final String monsterType;
     private boolean isScanner;
-    private boolean haveChangedPositionThisTurn;
-    private boolean haveAttackThisTurn;
+    private boolean haveChangedPositionThisTurn;//call it change turn
+    private boolean haveAttackThisTurn;//call it change turn
     private boolean canAttack;
     private boolean canAttackToThisMonster;
     private boolean isEffectUsed;//change turn false

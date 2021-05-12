@@ -8,25 +8,12 @@ public class MonsterEffect {
 
     private static String response;
 
-
     public static int changeModeEffectController(MonsterZoneCard ownMonster, String onlineUser, String rivalUser) {
         String monsterName = ownMonster.getMonsterName();
         return switch (monsterName) {
             case "Command knight" -> commandKnight(ownMonster, onlineUser, rivalUser);
             case "Man-Eater Bug" -> manEaterBug(ownMonster, rivalUser);
             case "Mirage Dragon" -> mirageDragon(ownMonster, rivalUser);
-            default -> 0;
-        };
-    }
-
-    public static int isAttackedEffectController(MonsterZoneCard ownMonster, String onlineUser, MonsterZoneCard rivalMonster, String rivalUser) {
-        String monsterName = ownMonster.getMonsterName();
-        return switch (monsterName) {
-            case "Yomi Ship" -> yomiShip(ownMonster, rivalMonster);
-            case "Suijin" -> suijin(ownMonster);
-            case "Marshmallon" -> marshmallon(ownMonster, rivalUser);
-            case "Texchanger" -> texchanger(ownMonster, onlineUser);
-            case "Exploder Dragon" -> exploderDragon(ownMonster, rivalMonster);
             default -> 0;
         };
     }
@@ -86,16 +73,8 @@ public class MonsterEffect {
         return 1;
     }
 
-    private static int yomiShip(MonsterZoneCard ownMonster, MonsterZoneCard rivalMonster) {
-        if (ownMonster == null) {
-            rivalMonster.removeMonsterFromZone();
-            return 1;//with success
-        }
-        return 0;
-    }
-
-    private static int suijin(MonsterZoneCard ownMonster) {
-        if (!ownMonster.getMode().equals("DH") && !ownMonster.getIsEffectUsed()) {
+    public static int suijin(MonsterZoneCard rivalMonster) {
+        if (!rivalMonster.getMode().equals("DH") && !rivalMonster.getIsEffectUsed()) {
             GameMatView.showInput("Do you want to use this Monster Effect? (yes/no)");
             response = GameMatView.getCommand();
             while (!response.matches("yes|no")) {
@@ -105,27 +84,19 @@ public class MonsterEffect {
                 response = GameMatView.getCommand();
             }
             if (response.equals("yes")) {
-                ownMonster.setIsEffectUsed(true);
+                rivalMonster.setIsEffectUsed(true);
+                GameMatView.showInput("Suijin Monster Effect is activated and your attack is neutralized!");
                 return 1;
             }
         }
         return 0;
     }
 
-    public static int marshmallon(MonsterZoneCard ownMonster, String rivalUser) {
-        if (ownMonster.getMode().equals("DH")) {
-            Player.getPlayerByName(rivalUser).changeLifePoint(-1000);
-            return 1;
+    public static void marshmallon(MonsterZoneCard rivalMonster, String onlineUser) {
+        if (rivalMonster.getMode().equals("DH")) {
+            GameMatView.showInput("Marshmallon MonsterEffect is activated!");
+            Player.getPlayerByName(onlineUser).changeLifePoint(-1000);
         }
-        return 0;
-    }
-
-    private static int exploderDragon(MonsterZoneCard ownMonster, MonsterZoneCard rivalMonster) {
-        if (ownMonster == null) {
-            rivalMonster.removeMonsterFromZone();
-            return 1;
-        }
-        return 0;
     }
 
     public static void theCalculator(String onlineUser, MonsterZoneCard ownMonster) {
@@ -311,8 +282,12 @@ public class MonsterEffect {
         return 1;
     }
 
-    private static int texchanger(MonsterZoneCard ownMonster, String onlineUser) {
-        if (!ownMonster.getIsEffectUsed()) {
+    public static int texchanger(MonsterZoneCard rivalMonster, String rivalUser) {
+        if (!rivalMonster.getIsEffectUsed()) {
+            if (MonsterZoneCard.getNumberOfFullHouse(rivalUser) == 5) {
+                GameMatView.showInput("Oops! You cant use this monster effect because of no free space in monster zone!");
+                return -1;
+            }
             GameMatView.showInput("Please enter the zone name from which you want to pick a monster to summon: (hand/graveyard/deck)");
             response = GameMatView.getCommand();
             while (!response.matches("hand|deck|graveyard")) {
@@ -322,21 +297,62 @@ public class MonsterEffect {
                 response = GameMatView.getCommand();
             }
             if (response.equals("hand")) {
-                if (!HandCardZone.doesThisCardTypeExist(onlineUser, "Monster", "Cyberse")) {
-                    GameMatView.showInput("Oops! You dont have any Cyberse to summon!");
-                } else {
-
+                if (!HandCardZone.doesThisModelAndTypeExist(rivalUser, "Monster", "Cyberse")) {
+                    GameMatView.showInput("Oops! You dont have any Cyberse in your hand to summon!");
                 }
-            } else if (response.equals("graveyard")) {
-
-            } else {
-
+                else {
+                    GameMatView.showInput("Please enter the address of a Cyberse Monster in your hand to summon:");
+                    response = GameMatView.getCommand();
+                    while (!response.matches("[1-6]") || HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser) == null || !MonsterCard.getMonsterByName(HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).getCardName()).getMonsterType().equals("Cyberse")) {
+                        if (response.equals("cancel"))
+                            return 0;
+                        GameMatView.showInput("Please enter the address of a Cyberse Monster in your hand correctly:");
+                        response = GameMatView.getCommand();
+                    }
+                    GameMatView.showInput("Texchanger Monster Effect is activated!");
+                    new MonsterZoneCard(rivalUser, HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).getCardName(), "OO", false, false, false);
+                    HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).removeFromHandCard();
+                }
             }
-            ownMonster.setIsEffectUsed(true);
+            else if (response.equals("graveyard")) {
+                if (!GameMatModel.getGameMatByNickname(rivalUser).doesThisModelAndTypeExist("Monster", "Cyberse"))
+                    GameMatView.showInput("Oops! You dont have any Cyberse in your graveyard to summon!");
+                else {
+                    GameMatView.showInput("Please enter the address of a Cyberse Monster in your graveyard to summon:");
+                    response = GameMatView.getCommand();
+                    while (!response.matches("\\d+") || !GameMatModel.getGameMatByNickname(rivalUser).doesAddressAndTypeMatch(Integer.parseInt(response), "Monster", "Cyberse")) {
+                        if (response.equals("cancel"))
+                            return 0;
+                        GameMatView.showInput("Please enter the address of a Cyberse Monster in your graveyard correctly:");
+                        response = GameMatView.getCommand();
+                    }
+                    GameMatView.showInput("Texchanger Monster Effect is activated!");
+                    new MonsterZoneCard(rivalUser, GameMatModel.getGameMatByNickname(rivalUser).getDeadCardNameByAddress(Integer.parseInt(response)), "OO", false, false, false);
+                    GameMatModel.getGameMatByNickname(rivalUser).removeFromGraveyardByAddress(Integer.parseInt(response));
+                }
+            }
+            else {
+                if (Player.getPlayerByName(rivalUser).doesThisModelAndTypeExist("Monster", "Cyberse"))
+                    GameMatView.showInput("Oops! You dont have any Cyberse in your main deck to summon!");
+                else {
+                    GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck to summon:");
+                    response = GameMatView.getCommand();
+                    while (!response.matches("\\d+") || !Player.getPlayerByName(rivalUser).doesAddressTypeMatchInMainDeck(Integer.parseInt(response), "Monster", "Cyberse")) {
+                        if (response.equals("cancel"))
+                            return 0;
+                        GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck correctly:");
+                        response = GameMatView.getCommand();
+                    }
+                    GameMatView.showInput("Texchanger Monster Effect is activated!");
+                    new MonsterZoneCard(rivalUser, Player.getPlayerByName(rivalUser).getCardNameByAddress(Integer.parseInt(response)), "OO", false, false, false);
+                    Player.getPlayerByName(rivalUser).removeFromMainDeckByAddress(Integer.parseInt(response));
+                }
+            }
+            rivalMonster.setIsEffectUsed(true);
             return 1;
         }
         return 0;
-    }//////scanning input is really confusing???
+    }
 
     public static int heraldOfCreation(MonsterZoneCard ownMonster, String onlineUser) {
         GameMatModel ownGameMat = GameMatModel.getGameMatByNickname(onlineUser);
