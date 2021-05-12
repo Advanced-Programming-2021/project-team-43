@@ -467,6 +467,8 @@ public class SpellEffect {
         }
     }
 
+
+
     private static void magnumShield(String onlineUser, SpellTrapZoneCard ownSpell, String rivalUser) {
         Map<String, Integer> relatedMonster = ownSpell.getRelatedMonsterAddress();
         String[] key = relatedMonster.keySet().toArray(new String[0]);
