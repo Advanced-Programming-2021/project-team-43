@@ -1,5 +1,7 @@
 package controller;
 
+import model.GameMatModel;
+import model.Player;
 import model.UserModel;
 
 import view.MainMenuView;
@@ -95,7 +97,7 @@ public class MainMenuController {
             pattern = Pattern.compile("export card (.+?)");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                UserModel.importedCards=JSON.exportCad();
+                UserModel.importedCards = JSON.exportCad();
 
 
                 continue;
@@ -186,7 +188,19 @@ public class MainMenuController {
                             if (roundNumber == 1 || roundNumber == 3) {
 
 
-                                GameMatController.findMatcher(MainMenuController.username, playerName, roundNumber);
+                                String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
+                                String secondPlayer;
+                                if (firstPlayer.equals(playerName)) {
+                                    secondPlayer = MainMenuController.username;
+                                } else {
+                                    secondPlayer = playerName;
+                                }
+
+                                new Player(UserModel.getUserByUsername(firstPlayer).getNickname(),UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()),true,roundNumber );
+                                new Player(UserModel.getUserByUsername(secondPlayer).getNickname(),UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()),false,roundNumber );
+                                new GameMatModel(UserModel.getUserByUsername(firstPlayer).getNickname());
+                                new GameMatModel(UserModel.getUserByUsername(secondPlayer).getNickname());
+                                //GameMatController.findMatcher(MainMenuController.username, playerName, roundNumber);
 
 
                             } else {
