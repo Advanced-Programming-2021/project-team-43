@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 public class MainMenuController {
 
     public static String username;
+    public static String username2 ;
 
     public static void findMatcher() {
         while (true) {
@@ -176,7 +177,7 @@ public class MainMenuController {
         if (UserModel.isRepeatedUsername(playerName)) {
             UserModel user1 = UserModel.getUserByUsername(MainMenuController.username);
             UserModel user2 = UserModel.getUserByUsername(playerName);
-
+            username2=playerName;
             if (!user1.getActiveDeck().equals("")) {
 
                 if (!user2.getActiveDeck().equals("")) {
@@ -201,6 +202,8 @@ public class MainMenuController {
                                 new GameMatModel(UserModel.getUserByUsername(firstPlayer).getNickname());
                                 new GameMatModel(UserModel.getUserByUsername(secondPlayer).getNickname());
                                 //GameMatController.findMatcher(MainMenuController.username, playerName, roundNumber);
+
+
 
 
                             } else {
