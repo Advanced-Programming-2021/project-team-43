@@ -17,21 +17,24 @@ public class Player {
     private int numberOfWin = 0;
     private final List<String> playerMainDeck = new ArrayList<>();
     private final List<String> playerSideDeck = new ArrayList<>();
+    private final List<Integer> allLifePoints = new ArrayList<>();
     private static final Map<String,Player> allPlayers = new HashMap<>();
     private static int randomCardNumber;
-
+    public static boolean isOneRound;
 
     public Player (String nickname, DeckModel activeDeck, boolean isYourTurn, int numberOfRound) {
         this.nickname = nickname;
         this.isYourTurn = isYourTurn;
         this.numberOfRound = numberOfRound;
         this.canDrawCard = !isYourTurn;
+        isOneRound = (numberOfRound == 1);
         fillTheGameDecks(activeDeck);
         firstDrawCard();
         allPlayers.put(this.nickname, this);
     } //call this when duel command is called
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
+        allLifePoints.add(lifePoint);
         playerMainDeck.clear();
         playerSideDeck.clear();
         numberOfRound--;
@@ -46,15 +49,13 @@ public class Player {
     }// call this for next round
 
     public void fillTheGameDecks(DeckModel activeDeck) {
-        int counter = -1;
         for (String key : activeDeck.cardsInMainDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInMainDeck.get(key); i++)
-                playerMainDeck.add(++counter, key);
+                playerMainDeck.add(key);
 
-        counter = -1;
         for (String key : activeDeck.cardsInSideDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInSideDeck.get(key); i++)
-                playerSideDeck.add(++counter, key);
+                playerSideDeck.add(key);
     }
 
     public void firstDrawCard() {
@@ -92,7 +93,7 @@ public class Player {
         this.isYourTurn = isYourTurn;
     }
 
-    private int getNumberOfRound() {
+    public int getNumberOfRound() {
         return numberOfRound;
     }//use this in end game if game should be continued or not
 
@@ -188,6 +189,23 @@ public class Player {
     public void showSideDeck() {
         for (int i = 0; i < playerSideDeck.size(); i++)
             GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
+    }
+
+    public int getMaxLifePoints() {
+        if (allLifePoints.size() == 2) {
+            if (allLifePoints.get(0) >= allLifePoints.get(1))
+                return allLifePoints.get(0);
+            else
+                return allLifePoints.get(1);
+        }
+        else {
+            if (allLifePoints.get(0) >= allLifePoints.get(1) && allLifePoints.get(0) >= allLifePoints.get(2))
+                return allLifePoints.get(0);
+            else if (allLifePoints.get(1) >= allLifePoints.get(0) && allLifePoints.get(1) >= allLifePoints.get(2))
+                return allLifePoints.get(1);
+            else
+                return allLifePoints.get(2);
+        }
     }
 
     public boolean doesThisModelAndTypeExist(String model, String type) {

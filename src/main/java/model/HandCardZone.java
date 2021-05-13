@@ -1,6 +1,7 @@
 package model;
 import view.GameMatView;
 
+import javax.swing.plaf.PanelUI;
 import java.util.*;
 
 
@@ -40,6 +41,16 @@ public class HandCardZone {
         //add to graveyard
     }
 
+    public static int[] getAddressByName(String playerNickname, String cardName) {
+        int[] allAddresses = new int[6];
+        int counter = -1;
+        for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
+            if (allHandCards.get(playerNickname).get(i).getCardName().equals(cardName))
+                allAddresses[++counter] = allHandCards.get(playerNickname).get(i).getAddress();
+        }
+        return allAddresses;
+    }
+
     public static int getNumberOfFullHouse(String playerNickname) {
         return allHandCards.get(playerNickname).size();
     }
@@ -67,6 +78,16 @@ public class HandCardZone {
         }
         return false;
     }
+
+    public static boolean doesThisCardNameExist(String playerNickname, String cardName) {
+        for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
+            if (allHandCards.get(playerNickname).get(i).getCardName().equals(cardName))
+                return true;
+        }
+        return false;
+    }
+
+
 
     public static void showHandCard(String playerNickname) {
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++)

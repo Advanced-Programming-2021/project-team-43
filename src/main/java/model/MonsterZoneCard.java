@@ -81,10 +81,6 @@ public class MonsterZoneCard {
         return defend;
     }
 
-    public void setDefend(int defend) {
-        this.defend = defend;
-    }
-
     public void changeDefend(int defend) {
         this.defend += defend;
     }
@@ -174,6 +170,14 @@ public class MonsterZoneCard {
         }
     }
 
+
+    public static int getAddressByMonsterName(String playerNickname, String monsterName) {
+        for (int i = 1; i < 6; i++)
+            if (allMonsterCards.get(playerNickname).get(i) != null)
+                if (allMonsterCards.get(playerNickname).get(i).getMonsterName().equals(monsterName))
+                    return allMonsterCards.get(playerNickname).get(i).getAddress();
+        return 0;
+    }
 
     @Override
     public String toString() {
