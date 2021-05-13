@@ -32,11 +32,11 @@ public class TrapEffect {
 
     public static void mirrorForce(String rival, String onlineUser) {//completed!
         if (!ringOfDefenseEffect(rival, onlineUser)) {
-            Map<Integer, MonsterZoneCard> rivalsMonster = MonsterZoneCard.getAllMonstersByPlayerName(rival);
-            Integer[] addressOfRivalsMonsters = rivalsMonster.keySet().toArray(new Integer[0]);
-            for (int i = 0; i < rivalsMonster.size(); i++) {
-                if (MonsterZoneCard.getMonsterCardByAddress(addressOfRivalsMonsters[i], rival).getMode().equals("OO")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfRivalsMonsters[i], rival).removeMonsterFromZone();
+            Map<Integer, MonsterZoneCard> ownMonster = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
+            Integer[] addressOfOwnMonsters = ownMonster.keySet().toArray(new Integer[0]);
+            for (int i = 0; i < ownMonster.size(); i++) {
+                if (MonsterZoneCard.getMonsterCardByAddress(addressOfOwnMonsters[i], onlineUser).getMode().equals("OO")) {
+                    MonsterZoneCard.getMonsterCardByAddress(addressOfOwnMonsters[i], onlineUser).removeMonsterFromZone();
                 }
             }
         }
