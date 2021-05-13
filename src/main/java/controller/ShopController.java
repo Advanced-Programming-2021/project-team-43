@@ -1,10 +1,12 @@
 package main.java.controller;
+
 import main.java.model.*;
-import main.java.view.*;
+import main.java.view.ShopView;
+
 import java.util.*;
 import java.util.regex.*;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 public class ShopController {
 
     public static String onlineUser = MainMenuController.username;
@@ -13,29 +15,40 @@ public class ShopController {
         String command;
         while (true) {
             command = ShopView.getCommand();
-            if (getMatcher(command,"shop\\s+buy\\s+(\\w+)").find()) {
-                shopBuy(getMatcher(command,"shop\\s+buy\\s+(\\w+)").group(1));
+            command = command.trim();
+            Pattern pattern = Pattern.compile("shop\\s* buy\\s* (\\w*)");
+            Matcher matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                shopBuy(matcher.group(1));
                 continue;
             }
-            if (getMatcher(command,"shop\\s+show\\s+--all").find()) {
+            Pattern pattern1 = Pattern.compile("shop \\s*show\\s* --all");
+            Matcher matcher1 = pattern1.matcher(command);
+            if (matcher1.find()) {
                 shopShow();
                 continue;
             }
-            if (getMatcher(command,"menu\\s+enter\\s+(\\w+)").find()) {
-                String menuName = getMatcher(command,"menu\\s+enter\\s+(\\w+)").group(1);
+            Pattern pattern2 = Pattern.compile("menu \\s*enter \\s*(\\w*)");
+            Matcher matcher2 = pattern2.matcher(command);
+            if (matcher2.find()) {
+                String menuName = matcher2.group(1);
                 if (menuName.equals("Main Menu"))
                     MainMenuController.findMatcher();
                 else if (menuName.equals("Deck") || menuName.equals("Profile") || menuName.equals("Scoreboard") || menuName.equals("Duel") || menuName.equals("Import/Export"))
-                    ShopView.showInput("Menu navigation is not possible");
+                    ShopView.showInput("menu navigation is not possible");
                 else
                     ShopView.showInput("invalid command");
                 continue;
             }
-            if (getMatcher(command,"menu\\s+show-current").find()) {
+            Pattern pattern3=Pattern.compile("menu \\s*show-current");
+            Matcher matcher3=pattern3.matcher(command);
+            if (matcher3.find()) {
                 ShopView.showInput("shop");
                 continue;
             }
-            if (getMatcher(command,"menu\\s+exit").find()) {
+            Pattern pattern4=Pattern.compile("menu \\s*exit");
+            Matcher matcher4=pattern4.matcher(command);
+            if (matcher4.find()) {
                 MainMenuController.findMatcher();
                 break;
             }
@@ -55,16 +68,17 @@ public class ShopController {
     }
 
     private static void shopBuy(String cardName) {
-        Integer cardPrice = ShopModel.getCardPriceByName(cardName);
-        if (cardPrice == null) {
-            ShopView.showInput("There is no card with this name");
+        int cardPrice = ShopModel.getCardPriceByName(cardName);
+        if (cardPrice == 0) {
+            ShopView.showInput("there is no card with this name");
             return;
         }
         UserModel user = UserModel.getUserByUsername(onlineUser);
         if (user.getUserCoin() < cardPrice)
-            ShopView.showInput("Not enough money");
+            ShopView.showInput("not enough money");
         user.changeUserCoin(-1 * cardPrice);
         user.addCardToUserAllCards(cardName);
+        ShopView.showInput("your shopping was successful!");
     }
 
 }
