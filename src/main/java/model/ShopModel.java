@@ -4,10 +4,10 @@ import java.util.*;
 
 public class ShopModel {
 
-    private static Map<String,Integer> cardInfo= new HashMap<>();
+    private static final Map<String,Integer> cardInfo= new HashMap<>();
 
-    public ShopModel() {
-        for (Map.Entry<String,Card> eachCard : Card.getCards().entrySet()) {
+    public ShopModel(HashMap<String, Card> allCards) {
+        for (Map.Entry<String,Card> eachCard : allCards.entrySet()) {
             cardInfo.put(eachCard.getKey(), Card.getCardsByName(eachCard.getKey()).getPrice());
         }
     }
@@ -18,8 +18,6 @@ public class ShopModel {
                 return entry.getValue();
         return 0;
     }
-
-
 
     public static HashMap<String,Integer> getCardInfo() {
         return (HashMap<String, Integer>) cardInfo;

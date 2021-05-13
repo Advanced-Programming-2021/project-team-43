@@ -10,6 +10,7 @@ public class ShopController {
     public static String onlineUser = MainMenuController.username;
 
     public static void findMatcher() {
+        new ShopModel(Card.getCards());
         String command;
         while (true) {
             command = ShopView.getCommand();
