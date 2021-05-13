@@ -1,13 +1,15 @@
 package model;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 
 public class ShopModel {
 
-    private static final Map<String,Integer> cardInfo= new HashMap<>();
+    private static final Map<String, Integer> cardInfo= new HashMap<>();
 
-    public ShopModel(HashMap<String, Card> allCards) {
-        for (Map.Entry<String,Card> eachCard : allCards.entrySet()) {
+    public ShopModel(@NotNull HashMap<String, Card> allCards) {
+        for (Map.Entry<String, Card> eachCard : allCards.entrySet()) {
             cardInfo.put(eachCard.getKey(), Card.getCardsByName(eachCard.getKey()).getPrice());
         }
     }
@@ -18,7 +20,7 @@ public class ShopModel {
         return 0;
     }
 
-    public static HashMap<String,Integer> getCardInfo() {
+    public static HashMap<String, Integer> getCardInfo() {
         return (HashMap<String, Integer>) cardInfo;
     }
 

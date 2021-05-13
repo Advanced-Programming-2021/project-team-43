@@ -6,7 +6,7 @@ public class ShopView {
 
     public static String getCommand() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        return scanner.nextLine().trim();
     }
 
     public static void showInput(String input) {

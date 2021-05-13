@@ -9,30 +9,33 @@ public class ShopController {
 
     public static String onlineUser = MainMenuController.username;
 
-    public static void findMatcher() {
+    public static void commandController() {
+        Matcher matcher;
         String command;
         while (true) {
             command = ShopView.getCommand();
-            if (getMatcher(command,"shop\\s+buy\\s+(\\w+)").find()) {
-                shopBuy(getMatcher(command,"shop\\s+buy\\s+(\\w+)").group(1));
+            if ((matcher = getMatcher(command,"shop\\s+buy\\s+(\\w+)")).find()) {
+                shopBuy(matcher);
                 continue;
             }
             if (getMatcher(command,"shop\\s+show\\s+--all").find()) {
                 shopShow();
                 continue;
             }
-            if (getMatcher(command,"menu\\s+enter\\s+(\\w+)").find()) {
-                String menuName = getMatcher(command,"menu\\s+enter\\s+(\\w+)").group(1);
-                if (menuName.equals("Main Menu"))
+            if ((matcher = getMatcher(command,"menu\\s+enter\\s+(\\w+)")).find()) {
+                String menuName = matcher.group(1);
+                if (menuName.equals("Main")) {
                     MainMenuController.findMatcher();
-                else if (menuName.equals("Deck") || menuName.equals("Profile") || menuName.equals("Scoreboard") || menuName.equals("Duel") || menuName.equals("Import/Export"))
+                    break;
+                }
+                else if (menuName.equals("Shop") || menuName.equals("Deck") || menuName.equals("Profile") || menuName.equals("Scoreboard") || menuName.equals("Duel") || menuName.equals("Import/Export"))
                     ShopView.showInput("menu navigation is not possible");
                 else
                     ShopView.showInput("invalid command");
                 continue;
             }
             if (getMatcher(command,"menu\\s+show-current").find()) {
-                ShopView.showInput("shop");
+                ShopView.showInput("Shop");
                 continue;
             }
             if (getMatcher(command,"menu\\s+exit").find()) {
@@ -50,21 +53,24 @@ public class ShopController {
 
     private static void shopShow() {
         TreeMap<String, Integer> sortedMap = new TreeMap<>(ShopModel.getCardInfo());
-        for (Map.Entry<String, Integer> entry : sortedMap.entrySet())
-            ShopView.showInput(entry.getKey() + " : " + entry.getValue());
+        for (Map.Entry<String, Integer> eachCard : sortedMap.entrySet())
+            ShopView.showInput(eachCard.getKey() + " : " + eachCard.getValue());
     }
 
-    private static void shopBuy(String cardName) {
+    private static void shopBuy(Matcher matcher) {
+        String cardName = matcher.group(1);
         int cardPrice = ShopModel.getCardPriceByName(cardName);
-        if (cardPrice == 0) {
+        if (cardPrice == 0)
             ShopView.showInput("there is no card with this name");
-            return;
+        else {
+            UserModel user = UserModel.getUserByUsername(onlineUser);
+            if (user.getUserCoin() < cardPrice)
+                ShopView.showInput("not enough money");
+            else {
+                user.changeUserCoin(-1 * cardPrice);
+                user.addCardToUserAllCards(cardName);
+            }
         }
-        UserModel user = UserModel.getUserByUsername(onlineUser);
-        if (user.getUserCoin() < cardPrice)
-            ShopView.showInput("not enough money");
-        user.changeUserCoin(-1 * cardPrice);
-        user.addCardToUserAllCards(cardName);
     }
-
 }
+
