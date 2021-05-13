@@ -16,7 +16,7 @@ public class ShopController {
         while (true) {
             command = ShopView.getCommand();
             command = command.trim();
-            Pattern pattern = Pattern.compile("^shop\\s* buy\\s* (\\w*)$");
+            Pattern pattern = Pattern.compile("^shop\\s* buy\\s* (.+?)$");
             Matcher matcher = pattern.matcher(command);
             if (matcher.find()) {
                 shopBuy(matcher.group(1));
