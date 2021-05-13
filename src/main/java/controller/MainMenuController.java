@@ -177,7 +177,7 @@ public class MainMenuController {
         if (UserModel.isRepeatedUsername(playerName)) {
             UserModel user1 = UserModel.getUserByUsername(MainMenuController.username);
             UserModel user2 = UserModel.getUserByUsername(playerName);
-            username2=playerName;
+
             if (!user1.getActiveDeck().equals("")) {
 
                 if (!user2.getActiveDeck().equals("")) {
@@ -187,7 +187,7 @@ public class MainMenuController {
                         if (user2.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
 
                             if (roundNumber == 1 || roundNumber == 3) {
-
+                                username2=playerName;
 
                                 String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
                                 String secondPlayer;
