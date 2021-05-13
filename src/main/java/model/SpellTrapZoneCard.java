@@ -120,7 +120,27 @@ public class SpellTrapZoneCard {
         return 0;
     }
 
+    public static boolean isThisTrapActivated(String playerNickname, String trapName) {
+        SpellTrapZoneCard trapCard;
+        for (int i = 1; i < 6; i++) {
+            trapCard = allSpellTrapCards.get(playerNickname).get(i);
+            if (trapCard.getKind().equals("Trap"))
+                if (trapCard.getSpellTrapName().equals(trapName) && trapCard.getMode().equals("O"))
+                    return true;
+        }
+        return false;
+    }
 
+    public static boolean isThisSpellActivated(String playerNickname, String spellName) {
+        SpellTrapZoneCard spellCard;
+        for (int i = 1; i < 6; i++) {
+            spellCard = allSpellTrapCards.get(playerNickname).get(i);
+            if (spellCard.getKind().equals("Spell"))
+                if (spellCard.getSpellTrapName().equals(spellName) && spellCard.getMode().equals("O"))
+                    return true;
+        }
+        return false;
+    }
 
 
     @Override
