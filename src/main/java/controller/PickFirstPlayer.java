@@ -32,7 +32,7 @@ public class PickFirstPlayer {
         }
 
         String winner = rockPaperScissors(player1, player2);
-        System.out.println(UserModel.getUserByUsername(winner) + " do you want play first ? (yes or no)");
+        System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
         while (true) {
             if (scanner.nextLine().equals("yes")) {
                 return winner;
