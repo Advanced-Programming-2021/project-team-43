@@ -184,7 +184,7 @@ public class MainMenuController {
 
                     if (user1.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
 
-                        if (user2.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
+                        if (user2.userAllDecks.get(user2.getActiveDeck()).validOrInvalid().equals("valid")) {
 
                             if (roundNumber == 1 || roundNumber == 3) {
                                 username2=playerName;
@@ -229,6 +229,7 @@ public class MainMenuController {
         } else {
             MainMenuView.showInput("there is no player with this username");
         }
+
     }
 
     private static void profile() {
