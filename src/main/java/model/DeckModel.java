@@ -26,7 +26,7 @@ public class DeckModel {
 
     public void addCardToMain(String cardName) {
         if (cardsInMainDeck.get(cardName) == null) {
-            cardsInSideDeck.put(cardName, 1);
+            cardsInMainDeck.put(cardName, 1);
         } else {
             cardsInMainDeck.replace(cardName, cardsInMainDeck.get(cardName) + 1);
         }
