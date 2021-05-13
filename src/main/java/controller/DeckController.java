@@ -1,28 +1,36 @@
 package main.java.controller;
-import main.java.model.*;
-import main.java.view.*;
-import java.util.*;
-import java.util.regex.*;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+import main.java.view.DeckView;
+import main.java.view.MainMenuView;
+import main.java.model.*;
+
+
+import java.util.Arrays;
+
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class DeckController {
     public static void findMatcher() {
         while (true) {
             String command = DeckView.getCommand();
-            Pattern pattern = Pattern.compile("^deck create (.+?)$");
+            command=command.trim();
+            Pattern pattern = Pattern.compile("^deck \\s*create \\s*(.+?)$");
             Matcher matcher = pattern.matcher(command);
             if (matcher.find()) {
                 createDeck(matcher);
                 continue;
             }
-            pattern = Pattern.compile("^deck delete (.+?)$");
+            pattern = Pattern.compile("^deck\\s* delete \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 deleteDeck(matcher);
                 continue;
             }
 
-            pattern = Pattern.compile("^deck set-activate (.+?)$");
+            pattern = Pattern.compile("^deck\\s* set-activate \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 setActivate(matcher.group(1));
@@ -30,13 +38,13 @@ public class DeckController {
             }
 
 
-            pattern = Pattern.compile("^deck add-card --card (.+?) --deck (.+?)$");
+            pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 addCardToMainDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
-            pattern = Pattern.compile("^deck add-card --deck (.+?) --card (.+?)$");
+            pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --card (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 addCardToMainDeck(matcher.group(2), matcher.group(1));
@@ -44,38 +52,38 @@ public class DeckController {
             }
 
 
-            pattern = Pattern.compile("^deck add-card --card (.+?) --deck (.+?) --side$");
+            pattern = Pattern.compile("^deck \\s*add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?) \\s*--side$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 addCardToSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
 
-            pattern = Pattern.compile("^deck add-card --card (.+?) --side --deck (.+?)$");
+            pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --side \\s*--deck\\s* (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 addCardToSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
-            pattern = Pattern.compile("^deck add-card --side --card (.+?) --deck (.+?)$");
+            pattern = Pattern.compile("^deck\\s* add-card\\s* --side \\s*--card \\s*(.+?) \\s*--deck\\s* (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 addCardToSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
-            pattern = Pattern.compile("^deck add-card --side --deck (.+?) --card (.+?)$");
+            pattern = Pattern.compile("^deck\\s* add-card\\s* --side\\s* --deck\\s* (.+?)\\s* --card\\s* (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 addCardToMainDeck(matcher.group(2), matcher.group(1));
                 continue;
             }
-            pattern = Pattern.compile("^deck add-card --deck (.+?) --side --card (.+?)$");
+            pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --side \\s*--card \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 addCardToMainDeck(matcher.group(2), matcher.group(1));
                 continue;
             }
-            pattern = Pattern.compile("^deck add-card --deck (.+?)--card (.+?) --side$");
+            pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)--card\\s* (.+?) \\s*--side$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 addCardToMainDeck(matcher.group(2), matcher.group(1));
@@ -83,13 +91,13 @@ public class DeckController {
             }
 
 
-            pattern = Pattern.compile("^deck rm-card --card (.+?) --deck (.+?)$");
+            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 removeCardFromMainDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
-            pattern = Pattern.compile("^deck rm-card --deck (.+?) --card (.+?)$");
+            pattern = Pattern.compile("^deck\\s* rm-card \\s*--deck\\s* (.+?)\\s* --card\\s* (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 removeCardFromMainDeck(matcher.group(2), matcher.group(1));
@@ -97,50 +105,50 @@ public class DeckController {
             }
 
 
-            pattern = Pattern.compile("^deck rm-card --card (.+?) --deck (.+?) --side$");
+            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card\\s* (.+?)\\s* --deck \\s*(.+?) \\s*--side$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 removeCardFromSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
 
-            pattern = Pattern.compile("^deck rm-card --card (.+?) --side --deck (.+?)$");
+            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?) \\s*--side\\s* --deck\\s* (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 removeCardFromSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
-            pattern = Pattern.compile("^deck rm-card --side --card (.+?) --deck (.+?)$");
+            pattern = Pattern.compile("^deck\\s* rm-card\\s* --side\\s* --card \\s*(.+?) \\s*--deck \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 removeCardFromSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
-            pattern = Pattern.compile("^deck rm-card --side --deck (.+?) --card (.+?)$");
+            pattern = Pattern.compile("^deck\\s* rm-card \\s*--side \\s*--deck\\s* (.+?)\\s* --card \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 removeCardFromSideDeck(matcher.group(2), matcher.group(1));
                 continue;
             }
-            pattern = Pattern.compile("^deck rm-card --deck (.+?) --side --card (.+?)$");
+            pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)\\s* --side\\s* --card\\s* (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 removeCardFromSideDeck(matcher.group(2), matcher.group(1));
                 continue;
             }
-            pattern = Pattern.compile("^deck rm-card --deck (.+?)--card (.+?) --side$");
+            pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)--card\\s* (.+?) \\s*--side$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 removeCardFromSideDeck(matcher.group(2), matcher.group(1));
                 continue;
             }
-            pattern = Pattern.compile("^deck show --all$");
+            pattern = Pattern.compile("^deck\\s* show \\s*--all$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 showAllDeck();
                 continue;
             }
-            pattern = Pattern.compile("^deck show --deck-name (.+?)$");
+            pattern = Pattern.compile("^deck \\s*show \\s*--deck-name \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 showMainDeck(matcher.group(1));
@@ -148,15 +156,13 @@ public class DeckController {
             }
 
 
-
-
-            pattern = Pattern.compile("^deck show --side --deck-name (.+?)$");
+            pattern = Pattern.compile("^deck \\s*show \\s*--side\\s* --deck-name \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 showSideDeck(matcher.group(1));
                 continue;
             }
-            pattern = Pattern.compile("^deck show --deck-name (.+?) --side$");
+            pattern = Pattern.compile("^deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 showSideDeck(matcher.group(1));
@@ -164,14 +170,14 @@ public class DeckController {
             }
 
 
-            pattern = Pattern.compile("^menu exit$");
+            pattern = Pattern.compile("^menu \\s*exit$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 findMatcher();
                 break;
             }
 
-            pattern = Pattern.compile("^menu enter (.+?)$");
+            pattern = Pattern.compile("^menu \\s*enter \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
@@ -184,8 +190,6 @@ public class DeckController {
             DeckView.showInput("invalid command");
 
 
-
-
         }
     }
 
@@ -195,6 +199,7 @@ public class DeckController {
         if (user.isUserHaveThisDeck(deckName)) {
             user.setActiveDeck(deckName);
             UserModel.allUsersInfo.replace(MainMenuController.username, user);
+            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
             DeckView.showInput("deck activated successfully");
         } else {
             DeckView.showInput("deck with name " + deckName + " does not exist");
@@ -207,6 +212,7 @@ public class DeckController {
         if (user.isUserHaveThisDeck(matcher.group(1))) {
             user.deleteDeck(matcher.group(1));
             UserModel.allUsersInfo.replace(MainMenuController.username, user);
+            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
             DeckView.showInput("deck deleted successfully");
         } else {
             DeckView.showInput("deck with name " + matcher.group(1) + " does not exist");
@@ -221,22 +227,32 @@ public class DeckController {
             UserModel user = UserModel.getUserByUsername(MainMenuController.username);
             user.addDeck(new DeckModel(matcher.group(1)));
             UserModel.allUsersInfo.replace(MainMenuController.username, user);
+            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
             DeckView.showInput("deck created successfully!");
 
         }
     }
 
     private static void addCardToMainDeck(String cardName, String deckName) {
-        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-            if (UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                    UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) <
-                    UserModel.getUserByUsername(MainMenuController.username).userAllCards.get(cardName)) {
-                if (UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getMainAllCardNumber() < 60) {
+        UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+        if (user.isUserHaveThisDeck(deckName)) {
+            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < user.userAllCards.get(cardName)) {
+                if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 60) {
 
-                    if (UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                            UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
+                    if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                            user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
 
-                        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).addCardToMain(cardName);
+                        DeckModel deckModel = user.userAllDecks.get(deckName);
+
+                        deckModel.addCardToMain(cardName);
+
+                        user.userAllDecks.replace(deckName, deckModel);
+
+                        UserModel.allUsersInfo.replace(MainMenuController.username, user);
+
+                        JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
                     } else {
                         DeckView.showInput("there are already three cards with name " + cardName + " in deck " + deckName);
                     }
@@ -254,20 +270,30 @@ public class DeckController {
         } else {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
+
+
     }
 
 
     private static void addCardToSideDeck(String cardName, String deckName) {
-        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-            if (UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                    UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) <
-                    UserModel.getUserByUsername(MainMenuController.username).userAllCards.get(cardName)) {
-                if (UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getSideAllCardNumber() < 15) {
 
-                    if (UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                            UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
+        UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+        if (user.isUserHaveThisDeck(deckName)) {
+            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) <
+                    user.userAllCards.get(cardName)) {
+                if (user.userAllDecks.get(deckName).getSideAllCardNumber() < 15) {
 
-                        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).addCardToSide(cardName);
+                    if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                            user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
+
+                        DeckModel deckModel = user.userAllDecks.get(deckName);
+                        deckModel.addCardToSide(cardName);
+                        user.userAllDecks.replace(deckName, deckModel);
+
+                        UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                        JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
                     } else {
                         DeckView.showInput("there are already three cards with name " + cardName + " in deck " + deckName);
                     }
@@ -285,6 +311,7 @@ public class DeckController {
         } else {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
+
     }
 
     private static void removeCardFromMainDeck(String cardName, String deckName) {
@@ -292,7 +319,15 @@ public class DeckController {
 
         if (user.isUserHaveThisDeck(deckName)) {
             if (user.userAllDecks.get(deckName).isMainDeckHaveThisCard(cardName)) {
-                user.userAllDecks.get(deckName).removeCardFromMain(cardName);
+
+                DeckModel deckModel = user.userAllDecks.get(deckName);
+                deckModel.removeCardFromMain(cardName);
+                user.userAllDecks.replace(deckName, deckModel);
+
+                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+
                 DeckView.showInput("card removed form deck successfully");
             } else {
                 DeckView.showInput("card with name " + cardName + " does not exist in main deck");
@@ -301,6 +336,8 @@ public class DeckController {
         } else {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
+        UserModel.allUsersInfo.replace(MainMenuController.username, user);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
 
     }
 
@@ -310,7 +347,15 @@ public class DeckController {
 
         if (user.isUserHaveThisDeck(deckName)) {
             if (user.userAllDecks.get(deckName).isSideDeckHaveThisCard(cardName)) {
-                user.userAllDecks.get(deckName).removeCardFromSide(cardName);
+
+                DeckModel deckModel = user.userAllDecks.get(deckName);
+                deckModel.removeCardFromSide(cardName);
+                user.userAllDecks.replace(deckName, deckModel);
+
+                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+
                 DeckView.showInput("card removed form deck successfully");
             } else {
                 DeckView.showInput("card with name " + cardName + " does not exist in side deck");
@@ -319,6 +364,8 @@ public class DeckController {
         } else {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
+        UserModel.allUsersInfo.replace(MainMenuController.username, user);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
 
     }
 
@@ -352,18 +399,21 @@ public class DeckController {
             DeckView.showInput("Main deck:");
             DeckView.showInput("Monsters:");
             String[] cardNames;
-            cardNames=deck.cardsInMainDeck.keySet().toArray(new String[0]);
+            cardNames = deck.cardsInMainDeck.keySet().toArray(new String[0]);
             Arrays.sort(cardNames);
-            for (String cardName : cardNames){
-                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")){continue;}
-                DeckView.showInput(cardName+": "+ Card.getCardsByName(cardName).getDescription()+" ("+deck.cardsInMainDeck.get(cardName)+")");
+            for (String cardName : cardNames) {
+                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+                    continue;
+                }
+                DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
             }
             DeckView.showInput("Spell and Traps:");
-            for (String cardName : cardNames){
-                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")){continue;}
-                DeckView.showInput(cardName+": "+ Card.getCardsByName(cardName).getDescription()+" ("+deck.cardsInMainDeck.get(cardName)+")");
+            for (String cardName : cardNames) {
+                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+                    continue;
+                }
+                DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
             }
-
 
 
         } else {
@@ -382,18 +432,21 @@ public class DeckController {
             DeckView.showInput("Side deck:");
             DeckView.showInput("Monsters:");
             String[] cardNames;
-            cardNames=deck.cardsInSideDeck.keySet().toArray(new String[0]);
+            cardNames = deck.cardsInSideDeck.keySet().toArray(new String[0]);
             Arrays.sort(cardNames);
-            for (String cardName : cardNames){
-                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")){continue;}
-                DeckView.showInput(cardName+": "+ Card.getCardsByName(cardName).getDescription()+" ("+deck.cardsInSideDeck.get(cardName)+")");
+            for (String cardName : cardNames) {
+                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+                    continue;
+                }
+                DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
             }
             DeckView.showInput("Spell and Traps:");
-            for (String cardName : cardNames){
-                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")){continue;}
-                DeckView.showInput(cardName+": "+ Card.getCardsByName(cardName).getDescription()+" ("+deck.cardsInSideDeck.get(cardName)+")");
+            for (String cardName : cardNames) {
+                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+                    continue;
+                }
+                DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
             }
-
 
 
         } else {

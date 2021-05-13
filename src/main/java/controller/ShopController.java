@@ -16,19 +16,19 @@ public class ShopController {
         while (true) {
             command = ShopView.getCommand();
             command = command.trim();
-            Pattern pattern = Pattern.compile("shop\\s* buy\\s* (\\w*)");
+            Pattern pattern = Pattern.compile("^shop\\s* buy\\s* (\\w*)$");
             Matcher matcher = pattern.matcher(command);
             if (matcher.find()) {
                 shopBuy(matcher.group(1));
                 continue;
             }
-            Pattern pattern1 = Pattern.compile("shop \\s*show\\s* --all");
+            Pattern pattern1 = Pattern.compile("^shop \\s*show\\s* --all$");
             Matcher matcher1 = pattern1.matcher(command);
             if (matcher1.find()) {
                 shopShow();
                 continue;
             }
-            Pattern pattern2 = Pattern.compile("menu \\s*enter \\s*(\\w*)");
+            Pattern pattern2 = Pattern.compile("^menu \\s*enter \\s*(\\w*)$");
             Matcher matcher2 = pattern2.matcher(command);
             if (matcher2.find()) {
                 String menuName = matcher2.group(1);
@@ -40,13 +40,13 @@ public class ShopController {
                     ShopView.showInput("invalid command");
                 continue;
             }
-            Pattern pattern3=Pattern.compile("menu \\s*show-current");
+            Pattern pattern3=Pattern.compile("^menu \\s*show-current$");
             Matcher matcher3=pattern3.matcher(command);
             if (matcher3.find()) {
                 ShopView.showInput("shop");
                 continue;
             }
-            Pattern pattern4=Pattern.compile("menu \\s*exit");
+            Pattern pattern4=Pattern.compile("^menu \\s*exit$");
             Matcher matcher4=pattern4.matcher(command);
             if (matcher4.find()) {
                 MainMenuController.findMatcher();
