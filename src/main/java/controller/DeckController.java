@@ -258,6 +258,7 @@ public class DeckController {
                         user.userAllDecks.replace(deckName, deckModel);
 
                         UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                        DeckView.showInput("card added to deck successfully");
 
                         JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
 

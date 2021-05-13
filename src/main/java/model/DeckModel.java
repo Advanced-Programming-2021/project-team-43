@@ -32,7 +32,10 @@ public class DeckModel {
         }
         mainAllCardNumber = mainAllCardNumber + 1;
 
-        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.userAllDecks.replace(deckName, this);
+        UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
         JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
@@ -42,8 +45,9 @@ public class DeckModel {
             cardsInMainDeck.remove(cardName);
         }
         mainAllCardNumber = mainAllCardNumber - 1;
-        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.userAllDecks.replace(deckName, this);
+        UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
     }
 
     public void addCardToSide(String cardName) {
@@ -53,7 +57,10 @@ public class DeckModel {
             cardsInSideDeck.replace(cardName, cardsInSideDeck.get(cardName) + 1);
         }
         sideAllCardNumber = sideAllCardNumber + 1;
-        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.userAllDecks.replace(deckName, this);
+        UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromSide(String cardName) {
@@ -62,7 +69,10 @@ public class DeckModel {
             cardsInSideDeck.remove(cardName);
         }
         sideAllCardNumber = sideAllCardNumber - 1;
-        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.userAllDecks.replace(deckName, this);
+        UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public int getNumberOfCardInMainDeck(String cardName) {
