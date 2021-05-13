@@ -10,7 +10,6 @@ public class ShopController {
     public static String onlineUser = MainMenuController.username;
 
     public static void findMatcher() {
-        new ShopModel(Card.getCards());
         String command;
         while (true) {
             command = ShopView.getCommand();
@@ -27,7 +26,7 @@ public class ShopController {
                 if (menuName.equals("Main Menu"))
                     MainMenuController.findMatcher();
                 else if (menuName.equals("Deck") || menuName.equals("Profile") || menuName.equals("Scoreboard") || menuName.equals("Duel") || menuName.equals("Import/Export"))
-                    ShopView.showInput("Menu navigation is not possible");
+                    ShopView.showInput("menu navigation is not possible");
                 else
                     ShopView.showInput("invalid command");
                 continue;
@@ -56,14 +55,14 @@ public class ShopController {
     }
 
     private static void shopBuy(String cardName) {
-        Integer cardPrice = ShopModel.getCardPriceByName(cardName);
-        if (cardPrice == null) {
-            ShopView.showInput("There is no card with this name");
+        int cardPrice = ShopModel.getCardPriceByName(cardName);
+        if (cardPrice == 0) {
+            ShopView.showInput("there is no card with this name");
             return;
         }
         UserModel user = UserModel.getUserByUsername(onlineUser);
         if (user.getUserCoin() < cardPrice)
-            ShopView.showInput("Not enough money");
+            ShopView.showInput("not enough money");
         user.changeUserCoin(-1 * cardPrice);
         user.addCardToUserAllCards(cardName);
     }

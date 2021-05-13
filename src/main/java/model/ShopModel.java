@@ -13,13 +13,13 @@ public class ShopModel {
     }
 
     public static int getCardPriceByName(String cardName) {
-        for (Map.Entry<String,Integer> entry : cardInfo.entrySet())
-            if (entry.getKey().equals(cardName))
-                return entry.getValue();
+        if (cardInfo.containsKey(cardName))
+            return cardInfo.get(cardName);
         return 0;
     }
 
     public static HashMap<String,Integer> getCardInfo() {
         return (HashMap<String, Integer>) cardInfo;
     }
+
 }
