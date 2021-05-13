@@ -1,5 +1,7 @@
 package controller;
 
+import model.Card;
+import model.ShopModel;
 import model.UserModel;
 import view.*;
 
@@ -23,7 +25,7 @@ public class RegisterAndLoginController {
         {
             UserModel.importedCards =JSON.exportCad();
         }
-
+        new ShopModel(Card.getCards());
 
         while (true) {
             String command;
