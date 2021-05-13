@@ -148,7 +148,7 @@ public class RegisterAndLoginController {
                 MainMenuController.username = username;
                 MainMenuController.findMatcher();
             } else {
-                RegisterAndLoginView.showInput("Username and password didn’t match!11");
+                RegisterAndLoginView.showInput("Username and password didn’t match!");
 
 
             }
