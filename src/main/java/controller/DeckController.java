@@ -392,7 +392,7 @@ public class DeckController {
         DeckView.showInput("Other decks:");
         for (String key : keys) {
             if (user.getActiveDeck().equals(key)){
-
+                continue;
             }
             DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(key);
             DeckView.showInput(key + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + " " + deck.validOrInvalid());
