@@ -84,6 +84,7 @@ public class TrapEffect {
     }
 
 
+
     public static void solemnWarning(String player1, int addressOfSummonCard, boolean summonMine, String rival) {//kamel3
         if (!ringOfDefenseEffect(rival, player1)) {
             Player.getPlayerByName(player1).changeLifePoint(-2000);
