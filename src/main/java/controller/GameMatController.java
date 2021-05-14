@@ -588,7 +588,7 @@ public class GameMatController {
         }
         selectedOwnCard = "";
     }
-
+public static MonsterZoneCard rivalMonsterAttacker;
     public static int attack(String command, Phase currentPhase) {
         if ((matcher = getMatcher(command, "attack\\s+(\\d+)")).find()) {
             int rivalMonsterAddress = Integer.parseInt(matcher.group(1));
@@ -611,6 +611,7 @@ public class GameMatController {
                 return 1;
             }
             GameMatView.showInput("I want to attack to your Monster!");
+            rivalMonsterAttacker=rivalMonster;
             int damage;
             String rivalMonsterName = rivalMonster.getMonsterName();
             if (rivalMonsterName.equals("Suijin")) {
@@ -1014,8 +1015,7 @@ public class GameMatController {
                         effectStack.get(i), rivi);
             }
             if (SpellTrapZoneCard.getSpellCardByAddress(address[i], effectStack.get(i)).getKind().equals("Trap")) {
-                TrapEffect.trapEffectController(address[i], rivi, -1, onlineUser, false);
-
+               // TrapEffect.trapEffectController(address[i], rivi, rivalMonsterAttacker, onlineUser, false);
             }
         }
     }
