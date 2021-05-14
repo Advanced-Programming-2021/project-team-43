@@ -66,7 +66,6 @@ public class GameMatController {
             }
             Pattern pattern1 =Pattern.compile("^select \\s*--hand \\s*(\\d+)$");
             Matcher matcher1= pattern1.matcher(command);
-            System.out.println(command);/////////
             if (matcher1.find()) {
                 selectHandCard(Integer.parseInt(matcher1.group(1)));
                 showGameBoard();
@@ -198,7 +197,7 @@ public class GameMatController {
                 if (ownMonsterCard == null)
                     GameMatView.showInput("no card found in the given position");
                 else {
-                    selectedOwnCard = "Monster " + ownMonsterCard.getMonsterName() + " " + address;
+                    selectedOwnCard = "Monster/" + ownMonsterCard.getMonsterName() + "/" + address;
                     GameMatView.showInput("card selected");
                 }
             }
@@ -207,7 +206,7 @@ public class GameMatController {
                 if (rivalMonsterCard == null)
                     GameMatView.showInput("no card found in the given position");
                 else {
-                    selectedRivalCard = "Monster " + rivalMonsterCard.getMonsterName() + " " + address;
+                    selectedRivalCard = "Monster/" + rivalMonsterCard.getMonsterName() + "/" + address;
                     GameMatView.showInput("card selected");
                 }
             }
@@ -221,7 +220,7 @@ public class GameMatController {
                 if (ownSpellCard == null)
                     GameMatView.showInput("no card found in the given position");
                 else {
-                    selectedOwnCard = ownSpellCard.getKind() + " " + ownSpellCard.getSpellTrapName() + " " + address;
+                    selectedOwnCard = ownSpellCard.getKind() + "/" + ownSpellCard.getSpellTrapName() + "/" + address;
                     GameMatView.showInput("card selected");
                 }
             }
@@ -230,7 +229,7 @@ public class GameMatController {
                 if (rivalSpellCard == null)
                     GameMatView.showInput("no card found in the given position");
                 else {
-                    selectedRivalCard = rivalSpellCard.getKind() + " " + rivalSpellCard.getSpellTrapName() + " " + address;
+                    selectedRivalCard = rivalSpellCard.getKind() + "/" + rivalSpellCard.getSpellTrapName() + "/" + address;
                     GameMatView.showInput("card selected");
                 }
             }
@@ -260,7 +259,7 @@ public class GameMatController {
 
     public static void selectHandCard(int address) {
         if (errorOfInvalidSelection(address, "Hand")) {
-            selectedOwnCard = "Hand " + HandCardZone.getHandCardByAddress(address, onlineUser).getCardName() + " " + address;
+            selectedOwnCard = "Hand/" + HandCardZone.getHandCardByAddress(address, onlineUser).getCardName() + "/" + address;
             GameMatView.showInput("card selected");
         }
     }
@@ -318,7 +317,7 @@ public class GameMatController {
     public static void summon(Phase currentPhase) {
         if (!errorOfNoCardSelected("own"))
             return;
-        String[] split = selectedOwnCard.split(" ");
+        String[] split = selectedOwnCard.split("/");
         HandCardZone handCard = HandCardZone.getHandCardByAddress(Integer.parseInt(split[2]), onlineUser);
         MonsterZoneCard ownMonster = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(split[2]), onlineUser);
         Player player = Player.getPlayerByName(onlineUser);
@@ -528,7 +527,7 @@ public class GameMatController {
     public static void flipSummon(Phase currentPhase) {
         if (errorOfNoCardSelected("own"))
             return;
-        String[] split = selectedOwnCard.split(" ");
+        String[] split = selectedOwnCard.split("/");
         if (!split[0].equals("Monster")) {
             GameMatView.showInput("you can’t change this card position");
             return;
@@ -550,7 +549,7 @@ public class GameMatController {
     public static int changeMonsterPosition(String command, Phase currentPhase) {
         if ((matcher = getMatcher(command,"^set\\s+--position\\s+(attack|defense)$")).find()) {
             String mode = matcher.group(1);
-            String[] split = selectedOwnCard.split(" ");
+            String[] split = selectedOwnCard.split("/");
             if (!errorOfNoCardSelected("own"))
                 return 1;
             if (!split[0].equals("Monster")) {
@@ -581,7 +580,7 @@ public class GameMatController {
     public static void set(Phase currentPhase) {
         if (!errorOfNoCardSelected("own"))
             return;
-        String[] split = selectedOwnCard.split(" ");
+        String[] split = selectedOwnCard.split("/");
         if (!split[0].equals("Hand")) {
             GameMatView.showInput("you can’t set this card");
             return;
@@ -638,7 +637,7 @@ public class GameMatController {
             int rivalMonsterAddress = Integer.parseInt(matcher.group(1));
             if (!errorOfNoCardSelected("own"))
                 return 1;
-            String[] split = selectedOwnCard.split(" ");
+            String[] split = selectedOwnCard.split("/");
             if (!split[0].equals("Monster")) {
                 GameMatView.showInput("you can’t attack with this card");
                 return 1;
@@ -740,7 +739,7 @@ public class GameMatController {
     public static void attackDirect(Phase currentPhase) {
         if (errorOfNoCardSelected("own"))
             return;
-        String[] split = selectedOwnCard.split(" ");
+        String[] split = selectedOwnCard.split("/");
         if (!split[0].equals("Monster")) {
             GameMatView.showInput("you can’t attack with this card");
             return;
@@ -763,7 +762,7 @@ public class GameMatController {
     public static void activateSpellEffect(Phase currentPhase) {
         if (!errorOfNoCardSelected("own"))
             return;
-        String[] split = selectedOwnCard.split(" ");
+        String[] split = selectedOwnCard.split("/");
         if ((split[0].equals("Monster") || split[0].equals("Trap")) || (split[0].equals("Hand") && !Card.getCardsByName(split[1]).getCardModel().equals("Spell"))) {
             GameMatView.showInput("activate effect is only for spell cards");
             return;
