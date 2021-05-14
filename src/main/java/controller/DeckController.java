@@ -24,31 +24,43 @@ public class DeckController {
                 createDeck(matcher);
                 continue;
             }
-            pattern = Pattern.compile("^deck\\s* delete \\s*(.+?)$");
+
+
+            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card\\s* (.+?)\\s* --deck \\s*(.+?) \\s*--side$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                deleteDeck(matcher);
+                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
 
-            pattern = Pattern.compile("^deck\\s* set-activate \\s*(.+?)$");
+            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?) \\s*--side\\s* --deck\\s* (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                setActivate(matcher.group(1));
+                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
-
-
-            pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
+            pattern = Pattern.compile("^deck\\s* rm-card\\s* --side\\s* --card \\s*(.+?) \\s*--deck \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                addCardToMainDeck(matcher.group(1), matcher.group(2));
+                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
                 continue;
             }
-            pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --card (.+?)$");
+            pattern = Pattern.compile("^deck\\s* rm-card \\s*--side \\s*--deck\\s* (.+?)\\s* --card \\s*(.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                addCardToMainDeck(matcher.group(2), matcher.group(1));
+                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
+                continue;
+            }
+            pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)\\s* --side\\s* --card\\s* (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
+                continue;
+            }
+            pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)--card\\s* (.+?) \\s*--side$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
                 continue;
             }
 
@@ -90,6 +102,51 @@ public class DeckController {
                 addCardToMainDeck(matcher.group(2), matcher.group(1));
                 continue;
             }
+            pattern = Pattern.compile("^deck \\s*show \\s*--side\\s* --deck-name \\s*(.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                showSideDeck(matcher.group(1));
+                continue;
+            }
+            pattern = Pattern.compile("^deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                showSideDeck(matcher.group(1));
+                continue;
+            }
+
+
+
+            pattern = Pattern.compile("^deck\\s* delete \\s*(.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                deleteDeck(matcher);
+                continue;
+            }
+
+            pattern = Pattern.compile("^deck\\s* set-activate \\s*(.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                setActivate(matcher.group(1));
+                continue;
+            }
+
+
+            pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                addCardToMainDeck(matcher.group(1), matcher.group(2));
+                continue;
+            }
+            pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --card (.+?)$");
+            matcher = pattern.matcher(command);
+            if (matcher.find()) {
+                addCardToMainDeck(matcher.group(2), matcher.group(1));
+                continue;
+            }
+
+
+
 
 
             pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
@@ -106,43 +163,7 @@ public class DeckController {
             }
 
 
-            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card\\s* (.+?)\\s* --deck \\s*(.+?) \\s*--side$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
 
-            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?) \\s*--side\\s* --deck\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card\\s* --side\\s* --card \\s*(.+?) \\s*--deck \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card \\s*--side \\s*--deck\\s* (.+?)\\s* --card \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)\\s* --side\\s* --card\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)--card\\s* (.+?) \\s*--side$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
             pattern = Pattern.compile("^deck\\s* show \\s*--all$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
@@ -157,18 +178,6 @@ public class DeckController {
             }
 
 
-            pattern = Pattern.compile("^deck \\s*show \\s*--side\\s* --deck-name \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                showSideDeck(matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                showSideDeck(matcher.group(1));
-                continue;
-            }
 
             pattern = Pattern.compile("^deck\\s* show\\s* --cards$");
             matcher = pattern.matcher(command);
