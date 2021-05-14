@@ -8,7 +8,7 @@ import java.util.regex.*;
 public class MainMenuController {
 
     public static String username;
-    public static String username2 ;
+    public static String username2;
 
     public static void findMatcher() {
         while (true) {
@@ -37,7 +37,7 @@ public class MainMenuController {
 
                 }
                 if (matcher.group(1).equals("shop")) {
-                    ShopController.findMatcher();
+                    ShopController.commandController();
                     continue;
                 }
 
@@ -194,7 +194,7 @@ public class MainMenuController {
                                 new Player(UserModel.getUserByUsername(secondPlayer).getNickname(),UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()),false,roundNumber );
                                 new GameMatModel(UserModel.getUserByUsername(firstPlayer).getNickname());
                                 new GameMatModel(UserModel.getUserByUsername(secondPlayer).getNickname());
-                                GameMatController.commandController(firstPlayer, secondPlayer, roundNumber);
+                                //GameMatController.commandController(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).getNickname(), roundNumber);
 
                             } else {
                                 MainMenuView.showInput("number of rounds is not supported");

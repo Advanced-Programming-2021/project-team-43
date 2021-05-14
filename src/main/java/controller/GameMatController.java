@@ -296,7 +296,7 @@ public class GameMatController {
         HandCardZone handCard = HandCardZone.getHandCardByAddress(Integer.parseInt(split[2]), onlineUser);
         MonsterZoneCard ownMonster = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(split[2]), onlineUser);
         Player player = Player.getPlayerByName(onlineUser);
-        if (split[0].equals("Spell") || (split[0].equals("Hand") && !handCard.getKind().equals("Monster")) || (split[0].equals("Monster") && ownMonster.getMode().equals("OO"))) {
+        if (split[0].equals("Spell") || (split[0].equals("Hand") && !handCard.getKind().equals("Monster")) || (split[0].equals("Monster") && ownMonster.getMode().equals("OO")) || ownMonster.getHaveChangedPositionThisTurn()) {
             GameMatView.showInput("you can’t summon this card");
             return;
         }
@@ -371,10 +371,10 @@ public class GameMatController {
         if (monsterName.equals("Scanner")) {
             GameMatView.showInput("Which card for Scanner?");
             String whichCard = GameMatView.getCommand();
-            new MonsterZoneCard(onlineUser, whichCard, mode, true, false, false);
+            new MonsterZoneCard(onlineUser, whichCard, mode, true, false);
         }
         else
-            new MonsterZoneCard(onlineUser, monsterName, mode, false, false, false);
+            new MonsterZoneCard(onlineUser, monsterName, mode, false, false);
     }
 
     public static void addToSpellTrapZoneCard(String spellTrapName, String mode) {
@@ -918,9 +918,9 @@ public class GameMatController {
             else
                 handCardSpell.removeFromHandCard();
             if (command.equals("defensive"))
-                new MonsterZoneCard(onlineUser, ritualMonsterName, "DO", false, false, false);
+                new MonsterZoneCard(onlineUser, ritualMonsterName, "DO", false, false);
             else
-                new MonsterZoneCard(onlineUser, ritualMonsterName, "OO", false, false, false);
+                new MonsterZoneCard(onlineUser, ritualMonsterName, "OO", false, false);
             handCardRitualMonster.removeFromHandCard();
         }
         return 1;
@@ -941,6 +941,11 @@ public class GameMatController {
             case "Main_Phase1" -> {
                 GameMatView.showInput("phase: " + Phase.Battle_Phase);
                 playerGameMat.setPhase(Phase.Battle_Phase);
+                if (!player.getCanBattle()) {
+                    GameMatView.showInput("Oops! You cant battle this turn!");
+                    player.setCanBattle(true);
+                    changePhase(currentPhase);
+                }
             }
             case "Battle_Phase" -> {
                 GameMatView.showInput("phase: " + Phase.Main_Phase2);

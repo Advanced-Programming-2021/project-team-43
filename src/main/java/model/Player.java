@@ -15,6 +15,7 @@ public class Player {
     private boolean canSetSummonMonster = true;
     private boolean canDrawCard;
     private int numberOfWin = 0;
+    private boolean canBattle;
     private final List<String> playerMainDeck = new ArrayList<>();
     private final List<String> playerSideDeck = new ArrayList<>();
     private final List<Integer> allLifePoints = new ArrayList<>();
@@ -28,6 +29,7 @@ public class Player {
         this.numberOfRound = numberOfRound;
         this.canDrawCard = !isYourTurn;
         isOneRound = (numberOfRound == 1);
+        canBattle = !isYourTurn;
         fillTheGameDecks(activeDeck);
         firstDrawCard();
         allPlayers.put(this.nickname, this);
@@ -143,6 +145,14 @@ public class Player {
 
     public void setCanDrawCard(boolean canDrawCard) {
         this.canDrawCard = canDrawCard;
+    }
+
+    public boolean getCanBattle() {
+        return canBattle;
+    }
+
+    public void setCanBattle(boolean canBattle) {
+        this.canBattle = canBattle;
     }
 
     public void addToMainDeck(String cardName) {

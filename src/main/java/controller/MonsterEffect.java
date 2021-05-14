@@ -144,7 +144,7 @@ public class MonsterEffect {
                     response = GameMatView.getCommand();
                 }
                 HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
-                new MonsterZoneCard(onlineUser, "The Tricky", "DO", false, false, false);
+                new MonsterZoneCard(onlineUser, "The Tricky", "DO", false, false);
                 return 1;
             }
         }
@@ -175,7 +175,7 @@ public class MonsterEffect {
                     response = GameMatView.getCommand();
                 }
                 HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
-                new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false, false);
+                new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false);
                 return 1;
             }
         }
@@ -193,7 +193,8 @@ public class MonsterEffect {
         }
         if (response.equals("yes")) {
             if (handCard != null) {
-                new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false, true);
+                new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
+                MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser).setAttack(1900);
                 handCard.removeFromHandCard();
             }
             else
@@ -218,7 +219,7 @@ public class MonsterEffect {
                     MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser).removeMonsterFromZone();
                 }
                 if (handCard != null) {
-                    new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false, false);
+                    new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
                     handCard.removeFromHandCard();
                 }
                 else
@@ -277,7 +278,7 @@ public class MonsterEffect {
                     MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser).removeMonsterFromZone();
                 }
             }
-            new MonsterZoneCard(onlineUser, "Gate Guardian", "OO", false,false, false);
+            new MonsterZoneCard(onlineUser, "Gate Guardian", "OO", false,false);
         }
         return 1;
     }
@@ -310,7 +311,7 @@ public class MonsterEffect {
                         response = GameMatView.getCommand();
                     }
                     GameMatView.showInput("Texchanger Monster Effect is activated!");
-                    new MonsterZoneCard(rivalUser, HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).getCardName(), "OO", false, false, false);
+                    new MonsterZoneCard(rivalUser, HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).getCardName(), "OO", false, false);
                     HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).removeFromHandCard();
                 }
             }
@@ -327,7 +328,7 @@ public class MonsterEffect {
                         response = GameMatView.getCommand();
                     }
                     GameMatView.showInput("Texchanger Monster Effect is activated!");
-                    new MonsterZoneCard(rivalUser, GameMatModel.getGameMatByNickname(rivalUser).getDeadCardNameByAddress(Integer.parseInt(response)), "OO", false, false, false);
+                    new MonsterZoneCard(rivalUser, GameMatModel.getGameMatByNickname(rivalUser).getDeadCardNameByAddress(Integer.parseInt(response)), "OO", false, false);
                     GameMatModel.getGameMatByNickname(rivalUser).removeFromGraveyardByAddress(Integer.parseInt(response));
                 }
             }
@@ -344,7 +345,7 @@ public class MonsterEffect {
                         response = GameMatView.getCommand();
                     }
                     GameMatView.showInput("Texchanger Monster Effect is activated!");
-                    new MonsterZoneCard(rivalUser, Player.getPlayerByName(rivalUser).getCardNameByAddress(Integer.parseInt(response)), "OO", false, false, false);
+                    new MonsterZoneCard(rivalUser, Player.getPlayerByName(rivalUser).getCardNameByAddress(Integer.parseInt(response)), "OO", false, false);
                     Player.getPlayerByName(rivalUser).removeFromMainDeckByAddress(Integer.parseInt(response));
                 }
             }

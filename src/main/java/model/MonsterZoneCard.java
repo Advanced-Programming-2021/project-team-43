@@ -21,21 +21,17 @@ public class MonsterZoneCard {
     private boolean isEffectUsed;//change turn false
     private int numberOfFullHouse = 0;
     private boolean isForOneTurn;
-    private boolean isSummonedByTribute;
     private final Map<String,List<Integer>> allEffectiveSpell = new HashMap<>();
     private static final Map<Integer,MonsterZoneCard> eachMonsterCard = new HashMap<>();
     private static final Map<String, Map<Integer,MonsterZoneCard>> allMonsterCards = new HashMap<>();
 
 
-    public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn, boolean isSummonedByTribute) {
+    public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn) {
         this.playerNickname = playerNickname;
         this.monsterName = monsterName;
         this.mode = mode;
         this.address = ++numberOfFullHouse;
-        if (isSummonedByTribute && monsterName.equals("Beast King Barbaros"))
-            this.attack = 1900;
-        else
-            this.attack = MonsterCard.getMonsterByName(monsterName).getAttack();
+        this.attack = MonsterCard.getMonsterByName(monsterName).getAttack();
         this.defend = MonsterCard.getMonsterByName(monsterName).getDefend();
         this.level = MonsterCard.getMonsterByName(monsterName).getLevel();
         this.monsterType = MonsterCard.getMonsterByName(monsterName).getMonsterType();
@@ -44,9 +40,9 @@ public class MonsterZoneCard {
         this.canAttack = true;
         this.canAttackToThisMonster = true;
         this.isForOneTurn = isForOneTurn;
-        this.isSummonedByTribute = isSummonedByTribute;
         eachMonsterCard.put(address,this);
         allMonsterCards.put(playerNickname,eachMonsterCard);
+        eachMonsterCard.clear();
     }
 
     public String getMonsterName() {
@@ -243,4 +239,15 @@ public class MonsterZoneCard {
             sumOfLevels += eachCard.getLevel();
         return sumOfLevels;
     }
+
+    public static void changeTurn(String playerNickname) {
+        Map<Integer, MonsterZoneCard> allMonsters = new HashMap<>(allMonsterCards.get(playerNickname));
+        for (int i = 1; i < 6; i++) {
+            if (allMonsters.get(i) != null) {
+                allMonsters.get(i).setHaveChangedPositionThisTurn(false);
+                allMonsters.get(i).setHaveAttackThisTurn(false);
+            }
+        }
+    }
+
 }
