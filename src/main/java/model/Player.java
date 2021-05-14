@@ -42,10 +42,11 @@ public class Player {
         numberOfRound--;
         this.lifePoint = 8000;
         this.isYourTurn = isYourTurn;
+        this.canDrawCard = !isYourTurn;
+        canBattle = !isYourTurn;
         this.counterOfTurn = 0;
         this.canUseTrap = true;
         this.canSetSummonMonster = true;
-        this.canDrawCard = !isYourTurn;
         fillTheGameDecks(activeDeck);
         firstDrawCard();
     }// call this for next round
@@ -54,7 +55,6 @@ public class Player {
         for (String key : activeDeck.cardsInMainDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInMainDeck.get(key); i++)
                 playerMainDeck.add(key);
-
         for (String key : activeDeck.cardsInSideDeck.keySet())
             for (int i = 0; i < activeDeck.cardsInSideDeck.get(key); i++)
                 playerSideDeck.add(key);
@@ -78,6 +78,20 @@ public class Player {
         removeFromMainDeck();
         return cardName;
     }
+
+    public int exchangeCard(int cardAddressInMainDeck, int cardAddressInSideDeck) {
+        if (playerSideDeck.get(cardAddressInSideDeck) != null) {
+            addToMainDeck(playerSideDeck.get(cardAddressInSideDeck));
+            removeFromSideDeckByAddress(cardAddressInSideDeck);
+            addToSideDeck(playerMainDeck.get(cardAddressInMainDeck));
+            removeFromMainDeckByAddress(cardAddressInMainDeck);
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+
 
     public int getLifePoint() {
         return lifePoint;

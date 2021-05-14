@@ -11,6 +11,7 @@ public class GameMatController {
     private static String onlineUser = "";
     private static String rivalUser = "";
     private static String command;
+    private static String response;
     private static Matcher matcher;
 
     public static void commandController(String firstPlayer, String secondPlayer) {
@@ -73,8 +74,7 @@ public class GameMatController {
                 continue;
             }
             if (getMatcher(command, "show\\s+graveyard\\s+--opponent").find()) {
-                GameMatModel.getGameMatByNickname(rivalUser).showGraveyard();
-                backCommand();
+                getPermission();
                 continue;
             }
             if (getMatcher(command, "show\\s+main\\s+deck").find()) {
@@ -96,12 +96,43 @@ public class GameMatController {
 
                 break;
             }
+            if (exchangeCard() == 1) {
+                continue;
+            }
             if (getMatcher(command,"menu exit").find()) {
                 break;
             }
             GameMatView.showInput("invalid command");
         }
     }
+
+
+    public static void getPermission() {
+        do {
+            GameMatView.showInput("**Your opponent want to see your graveyard. Do you give him permission? (yes/no)**");
+            response = GameMatView.getCommand();
+        } while (!response.matches("yes|no"));
+        if (response.equals("yes")) {
+            GameMatModel.getGameMatByNickname(rivalUser).showGraveyard();
+            backCommand();
+        }
+        else
+            GameMatView.showInput("Oops! You dont have permission to see rival graveyard!");
+    }
+
+
+    public static int exchangeCard() {
+        if ((matcher = getMatcher(command, "exchange\\s+main\\s+card\\s+(\\d+)with\\s+side\\s+card\\s+(\\d+)")).find()) {
+            int cardAddressInMainDeck = Integer.parseInt(matcher.group(1));
+            int cardAddressInSideDeck = Integer.parseInt(matcher.group(2));
+            if (Player.getPlayerByName(onlineUser).exchangeCard(cardAddressInMainDeck, cardAddressInSideDeck) == 0)
+                GameMatView.showInput("Oops! You cant exchange this two cards!");
+            return 1;
+        }
+        else
+            return 0;
+    }
+
 
     public static Matcher getMatcher(String command, String regex) {
         Pattern pattern = Pattern.compile(regex);
