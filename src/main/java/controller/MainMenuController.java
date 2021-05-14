@@ -27,6 +27,7 @@ public class MainMenuController {
             if (matcher.find()) {
                 if (matcher.group(1).equals("duel")) {
                     duelFindMatcher();
+                    continue;
 
                 }
                 if (matcher.group(1).equals("deck")) {
@@ -201,7 +202,7 @@ public class MainMenuController {
                                 new Player(UserModel.getUserByUsername(secondPlayer).getNickname(),UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()),false,roundNumber );
                                 new GameMatModel(UserModel.getUserByUsername(firstPlayer).getNickname());
                                 new GameMatModel(UserModel.getUserByUsername(secondPlayer).getNickname());
-                                //GameMatController.findMatcher(MainMenuController.username, playerName, roundNumber);
+                                GameMatController.commandController(firstPlayer,secondPlayer,roundNumber);
 
 
 
