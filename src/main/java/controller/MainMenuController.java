@@ -210,7 +210,7 @@ public class MainMenuController {
                                 new Player(UserModel.getUserByUsername(secondPlayer).getNickname(),UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()),false,roundNumber );
                                 new GameMatModel(UserModel.getUserByUsername(firstPlayer).getNickname());
                                 new GameMatModel(UserModel.getUserByUsername(secondPlayer).getNickname());
-                                GameMatController.commandController(firstPlayer,secondPlayer,roundNumber);
+                                GameMatController.commandController(firstPlayer,secondPlayer);
 
 
 
