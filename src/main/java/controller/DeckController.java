@@ -409,31 +409,157 @@ public class DeckController {
 
 
     private static void addCardToSideDeck(String cardName, String deckName) {
-
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
         if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
+
             if (user.isUserHaveCard(cardName) && user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) <
-                    user.userAllCards.get(cardName) && user.isUserHaveCard(cardName)) {
-                if (user.userAllDecks.get(deckName).getSideAllCardNumber() < 15) {
+                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < user.userAllCards.get(cardName)) {
+                if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 60 && user.isUserHaveCard(cardName)) {
 
-                    if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                            user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
+                    if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+                        if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                                user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
 
-                        DeckModel deckModel = user.userAllDecks.get(deckName);
-                        deckModel.addCardToSide(cardName);
-                        user.userAllDecks.replace(deckName, deckModel);
+                            DeckModel deckModel = user.userAllDecks.get(deckName);
 
-                        UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                        JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                            deckModel.addCardToSide(cardName);
+
+                            user.userAllDecks.replace(deckName, deckModel);
+
+                            UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                            DeckView.showInput("card added to deck successfully");
+
+                            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+                        } else {
+                            DeckView.showInput("there are already three cards with name " + cardName + " in deck " + deckName);
+                        }
+                    } else if (Card.getCardsByName(cardName).getCardModel().equals("Spell")) {
+
+                        if (SpellCard.getSpellCardByName(cardName).getStatus().equals("Unlimited")) {
+                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
+
+                                DeckModel deckModel = user.userAllDecks.get(deckName);
+
+                                deckModel.addCardToSide(cardName);
+
+                                user.userAllDecks.replace(deckName, deckModel);
+
+                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                                DeckView.showInput("card added to deck successfully");
+
+                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+                            } else {
+                                DeckView.showInput("there are already three cards with name " + cardName + " in deck " + deckName);
+                            }
+
+
+                        } else if (SpellCard.getSpellCardByName(cardName).getStatus().equals("Limited")) {
+
+                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 1) {
+
+                                DeckModel deckModel = user.userAllDecks.get(deckName);
+
+                                deckModel.addCardToSide(cardName);
+
+                                user.userAllDecks.replace(deckName, deckModel);
+
+                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                                DeckView.showInput("card added to deck successfully");
+
+                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+                            } else {
+                                DeckView.showInput("there are already one cards with name " + cardName + " in deck " + deckName);
+                            }
+                        } else {
+                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
+
+                                DeckModel deckModel = user.userAllDecks.get(deckName);
+
+                                deckModel.addCardToSide(cardName);
+
+                                user.userAllDecks.replace(deckName, deckModel);
+
+                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                                DeckView.showInput("card added to deck successfully");
+
+                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+                            } else {
+                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
+                            }
+                        }
+
 
                     } else {
-                        DeckView.showInput("there are already three cards with name " + cardName + " in deck " + deckName);
+                        if (TrapCard.getTrapCardByName(cardName).getStatus().equals("Unlimited")) {
+                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
+
+                                DeckModel deckModel = user.userAllDecks.get(deckName);
+
+                                deckModel.addCardToSide(cardName);
+
+                                user.userAllDecks.replace(deckName, deckModel);
+
+                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                                DeckView.showInput("card added to deck successfully");
+
+                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+                            } else {
+                                DeckView.showInput("there are already three cards with name " + cardName + " in deck " + deckName);
+                            }
+
+
+                        } else if (TrapCard.getTrapCardByName(cardName).getStatus().equals("Limited")) {
+
+                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 1) {
+
+                                DeckModel deckModel = user.userAllDecks.get(deckName);
+
+                                deckModel.addCardToSide(cardName);
+
+                                user.userAllDecks.replace(deckName, deckModel);
+
+                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                                DeckView.showInput("card added to deck successfully");
+
+                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+                            } else {
+                                DeckView.showInput("there are already one cards with name " + cardName + " in deck " + deckName);
+                            }
+                        } else {
+                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
+
+                                DeckModel deckModel = user.userAllDecks.get(deckName);
+
+                                deckModel.addCardToSide(cardName);
+
+                                user.userAllDecks.replace(deckName, deckModel);
+
+                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+                                DeckView.showInput("card added to deck successfully");
+
+                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
+                            } else {
+                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
+                            }
+                        }
                     }
 
 
                 } else {
-                    DeckView.showInput("side deck is full");
+                    DeckView.showInput("main deck is full");
                 }
 
 
@@ -444,6 +570,7 @@ public class DeckController {
         } else {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
+
 
     }
 
