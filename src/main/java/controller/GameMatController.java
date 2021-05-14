@@ -4,6 +4,7 @@ import main.java.view.GameMatView;
 import main.java.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.*;
 
@@ -588,7 +589,9 @@ public class GameMatController {
         }
         selectedOwnCard = "";
     }
-public static MonsterZoneCard rivalMonsterAttacker;
+
+    public static MonsterZoneCard rivalMonsterAttacker;
+
     public static int attack(String command, Phase currentPhase) {
         if ((matcher = getMatcher(command, "attack\\s+(\\d+)")).find()) {
             int rivalMonsterAddress = Integer.parseInt(matcher.group(1));
@@ -611,7 +614,7 @@ public static MonsterZoneCard rivalMonsterAttacker;
                 return 1;
             }
             GameMatView.showInput("I want to attack to your Monster!");
-            rivalMonsterAttacker=rivalMonster;
+            rivalMonsterAttacker = rivalMonster;
             int damage;
             String rivalMonsterName = rivalMonster.getMonsterName();
             if (rivalMonsterName.equals("Suijin")) {
@@ -1001,21 +1004,24 @@ public static MonsterZoneCard rivalMonsterAttacker;
         Player.getPlayerByName(onlineUser).setIsYourTurn(true);
         Player.getPlayerByName(rivalUser).setIsYourTurn(false);
         SpellTrapZoneCard.chain(rivalUser, onlineUser);
-        HashMap<Integer, String> effectStack = SpellTrapZoneCard.getEffectStack();
-        Integer[] address = effectStack.keySet().toArray(new Integer[0]);
-        for (int i = effectStack.size() - 1; i > effectStack.size(); i--) {
+        HashMap<Integer, HashMap<Integer, String>> effectStack = SpellTrapZoneCard.getEffectStack();
+        Integer[] keys = effectStack.keySet().toArray(new Integer[0]);
+        Arrays.sort(keys);
+        for (int i = keys.length -1; i > -1; i--) {
             String rivi;
-            if (effectStack.get(i).equals(onlineUser)) {
+            HashMap<Integer,String> origin=effectStack.get(keys[i]);
+              Integer[] address = origin.keySet().toArray(new Integer[0]);
+            if (effectStack.get(keys[i]).get(address[0]).equals(onlineUser)){
                 rivi = rivalUser;
-            } else {
+            } else{
                 rivi = onlineUser;
             }
-            if (SpellTrapZoneCard.getSpellCardByAddress(address[i], effectStack.get(i)).getKind().equals("Spell")) {
-                SpellEffect.quickPlayEffectController(SpellTrapZoneCard.getSpellCardByAddress(address[i], effectStack.get(i)),
-                        effectStack.get(i), rivi);
+            if (SpellTrapZoneCard.getSpellCardByAddress(address[0], origin.get(0)).getKind().equals("Spell")) {
+                SpellEffect.quickPlayEffectController(SpellTrapZoneCard.getSpellCardByAddress(address[0], origin.get(0)),
+                        origin.get(0), rivi);
             }
-            if (SpellTrapZoneCard.getSpellCardByAddress(address[i], effectStack.get(i)).getKind().equals("Trap")) {
-               // TrapEffect.trapEffectController(address[i], rivi, rivalMonsterAttacker, onlineUser, false);
+            if (SpellTrapZoneCard.getSpellCardByAddress(address[0], origin.get(0)).getKind().equals("Trap")) {
+                // TrapEffect.trapEffectController(address[i], rivi, rivalMonsterAttacker, onlineUser, false);
             }
         }
     }

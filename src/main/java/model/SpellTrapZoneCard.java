@@ -186,9 +186,9 @@ public class SpellTrapZoneCard {
         return allSpellTrapCards.get(playerNickname);
     }
 
-   public static HashMap<Integer,String> effectStack = new HashMap<>();
+   public static HashMap<Integer,HashMap<Integer,String>> effectStack = new HashMap<>();
 
-    public static HashMap<Integer,String> getEffectStack() {
+    public static HashMap<Integer,HashMap<Integer,String>> getEffectStack() {
         return effectStack;
     }
 
@@ -220,7 +220,9 @@ public class SpellTrapZoneCard {
                 while (true) {
                     GameMatView.showInput("do you want to activate your spell with address " + address1 + " ? (yes/no)");
                     if (GameMatView.getCommand().equals("yes")) {
-                        effectStack.put(cards[i],rivalNickname);
+                        HashMap<Integer,String> hash=new HashMap<>();
+                        hash.put(cards[i],rivalNickname);
+                        effectStack.put(i,hash);
                         while (true) {
                             if (GameMatView.getCommand().matches("activate \\s*effect")) {
                                 SpellTrapZoneCard.getSpellCardByAddress(address1, rivalNickname).setMode("O");
@@ -244,7 +246,9 @@ public class SpellTrapZoneCard {
                 while (true) {
                     GameMatView.showInput("do you want to activate your trap with address " + address2 + " ? (yes/no)");
                     if (GameMatView.getCommand().equals("yes")) {
-                        effectStack.put(cards[i],rivalNickname);
+                        HashMap<Integer,String> hash2=new HashMap<>();
+                        hash2.put(cards[i],rivalNickname);
+                        effectStack.put(i,hash2);
                         while (true) {
                             if (GameMatView.getCommand().matches("activate \\s*effect")) {
                                 SpellTrapZoneCard.getSpellCardByAddress(address2, rivalNickname).setMode("O");
