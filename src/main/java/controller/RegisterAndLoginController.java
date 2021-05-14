@@ -126,7 +126,7 @@ public class RegisterAndLoginController {
     }
 
 
-    private static void registerInGame(String username, String nickname, String password) {
+    public static void registerInGame(String username, String nickname, String password) {
         if (UserModel.isRepeatedUsername(username)) {
             RegisterAndLoginView.showInput("user with username " + username + " already exists");
 
@@ -143,7 +143,7 @@ public class RegisterAndLoginController {
     }
 
 
-    private static void loginInGame(String username, String password) {
+    public static void loginInGame(String username, String password) {
         if (UserModel.isRepeatedUsername(username)) {
             if (UserModel.getUserByUsername(username).getPassword().equals(password)) {
                 RegisterAndLoginView.showInput("user logged in successfully!");

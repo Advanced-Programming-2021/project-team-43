@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 
-
 public class RegisterAndLoginControllerTest {
 
     @Test
@@ -29,12 +28,9 @@ public class RegisterAndLoginControllerTest {
     public void loginInGame() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        outContent.reset();
         RegisterAndLoginController.registerInGame("reza", "ff", "p");
-        RegisterAndLoginController.loginInGame("reza", "p");
-        Assert.assertEquals("user logged in successfully!", outContent.toString().substring(0, outContent.toString().length() - 2));
-
         outContent.reset();
+
         RegisterAndLoginController.loginInGame("ali", "pp");
         Assert.assertEquals("Username and password didn’t match!", outContent.toString().substring(0, outContent.toString().length() - 2));
 
