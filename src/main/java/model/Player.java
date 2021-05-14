@@ -35,6 +35,7 @@ public class Player {
         allPlayers.put(this.nickname, this);
     } //call this when duel command is called
 
+
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
         allLifePoints.add(lifePoint);
         playerMainDeck.clear();
@@ -52,12 +53,16 @@ public class Player {
     }// call this for next round
 
     public void fillTheGameDecks(DeckModel activeDeck) {
-        for (String key : activeDeck.cardsInMainDeck.keySet())
-            for (int i = 0; i < activeDeck.cardsInMainDeck.get(key); i++)
-                playerMainDeck.add(key);
-        for (String key : activeDeck.cardsInSideDeck.keySet())
-            for (int i = 0; i < activeDeck.cardsInSideDeck.get(key); i++)
-                playerSideDeck.add(key);
+        String[] cardName = activeDeck.cardsInMainDeck.keySet().toArray(new String[0]);
+        for (String eachCard: cardName) {
+            for (int i = 0; i < activeDeck.cardsInMainDeck.get(eachCard); i++)
+                playerMainDeck.add(eachCard);
+        }
+        cardName = activeDeck.cardsInSideDeck.keySet().toArray(new String[0]);
+        for (String eachCard: cardName) {
+            for (int i = 0; i < activeDeck.cardsInSideDeck.get(eachCard); i++)
+                playerSideDeck.add(eachCard);
+        }
     }
 
     public void firstDrawCard() {

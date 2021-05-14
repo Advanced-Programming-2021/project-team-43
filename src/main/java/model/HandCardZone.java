@@ -1,7 +1,5 @@
 package model;
 import view.GameMatView;
-
-import javax.swing.plaf.PanelUI;
 import java.util.*;
 
 
@@ -9,7 +7,7 @@ public class HandCardZone {
 
     private final String playerNickname;
     private final String cardName;
-    private final int address;
+    private int address;
     private final String kind;
     private static final List<HandCardZone> eachHandCard = new ArrayList<>();
     private static final Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
