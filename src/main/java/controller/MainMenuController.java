@@ -48,6 +48,10 @@ public class MainMenuController {
                     ShopController.findMatcher();
                     continue;
                 }
+                if (matcher.group(1).equals("irdamo")) {
+                    addCoin();
+                    continue;
+                }
 
                 if (matcher.group(1).equals("Import/Export")) {
                     importExport();
@@ -78,6 +82,10 @@ public class MainMenuController {
             MainMenuView.showInput("invalid command");
 
         }
+    }
+
+    private static void addCoin() {
+        UserModel.getUserByUsername(MainMenuController.username).changeUserCoin(3000);
     }
 
     private static void importExport() {

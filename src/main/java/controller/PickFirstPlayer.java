@@ -14,10 +14,11 @@ public class PickFirstPlayer {
             String winner = chanceCoin(player1, player2);
             System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
             while (true) {
-                if (scanner.nextLine().equals("yes")) {
+                String string = scanner.nextLine();
+                if (string.equals("yes")) {
                     return winner;
                 }
-                if (scanner.nextLine().equals("no")) {
+                if (string.equals("no")) {
                     if (winner.equals(player1)) {
                         return player2;
                     }
@@ -34,10 +35,11 @@ public class PickFirstPlayer {
         String winner = rockPaperScissors(player1, player2);
         System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
         while (true) {
-            if (scanner.nextLine().equals("yes")) {
+            String string = scanner.nextLine();
+            if (string.equals("yes")) {
                 return winner;
             }
-            if (scanner.nextLine().equals("no")) {
+            if (string.equals("no")) {
                 if (winner.equals(player1)) {
                     return player2;
                 }
