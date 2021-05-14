@@ -244,9 +244,10 @@ public class DeckController {
     private static void addCardToMainDeck(String cardName, String deckName) {
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
         if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+
+            if (user.isUserHaveCard(cardName)&&user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
                     user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < user.userAllCards.get(cardName)) {
-                if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 60) {
+                if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 60&&user.isUserHaveCard(cardName)) {
 
                     if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
                             user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
@@ -288,9 +289,9 @@ public class DeckController {
 
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
         if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+            if (user.isUserHaveCard(cardName)&&user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
                     user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) <
-                    user.userAllCards.get(cardName)) {
+                    user.userAllCards.get(cardName)&&user.isUserHaveCard(cardName)) {
                 if (user.userAllDecks.get(deckName).getSideAllCardNumber() < 15) {
 
                     if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
