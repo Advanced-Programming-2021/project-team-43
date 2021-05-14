@@ -243,7 +243,7 @@ public class DeckController {
 
     private static void addCardToMainDeck(String cardName, String deckName) {
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-        if (user.isUserHaveThisDeck(deckName)) {
+        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
             if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
                     user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < user.userAllCards.get(cardName)) {
                 if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 60) {
@@ -287,7 +287,7 @@ public class DeckController {
     private static void addCardToSideDeck(String cardName, String deckName) {
 
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-        if (user.isUserHaveThisDeck(deckName)) {
+        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
             if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
                     user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) <
                     user.userAllCards.get(cardName)) {
