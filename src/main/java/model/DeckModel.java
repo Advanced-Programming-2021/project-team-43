@@ -6,6 +6,7 @@ package model;
 import controller.JSON;
 import controller.MainMenuController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DeckModel {
@@ -112,6 +113,18 @@ public class DeckModel {
             return "valid";}
 
         return "invalid";
+    }
+
+
+    public ArrayList<String> getArrayMain(){
+        ArrayList <String> arrayList= new ArrayList<>();
+        String [] key = cardsInMainDeck.keySet().toArray(new String[0]);
+        for (int i = 0; i < key.length ; i++) {
+            for (int j = 0; j <cardsInMainDeck.get(key[i]) ; j++) {
+                arrayList.add(key[i]);
+            }
+        }
+        return arrayList ;
     }
 }
 
