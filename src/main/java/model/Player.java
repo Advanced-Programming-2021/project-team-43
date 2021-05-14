@@ -1,5 +1,7 @@
 package model;
 import view.GameMatView;
+
+import java.net.NetworkInterface;
 import java.util.*;
 
 
@@ -30,6 +32,7 @@ public class Player {
         this.canDrawCard = !isYourTurn;
         isOneRound = (numberOfRound == 1);
         canBattle = !isYourTurn;
+        new GameMatModel(nickname);
         fillTheGameDecks(activeDeck);
         firstDrawCard();
         allPlayers.put(this.nickname, this);
@@ -58,8 +61,8 @@ public class Player {
             for (int i = 0; i < activeDeck.cardsInMainDeck.get(eachCard); i++)
                 playerMainDeck.add(eachCard);
         }
-        cardName = activeDeck.cardsInSideDeck.keySet().toArray(new String[0]);
-        for (String eachCard: cardName) {
+        String[] cardName2 = activeDeck.cardsInSideDeck.keySet().toArray(new String[0]);
+        for (String eachCard: cardName2) {
             for (int i = 0; i < activeDeck.cardsInSideDeck.get(eachCard); i++)
                 playerSideDeck.add(eachCard);
         }

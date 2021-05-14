@@ -22,8 +22,45 @@ public class GameMatController {
         while (true) {
             currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
             command = GameMatView.getCommand();
-            if (selectCommand(command) == 1) {
-                continue;
+            if ((matcher = getMatcher(command, "select\\s+--monster\\s+(\\d+)")).find()) {
+                selectMonsterCard(Integer.parseInt(matcher.group(1)), true);
+                showGameBoard();
+            }
+            if ((matcher = getMatcher(command, "select\\s+--monster\\s+(\\d+)\\s+--opponent")).find()) {
+                selectMonsterCard(Integer.parseInt(matcher.group(1)), false);
+                showGameBoard();
+            }
+            if ((matcher = getMatcher(command, "select\\s+--opponent\\s+--monster\\s+(\\d+)")).find()) {
+                selectMonsterCard(Integer.parseInt(matcher.group(1)), false);
+                showGameBoard();
+            }
+            if ((matcher = getMatcher(command, "select\\s+--spell\\s+(\\d+)")).find()) {
+                selectSpellCard(Integer.parseInt(matcher.group(1)), true);
+                showGameBoard();
+            }
+            if ((matcher = getMatcher(command, "select\\s+--spell\\s+(\\d+)\\s+--opponent")).find()) {
+                selectSpellCard(Integer.parseInt(matcher.group(1)), false);
+                showGameBoard();
+            }
+            if ((matcher = getMatcher(command, "select\\s+--opponent\\s+--spell\\s+(\\d+)")).find()) {
+                selectSpellCard(Integer.parseInt(matcher.group(1)), false);
+                showGameBoard();
+            }
+            if (getMatcher(command, "select\\s+--field").find()) {
+                selectFieldCard(true);
+                showGameBoard();
+            }
+            if (getMatcher(command, "select\\s+--field\\s+--opponent").find() || getMatcher(command, "select\\s+--opponent\\s+--field").find()) {
+                selectFieldCard(false);
+                showGameBoard();
+            }
+            if ((matcher = getMatcher(command, "select\\s+--hand\\s+(\\d+)")).find()) {
+                selectHandCard(Integer.parseInt(matcher.group(1)));
+                showGameBoard();
+            }
+            if (getMatcher(command, "select\\s+-d").find()) {
+                selectDelete();
+                showGameBoard();
             }
             if (getMatcher(command,"next\\s+phase").find()) {
                 changePhase(currentPhase);
@@ -137,63 +174,6 @@ public class GameMatController {
     public static Matcher getMatcher(String command, String regex) {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(command);
-    }
-
-    public static int selectCommand(String command) {
-        if (command.startsWith("select")) {
-            if ((matcher = getMatcher(command,"select\\s+--monster\\s+(\\d+)")).find()) {
-                selectMonsterCard(Integer.parseInt(matcher.group(1)), true);
-                showGameBoard();
-                return 1;
-            }
-            if ((matcher = getMatcher(command,"select\\s+--monster\\s+(\\d+)\\s+--opponent")).find()) {
-                selectMonsterCard(Integer.parseInt(matcher.group(1)), false);
-                showGameBoard();
-                return 1;
-            }
-            if ((matcher = getMatcher(command,"select\\s+--opponent\\s+--monster\\s+(\\d+)")).find()) {
-                selectMonsterCard(Integer.parseInt(matcher.group(1)), false);
-                showGameBoard();
-                return 1;
-            }
-            if ((matcher = getMatcher(command,"select\\s+--spell\\s+(\\d+)")).find()) {
-                selectSpellCard(Integer.parseInt(matcher.group(1)), true);
-                showGameBoard();
-                return 1;
-            }
-            if ((matcher = getMatcher(command,"select\\s+--spell\\s+(\\d+)\\s+--opponent")).find()) {
-                selectSpellCard(Integer.parseInt(matcher.group(1)), false);
-                showGameBoard();
-                return 1;
-            }
-            if ((matcher = getMatcher(command,"select\\s+--opponent\\s+--spell\\s+(\\d+)")).find()) {
-                selectSpellCard(Integer.parseInt(matcher.group(1)), false);
-                showGameBoard();
-                return 1;
-            }
-            if (getMatcher(command,"select\\s+--field").find()) {
-                selectFieldCard(true);
-                showGameBoard();
-                return 1;
-            }
-            if (getMatcher(command,"select\\s+--field\\s+--opponent").find() || getMatcher(command,"select\\s+--opponent\\s+--field").find()) {
-                selectFieldCard(false);
-                showGameBoard();
-                return 1;
-            }
-            if ((matcher = getMatcher(command,"select\\s+--hand\\s+(\\d+)")).find()) {
-                selectHandCard(Integer.parseInt(matcher.group(1)));
-                showGameBoard();
-                return 1;
-            }
-            if (getMatcher(command,"select\\s+-d").find()) {
-                selectDelete();
-                showGameBoard();
-                return 1;
-            }
-            return 0;
-        }
-        return 0;
     }
 
     public static void selectMonsterCard(int address, boolean isOwnMonsterCard) {
