@@ -21,11 +21,11 @@ public class Player {
     private final List<String> playerMainDeck = new ArrayList<>();
     private final List<String> playerSideDeck = new ArrayList<>();
     private final List<Integer> allLifePoints = new ArrayList<>();
-    private static final Map<String,Player> allPlayers = new HashMap<>();
+    private static final Map<String, Player> allPlayers = new HashMap<>();
     private static int randomCardNumber;
     public static boolean isOneRound;
 
-    public Player (String nickname, DeckModel activeDeck, boolean isYourTurn, int numberOfRound) {
+    public Player(String nickname, DeckModel activeDeck, boolean isYourTurn, int numberOfRound) {
         this.nickname = nickname;
         this.isYourTurn = isYourTurn;
         this.numberOfRound = numberOfRound;
@@ -56,19 +56,16 @@ public class Player {
     }// call this for next round
 
     public void fillTheGameDecks(DeckModel activeDeck) {
-        String[] cardName = activeDeck.cardsInMainDeck.keySet().toArray(new String[0]);
-        for (String eachCard: cardName) {
-            for (int i = 0; i < activeDeck.cardsInMainDeck.get(eachCard); i++)
-                playerMainDeck.add(eachCard);
-        }
+        playerMainDeck.addAll(activeDeck.getArrayMain());
         String[] cardName2 = activeDeck.cardsInSideDeck.keySet().toArray(new String[0]);
-        for (String eachCard: cardName2) {
+        for (String eachCard : cardName2) {
             for (int i = 0; i < activeDeck.cardsInSideDeck.get(eachCard); i++)
                 playerSideDeck.add(eachCard);
         }
     }
 
     public void firstDrawCard() {
+        HandCardZone.eachHandCard.clear();
         for (int i = 0; i < 5; i++) {
             new HandCardZone(nickname, playerMainDeck.get(0));
             playerMainDeck.remove(0);
@@ -79,8 +76,7 @@ public class Player {
         if (isRandom) {
             Random random = new Random();
             randomCardNumber = random.nextInt(playerMainDeck.size() - 1);
-        }
-        else
+        } else
             randomCardNumber = 0;
         String cardName = playerMainDeck.get(randomCardNumber);
         removeFromMainDeck();
@@ -94,8 +90,7 @@ public class Player {
             addToSideDeck(playerMainDeck.get(cardAddressInMainDeck));
             removeFromMainDeckByAddress(cardAddressInMainDeck);
             return 1;
-        }
-        else {
+        } else {
             return 0;
         }
     }
@@ -229,8 +224,7 @@ public class Player {
                 return allLifePoints.get(0);
             else
                 return allLifePoints.get(1);
-        }
-        else {
+        } else {
             if (allLifePoints.get(0) >= allLifePoints.get(1) && allLifePoints.get(0) >= allLifePoints.get(2))
                 return allLifePoints.get(0);
             else if (allLifePoints.get(1) >= allLifePoints.get(0) && allLifePoints.get(1) >= allLifePoints.get(2))
@@ -247,8 +241,7 @@ public class Player {
             if (kind.equals("Monster") && model.equals("Monster")) {
                 if (MonsterCard.getMonsterByName(eachCard).getMonsterType().equals(type))
                     return true;
-            }
-            else if (kind.equals("Spell") && model.equals("Spell")) {
+            } else if (kind.equals("Spell") && model.equals("Spell")) {
                 if (SpellCard.getSpellCardByName(eachCard).getIcon().equals(type))
                     return true;
             }
@@ -261,8 +254,7 @@ public class Player {
         String cardModel = Card.getCardsByName(cardName).getCardModel();
         if (cardModel.equals("Monster") && model.equals("Monster")) {
             return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
-        }
-        else if (cardModel.equals("Spell") && model.equals("Spell")) {
+        } else if (cardModel.equals("Spell") && model.equals("Spell")) {
             return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
         }
         return false;
@@ -270,7 +262,7 @@ public class Player {
 
     public ArrayList<String> getPlayerDeck(String whichDeck) {
         if (whichDeck.equals("main"))
-            return (ArrayList<String>)playerMainDeck;
+            return (ArrayList<String>) playerMainDeck;
         else
             return (ArrayList<String>) playerSideDeck;
     }
