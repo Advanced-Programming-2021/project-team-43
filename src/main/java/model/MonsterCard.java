@@ -35,9 +35,9 @@ public class MonsterCard extends Card {
         return cardType;
     }//Normal
 
-    public void addScanner() {
-        allMonsters.put("Scanner", this);
-    }
+//    //public void addScanner() {
+//        allMonsters.put("Scanner", this);
+//    }
 
     public int getLevel() {
         return level;

@@ -39,7 +39,7 @@ public class ShopController {
         if (matcher2.find()) {
             String menuName = matcher2.group(1);
             if (menuName.equals("Main Menu"))
-                MainMenuController.findMatcher();
+               return 0;
             else if (menuName.equals("Deck") || menuName.equals("Profile") || menuName.equals("Scoreboard") || menuName.equals("Duel") || menuName.equals("Import/Export"))
                 ShopView.showInput("menu navigation is not possible");
             else

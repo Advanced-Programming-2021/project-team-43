@@ -1,7 +1,10 @@
 package main.java.model;
-import java.util.*;
+import main.java.controller.JSON;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 public class UserModel {
 
     private final String username;
@@ -15,7 +18,7 @@ public class UserModel {
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
-
+    public static ArrayList <String> importedCards = new ArrayList<>();
     public UserModel(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
@@ -23,6 +26,10 @@ public class UserModel {
         this.userScore = 0;
         this.userCoin = 100000;
         this.activeDeck="";
+        allUsersInfo.put(username,this);
+        allUsernames.add(username);
+        allUsersNicknames.add(nickname);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
 
     }
 
@@ -50,6 +57,7 @@ public class UserModel {
     public void changePassword(String password) {
         this.password = password;
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
 
@@ -59,6 +67,7 @@ public class UserModel {
         allUsersNicknames.add(nickname);
         this.nickname = nickname;
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
 
     }
 
@@ -66,6 +75,7 @@ public class UserModel {
     public void setUserScore(int userScore) {
         this.userScore = userScore;
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
 
     }
 
@@ -73,6 +83,7 @@ public class UserModel {
     public void changeUserScore(int userScore) {
         this.userScore = userScore + this.userScore;
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
 
@@ -80,23 +91,27 @@ public class UserModel {
 
         this.userCoin = this.userCoin + amount;
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
 
     public void setActiveDeck(String deckName) {
         this.activeDeck = deckName;
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
 
     public void addDeck(DeckModel deckModel) {
         userAllDecks.put(deckModel.getDeckName(), deckModel);
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void deleteDeck(String deckName) {
         userAllDecks.remove(deckName);
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
 
@@ -137,6 +152,7 @@ public class UserModel {
             userAllCards.replace(cardName, cardNumbers);
         }
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromUserAllCards(String cardName) {
@@ -149,6 +165,7 @@ public class UserModel {
             }
         }
         allUsersInfo.replace(username, this);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public boolean isUserHaveCard(String cardName) {
@@ -160,6 +177,6 @@ public class UserModel {
     }
 
     public boolean isUserHaveThisDeck(String deckName) {
-        return userAllDecks.get(deckName) != null;
+        return userAllDecks.containsKey(deckName);
     }
 }

@@ -1,10 +1,8 @@
 package main.java.model;
-
-import java.beans.IntrospectionException;
 import java.util.*;
-
 import main.java.controller.GameMatController;
-import main.java.view.GameMatView;
+import main.java.view.*;
+
 
 public class SpellTrapZoneCard {
 
@@ -18,8 +16,7 @@ public class SpellTrapZoneCard {
     private int turnCounter = 0;
     private boolean isSetInThisTurn;//change in change turn method
     private final Map<String, Integer> relatedMonsterAddress = new HashMap<>();
-    private static final Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
-    private static final Map<String, Map<Integer, SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
+    public static final Map<String, Map<Integer, SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
 
 
     public SpellTrapZoneCard(String playerNickname, String spellTrapName, String mode) {
@@ -33,9 +30,8 @@ public class SpellTrapZoneCard {
             this.icon = TrapCard.getTrapCardByName(spellTrapName).getIcon();
         }
         this.mode = mode;
-        this.address = ++numberOfFullHouse;
-        eachSpellTrapCard.put(address, this);
-        allSpellTrapCards.put(playerNickname, eachSpellTrapCard);
+        this.address = allSpellTrapCards.get(playerNickname).size() + 1;
+        allSpellTrapCards.get(playerNickname).put(address, this);
     }
 
     public String getSpellTrapName() {
@@ -63,7 +59,11 @@ public class SpellTrapZoneCard {
     }
 
     public static int getNumberOfFullHouse(String playerNickname) {
-        return allSpellTrapCards.get(playerNickname).size();
+        if (allSpellTrapCards.get(playerNickname) != null) {
+            return allSpellTrapCards.get(playerNickname).size();
+        }
+        else
+            return 0;
     }
 
     public void changeNumberOfFullHouse(int amount) {
@@ -144,37 +144,19 @@ public class SpellTrapZoneCard {
         return false;
     }
 
-
-    @Override
-    public String toString() {
-        return "Name: " + spellTrapName + "\n" +
-                "Spell" + "\n" +
-                "Type: " + SpellCard.getSpellCardByName(spellTrapName).getCardModel() + "\n" +
-                "Description: " + SpellCard.getSpellCardByName(spellTrapName).getDescription();
-    }
-
     public static String[] getAllSpellTrapMode(String playerNickname) {
-        String[] allSpellsMode = new String[5];
-        if (!getAllSpellTrapByPlayerName(playerNickname).containsKey(5))
-            allSpellsMode[0] = "E";
-        else
-            allSpellsMode[0] = getAllSpellTrapByPlayerName(playerNickname).get(5).getMode();
-        if (!getAllSpellTrapByPlayerName(playerNickname).containsKey(3))
-            allSpellsMode[1] = "E";
-        else
-            allSpellsMode[1] = getAllSpellTrapByPlayerName(playerNickname).get(3).getMode();
-        if (!getAllSpellTrapByPlayerName(playerNickname).containsKey(1))
-            allSpellsMode[2] = "E";
-        else
-            allSpellsMode[2] = getAllSpellTrapByPlayerName(playerNickname).get(1).getMode();
-        if (!getAllSpellTrapByPlayerName(playerNickname).containsKey(2))
-            allSpellsMode[3] = "E";
-        else
-            allSpellsMode[3] = getAllSpellTrapByPlayerName(playerNickname).get(2).getMode();
-        if (!getAllSpellTrapByPlayerName(playerNickname).containsKey(4))
-            allSpellsMode[4] = "E";
-        else
-            allSpellsMode[4] = getAllSpellTrapByPlayerName(playerNickname).get(4).getMode();
+        String[] allSpellsMode = new String[6];
+        if (getAllSpellTrapByPlayerName(playerNickname) == null)
+            for (int i = 1; i < 6; i++)
+                allSpellsMode[i] = "E";
+        else {
+            for (int i = 1; i < 6; i++) {
+                if (!getAllSpellTrapByPlayerName(playerNickname).containsKey(i))
+                    allSpellsMode[i] = "E";
+                else
+                    allSpellsMode[i] = getAllSpellTrapByPlayerName(playerNickname).get(i).getMode();
+            }
+        }
         return allSpellsMode;
     }
 
@@ -186,9 +168,9 @@ public class SpellTrapZoneCard {
         return allSpellTrapCards.get(playerNickname);
     }
 
-   public static HashMap<Integer,HashMap<Integer,String>> effectStack = new HashMap<>();
+    public static HashMap<Integer, HashMap<Integer, String>> effectStack = new HashMap<>();
 
-    public static HashMap<Integer,HashMap<Integer,String>> getEffectStack() {
+    public static HashMap<Integer, HashMap<Integer, String>> getEffectStack() {
         return effectStack;
     }
 
@@ -219,13 +201,13 @@ public class SpellTrapZoneCard {
 
                 while (true) {
                     GameMatView.showInput("do you want to activate your spell with address " + address1 + " ? (yes/no)");
-                 String command4=GameMatView.getCommand();
+                    String command4 = GameMatView.getCommand();
                     if (command4.equals("yes")) {
-                        HashMap<Integer,String> hash=new HashMap<>();
-                        hash.put(cards[i],rivalNickname);
-                        effectStack.put(i,hash);
+                        HashMap<Integer, String> hash = new HashMap<>();
+                        hash.put(cards[i], rivalNickname);
+                        effectStack.put(i, hash);
                         while (true) {
-                            String command=GameMatView.getCommand();
+                            String command = GameMatView.getCommand();
                             if (command.matches("activate \\s*effect")) {
                                 SpellTrapZoneCard.getSpellCardByAddress(address1, rivalNickname).setMode("O");
                                 GameMatView.showInput("spell activated");
@@ -235,7 +217,7 @@ public class SpellTrapZoneCard {
                         }
                         break;
                     }
-                    String command2=GameMatView.getCommand();
+                    String command2 = GameMatView.getCommand();
                     if (command2.equals("no")) {
                         GameMatView.showInput("now it will be " + ownNickname + "’s turn");
                         GameMatController.showGameBoard();
@@ -248,13 +230,13 @@ public class SpellTrapZoneCard {
             if (address2 != -1) {
                 while (true) {
                     GameMatView.showInput("do you want to activate your trap with address " + address2 + " ? (yes/no)");
-                  String command5=GameMatView.getCommand();
+                    String command5 = GameMatView.getCommand();
                     if (command5.equals("yes")) {
-                        HashMap<Integer,String> hash2=new HashMap<>();
-                        hash2.put(cards[i],rivalNickname);
-                        effectStack.put(i,hash2);
+                        HashMap<Integer, String> hash2 = new HashMap<>();
+                        hash2.put(cards[i], rivalNickname);
+                        effectStack.put(i, hash2);
                         while (true) {
-                            String command3=GameMatView.getCommand();
+                            String command3 = GameMatView.getCommand();
                             if (command3.matches("activate \\s*effect")) {
                                 SpellTrapZoneCard.getSpellCardByAddress(address2, rivalNickname).setMode("O");
                                 GameMatView.showInput("spell activated");
@@ -264,7 +246,7 @@ public class SpellTrapZoneCard {
                         }
                         break;
                     }
-                    String command3=GameMatView.getCommand();
+                    String command3 = GameMatView.getCommand();
                     if (command3.equals("no")) {
                         GameMatView.showInput("now it will be " + ownNickname + "’s turn");
                         GameMatController.showGameBoard();

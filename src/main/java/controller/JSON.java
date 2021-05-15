@@ -1,12 +1,8 @@
 package main.java.controller;
-
 import java.io.IOException;
-import java.util.Map;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import main.java.model.UserModel;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,7 +10,7 @@ import java.util.*;
 
 public class JSON {
     public static void writeUserModelInfo(HashMap<String, UserModel> allUsersInfo, ArrayList<String> allUsernames,
-                                          ArrayList<String> allUsersNicknames) {//ok
+                                          ArrayList<String> allUsersNicknames) {
         try {
             FileWriter writerInfo = new FileWriter("jsonUsersInfo.txt");
             writerInfo.write(new Gson().toJson(allUsersInfo));
@@ -40,7 +36,7 @@ public class JSON {
 
     }
 
-    public static HashMap<String, UserModel> readUserInfo() {//ok
+    public static HashMap<String, UserModel> readUserInfo() {
         try {
             String readInfo = new String(Files.readAllBytes(Paths.get("jsonUsersInfo.txt")));
             HashMap<String, UserModel> userInfo;
@@ -54,7 +50,7 @@ public class JSON {
         return null;
     }
 
-    public static ArrayList<String> readUsernames() {//ok
+    public static ArrayList<String> readUsernames() {
         try {
             String readNames = new String(Files.readAllBytes(Paths.get("jsonUsernames.txt")));
             ArrayList<String> usernames;
@@ -68,7 +64,7 @@ public class JSON {
         return null;
     }
 
-    public static ArrayList<String> readUserNicknames() {//ok
+    public static ArrayList<String> readUserNicknames() {
         try {
             String readNicknames = new String(Files.readAllBytes(Paths.get("jsonNicknames.txt")));
             ArrayList<String> nicknames;
@@ -82,7 +78,7 @@ public class JSON {
         return null;
     }
 
-    public static void importCard(ArrayList<String> cardNames) {//ok
+    public static void importCard(ArrayList<String> cardNames) {
         try {
             FileWriter writerInfo = new FileWriter("jsonAddedCards.txt");
             writerInfo.write(new Gson().toJson(cardNames));
@@ -93,7 +89,7 @@ public class JSON {
     }
 
 
-    public static ArrayList<String> exportCad() {//ok
+    public static ArrayList<String> exportCad() {
         try {
             String readCardNames = new String(Files.readAllBytes(Paths.get("jsonAddedCards.txt")));
             ArrayList<String> cardNames;

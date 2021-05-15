@@ -1,23 +1,25 @@
 package main.java.model;
-import main.java.view.*;
+import main.java.view.GameMatView;
 import java.util.*;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 public class GameMatModel {
 
-    private String playerNickname;
     private Phase phase;
-    private boolean haveLostMonsterThisTurn;
-    private List<String> graveyard = new ArrayList<>();
     private String fieldZone = "";
-    private int numberOfDeadMonster = 0;
-    private boolean isOwnFieldZoneSelected;
-    private static Map<String,GameMatModel> playerGameMat = new HashMap<>();
+    private int numberOfDeadMonsterThisTurn = 0;
+    private final List<String> graveyard = new ArrayList<>();
+    private static final Map<String,GameMatModel> playerGameMat = new HashMap<>();
 
     public GameMatModel (String playerNickname) {
-        this.playerNickname = playerNickname;
         this.phase = Phase.Draw_Phase;
         playerGameMat.put(playerNickname, this);
+    }
+
+    public void startNewGame() {
+        this.phase = Phase.Draw_Phase;;
+        removeFromFieldZone();
+        graveyard.clear();
     }
 
     public Phase getPhase() {
@@ -28,57 +30,78 @@ public class GameMatModel {
         this.phase = phase;
     }
 
+    public String getDeadCardNameByAddress(int address) {
+        return graveyard.get(address);
+    }
+
     public void addToGraveyard(String cardName) {
         graveyard.add(cardName);
-        if (Card.getCardsByName(cardName).getCardModel().equals("Monster"))
-            numberOfDeadMonster++;
     }
 
-    public void removeFromGraveyard(String cardName) {
-        graveyard.removeIf(eachCard -> eachCard.equals(cardName));
-        if (Card.getCardsByName(cardName).getCardModel().equals("Monster"))
-            numberOfDeadMonster--;
+    public void removeFromGraveyardByAddress(int whichCard) {
+        graveyard.remove(whichCard);
     }
 
-    public void addToFieldZone(String cardName) {
-        fieldZone = cardName;
+    public String getKindOfDeadCardByAddress(int address) {
+        if (graveyard.get(address).isEmpty())
+            return null;
+        else
+            return Card.getCardsByName(graveyard.get(address)).getCardModel();
     }
 
-    public void removeFromFieldZone(String cardName) {
-        fieldZone = "";
-    }
-
-    public void setOwnFieldZoneSelected() {
-        this.isOwnFieldZoneSelected = true;
-    }
-
-    public boolean getOwnFieldZoneSelected() {
-        return isOwnFieldZoneSelected;
-    }
-
-    public void setHaveLostMonsterThisTurn(boolean haveLostMonsterThisTurn) {
-        this.haveLostMonsterThisTurn = haveLostMonsterThisTurn;
-    }
-
-    public boolean getHaveLostMonsterThisTurn() {
-        return haveLostMonsterThisTurn;
-    }
-
-    public String getFieldZone() {
-        return fieldZone;
+    public String getNameOfDeadCardByAddress(int address) {
+        if (graveyard.get(address).isEmpty())
+            return null;
+        else
+            return graveyard.get(address);
     }
 
     public int getNumberOfDeadCards() {
         return graveyard.size();
     }
 
-    public int getNumberOfDeadMonster() {
-        return numberOfDeadMonster;
+    public int getNumberOfDeadCardByModel(String model) {
+        int numberOfDeadCard = 0;
+        for (String deadCardName : graveyard)
+            if (Card.getCardsByName(deadCardName).getCardModel().equals(model))
+                numberOfDeadCard++;
+        return numberOfDeadCard;
+    }
+
+    public boolean doesThisModelAndTypeExist(String model, String type) {
+        for (String eachCard : graveyard) {
+            String kind = Card.getCardsByName(eachCard).getCardModel();
+            if (kind.equals("Monster") && model.equals("Monster")) {
+                if (MonsterCard.getMonsterByName(eachCard).getMonsterType().equals(type))
+                    return true;
+            }
+            else if (kind.equals("Spell") && model.equals("Spell")) {
+                if (SpellCard.getSpellCardByName(eachCard).getIcon().equals(type))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean doesAddressAndTypeMatch(int address, String model, String type) {
+        String cardName = graveyard.get(address);
+        if (model.equals("Monster") && Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+            return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
+        }
+        return false;
+    }
+
+    public boolean isAnySevenLevelMonsterInGraveyard() {
+        for (String deadCardName : graveyard)
+            if (Card.getCardsByName(deadCardName).getCardModel().equals("Monster"))
+                if (MonsterCard.getMonsterByName(deadCardName).getLevel() > 6)
+                    return true;
+        return false;
     }
 
     public void showGraveyard() {
         if (graveyard.isEmpty())
-            GameMatView.showInput("graveyard empty");
+            GameMatView.showInput("Graveyard Empty");
         else {
             int counter = 1;
             for (String eachDeadCard : graveyard) {
@@ -88,8 +111,38 @@ public class GameMatModel {
         }
     }
 
+    public String getFieldZone() {
+        return fieldZone;
+    }
+
+    public void addToFieldZone(String cardName, String mode) {
+        fieldZone = cardName + " " + mode;
+    }
+
+    public void changeModeOfFieldCard(String mode) {
+        String[] split = fieldZone.split(" ");
+        fieldZone = split[0] + " " + mode;
+    }//use when activate a set field card
+
+    public void removeFromFieldZone() {
+        fieldZone = "";
+    }
+
+    public int getNumberOfDeadMonsterThisTurn() {
+        return numberOfDeadMonsterThisTurn;
+    }
+
+    public void changeNumberOfDeadMonsterThisTurn() {
+        numberOfDeadMonsterThisTurn++;
+    }//use in attack method
+
+    public void resetNumberOfDeadMonsterThisTurn() {
+        numberOfDeadMonsterThisTurn = 0;
+    }
+
     public static GameMatModel getGameMatByNickname(String playerNickname) {
         return playerGameMat.get(playerNickname);
     }
+
 
 }

@@ -1,7 +1,13 @@
 package main.java.model;
-import main.java.controller.*;
+
+import main.java.controller.JSON;
+import main.java.controller.MainMenuController;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import java.util.List;
+
 public class DeckModel {
     private String deckName;
     private int mainAllCardNumber = 0;
@@ -20,13 +26,17 @@ public class DeckModel {
 
     public void addCardToMain(String cardName) {
         if (cardsInMainDeck.get(cardName) == null) {
-            cardsInSideDeck.put(cardName, 1);
+            cardsInMainDeck.put(cardName, 1);
         } else {
             cardsInMainDeck.replace(cardName, cardsInMainDeck.get(cardName) + 1);
         }
         mainAllCardNumber = mainAllCardNumber + 1;
 
-        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.userAllDecks.replace(deckName, this);
+        UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromMain(String cardName) {
@@ -35,7 +45,9 @@ public class DeckModel {
             cardsInMainDeck.remove(cardName);
         }
         mainAllCardNumber = mainAllCardNumber - 1;
-        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.userAllDecks.replace(deckName, this);
+        UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
     }
 
     public void addCardToSide(String cardName) {
@@ -45,7 +57,10 @@ public class DeckModel {
             cardsInSideDeck.replace(cardName, cardsInSideDeck.get(cardName) + 1);
         }
         sideAllCardNumber = sideAllCardNumber + 1;
-        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.userAllDecks.replace(deckName, this);
+        UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromSide(String cardName) {
@@ -54,7 +69,10 @@ public class DeckModel {
             cardsInSideDeck.remove(cardName);
         }
         sideAllCardNumber = sideAllCardNumber - 1;
-        UserModel.getUserByUsername(MainMenuController.username).userAllDecks.replace(deckName, this);
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.userAllDecks.replace(deckName, this);
+        UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
+        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public int getNumberOfCardInMainDeck(String cardName) {
@@ -89,15 +107,23 @@ public class DeckModel {
 
 
     public String validOrInvalid(){
-        if (getMainAllCardNumber()>40){
+        if (getMainAllCardNumber()>9){////40///////////////////////////////
 
             return "valid";}
 
         return "invalid";
     }
+
+
+    public  List<String> getArrayMain(){
+        List<String>List= new ArrayList<>();
+        String [] key = cardsInMainDeck.keySet().toArray(new String[0]);
+        for (int i = 0; i < key.length ; i++) {
+            for (int j = 0; j <cardsInMainDeck.get(key[i]) ; j++) {
+                List.add(key[i]);
+            }
+        }
+        return List ;
+    }
 }
-
-
-
-
 
