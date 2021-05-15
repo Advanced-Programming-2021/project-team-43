@@ -40,98 +40,98 @@ public class RegisterAndLoginController {
 
 
 
-            Pattern pattern = Pattern.compile("^user \\s*login \\s*--username\\s* (.+?) --password \\s*(.+?)$");
-            Matcher matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                loginInGame(matcher.group(1), matcher.group(2));
-                return 1;
+        Pattern pattern = Pattern.compile("^user \\s*login \\s*--username\\s* (.+?) --password \\s*(.+?)$");
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            loginInGame(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^user \\s*login\\s* --password \\s*(.+?) \\s*--username \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            loginInGame(matcher.group(2), matcher.group(1));
+            return 1;
+
+        }
+
+
+        pattern = Pattern.compile("^user \\s*create \\s*--username\\s* (.+?) \\s*--nickname\\s* (.+?) \\s*--password \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            registerInGame(matcher.group(1), matcher.group(2), matcher.group(3));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^user\\s* create\\s* --username \\s*(.+?)\\s* --password \\s*(.+?)\\s* --nickname\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            registerInGame(matcher.group(1), matcher.group(3), matcher.group(2));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^user\\s* create\\s* --nickname\\s* (.+?)\\s* --username\\s* (.+?)\\s* --password\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            registerInGame(matcher.group(2), matcher.group(1), matcher.group(3));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^user\\s* create\\s* --nickname\\s* (.+?)\\s* --password \\s*(.+?)\\s*--usaername \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            registerInGame(matcher.group(2), matcher.group(3), matcher.group(1));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^user\\s* create\\s* --password\\s* (.+?)\\s* --username\\s* (.+?)\\s* --nickname\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            registerInGame(matcher.group(3), matcher.group(1), matcher.group(2));
+            return 1;
+        }
+        pattern = Pattern.compile("^user\\s* create\\s* --password\\s* (.+?)\\s* --nickname\\s* (.+?)\\s* --username\\s* (.+?)\\s*$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            registerInGame(matcher.group(3), matcher.group(2), matcher.group(1));
+            return 1;
+        }
+
+        pattern = Pattern.compile("^menu enter\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            if (matcher.group(1).equals("duel")||matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                RegisterAndLoginView.showInput("menu navigation is not possible");
+            } else {
+                RegisterAndLoginView.showInput("invalid command");
             }
+            return 1;
+        }
+
+        pattern = Pattern.compile("^menu \\s*exit$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            return 0;
+        }
 
 
-            pattern = Pattern.compile("^user \\s*login\\s* --password \\s*(.+?) \\s*--username \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                loginInGame(matcher.group(2), matcher.group(1));
-                return 1;
-
-            }
-
-
-            pattern = Pattern.compile("^user \\s*create \\s*--username\\s* (.+?) \\s*--nickname\\s* (.+?) \\s*--password \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                registerInGame(matcher.group(1), matcher.group(2), matcher.group(3));
-                return 1;
-            }
+        pattern = Pattern.compile("^menu \\s*show-current$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            RegisterAndLoginView.showInput("Login Menu");
+            return 1;
+        }
 
 
-            pattern = Pattern.compile("^user\\s* create\\s* --username \\s*(.+?)\\s* --password \\s*(.+?)\\s* --nickname\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                registerInGame(matcher.group(1), matcher.group(3), matcher.group(2));
-                return 1;
-            }
-
-
-            pattern = Pattern.compile("^user\\s* create\\s* --nickname\\s* (.+?)\\s* --username\\s* (.+?)\\s* --password\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                registerInGame(matcher.group(2), matcher.group(1), matcher.group(3));
-                return 1;
-            }
-
-
-            pattern = Pattern.compile("^user\\s* create\\s* --nickname\\s* (.+?)\\s* --password \\s*(.+?)\\s*--usaername \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                registerInGame(matcher.group(2), matcher.group(3), matcher.group(1));
-                return 1;
-            }
-
-
-            pattern = Pattern.compile("^user\\s* create\\s* --password\\s* (.+?)\\s* --username\\s* (.+?)\\s* --nickname\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                registerInGame(matcher.group(3), matcher.group(1), matcher.group(2));
-                return 1;
-            }
-            pattern = Pattern.compile("^user\\s* create\\s* --password\\s* (.+?)\\s* --nickname\\s* (.+?)\\s* --username\\s* (.+?)\\s*$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                registerInGame(matcher.group(3), matcher.group(2), matcher.group(1));
-                return 1;
-            }
-
-            pattern = Pattern.compile("^menu enter\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                if (matcher.group(1).equals("duel")||matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
-                    RegisterAndLoginView.showInput("menu navigation is not possible");
-                } else {
-                    RegisterAndLoginView.showInput("invalid command");
-                }
-                return 1;
-            }
-
-            pattern = Pattern.compile("^menu \\s*exit$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                return 0;
-            }
-
-
-            pattern = Pattern.compile("^menu \\s*show-current$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                RegisterAndLoginView.showInput("Login Menu");
-                return 1;
-            }
-
-
-            RegisterAndLoginView.showInput("invalid command");
+        RegisterAndLoginView.showInput("invalid command");
 
         return 1;
-        }
+    }
 
 
 
@@ -146,7 +146,7 @@ public class RegisterAndLoginController {
 
             return;
         }
-         new UserModel(username, password, nickname);
+        new UserModel(username, password, nickname);
         RegisterAndLoginView.showInput("user created successfully!");
 
     }
