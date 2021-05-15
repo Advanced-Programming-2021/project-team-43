@@ -33,9 +33,15 @@ public class Player {
         isOneRound = (numberOfRound == 1);
         canBattle = !isYourTurn;
         new GameMatModel(nickname);
+        List<HandCardZone> eachHandCard = new ArrayList<>();
+        HandCardZone.allHandCards.put(nickname, eachHandCard);
+        Map<Integer, MonsterZoneCard> eachMonsterCard = new HashMap<>();
+        MonsterZoneCard.allMonsterCards.put(nickname, eachMonsterCard);
+        Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
+        SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
         firstDrawCard();
-        allPlayers.put(this.nickname, this);
+        allPlayers.put(nickname, this);
     } //call this when duel command is called
 
 
@@ -65,7 +71,6 @@ public class Player {
     }
 
     public void firstDrawCard() {
-        HandCardZone.eachHandCard.clear();
         for (int i = 0; i < 5; i++) {
             new HandCardZone(nickname, playerMainDeck.get(0));
             playerMainDeck.remove(0);
@@ -94,7 +99,6 @@ public class Player {
             return 0;
         }
     }
-
 
     public int getLifePoint() {
         return lifePoint;
@@ -252,11 +256,10 @@ public class Player {
     public boolean doesAddressTypeMatchInMainDeck(int address, String model, String type) {
         String cardName = playerMainDeck.get(address);
         String cardModel = Card.getCardsByName(cardName).getCardModel();
-        if (cardModel.equals("Monster") && model.equals("Monster")) {
+        if (cardModel.equals("Monster") && model.equals("Monster"))
             return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
-        } else if (cardModel.equals("Spell") && model.equals("Spell")) {
+        else if (cardModel.equals("Spell") && model.equals("Spell"))
             return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
-        }
         return false;
     }
 
@@ -272,9 +275,10 @@ public class Player {
         setIsYourMoveFinished(false);
         setCanUseTrap(true);
         setCanSetSummonMonster(true);
-        setCanDrawCard(true);
+        setCanBattle(true);
+        setCanDrawCard(HandCardZone.getNumberOfFullHouse(nickname) != 6);
         GameMatModel.getGameMatByNickname(nickname).resetNumberOfDeadMonsterThisTurn();
-    }//may have some changes
+    }
 
     public static Player getPlayerByName(String playerNickname) {
         return allPlayers.get(playerNickname);

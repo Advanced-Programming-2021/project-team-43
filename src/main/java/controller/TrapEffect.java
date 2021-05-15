@@ -17,7 +17,7 @@ public class TrapEffect {
             mindCrush(onlineUser, rivalUser);
         }
         if (spellTrapName.equals("Trap Hole")) {
-            trapHole(ownMonster);
+            trapHole(onlineUser, ownMonster);
         }
         if (spellTrapName.equals("Torrential Tribute")) {
             torrentialTribute(rivalUser, onlineUser);
@@ -29,10 +29,10 @@ public class TrapEffect {
             /////in attack
         }
         if (spellTrapName.equals("Solemn Warning")) {
-            //solemnWarning(onlineUser, addressOfSummonCard, summonMine, rivalUser);
+            solemnWarning(onlineUser, ownMonster.getAddress(), summonMine, rivalUser);
         }
         if (spellTrapName.equals("Magic Jammer")) {
-            //magicJammer(onlineUser, addressOfSummonCard, summonMine, rivalUser);
+            magicJammer(onlineUser, ownMonster.getAddress(), summonMine, rivalUser);
         }
         if (spellTrapName.equals("Call of the Haunted")) {
             callOfTheHaunted(onlineUser);
@@ -53,7 +53,7 @@ public class TrapEffect {
             Integer[] addressOfOwnMonsters = ownMonster.keySet().toArray(new Integer[0]);
             for (int i = 0; i < ownMonster.size(); i++) {
                 if (MonsterZoneCard.getMonsterCardByAddress(addressOfOwnMonsters[i], onlineUser).getMode().equals("OO")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfOwnMonsters[i], onlineUser).removeMonsterFromZone();
+                    MonsterZoneCard.removeMonsterFromZone(onlineUser, addressOfOwnMonsters[i]);
                 }
             }
         }
@@ -68,17 +68,17 @@ public class TrapEffect {
         if (HandCardZone.doesThisCardNameExist(rivalUser, response)) {
             int[] allAddress = HandCardZone.getAddressByName(rivalUser, response);
             for (int address : allAddress) {
-                HandCardZone.getHandCardByAddress(address, rivalUser).removeFromHandCard();
+                HandCardZone.removeFromHandCard(onlineUser, address);
             }
         }
         else {
             Random random = new Random();
-            HandCardZone.getHandCardByAddress(random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1, rivalUser).removeFromHandCard();
+            HandCardZone.removeFromHandCard(rivalUser, random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1);
         }
     }
 
-    public static void trapHole(MonsterZoneCard ownMonster) {
-        ownMonster.removeMonsterFromZone();
+    public static void trapHole(String onlineUser, MonsterZoneCard ownMonster) {
+        MonsterZoneCard.removeMonsterFromZone(onlineUser, ownMonster.getAddress());
     }
 
     private static boolean ringOfDefenseEffect(String rival, String onlineUser) {
@@ -107,12 +107,12 @@ public class TrapEffect {
             Map<Integer, MonsterZoneCard> rivalsMonster = MonsterZoneCard.getAllMonstersByPlayerName(rival);
             Integer[] monsterNames = rivalsMonster.keySet().toArray(new Integer[0]);
             for (int i = 0; i < rivalsMonster.size(); i++) {
-                MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], rival).removeMonsterFromZone();
+                MonsterZoneCard.removeMonsterFromZone(rival, monsterNames[i]);
             }
             Map<Integer, MonsterZoneCard> ownMonster = MonsterZoneCard.getAllMonstersByPlayerName(player1);
             Integer[] ownMonsterNames = ownMonster.keySet().toArray(new Integer[0]);
             for (int i = 0; i < ownMonster.size(); i++) {
-                MonsterZoneCard.getMonsterCardByAddress(ownMonsterNames[i], player1).removeMonsterFromZone();
+                MonsterZoneCard.removeMonsterFromZone(player1, ownMonsterNames[i]);
             }
         }
     }
@@ -126,12 +126,12 @@ public class TrapEffect {
             Player.getPlayerByName(player1).changeLifePoint(-2000);
             if (summonMine) {
                 if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).removeMonsterFromZone();
+                    MonsterZoneCard.removeMonsterFromZone(player1, addressOfSummonCard);
                 }
             }
             if (!summonMine) {
                 if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).removeMonsterFromZone();
+                    MonsterZoneCard.removeMonsterFromZone(rival, addressOfSummonCard);
                 }
             }
         }
@@ -168,5 +168,4 @@ public class TrapEffect {
         new MonsterZoneCard(onlineUser, cardName, "OO", false, false);
         GameMatModel.getGameMatByNickname(onlineUser).removeFromGraveyardByAddress(Integer.parseInt(response));
     }
-
 }

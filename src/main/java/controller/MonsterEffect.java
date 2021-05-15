@@ -61,7 +61,7 @@ public class MonsterEffect {
                 GameMatView.showInput("Please enter the correct address of a Rival Monster:");
                 response = GameMatView.getCommand();
             }
-            MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser).removeMonsterFromZone();
+            MonsterZoneCard.removeMonsterFromZone(rivalUser, Integer.parseInt(response));
             ownMonsterCard.setIsEffectUsed(true);
             return 1;
         }
@@ -143,107 +143,18 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the correct address:");
                     response = GameMatView.getCommand();
                 }
-                HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
+                HandCardZone.removeFromHandCard(onlineUser, Integer.parseInt(response));
                 new MonsterZoneCard(onlineUser, "The Tricky", "DO", false, false);
+                GameMatView.showInput("summoned successfully");
                 return 1;
             }
         }
         return 0;
     }
 
-    public static int theTricky(MonsterZoneCard ownMonster, String onlineUser) {
-        GameMatView.showInput("Do you want a Special Summon? (yes/no)");
-        response = GameMatView.getCommand();
-        while (!response.matches("yes|no")) {
-            if (response.equals("cancel"))
-                return 0;//cancel
-            GameMatView.showInput("Please enter the correct answer: (yes/no)");
-            response = GameMatView.getCommand();
-        }
-        if (response.equals("no"))
-            return 0;
-        else {
-            if (HandCardZone.getNumberOfFullHouse(onlineUser) == 1)
-                GameMatView.showInput("Oops! You cant have Special Summon because of lack of HandCard!");
-            else {
-                GameMatView.showInput("Please enter the address of a HandCard to tribute:");
-                response = GameMatView.getCommand();
-                while (Integer.parseInt(response) < 1 || Integer.parseInt(response) > HandCardZone.getNumberOfFullHouse(onlineUser) || Integer.parseInt(response) == ownMonster.getAddress()) {
-                    if (response.equals("cancel"))
-                        return 0;//cancel
-                    GameMatView.showInput("Please enter the correct address:");
-                    response = GameMatView.getCommand();
-                }
-                HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
-                new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false);
-                return 1;
-            }
-        }
-        return 0;
-    }
-
-    public static int beastKingBarbaros(MonsterZoneCard ownMonster, HandCardZone handCard, String onlineUser, String rivalUser) {
-        GameMatView.showInput("Do you want to summon Beast King Barbaros without tributing? (yes/no)");
-        response = GameMatView.getCommand();
-        while (!response.matches("yes|no")) {
-            if (response.equals("cancel"))
-                return 0;//cancel
-            GameMatView.showInput("Please enter the correct answer: (yes/no)");
-            response = GameMatView.getCommand();
-        }
-        if (response.equals("yes")) {
-            if (handCard != null) {
-                new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
-                MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser).setAttack(1900);
-                handCard.removeFromHandCard();
-            }
-            else
-                ownMonster.setAttack(1900);
-        }
-        else {
-            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3) {
-                GameMatView.showInput("Oops! You cant summon this Monster because of lack of Monster to tribute");
-                return -1;
-            }
-            else {
-                GameMatView.showInput("Please enter the address of three Monster to tribute: ");
-                for (int i = 1; i < 4; i++) {
-                    GameMatView.showInput("Please enter the address of Monster " + i + " to tribute: ");
-                    response = GameMatView.getCommand();
-                    while (!response.matches("[1-5]") || MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser) == null) {
-                        if (response.equals("cancel"))
-                            return 0;//cancel
-                        GameMatView.showInput("Please enter the address correctly!");
-                        response = GameMatView.getCommand();
-                    }
-                    MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser).removeMonsterFromZone();
-                }
-                if (handCard != null) {
-                    new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
-                    handCard.removeFromHandCard();
-                }
-                else
-                    ownMonster.setMode("OO");
-                Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
-                Map<Integer, SpellTrapZoneCard> spellsTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rivalUser);
-                Integer[] monster = monsters.keySet().toArray(new Integer[0]);
-                Integer[] spellTraps = spellsTraps.keySet().toArray(new Integer[0]);
-                for (int s : monster) {
-                    MonsterZoneCard.getMonsterCardByAddress(s, rivalUser).removeMonsterFromZone();
-                }
-                for (int s : spellTraps) {
-                    SpellTrapZoneCard.getSpellCardByAddress(s, rivalUser).removeSpellTrapFromZone();
-                }
-            }
-        }
-        return 1;//with success
-    }
-
-    public static int gateGuardian(String onlineUser, String rivalUser) {
-        if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3) {
+    public static int gateGuardian(HandCardZone handCard, String onlineUser, String rivalUser) {
+        if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3)
             GameMatView.showInput("Oops! You cant summon this Monster because of lack of Monster to tribute");
-            return -1;//cant summon
-        }
         else {
             GameMatView.showInput("Please enter the address of three Monster to tribute: ");
             for (int i = 1; i < 4; i++) {
@@ -251,7 +162,7 @@ public class MonsterEffect {
                 response = GameMatView.getCommand();
                 while (!response.matches("own|rival")) {
                     if (response.equals("cancel"))
-                        return 0;//cancel
+                        return 0;
                     GameMatView.showInput("Please enter the answer correctly: (own/rival)");
                     response = GameMatView.getCommand();
                 }
@@ -260,11 +171,11 @@ public class MonsterEffect {
                     response = GameMatView.getCommand();
                     while (!response.matches("[1-5]") || MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser) == null) {
                         if (response.equals("cancel"))
-                            return 0;//cancel
+                            return 0;
                         GameMatView.showInput("Please enter the address correctly!");
                         response = GameMatView.getCommand();
                     }
-                    MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser).removeMonsterFromZone();
+                    MonsterZoneCard.removeMonsterFromZone(onlineUser, Integer.parseInt(response));
                 }
                 else {
                     GameMatView.showInput("Please enter the address of rival Monster " + i + " to tribute: ");
@@ -275,10 +186,90 @@ public class MonsterEffect {
                         GameMatView.showInput("Please enter the address correctly!");
                         response = GameMatView.getCommand();
                     }
-                    MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser).removeMonsterFromZone();
+                    MonsterZoneCard.removeMonsterFromZone(rivalUser, Integer.parseInt(response));         }
+            }
+            HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+            new MonsterZoneCard(onlineUser, "Gate Guardian", "OO", false,false);
+        }
+        return 1;
+    }
+
+    public static int beastKingBarbaros(HandCardZone handCard, String onlineUser, String rivalUser) {
+        GameMatView.showInput("Do you want to summon Beast King Barbaros without tributing? (yes/no)");
+        response = GameMatView.getCommand();
+        while (!response.matches("yes|no")) {
+            if (response.equals("cancel"))
+                return 0;
+            GameMatView.showInput("Please enter the correct answer: (yes/no)");
+            response = GameMatView.getCommand();
+        }
+        if (response.equals("yes")) {
+            HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+            new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
+            MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser).setAttack(1900);
+        }
+        else {
+            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < 3) {
+                GameMatView.showInput("Oops! You cant summon this Monster because of lack of Monster to tribute");
+            }
+            else {
+                GameMatView.showInput("Please enter the address of three Monster to tribute: ");
+                for (int i = 1; i < 4; i++) {
+                    GameMatView.showInput("Please enter the address of Monster " + i + " to tribute: ");
+                    response = GameMatView.getCommand();
+                    while (!response.matches("[1-5]") || MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser) == null) {
+                        if (response.equals("cancel"))
+                            return 0;
+                        GameMatView.showInput("Please enter the address correctly!");
+                        response = GameMatView.getCommand();
+                    }
+                    MonsterZoneCard.removeMonsterFromZone(onlineUser, Integer.parseInt(response));
+                }
+                new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
+                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+                Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
+                Map<Integer, SpellTrapZoneCard> spellsTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rivalUser);
+                Integer[] monster = monsters.keySet().toArray(new Integer[0]);
+                Integer[] spellTraps = spellsTraps.keySet().toArray(new Integer[0]);
+                for (int s : monster) {
+                    MonsterZoneCard.removeMonsterFromZone(rivalUser, s);
+                }
+                for (int s : spellTraps) {
+                    SpellTrapZoneCard.getSpellCardByAddress(s, rivalUser).removeSpellTrapFromZone();
                 }
             }
-            new MonsterZoneCard(onlineUser, "Gate Guardian", "OO", false,false);
+        }
+        return 1;
+    }
+
+    public static int theTricky(HandCardZone handCard, String onlineUser) {
+        while (true) {
+            GameMatView.showInput("Do you want a Special Summon? (yes/no)");
+            response = GameMatView.getCommand();
+            if (response.equals("cancel"))
+                return 0;
+            else if (response.matches("yes|no"))
+                break;
+        }
+        if (response.equals("no"))
+            return 0;
+        else {
+            if (HandCardZone.getNumberOfFullHouse(onlineUser) == 1)
+                GameMatView.showInput("Oops! You cant have Special Summon because of lack of HandCard!");
+            else {
+                while (true) {
+                    GameMatView.showInput("Please enter the address of a HandCard to tribute:");
+                    response = GameMatView.getCommand();
+                    if (response.equals("cancel"))
+                        return 0;
+                    if (!response.matches("[1-6]") || Integer.parseInt(response) == handCard.getAddress())
+                        continue;
+                    if (HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser) != null)
+                        break;
+                }
+                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+                new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false);
+            }
         }
         return 1;
     }
@@ -312,7 +303,7 @@ public class MonsterEffect {
                     }
                     GameMatView.showInput("Texchanger Monster Effect is activated!");
                     new MonsterZoneCard(rivalUser, HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).getCardName(), "OO", false, false);
-                    HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).removeFromHandCard();
+                    HandCardZone.removeFromHandCard(rivalUser, Integer.parseInt(response));
                 }
             }
             else if (response.equals("graveyard")) {
@@ -375,7 +366,7 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the correct address of your hand card: ");
                     response = GameMatView.getCommand();
                 }
-                HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
+                HandCardZone.removeFromHandCard(onlineUser, Integer.parseInt(response));
 
                 GameMatView.showInput("Please enter the address of a seven level or higher level in your graveyard to add to your hand:");
                 response = GameMatView.getCommand();

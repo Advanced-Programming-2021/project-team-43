@@ -135,7 +135,7 @@ public class SpellEffect {
     private static int raigeki(String rivalUser) {
         Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).keySet().toArray(new Integer[0]);
         for (int key : keys) {
-            MonsterZoneCard.getMonsterCardByAddress(key, rivalUser).removeMonsterFromZone();
+            MonsterZoneCard.removeMonsterFromZone(rivalUser, key);
         }
         return 1;
     }
@@ -153,7 +153,7 @@ public class SpellEffect {
                 response = GameMatView.getCommand();
             }
             chosenAddress = Integer.parseInt(response);
-            MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).get(chosenAddress).removeMonsterFromZone();
+            MonsterZoneCard.removeMonsterFromZone(rivalUser, chosenAddress);
             new MonsterZoneCard(onlineUser, MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).get(chosenAddress).getMonsterName(), "OO", false, true);
         }
         return 1;
@@ -189,12 +189,12 @@ public class SpellEffect {
         monster = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
         Integer[] monsterAddress = monster.keySet().toArray(new Integer[0]);
         for (int i = 0; i < monster.size(); i++) {
-            MonsterZoneCard.getMonsterCardByAddress(monsterAddress[i], rivalUser).removeMonsterFromZone();
+            MonsterZoneCard.removeMonsterFromZone(rivalUser, monsterAddress[i]);
         }
         monster = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] ownMonsterAddress = monster.keySet().toArray(new Integer[0]);
         for (int i = 0; i < monster.size(); i++) {
-            MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress[i], onlineUser).removeMonsterFromZone();
+            MonsterZoneCard.removeMonsterFromZone(onlineUser, monsterAddress[i]);
         }
         return 1;
     }
@@ -247,7 +247,7 @@ public class SpellEffect {
         }
         if (!response.equals("cancel")) {
             chosenAddress = Integer.parseInt(response);
-            HandCardZone.getHandCardByAddress(chosenAddress, onlineUser).removeFromHandCard();
+            HandCardZone.removeFromHandCard(onlineUser, chosenAddress);
         }
         GameMatView.showInput("Please enter the number of Spell/Trap you want to destroy: (1 or 2)");
         response = GameMatView.getCommand();

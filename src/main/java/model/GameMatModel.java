@@ -122,7 +122,7 @@ public class GameMatModel {
     public void changeModeOfFieldCard(String mode) {
         String[] split = fieldZone.split(" ");
         fieldZone = split[0] + " " + mode;
-    }
+    }//use when activate a set field card
 
     public void removeFromFieldZone() {
         fieldZone = "";
@@ -143,5 +143,6 @@ public class GameMatModel {
     public static GameMatModel getGameMatByNickname(String playerNickname) {
         return playerGameMat.get(playerNickname);
     }
+
 
 }
