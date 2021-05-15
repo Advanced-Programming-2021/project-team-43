@@ -9,9 +9,7 @@ import view.*;
 import java.util.regex.*;
 
 public class RegisterAndLoginController {
-
-
-    public static void findMatcher() {
+    public static void run(){
         if (JSON.readUserInfo()==null){
             JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
         }
@@ -26,16 +24,27 @@ public class RegisterAndLoginController {
             UserModel.importedCards =JSON.exportCad();
         }
         new ShopModel(Card.getCards());
+        while (true){
+            String command = DeckView.getCommand();
+            command = command.trim();
+            int breaker = findMatcher(command);
+            if (breaker==0){
+                break;
+            }
+        }
+    }
 
-        while (true) {
-            String command;
-            command = RegisterAndLoginView.getCommand();
-            command=command.trim();
+
+    public static int findMatcher(String command) {
+
+
+
+
             Pattern pattern = Pattern.compile("^user \\s*login \\s*--username\\s* (.+?) --password \\s*(.+?)$");
             Matcher matcher = pattern.matcher(command);
             if (matcher.find()) {
                 loginInGame(matcher.group(1), matcher.group(2));
-                continue;
+                return 1;
             }
 
 
@@ -43,7 +52,7 @@ public class RegisterAndLoginController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 loginInGame(matcher.group(2), matcher.group(1));
-                continue;
+                return 1;
 
             }
 
@@ -52,7 +61,7 @@ public class RegisterAndLoginController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 registerInGame(matcher.group(1), matcher.group(2), matcher.group(3));
-                continue;
+                return 1;
             }
 
 
@@ -60,7 +69,7 @@ public class RegisterAndLoginController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 registerInGame(matcher.group(1), matcher.group(3), matcher.group(2));
-                continue;
+                return 1;
             }
 
 
@@ -68,7 +77,7 @@ public class RegisterAndLoginController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 registerInGame(matcher.group(2), matcher.group(1), matcher.group(3));
-                continue;
+                return 1;
             }
 
 
@@ -76,7 +85,7 @@ public class RegisterAndLoginController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 registerInGame(matcher.group(2), matcher.group(3), matcher.group(1));
-                continue;
+                return 1;
             }
 
 
@@ -84,13 +93,13 @@ public class RegisterAndLoginController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 registerInGame(matcher.group(3), matcher.group(1), matcher.group(2));
-                continue;
+                return 1;
             }
             pattern = Pattern.compile("^user\\s* create\\s* --password\\s* (.+?)\\s* --nickname\\s* (.+?)\\s* --username\\s* (.+?)\\s*$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 registerInGame(matcher.group(3), matcher.group(2), matcher.group(1));
-                continue;
+                return 1;
             }
 
             pattern = Pattern.compile("^menu enter\\s* (.+?)$");
@@ -101,13 +110,13 @@ public class RegisterAndLoginController {
                 } else {
                     RegisterAndLoginView.showInput("invalid command");
                 }
-                continue;
+                return 1;
             }
 
             pattern = Pattern.compile("^menu \\s*exit$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
-                break;
+                return 0;
             }
 
 
@@ -115,15 +124,15 @@ public class RegisterAndLoginController {
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 RegisterAndLoginView.showInput("Login Menu");
-                continue;
+                return 1;
             }
 
 
             RegisterAndLoginView.showInput("invalid command");
 
-
+        return 1;
         }
-    }
+
 
 
     public static void registerInGame(String username, String nickname, String password) {
