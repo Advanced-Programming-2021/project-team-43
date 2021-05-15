@@ -25,7 +25,7 @@ public class RegisterAndLoginController {
         }
         new ShopModel(Card.getCards());
         while (true){
-            String command = DeckView.getCommand();
+            String command = RegisterAndLoginView.getCommand();
             command = command.trim();
             int breaker = findMatcher(command);
             if (breaker==0){
@@ -157,7 +157,7 @@ public class RegisterAndLoginController {
             if (UserModel.getUserByUsername(username).getPassword().equals(password)) {
                 RegisterAndLoginView.showInput("user logged in successfully!");
                 MainMenuController.username = username;
-                MainMenuController.findMatcher();
+                MainMenuController.run();
             } else {
                 RegisterAndLoginView.showInput("Username and password didn’t match!");
 

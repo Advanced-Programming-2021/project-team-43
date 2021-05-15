@@ -1,92 +1,86 @@
 package controller;
 
-import model.GameMatModel;
-import model.Player;
-import model.UserModel;
-
-import view.MainMenuView;
-
+import model.*;
+import view.*;
 
 import java.lang.*;
+import java.util.regex.*;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MainMenuController {
 
     public static String username;
-    public static String username2 ;
+    public static String username2;
 
-    public static void findMatcher() {
+    public static void run() {
         while (true) {
-            String command;
-            command = MainMenuView.getCommand();
-
-            Pattern pattern = Pattern.compile("^menu enter (.+?)$");
-            Matcher matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                if (matcher.group(1).equals("duel")) {
-                    duelFindMatcher();
-                    continue;
-
-                }
-                if (matcher.group(1).equals("deck")) {
-                    DeckController.findMatcher();
-                    continue;
-                }
-                if (matcher.group(1).equals("scoreboard")) {
-                    scoreboard();
-                    continue;
-
-                }
-                if (matcher.group(1).equals("profile")) {
-                    profile();
-                    continue;
-
-                }
-                if (matcher.group(1).equals("shop")) {
-                    ShopController.findMatcher();
-                    continue;
-                }
-                if (matcher.group(1).equals("irdamo")) {
-                    addCoin();
-                    continue;
-                }
-
-                if (matcher.group(1).equals("Import/Export")) {
-                    importExport();
-                    continue;
-                }
-
-
-                MainMenuView.showInput("invalid command");
-                continue;
-
-            }
-
-
-            pattern = Pattern.compile("^menu show-current$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                MainMenuView.showInput("Main Menu");
-                continue;
-            }
-
-            pattern = Pattern.compile("^menu exit$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
+            String command = DeckView.getCommand();
+            command = command.trim();
+            int breaker = findMatcher(command);
+            if (breaker == 0) {
                 break;
+            }
+        }
+    }
+
+    public static int findMatcher(String command) {
+
+        Pattern pattern = Pattern.compile("^menu enter (.+?)$");
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            if (matcher.group(1).equals("duel")) {
+                duelFindMatcher();
+
+            }
+            if (matcher.group(1).equals("deck")) {
+                DeckController.run();
+                return 1;
+            }
+            if (matcher.group(1).equals("scoreboard")) {
+                scoreboard();
+                return 1;
+
+            }
+            if (matcher.group(1).equals("profile")) {
+                profile();
+                return 1;
+
+            }
+            if (matcher.group(1).equals("shop")) {
+                ShopController.run();
+                return 1;
+            }
+
+            if (matcher.group(1).equals("Import/Export")) {
+                importExport();
+                return 1;
             }
 
 
             MainMenuView.showInput("invalid command");
+            return 1;
 
         }
+
+
+        pattern = Pattern.compile("^menu show-current$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            MainMenuView.showInput("Main Menu");
+            return 1;
+        }
+
+        pattern = Pattern.compile("^menu exit$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            return 0;
+        }
+
+
+        MainMenuView.showInput("invalid command");
+        return 1;
     }
 
-    private static void addCoin() {
-        UserModel.getUserByUsername(MainMenuController.username).changeUserCoin(3000);
-    }
 
     private static void importExport() {
 
@@ -193,10 +187,10 @@ public class MainMenuController {
 
                     if (user1.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
 
-                        if (user2.userAllDecks.get(user2.getActiveDeck()).validOrInvalid().equals("valid")) {
+                        if (user2.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
 
                             if (roundNumber == 1 || roundNumber == 3) {
-                                username2=playerName;
+                                username2 = playerName;
 
                                 String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
                                 String secondPlayer;
@@ -206,15 +200,11 @@ public class MainMenuController {
                                     secondPlayer = playerName;
                                 }
 
-                                new Player(UserModel.getUserByUsername(firstPlayer).getNickname(),UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()),true,roundNumber );
-                                new Player(UserModel.getUserByUsername(secondPlayer).getNickname(),UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()),false,roundNumber );
-
+                                new Player(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()), true, roundNumber);
+                                new Player(UserModel.getUserByUsername(secondPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()), false, roundNumber);
                                 new GameMatModel(UserModel.getUserByUsername(firstPlayer).getNickname());
                                 new GameMatModel(UserModel.getUserByUsername(secondPlayer).getNickname());
-                                GameMatController.commandController(UserModel.getUserByUsername(firstPlayer).getNickname(),UserModel.getUserByUsername(secondPlayer).getNickname());
-
-
-
+//                                GameMatController.commandController(firstPlayer, secondPlayer, roundNumber);
 
                             } else {
                                 MainMenuView.showInput("number of rounds is not supported");
@@ -239,7 +229,6 @@ public class MainMenuController {
         } else {
             MainMenuView.showInput("there is no player with this username");
         }
-
     }
 
     private static void profile() {
@@ -429,6 +418,4 @@ public class MainMenuController {
         }
 
     }
-
-
 }
