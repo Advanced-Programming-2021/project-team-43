@@ -14,195 +14,206 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DeckController {
-    public static void findMatcher() {
-        while (true) {
+    public static void run(){
+        while (true){
             String command = DeckView.getCommand();
             command = command.trim();
-            Pattern pattern = Pattern.compile("^deck \\s*create \\s*(.+?)$");
-            Matcher matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                createDeck(matcher.group(1));
-                continue;
-            }
-
-
-            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card\\s* (.+?)\\s* --deck \\s*(.+?) \\s*--side$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-
-            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?) \\s*--side\\s* --deck\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card\\s* --side\\s* --card \\s*(.+?) \\s*--deck \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card \\s*--side \\s*--deck\\s* (.+?)\\s* --card \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)\\s* --side\\s* --card\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)--card\\s* (.+?) \\s*--side$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-
-
-            pattern = Pattern.compile("^deck \\s*add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?) \\s*--side$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                addCardToSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-
-            pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --side \\s*--deck\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                addCardToSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* add-card\\s* --side \\s*--card \\s*(.+?) \\s*--deck\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                addCardToSideDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* add-card\\s* --side\\s* --deck\\s* (.+?)\\s* --card\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                addCardToMainDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --side \\s*--card \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                addCardToMainDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)--card\\s* (.+?) \\s*--side$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                addCardToMainDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck \\s*show \\s*--side\\s* --deck-name \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                showSideDeck(matcher.group(1));
-                continue;
-            }
-            pattern = Pattern.compile("^deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                showSideDeck(matcher.group(1));
-                continue;
-            }
-
-
-            pattern = Pattern.compile("^deck\\s* delete \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                deleteDeck(matcher.group(1));
-                continue;
-            }
-
-            pattern = Pattern.compile("^deck\\s* set-activate \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                setActivate(matcher.group(1));
-                continue;
-            }
-
-
-            pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                addCardToMainDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-            pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --card (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                addCardToMainDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-
-
-            pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromMainDeck(matcher.group(1), matcher.group(2));
-                continue;
-            }
-            pattern = Pattern.compile("^deck\\s* rm-card \\s*--deck\\s* (.+?)\\s* --card\\s* (.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                removeCardFromMainDeck(matcher.group(2), matcher.group(1));
-                continue;
-            }
-
-
-            pattern = Pattern.compile("^deck\\s* show \\s*--all$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                showAllDeck();
-                continue;
-            }
-            pattern = Pattern.compile("^deck \\s*show \\s*--deck-name \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                showMainDeck(matcher.group(1));
-                continue;
-            }
-
-
-            pattern = Pattern.compile("^deck\\s* show\\s* --cards$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                showCards();
-                continue;
-            }
-
-
-            pattern = Pattern.compile("^menu \\s*exit$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-
+            int breaker = findMatcher(command);
+            if (breaker==0){
                 break;
             }
-
-            pattern = Pattern.compile("^menu \\s*enter \\s*(.+?)$");
-            matcher = pattern.matcher(command);
-            if (matcher.find()) {
-                if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
-                    DeckView.showInput("menu navigation is not possible");
-                } else {
-                    MainMenuView.showInput("invalid command");
-                }
-                continue;
-            }
-            DeckView.showInput("invalid command");
-
-
         }
     }
+
+
+    public static int findMatcher(String command) {
+
+
+        Pattern pattern = Pattern.compile("^deck \\s*create \\s*(.+?)$");
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            createDeck(matcher.group(1));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^deck \\s*rm-card \\s*--card\\s* (.+?)\\s* --deck \\s*(.+?) \\s*--side$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            removeCardFromSideDeck(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+
+        pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?) \\s*--side\\s* --deck\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            removeCardFromSideDeck(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck\\s* rm-card\\s* --side\\s* --card \\s*(.+?) \\s*--deck \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            removeCardFromSideDeck(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck\\s* rm-card \\s*--side \\s*--deck\\s* (.+?)\\s* --card \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            removeCardFromSideDeck(matcher.group(2), matcher.group(1));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)\\s* --side\\s* --card\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            removeCardFromSideDeck(matcher.group(2), matcher.group(1));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)--card\\s* (.+?) \\s*--side$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            removeCardFromSideDeck(matcher.group(2), matcher.group(1));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^deck \\s*add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?) \\s*--side$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            addCardToSideDeck(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+
+        pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --side \\s*--deck\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            addCardToSideDeck(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck\\s* add-card\\s* --side \\s*--card \\s*(.+?) \\s*--deck\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            addCardToSideDeck(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck\\s* add-card\\s* --side\\s* --deck\\s* (.+?)\\s* --card\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            addCardToMainDeck(matcher.group(2), matcher.group(1));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --side \\s*--card \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            addCardToMainDeck(matcher.group(2), matcher.group(1));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)--card\\s* (.+?) \\s*--side$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            addCardToMainDeck(matcher.group(2), matcher.group(1));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck \\s*show \\s*--side\\s* --deck-name \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            showSideDeck(matcher.group(1));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            showSideDeck(matcher.group(1));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^deck\\s* delete \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            deleteDeck(matcher.group(1));
+            return 1;
+        }
+
+        pattern = Pattern.compile("^deck\\s* set-activate \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            setActivate(matcher.group(1));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            addCardToMainDeck(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --card (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            addCardToMainDeck(matcher.group(2), matcher.group(1));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            removeCardFromMainDeck(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck\\s* rm-card \\s*--deck\\s* (.+?)\\s* --card\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            removeCardFromMainDeck(matcher.group(2), matcher.group(1));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^deck\\s* show \\s*--all$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            showAllDeck();
+            return 1;
+        }
+        pattern = Pattern.compile("^deck \\s*show \\s*--deck-name \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            showMainDeck(matcher.group(1));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^deck\\s* show\\s* --cards$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            showCards();
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^menu \\s*exit$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+
+            return 0;
+        }
+
+        pattern = Pattern.compile("^menu \\s*enter \\s*(.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+                DeckView.showInput("menu navigation is not possible");
+            } else {
+                MainMenuView.showInput("invalid command");
+            }
+            return 1;
+        }
+        DeckView.showInput("invalid command");
+        return 1;
+
+    }
+
 
 
     public static void setActivate(String deckName) {
