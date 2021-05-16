@@ -44,7 +44,6 @@ public class Player {
         allPlayers.put(nickname, this);
     } //call this when duel command is called
 
-
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
         allLifePoints.add(lifePoint);
         playerMainDeck.clear();
@@ -102,6 +101,10 @@ public class Player {
 
     public int getLifePoint() {
         return lifePoint;
+    }
+
+    public void setLifePoint(int lifePoint) {
+        this.lifePoint = lifePoint;
     }
 
     public void changeLifePoint(int lifePoint) {
@@ -276,7 +279,6 @@ public class Player {
         setCanUseTrap(true);
         setCanSetSummonMonster(true);
         setCanBattle(true);
-        setCanDrawCard(HandCardZone.getNumberOfFullHouse(nickname) != 6);
         GameMatModel.getGameMatByNickname(nickname).resetNumberOfDeadMonsterThisTurn();
     }
 

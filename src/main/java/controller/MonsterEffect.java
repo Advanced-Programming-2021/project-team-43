@@ -225,6 +225,7 @@ public class MonsterEffect {
                     }
                     MonsterZoneCard.removeMonsterFromZone(onlineUser, Integer.parseInt(response));
                 }
+                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
                 new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
                 HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
                 Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
@@ -382,6 +383,5 @@ public class MonsterEffect {
         }
         return 1;
     }//where should i call this??
-
 }
 

@@ -6,6 +6,7 @@ import java.util.*;
 public class SpellEffect {
 
     private static String response;
+    private static String responseTwo;
     private static int chosenAddress;
 
     public static int normalEffectController(SpellTrapZoneCard ownSpell, String onlineUser, String rivalUser) {
@@ -58,45 +59,56 @@ public class SpellEffect {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no free space in Your Monster Zone!");
         }
         else {
+            System.out.println(ownGameMat.getNumberOfDeadCards() + "own");
+
             GameMatModel rivalGameMat = GameMatModel.getGameMatByNickname(rivalUser);
-            GameMatView.showInput("Please choose from which graveyard you want to pick a Monster? (own/rival)");
-            response = GameMatView.getCommand();
-            while (!response.matches("own|rival")) {
+            System.out.println(rivalGameMat.getNumberOfDeadCards() + "rival");
+            do {
+                GameMatView.showInput("Please choose from which graveyard you want to pick a Monster? (own/rival)");
+                response = GameMatView.getCommand();
                 if (response.equals("cancel"))
                     return 0;
-                GameMatView.showInput("Please choose a graveyard correctly: (own/rival)");
-                response = GameMatView.getCommand();
+            } while (!response.matches("own|rival"));
+            if ((response.equals("own") && ownGameMat.getNumberOfDeadCards() == 0) || (response.equals("rival") && rivalGameMat.getNumberOfDeadCards() == 0)) {
+                GameMatView.showInput("Oops! You cant use this Spell effect because of no dead Card in your " + response + " graveyard!");
+                return 1;
             }
+            chosenAddress = getResponseForDeadCardToReborn(response, ownGameMat, rivalGameMat);
             if (response.equals("own")) {
-                GameMatView.showInput("Please enter a Monster address from your graveyard to reborn:");
-                response = GameMatView.getCommand();
-                while (!response.matches("\\d+") || !ownGameMat.getKindOfDeadCardByAddress(Integer.parseInt(response)).equals("Monster")) {
-                    if (response.equals("cancel"))
-                        return 0;
-                    GameMatView.showInput("Please choose a Monster from your graveyard correctly:");
-                    response = GameMatView.getCommand();
-                }
-                chosenAddress = Integer.parseInt(response);
+                GameMatController.addToMonsterZoneCard(rivalGameMat.getNameOfDeadCardByAddress(chosenAddress), "OO");
                 ownGameMat.removeFromGraveyardByAddress(chosenAddress);
-                GameMatController.addToMonsterZoneCard(ownGameMat.getNameOfDeadCardByAddress(chosenAddress), "OO");
             }
             else {
-                GameMatView.showInput("Please enter a Monster address from rival graveyard to reborn:");
-                response = GameMatView.getCommand();
-                while (!response.matches("\\d+") || !rivalGameMat.getKindOfDeadCardByAddress(Integer.parseInt(response)).equals("Monster")) {
-                    if (response.equals("cancel"))
-                        return 0;
-                    GameMatView.showInput("Please choose a Monster from rival graveyard correctly:");
-                    response = GameMatView.getCommand();
-                }
-                chosenAddress = Integer.parseInt(response);
-                rivalGameMat.removeFromGraveyardByAddress(chosenAddress);
                 GameMatController.addToMonsterZoneCard(rivalGameMat.getNameOfDeadCardByAddress(chosenAddress), "OO");
+                rivalGameMat.removeFromGraveyardByAddress(chosenAddress);
             }
             GameMatView.showInput("Dead Monster reborn successfully!");
         }
         return 1;
-    }
+    }//complete
+
+    private static int getResponseForDeadCardToReborn(String whoseGraveyard, GameMatModel ownGameMat, GameMatModel rivalGameMat) {
+        int deadCardAddress;
+        while (true) {
+            GameMatView.showInput("Please enter a Monster address from your " + whoseGraveyard + " graveyard to reborn: ");
+            responseTwo = GameMatView.getCommand();
+            if (responseTwo.equals("cancel"))
+                return 0;
+            if (!responseTwo.matches("[1,]"))
+                continue;
+            deadCardAddress = Integer.parseInt(responseTwo);
+            deadCardAddress--;
+            if (whoseGraveyard.equals("own") && ownGameMat.getDeadCardNameByAddress(deadCardAddress) != null) {
+                if (Card.getCardsByName(ownGameMat.getDeadCardNameByAddress(deadCardAddress)).getCardModel().equals("Monster"))
+                    break;
+            }
+            else if (whoseGraveyard.equals("rival") && rivalGameMat.getDeadCardNameByAddress(deadCardAddress) != null) {
+                if (Card.getCardsByName(rivalGameMat.getDeadCardNameByAddress(deadCardAddress)).getCardModel().equals("Monster"))
+                    break;
+            }
+        }
+        return deadCardAddress;
+    }//complete
 
     private static int terraforming(String onlineUser, Player player) {
         if (!player.doesThisModelAndTypeExist("Spell", "Field")) {
@@ -138,7 +150,7 @@ public class SpellEffect {
             MonsterZoneCard.removeMonsterFromZone(rivalUser, key);
         }
         return 1;
-    }
+    }//complete
 
     private static int changeOfHeart(String onlineUser, String rivalUser) {
         if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 5)
@@ -187,17 +199,17 @@ public class SpellEffect {
     private static int darkHole(String rivalUser, String onlineUser) {
         Map<Integer, MonsterZoneCard> monster;
         monster = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
-        Integer[] monsterAddress = monster.keySet().toArray(new Integer[0]);
+        Integer[] rivalMonsterAddress = monster.keySet().toArray(new Integer[0]);
         for (int i = 0; i < monster.size(); i++) {
-            MonsterZoneCard.removeMonsterFromZone(rivalUser, monsterAddress[i]);
+            MonsterZoneCard.removeMonsterFromZone(rivalUser, rivalMonsterAddress[i]);
         }
         monster = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] ownMonsterAddress = monster.keySet().toArray(new Integer[0]);
         for (int i = 0; i < monster.size(); i++) {
-            MonsterZoneCard.removeMonsterFromZone(onlineUser, monsterAddress[i]);
+            MonsterZoneCard.removeMonsterFromZone(onlineUser, ownMonsterAddress[i]);
         }
         return 1;
-    }
+    }//complete
 
     public static void supplySquad(String onlineUser) {///////////
         int continuousSpellAddress = SpellTrapZoneCard.getAddressOfSpellByIcon(onlineUser, "Continuous", "Supply Squad");

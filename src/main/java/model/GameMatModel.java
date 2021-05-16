@@ -9,7 +9,7 @@ public class GameMatModel {
     private String fieldZone = "";
     private int numberOfDeadMonsterThisTurn = 0;
     private final List<String> graveyard = new ArrayList<>();
-    private static final Map<String,GameMatModel> playerGameMat = new HashMap<>();
+    private static final Map<String, GameMatModel> playerGameMat = new HashMap<>();
 
     public GameMatModel (String playerNickname) {
         this.phase = Phase.Draw_Phase;
@@ -17,7 +17,7 @@ public class GameMatModel {
     }
 
     public void startNewGame() {
-        this.phase = Phase.Draw_Phase;;
+        this.phase = Phase.Draw_Phase;
         removeFromFieldZone();
         graveyard.clear();
     }
@@ -31,7 +31,10 @@ public class GameMatModel {
     }
 
     public String getDeadCardNameByAddress(int address) {
-        return graveyard.get(address);
+        if (graveyard.size() - 1 < address)
+            return null;
+        else
+            return graveyard.get(address);
     }
 
     public void addToGraveyard(String cardName) {
@@ -50,7 +53,7 @@ public class GameMatModel {
     }
 
     public String getNameOfDeadCardByAddress(int address) {
-        if (graveyard.get(address).isEmpty())
+        if (address > graveyard.size() - 1)
             return null;
         else
             return graveyard.get(address);
@@ -116,7 +119,7 @@ public class GameMatModel {
     }
 
     public void addToFieldZone(String cardName, String mode) {
-        fieldZone = cardName + " " + mode;
+        fieldZone = cardName + "/" + mode;
     }
 
     public void changeModeOfFieldCard(String mode) {
@@ -143,6 +146,5 @@ public class GameMatModel {
     public static GameMatModel getGameMatByNickname(String playerNickname) {
         return playerGameMat.get(playerNickname);
     }
-
 
 }
