@@ -100,7 +100,7 @@ public class MainMenuControllerTest {
         }
         outContent.reset();
         MainMenuController.duelMenu("reza",12);
-        Assert.assertEquals("user with nickname nd already exists", outContentWithOutEnter(outContent));
+        Assert.assertEquals("number of rounds is not supported", outContentWithOutEnter(outContent));
 
 
 
@@ -202,8 +202,8 @@ public class MainMenuControllerTest {
 
 
         outContent.reset();
-        MainMenuController.scoreboard("scoreboard show");
-        Assert.assertEquals("1_n: 0", outContentWithOutEnter(outContent));
+
+        Assert.assertEquals(1, MainMenuController.scoreboard("scoreboard show"));
 
         UserModel userModel1 = new UserModel("aliii", "p", "nn");
 
