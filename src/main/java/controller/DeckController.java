@@ -14,12 +14,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DeckController {
-    public static void run(){
-        while (true){
+    public static void run() {
+        while (true) {
             String command = DeckView.getCommand();
             command = command.trim();
             int breaker = findMatcher(command);
-            if (breaker==0){
+            if (breaker == 0) {
                 break;
             }
         }
@@ -33,6 +33,12 @@ public class DeckController {
         Matcher matcher = pattern.matcher(command);
         if (matcher.find()) {
             createDeck(matcher.group(1));
+            return 1;
+        }
+        pattern = Pattern.compile("^deck \\s*create \\s*(.+?)\\s* --add-all-card$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            createDeckWithAddCard(matcher.group(1));
             return 1;
         }
 
@@ -214,6 +220,20 @@ public class DeckController {
 
     }
 
+    private static void createDeckWithAddCard(String deckName) {
+        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
+            DeckView.showInput("deck with name " + deckName + " already exists");
+        } else {
+            DeckModel deckModel = new DeckModel(deckName);
+            deckModel.cardsInMainDeck.putAll(UserModel.getUserByUsername(MainMenuController.username).userAllCards);
+            UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+            user.addDeck(deckModel);
+            UserModel.allUsersInfo.replace(MainMenuController.username, user);
+            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+            DeckView.showInput("deck created successfully!");
+        }
+
+    }
 
 
     public static void setActivate(String deckName) {
@@ -241,6 +261,7 @@ public class DeckController {
         }
 
     }
+
     public static void createDeck(String deckName) {
         if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
             DeckView.showInput("deck with name " + deckName + " already exists");
@@ -483,6 +504,7 @@ public class DeckController {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
     }
+
     public static void removeCardFromMainDeck(String cardName, String deckName) {
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
         if (user.isUserHaveThisDeck(deckName)) {
@@ -606,6 +628,7 @@ public class DeckController {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
     }
+
     public static void showCards() {
         HashMap<String, Integer> hashMap = UserModel.getUserByUsername(MainMenuController.username).userAllCards;
         String[] keys = hashMap.keySet().toArray(new String[0]);
