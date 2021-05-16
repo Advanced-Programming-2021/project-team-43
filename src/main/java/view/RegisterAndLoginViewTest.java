@@ -1,0 +1,24 @@
+package main.java.view;
+
+import main.java.view.RegisterAndLoginView;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import static org.junit.Assert.*;
+
+public class RegisterAndLoginViewTest {
+
+    @Test
+    public void getCommand() {
+    }
+
+    @Test
+    public void showInput() {
+        ByteArrayOutputStream show =new ByteArrayOutputStream();
+        System.setOut(new PrintStream(show));
+        RegisterAndLoginView.showInput("expected");
+        assertEquals("expected",show.toString().substring(0,show.toString().length()-2));
+    }
+}
