@@ -30,7 +30,7 @@ public class MainMenuController {
         if (matcher.find()) {
             if (matcher.group(1).equals("duel")) {
                 duelRun();
-                return 1 ;
+                return 1;
 
             }
             if (matcher.group(1).equals("deck")) {
@@ -211,7 +211,7 @@ public class MainMenuController {
 
                                 new Player(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()), true, roundNumber);
                                 new Player(UserModel.getUserByUsername(secondPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()), false, roundNumber);
-                                //              GameMatController.commandController(firstPlayer, secondPlayer);
+                                GameMatController.commandController(firstPlayer, secondPlayer);
 
                             } else {
                                 MainMenuView.showInput("number of rounds is not supported");
@@ -238,7 +238,7 @@ public class MainMenuController {
         }
     }
 
-    public static void profileRun(){
+    public static void profileRun() {
         while (true) {
             String command = MainMenuView.getCommand();
             command = command.trim();
@@ -339,7 +339,6 @@ public class MainMenuController {
     }
 
 
-
     public static void changeNickname(String matcher) {
         if (UserModel.isRepeatedNickname(matcher)) {
             MainMenuView.showInput("user with nickname " + matcher + " already exists");
@@ -352,7 +351,7 @@ public class MainMenuController {
     }
 
 
-    public static void scoreboardRun(){
+    public static void scoreboardRun() {
         while (true) {
             String command = MainMenuView.getCommand();
             command = command.trim();
@@ -362,6 +361,7 @@ public class MainMenuController {
             }
         }
     }
+
     public static int scoreboard(String command) {
 
 
