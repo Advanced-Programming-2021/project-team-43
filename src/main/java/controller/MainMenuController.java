@@ -25,7 +25,7 @@ public class MainMenuController {
 
     public static int findMatcher(String command) {
 
-        Pattern pattern = Pattern.compile("^menu enter (.+?)$");
+        Pattern pattern = Pattern.compile("^menu \\s*enter\\s* (.+?)$");
         Matcher matcher = pattern.matcher(command);
         if (matcher.find()) {
             if (matcher.group(1).equals("duel")) {
@@ -62,19 +62,19 @@ public class MainMenuController {
         }
 
 
-        pattern = Pattern.compile("^menu show-current$");
+        pattern = Pattern.compile("^menu\\s* show-current$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             MainMenuView.showInput("Main Menu");
             return 1;
         }
 
-        pattern = Pattern.compile("^menu exit$");
+        pattern = Pattern.compile("^menu \\s*exit$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             return 0;
         }
-        pattern = Pattern.compile("^increase --money (\\d+)$");
+        pattern = Pattern.compile("^increase\\s* --money\\s* (\\d+)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             increaseMoney(Integer.parseInt(matcher.group(1)));
@@ -97,7 +97,7 @@ public class MainMenuController {
 
         while (true) {
             String command = MainMenuView.getCommand();
-            Pattern pattern = Pattern.compile("import card (.+?)");
+            Pattern pattern = Pattern.compile("import \\s*card \\s*(.+?)");
             Matcher matcher = pattern.matcher(command);
 
 
@@ -109,7 +109,7 @@ public class MainMenuController {
                 continue;
 
             }
-            pattern = Pattern.compile("export card (.+?)");
+            pattern = Pattern.compile("export \\s*card \\s*(.+?)");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 UserModel.importedCards = JSON.exportCad();
@@ -117,13 +117,13 @@ public class MainMenuController {
 
                 continue;
             }
-            pattern = Pattern.compile("^menu exit$");
+            pattern = Pattern.compile("^menu\\s* exit$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 break;
             }
 
-            pattern = Pattern.compile("^menu show-current$");
+            pattern = Pattern.compile("^menu\\s* show-current$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 MainMenuView.showInput("import/export Menu");
@@ -131,7 +131,7 @@ public class MainMenuController {
             }
 
 
-            pattern = Pattern.compile("^menu enter (.+?)$");
+            pattern = Pattern.compile("^menu\\s* enter\\s* (.+?)$");
             matcher = pattern.matcher(command);
             if (matcher.find()) {
                 if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
@@ -163,26 +163,26 @@ public class MainMenuController {
     public static int duelFindMatcher(String command) {
 
 
-        Pattern pattern = Pattern.compile("duel --new --second-player (.+?) --rounds (\\d+)");
+        Pattern pattern = Pattern.compile("duel\\s* --new \\s*--second-player\\s* (.+?)\\s* --rounds \\s*(\\d+)");
         Matcher matcher = pattern.matcher(command);
         if (matcher.find()) {
             duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
             return 1;
         }
-        pattern = Pattern.compile("^menu exit$");
+        pattern = Pattern.compile("^menu\\s* exit$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             return 0;
         }
-        pattern = Pattern.compile("^menu show-current$");
+        pattern = Pattern.compile("^menu \\s*show-current$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
-            MainMenuView.showInput("Duel Menu");
+            MainMenuView.showInput("Duel\\s* Menu");
             return 1;
         }
 
 
-        pattern = Pattern.compile("^menu enter (.+?)$");
+        pattern = Pattern.compile("^menu\\s* enter \\s*(.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard") || matcher.group(1).equals("Import/Export")) {
@@ -192,7 +192,7 @@ public class MainMenuController {
             }
             return 1;
         }
-        MainMenuView.showInput("invalid command");
+        MainMenuView.showInput("invalid \\s*command");
 
         return 1;
     }
@@ -264,13 +264,13 @@ public class MainMenuController {
     public static int profile(String command) {
 
 
-        Pattern pattern = Pattern.compile("^menu exit$");
+        Pattern pattern = Pattern.compile("^menu\\s* exit$");
         Matcher matcher = pattern.matcher(command);
         if (matcher.find()) {
             return 0;
         }
 
-        pattern = Pattern.compile("^menu show-current$");
+        pattern = Pattern.compile("^menu \\s*show-current$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             MainMenuView.showInput("Profile Menu");
@@ -278,7 +278,7 @@ public class MainMenuController {
         }
 
 
-        pattern = Pattern.compile("^menu enter (.+?)$");
+        pattern = Pattern.compile("^menu \\s*enter (.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
@@ -290,7 +290,7 @@ public class MainMenuController {
         }
 
 
-        pattern = Pattern.compile("^profile change --nickname (.+?)$");
+        pattern = Pattern.compile("^profile\\s* change\\s* --nickname (.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             changeNickname(matcher.group(1));
@@ -298,22 +298,14 @@ public class MainMenuController {
         }
 
 
-        pattern = Pattern.compile("^profile change --password --current (.+?) --new (.+?)$");
+        pattern = Pattern.compile("^profile\\s* change\\s* --password \\s*--current \\s*(.+?)\\s* --new\\s* (.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             changePassword(matcher.group(1), matcher.group(2));
             return 1;
         }
 
-        pattern = Pattern.compile("^profile change --current (.+?) --password --new (.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            changePassword(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-
-
-        pattern = Pattern.compile("^profile change --current (.+?) --new (.+?) --password$");
+        pattern = Pattern.compile("^profile\\s* change\\s* --current\\s* (.+?)\\s* --password \\s*--new\\s* (.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             changePassword(matcher.group(1), matcher.group(2));
@@ -321,7 +313,15 @@ public class MainMenuController {
         }
 
 
-        pattern = Pattern.compile("^profile change --password --new (.+?) --current (.+?)$");
+        pattern = Pattern.compile("^profile\\s* change\\s* --current\\s* (.+?)\\s* --new\\s* (.+?) \\s*--password$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            changePassword(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^profile\\s* change\\s* --password\\s* --new\\s* (.+?) \\s*--current\\s* (.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             changePassword(matcher.group(2), matcher.group(1));
@@ -329,7 +329,7 @@ public class MainMenuController {
         }
 
 
-        pattern = Pattern.compile("^profile change --new (.+?) --password --current (.+?)$");
+        pattern = Pattern.compile("^profile \\s*change\\s* --new\\s* (.+?)\\s* --password\\s* --current\\s* (.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             changePassword(matcher.group(2), matcher.group(1));
@@ -337,7 +337,7 @@ public class MainMenuController {
         }
 
 
-        pattern = Pattern.compile("^profile change --new (.+?) --current (.+?) --password$");
+        pattern = Pattern.compile("^profile \\s*change\\s* --new\\s* (.+?) \\s*--current\\s* (.+?) \\s*--password$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             changePassword(matcher.group(2), matcher.group(1));
@@ -377,20 +377,20 @@ public class MainMenuController {
     public static int scoreboard(String command) {
 
 
-        Pattern pattern = Pattern.compile("^scoreboard show$");
+        Pattern pattern = Pattern.compile("^scoreboard \\s*show$");
         Matcher matcher = pattern.matcher(command);
         if (matcher.find()) {
             showScoreboard();
             return 1;
         }
 
-        pattern = Pattern.compile("^menu exit$");
+        pattern = Pattern.compile("^menu\\s* exit$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
 
             return 0;
         }
-        pattern = Pattern.compile("^menu enter (.+?)$");
+        pattern = Pattern.compile("^menu\\s* enter\\s* (.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
@@ -401,7 +401,7 @@ public class MainMenuController {
             return 1;
         }
 
-        pattern = Pattern.compile("^menu show-current$");
+        pattern = Pattern.compile("^menu\\s* show-current$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
             MainMenuView.showInput("Score board Menu");
