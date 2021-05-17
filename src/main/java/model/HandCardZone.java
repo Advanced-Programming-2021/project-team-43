@@ -30,6 +30,7 @@ public class HandCardZone {
     }
 
     public static void removeFromHandCard(String playerNickname, int address) {
+        GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(allHandCards.get(playerNickname).get(address).getCardName());
         allHandCards.get(playerNickname).remove(address);//based of list index
     }
 
@@ -50,11 +51,13 @@ public class HandCardZone {
     public static boolean doesThisModelAndTypeExist(String playerNickname, String model, String type) {
         String cardName;
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
-            cardName = allHandCards.get(playerNickname).get(i).getCardName();
-            if (model.equals("Monster"))
-                return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
-            if (model.equals("Spell"))
-                return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
+            if (allHandCards.get(playerNickname).get(i) != null) {
+                cardName = allHandCards.get(playerNickname).get(i).getCardName();
+                if (model.equals("Monster"))
+                    return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
+                if (model.equals("Spell"))
+                    return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
+            }
         }
         return false;
     }
@@ -85,6 +88,8 @@ public class HandCardZone {
     }
 
     public static HandCardZone getHandCardByAddress(int address, String playerNickname) {
+        if (address > allHandCards.get(playerNickname).size() - 1 || address < 0)
+            return null;
         return allHandCards.get(playerNickname).get(address);
     }
 
@@ -92,8 +97,7 @@ public class HandCardZone {
         for (HandCardZone eachCard : allHandCards.get(playerNickname))
             if (eachCard.getCardName().equals("Crab Turtle") || eachCard.getCardName().equals("Skull Guardian"))
                 return eachCard.getAddress();
-        return 0;
+        return -1;
     }
-
 
 }

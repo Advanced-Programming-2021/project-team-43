@@ -99,6 +99,10 @@ public class Player {
         }
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     public int getLifePoint() {
         return lifePoint;
     }
