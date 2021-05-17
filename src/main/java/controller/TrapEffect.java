@@ -7,12 +7,7 @@ public class TrapEffect {
 
     public static void trapEffectController(int addressOfTrapCard, String rivalUser, String onlineUser, boolean summonMine, MonsterZoneCard ownMonster) {
         String spellTrapName = SpellTrapZoneCard.getSpellCardByAddress(addressOfTrapCard, onlineUser).getSpellTrapName();//?????
-        if (spellTrapName.equals("Magic Cylinder")) {
-            magicCylinder(onlineUser, rivalUser, ownMonster);
-        }
-        if (spellTrapName.equals("Mirror Force")) {
-            mirrorForce(rivalUser,onlineUser);
-        }
+
         if (spellTrapName.equals("Mind Crush")) {
             mindCrush(onlineUser, rivalUser);
         }
@@ -25,9 +20,6 @@ public class TrapEffect {
         if (spellTrapName.equals("Time Seal")) {
             timeSeal(rivalUser);
         }
-        if (spellTrapName.equals("Negate Attack")) {
-            /////in attack
-        }
         if (spellTrapName.equals("Solemn Warning")) {
             solemnWarning(onlineUser, ownMonster.getAddress(), summonMine, rivalUser);
         }
@@ -39,15 +31,24 @@ public class TrapEffect {
         }
     }
 
-
-    public static void magicCylinder(String onlineUser, String rivalUser, MonsterZoneCard ownMonster) {
-        if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
-            GameMatView.showInput("Magic Cylinder Effect is activated!");
-            Player.getPlayerByName(onlineUser).changeLifePoint(-1 * ownMonster.getAttack());
-        }
+    public static int isAttackedController(String TrapName, String onlineUser, String rivalUser, MonsterZoneCard rivalMonster) {
+        if (TrapName.equals("Magic Cylinder"))
+            return magicCylinder(onlineUser, rivalUser, rivalMonster);
+        if (TrapName.equals("Mirror Force"))
+            return mirrorForce(rivalUser,onlineUser);
+        return 0;
     }
 
-    public static void mirrorForce(String rivalUser, String onlineUser) {
+    public static int magicCylinder(String onlineUser, String rivalUser, MonsterZoneCard ownMonster) {
+        if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
+            MonsterZoneCard.removeMonsterFromZone(rivalUser, ownMonster.getAddress());
+            Player.getPlayerByName(rivalUser).changeLifePoint(-1 * ownMonster.getAttack());
+            return 1;
+        }
+        return 0;
+    }
+
+    public static int mirrorForce(String rivalUser, String onlineUser) {
         if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
             Map<Integer, MonsterZoneCard> ownMonster = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
             Integer[] addressOfOwnMonsters = ownMonster.keySet().toArray(new Integer[0]);
@@ -56,7 +57,9 @@ public class TrapEffect {
                     MonsterZoneCard.removeMonsterFromZone(onlineUser, addressOfOwnMonsters[i]);
                 }
             }
+            return 1;
         }
+        return 0;
     }
 
     public static void mindCrush(String onlineUser, String rivalUser) {
@@ -121,7 +124,7 @@ public class TrapEffect {
         Player.getPlayerByName(rival).setCanDrawCard(false);
     }
 
-    public static void solemnWarning(String player1, int addressOfSummonCard, boolean summonMine, String rival) {//kamel3
+    public static void solemnWarning(String player1, int addressOfSummonCard, boolean summonMine, String rival) {
         if (!ringOfDefenseEffect(rival, player1)) {
             Player.getPlayerByName(player1).changeLifePoint(-2000);
             if (summonMine) {

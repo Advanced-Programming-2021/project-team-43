@@ -103,7 +103,7 @@ public class SpellTrapZoneCard {
                 if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Spell"))
                     if (SpellCard.getSpellCardByName(cardName).getIcon().equals("Quick-play"))
                         return true;
-                    else
+                    else if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap"))
                         return true;
             }
         }
@@ -115,9 +115,12 @@ public class SpellTrapZoneCard {
         for (int i = 0; i < 6; i++) {
             if (allSpellTrapCards.get(playerNickname).get(i) != null) {
                 cardName = allSpellTrapCards.get(playerNickname).get(i).getSpellTrapName();
-                if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap"))
-                    if (cardName.equals("Negate Attack") || cardName.equals("Mirror Force") || cardName.equals("Magic Cylinder"))
+                if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap")) {
+                    if (cardName.equals("Negate Attack") || cardName.equals("Mirror Force") || cardName.equals("Magic Cylinder")) {
+                        System.out.println(cardName);//////////////////////////
                         return true;
+                    }
+                }
             }
         }
         return false;
@@ -276,6 +279,5 @@ public class SpellTrapZoneCard {
 //            }
 //        }
 //    }
-
 
 }

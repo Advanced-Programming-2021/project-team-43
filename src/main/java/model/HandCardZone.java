@@ -30,7 +30,6 @@ public class HandCardZone {
     }
 
     public static void removeFromHandCard(String playerNickname, int address) {
-        GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(allHandCards.get(playerNickname).get(address).getCardName());
         allHandCards.get(playerNickname).remove(address);//based of list index
     }
 
@@ -99,5 +98,6 @@ public class HandCardZone {
                 return eachCard.getAddress();
         return -1;
     }
+
 
 }

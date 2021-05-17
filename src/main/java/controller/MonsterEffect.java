@@ -268,7 +268,11 @@ public class MonsterEffect {
                     if (HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser) != null)
                         break;
                 }
-                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+                int address = Integer.parseInt(response);
+                address--;
+                GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard(HandCardZone.getHandCardByAddress(address, onlineUser).getCardName());
+                HandCardZone.removeFromHandCard(onlineUser, address);
+                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress()-1);
                 new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false);
             }
         }
