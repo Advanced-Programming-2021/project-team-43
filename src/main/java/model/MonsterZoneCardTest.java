@@ -1,13 +1,11 @@
 package main.java.model;
-
 import main.java.controller.MainMenuController;
 import main.java.controller.SetCards;
+import org.junit.Assert;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class MonsterZoneCardTest {
@@ -479,8 +477,9 @@ public class MonsterZoneCardTest {
 //        }
 //        new Player("roya", deck, true, 1);
 //        MonsterZoneCard se= new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-//      String[] modes = new String[2];
-//        assertNull(modes,MonsterZoneCard.getAllMonstersMode("roya"));
+//      String[] modes ;
+//
+//        Assert.assertArrayEquals(modes,MonsterZoneCard.getAllMonstersMode("roya"));
 //    }
 
     @Test

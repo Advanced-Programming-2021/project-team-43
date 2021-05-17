@@ -1,4 +1,4 @@
-package main.java.controller;
+package main.java.model;
 import main.java.model.Card;
 import org.junit.Test;
 

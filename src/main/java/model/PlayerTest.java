@@ -1,9 +1,6 @@
 package main.java.model;
 import main.java.controller.MainMenuController;
 import main.java.controller.SetCards;
-import main.java.model.DeckModel;
-import main.java.model.Player;
-import main.java.model.UserModel;
 import org.junit.*;
 import java.util.ArrayList;
 import static org.junit.Assert.*;
@@ -219,6 +216,7 @@ public class PlayerTest {
     public void changeTurn() {
         player.changeTurn();
         assertFalse(player.getIsYourMoveFinished());
+        assertTrue(player.getCanBattle());
         assertTrue(player.getCanSetSummonMonster());
         assertTrue(player.getCanUseTrap());
     }

@@ -14,12 +14,11 @@ public class MonsterZoneCard {
     private final int level;
     private final String monsterType;
     private boolean isScanner;
-    private boolean haveChangedPositionThisTurn;//call it change turn
-    private boolean haveAttackThisTurn;//call it change turn
+    private boolean haveChangedPositionThisTurn;
+    private boolean haveAttackThisTurn;
     private boolean canAttack;
     private boolean canAttackToThisMonster;
-    private boolean isEffectUsed;//change turn false
-    private int numberOfFullHouse = 1;
+    private boolean isEffectUsed;
     private boolean isForOneTurn;
     private final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
     public static final Map<String, Map<Integer, MonsterZoneCard>> allMonsterCards = new HashMap<>();
@@ -47,16 +46,16 @@ public class MonsterZoneCard {
         return monsterName;
     }
 
-    public int getAddress() {
-        return address;
-    }
-
     public String getMode() {
         return mode;
     }
 
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    public int getAddress() {
+        return address;
     }
 
     public int getAttack() {
@@ -132,9 +131,8 @@ public class MonsterZoneCard {
     }
 
     public static int getNumberOfFullHouse(String playerNickname) {
-        if (allMonsterCards.get(playerNickname) != null) {
+        if (allMonsterCards.get(playerNickname) != null)
             return allMonsterCards.get(playerNickname).size();
-        }
         else
             return 0;
     }
@@ -147,14 +145,9 @@ public class MonsterZoneCard {
         allEffectiveSpell.put(playerNickname, eachMonster);
     }
 
-    public void changeNumberOfFullHouse(int amount) {
-        numberOfFullHouse += amount;
-    }
-
     public static void removeMonsterFromZone(String playerNickname, int address) {
         GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(allMonsterCards.get(playerNickname).get(address).getMonsterName());
         allMonsterCards.get(playerNickname).remove(address);
-        //changeNumberOfFullHouse(-1);
     }
 
     public static void changeOneTurnMonstersIsEffectUsed(String playerNickname) {
@@ -166,6 +159,13 @@ public class MonsterZoneCard {
                     allMonsterCards.get(playerNickname).get(i).setIsEffectUsed(false);
             }
         }
+    }
+
+    public static void changeAllHaveChangePosition(String playerNickname) {
+        for (int i = 1; i < 6; i++)
+            if (allMonsterCards.get(playerNickname).get(i) != null)
+                allMonsterCards.get(playerNickname).get(i).setHaveChangedPositionThisTurn(false);
+
     }
 
 
@@ -242,5 +242,4 @@ public class MonsterZoneCard {
             }
         }
     }
-
 }

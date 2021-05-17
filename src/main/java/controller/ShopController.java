@@ -82,6 +82,7 @@ public class ShopController {
         user.changeUserCoin(-1 * cardPrice);
         user.addCardToUserAllCards(cardName);
         ShopView.showInput("your shopping was successful!");
+        //UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get("a").addCardToMain(cardName);//////
     }
 
 }

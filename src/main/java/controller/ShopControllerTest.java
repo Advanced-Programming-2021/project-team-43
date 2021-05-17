@@ -54,7 +54,7 @@ public class ShopControllerTest {
         new ShopModel(Card.getCards());
         String cammand2 = "shop show --all";
         ShopController.findMatcher(cammand2);
-        assertEquals(1717, show.toString().length());
+        assertEquals(1658, show.toString().length());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class ShopControllerTest {
         SetCards.readingCSVFileMonster();
         new ShopModel(Card.getCards());
         ShopController.shopShow();
-        assertEquals(1717, show.toString().length());
+        assertEquals(1658, show.toString().length());
 
     }
 

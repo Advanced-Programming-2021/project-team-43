@@ -1,5 +1,7 @@
 package main.java.model;
+
 import main.java.view.GameMatView;
+
 import java.util.*;
 
 
@@ -11,9 +13,19 @@ public class GameMatModel {
     private final List<String> graveyard = new ArrayList<>();
     private static final Map<String, GameMatModel> playerGameMat = new HashMap<>();
 
+
+
     public GameMatModel (String playerNickname) {
         this.phase = Phase.Draw_Phase;
         playerGameMat.put(playerNickname, this);
+    }
+
+    public List<String> getGraveyard() {
+        return graveyard;
+    }
+
+    public static Map<String, GameMatModel> getPlayerGameMat() {
+        return playerGameMat;
     }
 
     public void startNewGame() {
@@ -31,7 +43,7 @@ public class GameMatModel {
     }
 
     public String getDeadCardNameByAddress(int address) {
-        if (graveyard.size() - 1 < address)
+        if (graveyard.size() - 1 < address||address<0)
             return null;
         else
             return graveyard.get(address);
@@ -46,14 +58,14 @@ public class GameMatModel {
     }
 
     public String getKindOfDeadCardByAddress(int address) {
-        if (graveyard.get(address).isEmpty())
+        if (address<0||graveyard.size() - 1 < address)
             return null;
         else
             return Card.getCardsByName(graveyard.get(address)).getCardModel();
     }
 
     public String getNameOfDeadCardByAddress(int address) {
-        if (address > graveyard.size() - 1)
+        if (address<0||address > graveyard.size() - 1)
             return null;
         else
             return graveyard.get(address);
@@ -123,8 +135,8 @@ public class GameMatModel {
     }
 
     public void changeModeOfFieldCard(String mode) {
-        String[] split = fieldZone.split(" ");
-        fieldZone = split[0] + " " + mode;
+        String[] split = fieldZone.split("/");
+        fieldZone = split[0] + "/" + mode;
     }//use when activate a set field card
 
     public void removeFromFieldZone() {
@@ -146,5 +158,7 @@ public class GameMatModel {
     public static GameMatModel getGameMatByNickname(String playerNickname) {
         return playerGameMat.get(playerNickname);
     }
+
+
 
 }

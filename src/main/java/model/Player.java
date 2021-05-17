@@ -8,7 +8,7 @@ import java.util.*;
 public class Player {
 
     private final String nickname;
-    private int lifePoint = 8000;
+    private int lifePoint = 1000;
     private boolean isYourTurn;
     private int numberOfRound;
     private int counterOfTurn = 1;
@@ -42,8 +42,7 @@ public class Player {
         fillTheGameDecks(activeDeck);
         firstDrawCard();
         allPlayers.put(nickname, this);
-    } //call this when duel command is called
-
+    }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
         allLifePoints.add(lifePoint);
@@ -59,7 +58,7 @@ public class Player {
         this.canSetSummonMonster = true;
         fillTheGameDecks(activeDeck);
         firstDrawCard();
-    }// call this for next round
+    }
 
     public void fillTheGameDecks(DeckModel activeDeck) {
         playerMainDeck.addAll(activeDeck.getArrayMain());
@@ -100,8 +99,16 @@ public class Player {
         }
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     public int getLifePoint() {
         return lifePoint;
+    }
+
+    public void setLifePoint(int lifePoint) {
+        this.lifePoint = lifePoint;
     }
 
     public void changeLifePoint(int lifePoint) {
@@ -118,19 +125,19 @@ public class Player {
 
     public int getNumberOfRound() {
         return numberOfRound;
-    }//use this in end game if game should be continued or not
+    }
 
     public int getCounterOfTurn() {
         return counterOfTurn;
-    }//useless
+    }
 
     public void changeCounterOfTurn() {
         counterOfTurn++;
-    }//call it in change turn
+    }
 
     public boolean getIsYourMoveFinished() {
         return isYourMoveFinished;
-    }//use this in calling method
+    }
 
     public void setIsYourMoveFinished(boolean isYourMoveFinished) {
         this.isYourMoveFinished = isYourMoveFinished;
@@ -138,7 +145,7 @@ public class Player {
 
     public boolean getCanUseTrap() {
         return canUseTrap;
-    }//use when trap is activated
+    }
 
     public void setCanUseTrap(boolean canUseTrap) {
         this.canUseTrap = canUseTrap;
@@ -158,11 +165,11 @@ public class Player {
 
     public void changeNumberOfWin() {
         numberOfWin++;
-    }//call this in endgame
+    }
 
     public boolean getCanDrawCard() {
         return canDrawCard;
-    }//check in change phase
+    }
 
     public void setCanDrawCard(boolean canDrawCard) {
         this.canDrawCard = canDrawCard;
@@ -276,7 +283,6 @@ public class Player {
         setCanUseTrap(true);
         setCanSetSummonMonster(true);
         setCanBattle(true);
-        setCanDrawCard(HandCardZone.getNumberOfFullHouse(nickname) != 6);
         GameMatModel.getGameMatByNickname(nickname).resetNumberOfDeadMonsterThisTurn();
     }
 

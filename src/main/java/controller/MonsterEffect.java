@@ -225,6 +225,7 @@ public class MonsterEffect {
                     }
                     MonsterZoneCard.removeMonsterFromZone(onlineUser, Integer.parseInt(response));
                 }
+                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
                 new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
                 HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
                 Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
@@ -267,7 +268,11 @@ public class MonsterEffect {
                     if (HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser) != null)
                         break;
                 }
-                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+                int address = Integer.parseInt(response);
+                address--;
+                GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard(HandCardZone.getHandCardByAddress(address, onlineUser).getCardName());
+                HandCardZone.removeFromHandCard(onlineUser, address);
+                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress()-1);
                 new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false);
             }
         }
@@ -382,5 +387,4 @@ public class MonsterEffect {
         }
         return 1;
     }//where should i call this??
-
 }
