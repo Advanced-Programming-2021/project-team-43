@@ -74,10 +74,22 @@ public class MainMenuController {
         if (matcher.find()) {
             return 0;
         }
+        pattern = Pattern.compile("^increase --money (\\d+)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            increaseMoney(Integer.parseInt(matcher.group(1)));
+        }
 
 
         MainMenuView.showInput("invalid command");
         return 1;
+
+    }
+
+    public static void increaseMoney(int money) {
+        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
+        userModel.changeUserCoin(money);
+
     }
 
 
