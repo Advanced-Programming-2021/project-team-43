@@ -206,17 +206,10 @@ public class SpellEffect {
         return 1;
     }//complete
 
-    public static void supplySquad(String onlineUser) {///////////
-        int continuousSpellAddress = SpellTrapZoneCard.getAddressOfSpellByIcon(onlineUser, "Continuous", "Supply Squad");
+    public static void supplySquad(String onlineUser) {
         Player player = Player.getPlayerByName(onlineUser);
-        if (continuousSpellAddress != 0) {
-            if (GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadMonsterThisTurn() != 0) {
-                String cardName = player.drawCard(false);
-                player.removeFromMainDeck();
-                new HandCardZone(onlineUser, cardName);
-                //call it end of each turn
-            }
-        }
+        if (GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadMonsterThisTurn() != 0)
+            new HandCardZone(onlineUser, player.drawCard(true));
     }
 
     public static void spellAbsorption(String onlineUser) {

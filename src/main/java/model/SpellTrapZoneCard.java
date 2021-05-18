@@ -5,7 +5,6 @@ import view.*;
 
 
 public class SpellTrapZoneCard {
-
     private final String playerNickname;
     private final String spellTrapName;
     private String mode;
@@ -96,14 +95,16 @@ public class SpellTrapZoneCard {
 
     public static boolean isAnyTrapQuickSpellSet(String playerNickname) {
         String cardName;
-        for (int i = 0; i < 6; i++) {
-            if (allSpellTrapCards.get(playerNickname).get(i) != null) {
+        for (int i = 1; i < 6; i++) {
+            SpellTrapZoneCard spellTrapCard = allSpellTrapCards.get(playerNickname).get(i);
+            if (spellTrapCard != null) {
                 cardName = allSpellTrapCards.get(playerNickname).get(i).getSpellTrapName();
-                if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Spell"))
+                if (spellTrapCard.getKind().equals("Spell") || spellTrapCard.getMode().equals("H")) {
                     if (SpellCard.getSpellCardByName(cardName).getIcon().equals("Quick-play"))
                         return true;
-                    else if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap"))
-                        return true;
+                }
+                else if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap") || allSpellTrapCards.get(playerNickname).get(i).getMode().equals("H"))
+                    return true;
             }
         }
         return false;
@@ -131,7 +132,7 @@ public class SpellTrapZoneCard {
                 if (allSpellTrapCards.get(playerNickname).get(i).getSpellTrapName().equals(cardName))
                     return i;
         }
-        return 0;
+        return -1;
     }
 
     public static int getAddressOfSpellByIcon(String playerNickname, String icon, String spellName) {
@@ -279,4 +280,5 @@ public class SpellTrapZoneCard {
 //            }
 //        }
 //    }
+
 }

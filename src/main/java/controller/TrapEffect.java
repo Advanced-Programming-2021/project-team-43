@@ -6,8 +6,7 @@ import java.util.*;
 public class TrapEffect {
 
     public static void trapEffectController(int addressOfTrapCard, String rivalUser, String onlineUser, boolean summonMine, MonsterZoneCard ownMonster) {
-        String spellTrapName = SpellTrapZoneCard.getSpellCardByAddress(addressOfTrapCard, onlineUser).getSpellTrapName();//?????
-
+        String spellTrapName = SpellTrapZoneCard.getSpellCardByAddress(addressOfTrapCard, onlineUser).getSpellTrapName();
         if (spellTrapName.equals("Mind Crush")) {
             mindCrush(onlineUser, rivalUser);
         }
@@ -120,7 +119,7 @@ public class TrapEffect {
         }
     }
 
-    public static void timeSeal(String rival) {//kamel1
+    public static void timeSeal(String rival) {
         Player.getPlayerByName(rival).setCanDrawCard(false);
     }
 
