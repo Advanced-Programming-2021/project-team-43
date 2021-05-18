@@ -982,6 +982,7 @@ public class GameMatController {
         GameMatView.showInput("trap activated");
     }
 
+
     public static int chooseSpellEffectController(String spellIcon, SpellTrapZoneCard ownSpell) {
         switch (spellIcon) {
             case "Normal":
