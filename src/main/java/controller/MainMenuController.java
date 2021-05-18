@@ -12,7 +12,7 @@ public class MainMenuController {
     public static String username;
     public static String username2;
 
-    public static void run() {
+    public static int run() {
         while (true) {
             String command = MainMenuView.getCommand();
             command = command.trim();
@@ -21,6 +21,7 @@ public class MainMenuController {
                 break;
             }
         }
+        return 0;
     }
 
     public static int findMatcher(String command) {
@@ -93,18 +94,16 @@ public class MainMenuController {
     }
 
 
-    public static void importExport() {
+    public static int importExport() {
 
         while (true) {
             String command = MainMenuView.getCommand();
             Pattern pattern = Pattern.compile("import \\s*card \\s*(.+?)");
             Matcher matcher = pattern.matcher(command);
-
-
             if (matcher.find()) {
+                UserModel.importedCards = JSON.exportCad();
                 UserModel.importedCards.add(matcher.group(1));
                 JSON.importCard(UserModel.importedCards);
-
 
                 continue;
 
@@ -147,17 +146,23 @@ public class MainMenuController {
 
 
         }
+        return 0 ;
     }
 
-    public static void duelRun() {
+    public static int duelRun() {
         while (true) {
+
             String command = MainMenuView.getCommand();
             command = command.trim();
             int breaker = duelFindMatcher(command);
             if (breaker == 0) {
+
                 break;
+
             }
         }
+        return 0;
+
     }
 
     public static int duelFindMatcher(String command) {
@@ -250,7 +255,7 @@ public class MainMenuController {
         }
     }
 
-    public static void profileRun() {
+    public static int profileRun() {
         while (true) {
             String command = MainMenuView.getCommand();
             command = command.trim();
@@ -259,6 +264,7 @@ public class MainMenuController {
                 break;
             }
         }
+        return 0 ;
     }
 
     public static int profile(String command) {

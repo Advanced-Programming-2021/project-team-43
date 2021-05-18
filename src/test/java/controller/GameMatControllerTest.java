@@ -1,236 +1,304 @@
-package model;
+package controller;
 
-import controller.SetCards;
+import model.DeckModel;
+import model.UserModel;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
-public class GameMatModelTest {
+public class MainMenuControllerTest {
 
-
-    @Test
-    public void startNewGame() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        Assert.assertEquals(1, GameMatModel.getPlayerGameMat().size());
-    }
 
     @Test
-    public void getPhase() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        Assert.assertEquals(Phase.Draw_Phase, gameMatModel.getPhase());
-    }
-
-    @Test
-    public void setPhase() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.setPhase(Phase.End_Phase);
-        Assert.assertEquals(Phase.End_Phase, gameMatModel.getPhase());
-    }
-
-    @Test
-    public void addToGraveyard() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.addToGraveyard("yami");
-        Assert.assertEquals("yami", gameMatModel.getGraveyard().get(0));
-    }
-
-    @Test
-    public void getDeadCardNameByAddress() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.addToGraveyard("yami");
-        assertNull(gameMatModel.getDeadCardNameByAddress(12));
-        Assert.assertEquals("yami", gameMatModel.getDeadCardNameByAddress(0));
+    public void increaseMoney(){
+        UserModel userModel=  new UserModel("a","B","c");
+        MainMenuController.username="a";
+        MainMenuController.increaseMoney(100);
+        Assert.assertEquals(100100,userModel.getUserCoin());
     }
 
 
     @Test
-    public void removeFromGraveyardByAddress() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.addToGraveyard("yami");
-        gameMatModel.removeFromGraveyardByAddress(0);
-        Assert.assertEquals(0, gameMatModel.getGraveyard().size());
-
+    public void run(){
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0,MainMenuController.run());
 
     }
 
     @Test
-    public void getKindOfDeadCardByAddress() {
-
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        gameMatModel.addToGraveyard("Yami");
-        Assert.assertEquals("Spell", gameMatModel.getKindOfDeadCardByAddress(0));
-        assertNull(gameMatModel.getKindOfDeadCardByAddress(-231));
+    public void profileRun(){
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0,MainMenuController.profileRun());
 
     }
 
-    @Test
-    public void getNameOfDeadCardByAddress() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.addToGraveyard("Yami");
-        Assert.assertEquals("Yami", gameMatModel.getNameOfDeadCardByAddress(0));
-        assertNull(gameMatModel.getNameOfDeadCardByAddress(-231));
-    }
 
     @Test
-    public void getNumberOfDeadCards() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        gameMatModel.addToGraveyard("Yami");
-        Assert.assertEquals(1, gameMatModel.getNumberOfDeadCards());
+    public void importExport(){
+
+
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0,MainMenuController.importExport());
 
 
     }
 
+
+
+
     @Test
-    public void getNumberOfDeadCardByModel() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        gameMatModel.addToGraveyard("Yami");
-        Assert.assertEquals(1, gameMatModel.getNumberOfDeadCardByModel("Spell"));
-        Assert.assertEquals(0, gameMatModel.getNumberOfDeadCardByModel("Trap"));
+    public void duelRun(){
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0,MainMenuController.duelRun());
 
     }
 
-    @Test
-    public void doesThisModelAndTypeExist() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        Assert.assertFalse(gameMatModel.doesThisModelAndTypeExist("Spell", "Normal"));
-        Assert.assertFalse(gameMatModel.doesThisModelAndTypeExist("Monster", "Warrior"));
-        gameMatModel.addToGraveyard("Yami");
-        gameMatModel.addToGraveyard("Axe Raider");
-
-
-        Assert.assertFalse(gameMatModel.doesThisModelAndTypeExist("Spell", "Normal"));
-        Assert.assertFalse(gameMatModel.doesThisModelAndTypeExist("Spell", "Effect"));
-        Assert.assertTrue(gameMatModel.doesThisModelAndTypeExist("Monster", "Warrior"));
-        gameMatModel.addToGraveyard("Monster Reborn");
-        Assert.assertTrue(gameMatModel.doesThisModelAndTypeExist("Spell", "Normal"));
-    }
 
     @Test
-    public void doesAddressAndTypeMatch() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        gameMatModel.addToGraveyard("Axe Raider");
-        Assert.assertFalse(gameMatModel.doesAddressAndTypeMatch(0, "Spell", "Normal"));
-        Assert.assertTrue(gameMatModel.doesAddressAndTypeMatch(0, "Monster", "Warrior"));
-
-    }
-
-    @Test
-    public void isAnySevenLevelMonsterInGraveyard() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        gameMatModel.addToGraveyard("Axe Raider");
-        Assert.assertFalse(gameMatModel.isAnySevenLevelMonsterInGraveyard());
-        gameMatModel.addToGraveyard("Slot Machine");
-        Assert.assertTrue(gameMatModel.isAnySevenLevelMonsterInGraveyard());
-    }
-
-    @Test
-    public void showGraveyard() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
+    public void findMatcher() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        gameMatModel.showGraveyard();
-        Assert.assertEquals("Graveyard Empty", outContentWithOutEnter(outContent));
-        gameMatModel.addToGraveyard("Axe Raider");
+        MainMenuController.findMatcher("menu enter (.+?)");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
         outContent.reset();
-        gameMatModel.showGraveyard();
-        Assert.assertEquals("1. Axe Raider : An axe-wielding monster of tremendous strength and agility.", outContentWithOutEnter(outContent));
+        MainMenuController.findMatcher("menu show-current");
+        Assert.assertEquals("Main Menu", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.findMatcher("invalid command");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter deck"));
+        in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter duel"));
+        in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter scoreboard"));
+        in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter profile"));
+        in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter shop"));
+        in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter Import/Export"));
+
+    }
+
+
+    @Test
+    public void duelFindMatcher() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        MainMenuController.duelFindMatcher("invalid command");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.duelFindMatcher("menu show-current");
+        Assert.assertEquals("Duel Menu", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.duelFindMatcher("menu enter (.+?)");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.duelFindMatcher("menu enter deck");
+        Assert.assertEquals("menu navigation is not possible", outContentWithOutEnter(outContent));
+
+
     }
 
     @Test
-    public void getFieldZone() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        Assert.assertEquals("",gameMatModel.getFieldZone());
+    public void duelMenu() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        UserModel userModel = new UserModel("ali", "p", "n");
+        UserModel userModel1 = new UserModel("reza", "p", "n2");
+        MainMenuController.username = "ali";
+        MainMenuController.duelMenu("reza",12);
+        Assert.assertEquals("ali has no active deck", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        userModel.setActiveDeck("a");
+        MainMenuController.duelMenu("reza",12);
+        Assert.assertEquals("reza has no active deck", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        userModel1.setActiveDeck("a");
+        MainMenuController.duelMenu("invalid username",12);
+        Assert.assertEquals("there is no player with this username", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        userModel1.setActiveDeck("a");
+        DeckModel deckModel = new DeckModel("a");
+        DeckModel deckModel1 = new DeckModel("a");
+        userModel.addDeck(deckModel);
+        userModel1.addDeck(deckModel1);
+
+        MainMenuController.duelMenu("reza",12);
+        Assert.assertEquals("ali’s deck is invalid", outContentWithOutEnter(outContent));
+        for (int i = 0; i < 50; i++) {
+            deckModel.addCardToMain("a");
+        }
+
+
+        outContent.reset();
+        MainMenuController.duelMenu("reza",12);
+        Assert.assertEquals("reza’s deck is invalid", outContentWithOutEnter(outContent));
+
+
+        for (int i = 0; i < 50; i++) {
+            deckModel1.addCardToMain("a");
+        }
+        outContent.reset();
+        MainMenuController.duelMenu("reza",12);
+        Assert.assertEquals("number of rounds is not supported", outContentWithOutEnter(outContent));
+
+
+
+
+
+
     }
 
     @Test
-    public void addToFieldZone() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.addToFieldZone("card","H");
-        Assert.assertEquals("card/H",gameMatModel.getFieldZone());
+    public void profile() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        new UserModel("ali", "p", "n");
+        new UserModel("alis", "p", "nd");
+        MainMenuController.username = "ali";
+        MainMenuController.profile("menu show-current");
+        Assert.assertEquals("Profile Menu",outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.profile("menu enter (.+?)");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.profile("menu enter deck");
+        Assert.assertEquals("menu navigation is not possible", outContentWithOutEnter(outContent));
+
+
+        outContent.reset();
+        MainMenuController.profile("profile change --nickname bb");
+        Assert.assertEquals("nickname changed successfully!", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.profile("profile change --nickname nd");
+        Assert.assertEquals("user with nickname nd already exists", outContentWithOutEnter(outContent));
+
+
+
+        outContent.reset();
+        MainMenuController.profile("profile change --password --current p --new p");
+        Assert.assertEquals("please enter a new password", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.profile("profile change --password --current pp --new p");
+        Assert.assertEquals("current password is invalid", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.profile("profile change --password --current p --new pp");
+        Assert.assertEquals("password changed successfully!", outContentWithOutEnter(outContent));
+
+
+        outContent.reset();
+        MainMenuController.profile("profile change --current (.+?) --password --new (.+?)");
+        Assert.assertEquals("please enter a new password", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.profile("profile change --current (.+?) --new (.+?) --password");
+        Assert.assertEquals("please enter a new password", outContentWithOutEnter(outContent));
+        outContent.reset();
+        MainMenuController.profile("profile change --password --new (.+?) --current (.+?)");
+        Assert.assertEquals("please enter a new password", outContentWithOutEnter(outContent));
+        outContent.reset();
+        MainMenuController.profile("profile change --new (.+?) --password --current (.+?)");
+        Assert.assertEquals("please enter a new password", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.profile("profile change --new (.+?) --current (.+?) --password");
+        Assert.assertEquals("please enter a new password", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.profile("invalid command");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+
+    }
+
+
+
+    @Test
+    public void scoreboard() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        UserModel userModel = new UserModel("ali", "p", "n");
+
+
+        outContent.reset();
+        MainMenuController.scoreboard("mensdfdsfsdfds");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+        outContent.reset();
+        MainMenuController.scoreboard("menu show-current");
+        Assert.assertEquals("Score board Menu", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.scoreboard("menu enter (.+?)");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        MainMenuController.scoreboard("menu enter deck");
+        Assert.assertEquals("menu navigation is not possible", outContentWithOutEnter(outContent));
+
+
+        outContent.reset();
+
+        Assert.assertEquals(1, MainMenuController.scoreboard("scoreboard show"));
+
+        UserModel userModel1 = new UserModel("aliii", "p", "nn");
+
+
+        UserModel userModel2 = new UserModel("reza1", "p", "bb");
+        UserModel userModel3 = new UserModel("reza2", "p", "bbb");
+        userModel2.setUserScore(123);
+        userModel3.setUserScore(1232);
+
+        outContent.reset();
+        Assert.assertEquals(1, MainMenuController.scoreboard("scoreboard show"));
+
     }
 
     @Test
-    public void changeModeOfFieldCard() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.addToFieldZone("card","H");
-        gameMatModel.changeModeOfFieldCard("O");
-        Assert.assertEquals("card/O",gameMatModel.getFieldZone());
+    public void showScoreboard() {
     }
 
-    @Test
-    public void removeFromFieldZone() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.addToFieldZone("card","H");
-        gameMatModel.removeFromFieldZone();
-        Assert.assertEquals("",gameMatModel.getFieldZone());
 
-    }
-
-    @Test
-    public void getNumberOfDeadMonsterThisTurn() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        Assert.assertEquals(0,gameMatModel.getNumberOfDeadMonsterThisTurn());
-    }
-
-    @Test
-    public void changeNumberOfDeadMonsterThisTurn() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.changeNumberOfDeadMonsterThisTurn();
-        Assert.assertEquals(1,gameMatModel.getNumberOfDeadMonsterThisTurn());
-    }
-
-    @Test
-    public void resetNumberOfDeadMonsterThisTurn() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        gameMatModel.startNewGame();
-        gameMatModel.changeNumberOfDeadMonsterThisTurn();
-        gameMatModel.resetNumberOfDeadMonsterThisTurn();
-        Assert.assertEquals(0,gameMatModel.getNumberOfDeadMonsterThisTurn());
-    }
-
-    @Test
-    public void getGameMatByNickname() {
-        GameMatModel gameMatModel = new GameMatModel("n1");
-        Assert.assertEquals(gameMatModel,GameMatModel.getGameMatByNickname("n1"));
-    }
 
     public String outContentWithOutEnter(ByteArrayOutputStream outContent) {
         return outContent.toString().substring(0, outContent.toString().length() - 2);
