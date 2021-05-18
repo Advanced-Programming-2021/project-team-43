@@ -59,10 +59,7 @@ public class SpellEffect {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no free space in Your Monster Zone!");
         }
         else {
-            System.out.println(ownGameMat.getNumberOfDeadCards() + "own");
-
             GameMatModel rivalGameMat = GameMatModel.getGameMatByNickname(rivalUser);
-            System.out.println(rivalGameMat.getNumberOfDeadCards() + "rival");
             do {
                 GameMatView.showInput("Please choose from which graveyard you want to pick a Monster? (own/rival)");
                 response = GameMatView.getCommand();
@@ -85,7 +82,7 @@ public class SpellEffect {
             GameMatView.showInput("Dead Monster reborn successfully!");
         }
         return 1;
-    }//complete
+    }
 
     private static int getResponseForDeadCardToReborn(String whoseGraveyard, GameMatModel ownGameMat, GameMatModel rivalGameMat) {
         int deadCardAddress;
@@ -108,7 +105,7 @@ public class SpellEffect {
             }
         }
         return deadCardAddress;
-    }//complete
+    }
 
     private static int terraforming(String onlineUser, Player player) {
         if (!player.doesThisModelAndTypeExist("Spell", "Field")) {
@@ -135,14 +132,12 @@ public class SpellEffect {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no enough card in Your Main Deck!");
         else {
             String cardName = player.drawCard(false);
-            player.removeFromMainDeck();
             new HandCardZone(onlineUser, cardName);
             cardName = player.drawCard(false);
-            player.removeFromMainDeck();
             new HandCardZone(onlineUser, cardName);
         }
         return 1;
-    }
+    }//complete
 
     private static int raigeki(String rivalUser) {
         Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).keySet().toArray(new Integer[0]);
@@ -177,7 +172,7 @@ public class SpellEffect {
             SpellTrapZoneCard.getSpellCardByAddress(key, rivalUser).removeSpellTrapFromZone();
         }
         return 1;
-    }
+    }//complete
 
     private static int swordsOfRevealingLight(String rivalUser, int ownAddress, String onlineUser) {
         Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).keySet().toArray(new Integer[0]);
@@ -224,12 +219,11 @@ public class SpellEffect {
         }
     }
 
-    public static void spellAbsorption(String onlineUser) {////////
+    public static void spellAbsorption(String onlineUser) {
         Player.getPlayerByName(onlineUser).changeLifePoint(500);
-        //just check is this spell exist in activate method and call this
     }
 
-    public static void messengerOfPeace(String onlineUser, String rivalUser) {////////
+    public static void messengerOfPeace(String onlineUser, String rivalUser) {/////boolean isactivate
         Map<Integer, MonsterZoneCard> monsters;
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);

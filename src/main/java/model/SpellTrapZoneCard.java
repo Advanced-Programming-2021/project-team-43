@@ -17,7 +17,6 @@ public class SpellTrapZoneCard {
     private final Map<String, Integer> relatedMonsterAddress = new HashMap<>();
     public static final Map<String, Map<Integer, SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
 
-
     public SpellTrapZoneCard(String playerNickname, String spellTrapName, String mode) {
         this.playerNickname = playerNickname;
         this.spellTrapName = spellTrapName;
@@ -158,9 +157,10 @@ public class SpellTrapZoneCard {
         SpellTrapZoneCard spellCard;
         for (int i = 1; i < 6; i++) {
             spellCard = allSpellTrapCards.get(playerNickname).get(i);
-            if (spellCard.getKind().equals("Spell"))
-                if (spellCard.getSpellTrapName().equals(spellName) && spellCard.getMode().equals("O"))
-                    return true;
+            if (spellCard != null)
+                if (spellCard.getKind().equals("Spell"))
+                    if (spellCard.getSpellTrapName().equals(spellName) && spellCard.getMode().equals("O"))
+                        return true;
         }
         return false;
     }
@@ -279,5 +279,4 @@ public class SpellTrapZoneCard {
 //            }
 //        }
 //    }
-
 }

@@ -22,7 +22,7 @@ public class HandCardZone {
     }
 
     public int getAddress() {
-        return address;//based on list index
+        return address;
     }
 
     public String getKind() {
@@ -98,6 +98,5 @@ public class HandCardZone {
                 return eachCard.getAddress();
         return -1;
     }
-
 
 }

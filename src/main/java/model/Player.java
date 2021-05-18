@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Player {
 
+
     private final String nickname;
     private int lifePoint = 1000;
     private boolean isYourTurn;
@@ -48,14 +49,18 @@ public class Player {
         allLifePoints.add(lifePoint);
         playerMainDeck.clear();
         playerSideDeck.clear();
+        HandCardZone.allHandCards.get(nickname).clear();
+        MonsterZoneCard.allMonsterCards.get(nickname).clear();
+        SpellTrapZoneCard.allSpellTrapCards.get(nickname).clear();
         numberOfRound--;
-        this.lifePoint = 8000;
+        this.lifePoint = 1000;
         this.isYourTurn = isYourTurn;
         this.canDrawCard = !isYourTurn;
         canBattle = !isYourTurn;
         this.counterOfTurn = 0;
         this.canUseTrap = true;
         this.canSetSummonMonster = true;
+        GameMatModel.getGameMatByNickname(nickname).setPhase(Phase.Draw_Phase);
         fillTheGameDecks(activeDeck);
         firstDrawCard();
     }
