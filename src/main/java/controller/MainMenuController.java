@@ -177,7 +177,7 @@ public class MainMenuController {
         pattern = Pattern.compile("^menu \\s*show-current$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
-            MainMenuView.showInput("Duel\\s* Menu");
+            MainMenuView.showInput("Duel Menu");
             return 1;
         }
 
@@ -192,7 +192,7 @@ public class MainMenuController {
             }
             return 1;
         }
-        MainMenuView.showInput("invalid \\s*command");
+        MainMenuView.showInput("invalid command");
 
         return 1;
     }
