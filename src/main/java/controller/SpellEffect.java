@@ -251,7 +251,7 @@ public class SpellEffect {
                     break;
             }
             chosenAddress = Integer.parseInt(response);
-            HandCardZone.removeFromHandCard(onlineUser, chosenAddress);
+            HandCardZone.removeFromHandCard(onlineUser, chosenAddress-1);
         }
         do {
             GameMatView.showInput("Please enter the number of Spell/Trap you want to destroy: (1 or 2)");

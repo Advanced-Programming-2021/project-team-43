@@ -5,6 +5,7 @@ import view.*;
 
 
 public class SpellTrapZoneCard {
+
     private final String playerNickname;
     private final String spellTrapName;
     private String mode;
@@ -115,9 +116,8 @@ public class SpellTrapZoneCard {
         for (int i = 0; i < 6; i++) {
             if (allSpellTrapCards.get(playerNickname).get(i) != null) {
                 cardName = allSpellTrapCards.get(playerNickname).get(i).getSpellTrapName();
-                if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap")) {
+                if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap") && allSpellTrapCards.get(playerNickname).get(i).getMode().equals("H")) {
                     if (cardName.equals("Negate Attack") || cardName.equals("Mirror Force") || cardName.equals("Magic Cylinder")) {
-                        System.out.println(cardName);//////////////////////////
                         return true;
                     }
                 }
@@ -280,5 +280,4 @@ public class SpellTrapZoneCard {
 //            }
 //        }
 //    }
-
 }
