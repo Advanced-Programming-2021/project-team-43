@@ -1,5 +1,4 @@
 package main.java.model;
-import main.java.controller.GameMatController;
 import java.util.*;
 
 
@@ -22,7 +21,6 @@ public class MonsterZoneCard {
     private boolean isForOneTurn;
     private final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
     public static final Map<String, Map<Integer, MonsterZoneCard>> allMonsterCards = new HashMap<>();
-
 
     public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn) {
         this.playerNickname = playerNickname;
@@ -165,18 +163,15 @@ public class MonsterZoneCard {
         for (int i = 1; i < 6; i++)
             if (allMonsterCards.get(playerNickname).get(i) != null)
                 allMonsterCards.get(playerNickname).get(i).setHaveChangedPositionThisTurn(false);
-
     }
-
 
     public static int getAddressByMonsterName(String playerNickname, String monsterName) {
         for (int i = 1; i < 6; i++)
             if (allMonsterCards.get(playerNickname).get(i) != null)
                 if (allMonsterCards.get(playerNickname).get(i).getMonsterName().equals(monsterName))
                     return allMonsterCards.get(playerNickname).get(i).getAddress();
-        return 0;
+        return -1;
     }
-
     @Override
     public String toString() {
         return "Name: " + monsterName + "\n" +
@@ -209,7 +204,6 @@ public class MonsterZoneCard {
                 if (allMonsterCards.get(playerNickname).get(i).getMonsterType().equals(monsterType))
                     return true;
         return false;
-
     }
 
     public static void removeUselessMonster(String playerNickname) {
@@ -239,6 +233,7 @@ public class MonsterZoneCard {
             if (allMonsters.get(i) != null) {
                 allMonsters.get(i).setHaveChangedPositionThisTurn(false);
                 allMonsters.get(i).setHaveAttackThisTurn(false);
+                allMonsters.get(i).setIsEffectUsed(false);////////////
             }
         }
     }

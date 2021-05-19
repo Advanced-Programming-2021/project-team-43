@@ -6,13 +6,9 @@ import java.util.*;
 public class TrapEffect {
 
     public static void trapEffectController(int addressOfTrapCard, String rivalUser, String onlineUser, boolean summonMine, MonsterZoneCard ownMonster) {
-        String spellTrapName = SpellTrapZoneCard.getSpellCardByAddress(addressOfTrapCard, onlineUser).getSpellTrapName();//?????
-
+        String spellTrapName = SpellTrapZoneCard.getSpellCardByAddress(addressOfTrapCard, onlineUser).getSpellTrapName();
         if (spellTrapName.equals("Mind Crush")) {
             mindCrush(onlineUser, rivalUser);
-        }
-        if (spellTrapName.equals("Trap Hole")) {
-            trapHole(onlineUser, ownMonster);
         }
         if (spellTrapName.equals("Torrential Tribute")) {
             torrentialTribute(rivalUser, onlineUser);
@@ -41,7 +37,6 @@ public class TrapEffect {
 
     public static int magicCylinder(String onlineUser, String rivalUser, MonsterZoneCard ownMonster) {
         if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
-            MonsterZoneCard.removeMonsterFromZone(rivalUser, ownMonster.getAddress());
             Player.getPlayerByName(rivalUser).changeLifePoint(-1 * ownMonster.getAttack());
             return 1;
         }
@@ -80,10 +75,6 @@ public class TrapEffect {
         }
     }
 
-    public static void trapHole(String onlineUser, MonsterZoneCard ownMonster) {
-        MonsterZoneCard.removeMonsterFromZone(onlineUser, ownMonster.getAddress());
-    }
-
     private static boolean ringOfDefenseEffect(String rival, String onlineUser) {
         Map<Integer, SpellTrapZoneCard> spellTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rival);
         Integer[] keys = spellTraps.keySet().toArray(new Integer[0]);
@@ -105,7 +96,7 @@ public class TrapEffect {
         return counter != 0;
     }
 
-    public static void torrentialTribute(String rival, String player1) {//kamel3
+    public static int torrentialTribute(String rival, String player1) {
         if (!ringOfDefenseEffect(rival, player1)) {
             Map<Integer, MonsterZoneCard> rivalsMonster = MonsterZoneCard.getAllMonstersByPlayerName(rival);
             Integer[] monsterNames = rivalsMonster.keySet().toArray(new Integer[0]);
@@ -117,14 +108,16 @@ public class TrapEffect {
             for (int i = 0; i < ownMonster.size(); i++) {
                 MonsterZoneCard.removeMonsterFromZone(player1, ownMonsterNames[i]);
             }
+            return 1;
         }
+        return 0;
     }
 
-    public static void timeSeal(String rival) {//kamel1
+    public static void timeSeal(String rival) {
         Player.getPlayerByName(rival).setCanDrawCard(false);
     }
 
-    public static void solemnWarning(String player1, int addressOfSummonCard, boolean summonMine, String rival) {
+    public static int solemnWarning(String player1, int addressOfSummonCard, boolean summonMine, String rival) {
         if (!ringOfDefenseEffect(rival, player1)) {
             Player.getPlayerByName(player1).changeLifePoint(-2000);
             if (summonMine) {
@@ -137,7 +130,9 @@ public class TrapEffect {
                     MonsterZoneCard.removeMonsterFromZone(rival, addressOfSummonCard);
                 }
             }
+            return 1;
         }
+        return 0;
     }
 
     public static void magicJammer(String player1, int activateCardAddress, boolean activateMine, String rival) {//

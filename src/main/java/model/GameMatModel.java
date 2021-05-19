@@ -1,7 +1,5 @@
 package main.java.model;
-
 import main.java.view.GameMatView;
-
 import java.util.*;
 
 
@@ -12,8 +10,6 @@ public class GameMatModel {
     private int numberOfDeadMonsterThisTurn = 0;
     private final List<String> graveyard = new ArrayList<>();
     private static final Map<String, GameMatModel> playerGameMat = new HashMap<>();
-
-
 
     public GameMatModel (String playerNickname) {
         this.phase = Phase.Draw_Phase;
@@ -65,7 +61,7 @@ public class GameMatModel {
     }
 
     public String getNameOfDeadCardByAddress(int address) {
-        if (address<0||address > graveyard.size() - 1)
+        if (address<0 || address > graveyard.size() - 1)
             return null;
         else
             return graveyard.get(address);
@@ -114,6 +110,13 @@ public class GameMatModel {
         return false;
     }
 
+    public boolean doesThisMonsterExistInGraveyard(String monsterName) {
+        for (String deadCard : graveyard)
+            if (Card.getCardsByName(deadCard).getCardModel().equals("Monster") && deadCard.equals(monsterName))
+                return true;
+        return false;
+    }
+
     public void showGraveyard() {
         if (graveyard.isEmpty())
             GameMatView.showInput("Graveyard Empty");
@@ -137,7 +140,7 @@ public class GameMatModel {
     public void changeModeOfFieldCard(String mode) {
         String[] split = fieldZone.split("/");
         fieldZone = split[0] + "/" + mode;
-    }//use when activate a set field card
+    }
 
     public void removeFromFieldZone() {
         fieldZone = "";
@@ -149,7 +152,7 @@ public class GameMatModel {
 
     public void changeNumberOfDeadMonsterThisTurn() {
         numberOfDeadMonsterThisTurn++;
-    }//use in attack method
+    }
 
     public void resetNumberOfDeadMonsterThisTurn() {
         numberOfDeadMonsterThisTurn = 0;
@@ -158,7 +161,6 @@ public class GameMatModel {
     public static GameMatModel getGameMatByNickname(String playerNickname) {
         return playerGameMat.get(playerNickname);
     }
-
 
 
 }

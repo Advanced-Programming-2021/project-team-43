@@ -1,11 +1,14 @@
 package main.java.model;
+
 import main.java.controller.MainMenuController;
 import main.java.controller.SetCards;
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class MonsterZoneCardTest {
@@ -465,22 +468,21 @@ public class MonsterZoneCardTest {
 
     }
 
-//    @Test
-//    public void getAllMonstersMode() {
-//        SetCards.readingCSVFileTrapSpell();
-//        SetCards.readingCSVFileMonster();
-//        new UserModel("roya", "p", "roya");
-//        MainMenuController.username = "roya";
-//        DeckModel deck = new DeckModel("deck");
-//        for (int i = 0; i < 41; i++) {
-//            deck.addCardToMain("Texchanger");
-//        }
-//        new Player("roya", deck, true, 1);
-//        MonsterZoneCard se= new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-//      String[] modes ;
-//
-//        Assert.assertArrayEquals(modes,MonsterZoneCard.getAllMonstersMode("roya"));
-//    }
+    @Test
+    public void getAllMonstersMode() {
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        new UserModel("roya", "p", "roya");
+        MainMenuController.username = "roya";
+        DeckModel deck = new DeckModel("deck");
+        for (int i = 0; i < 41; i++) {
+            deck.addCardToMain("Texchanger");
+        }
+        Assert.assertEquals(6, MonsterZoneCard.getAllMonstersMode("roya").length);
+        new Player("roya", deck, true, 1);
+        MonsterZoneCard se = new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
+        Assert.assertEquals(6, MonsterZoneCard.getAllMonstersMode("roya").length);
+    }
 
     @Test
     public void isThisMonsterTypeExisted() {

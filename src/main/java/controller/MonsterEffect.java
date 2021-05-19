@@ -130,20 +130,22 @@ public class MonsterEffect {
             else if (!HandCardZone.doesAnyLevelFourMonsterExisted(onlineUser))
                 GameMatView.showInput("Oops! You cant have Special Summon because of no 4 level or less Monster!");
             else {
-                GameMatView.showInput("Please enter the address of a 4 level or less to summon in Defend Position:");
-                response = GameMatView.getCommand();
-                while (Integer.parseInt(response) < 1 || Integer.parseInt(response) > HandCardZone.getNumberOfFullHouse(onlineUser)) {
-                    if (response.equals("cancel"))
-                        return 0;//cancel
-                    String cardName = HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).getCardName();
-                    if (!MonsterCard.getMonsterByName(cardName).getCardModel().equals("Monster") || MonsterCard.getMonsterByName(cardName).getLevel() > 4) {
-                        GameMatView.showInput("Please enter the correct address:");
-                        continue;
-                    }
-                    GameMatView.showInput("Please enter the correct address:");
+                int address;
+                while (true) {
+                    GameMatView.showInput("Please enter the address of a 4 level or less to summon in Defend Position:");
                     response = GameMatView.getCommand();
+                    if (response.equals("cancel"))
+                        return 0;
+                    if (!response.matches("[1,8]"))
+                        continue;
+                    address = Integer.parseInt(response);
+                    if (address <= HandCardZone.getNumberOfFullHouse(onlineUser)) {
+                        String cardName = HandCardZone.getHandCardByAddress(address, onlineUser).getCardName();
+                        if (Card.getCardsByName(cardName).getCardModel().equals("Monster") && MonsterCard.getMonsterByName(cardName).getLevel() <= 4)
+                            break;
+                    }
                 }
-                HandCardZone.removeFromHandCard(onlineUser, Integer.parseInt(response));
+                HandCardZone.removeFromHandCard(onlineUser, address);
                 new MonsterZoneCard(onlineUser, "The Tricky", "DO", false, false);
                 GameMatView.showInput("summoned successfully");
                 return 1;
@@ -385,6 +387,7 @@ public class MonsterEffect {
                 ownGameMat.removeFromGraveyardByAddress(Integer.parseInt(response));
             }
         }
+        ownMonster.setIsEffectUsed(true);
         return 1;
-    }//where should i call this??
+    }
 }

@@ -8,7 +8,7 @@ public class HandCardZone {
     private final String cardName;
     private final int address;
     private final String kind;
-    public static  Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
+    public static Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
 
     public HandCardZone(String playerNickname, String cardName) {
         this.cardName = cardName;
@@ -22,7 +22,7 @@ public class HandCardZone {
     }
 
     public int getAddress() {
-        return address;//based on list index
+        return address;
     }
 
     public String getKind() {
@@ -52,10 +52,14 @@ public class HandCardZone {
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
             if (allHandCards.get(playerNickname).get(i) != null) {
                 cardName = allHandCards.get(playerNickname).get(i).getCardName();
-                if (model.equals("Monster"))
+                if (model.equals("Monster")) {
+                    if (MonsterCard.getMonsterByName(cardName) == null) continue;
                     return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
-                if (model.equals("Spell"))
+                }
+                if (model.equals("Spell")) {
+                    if (SpellCard.getSpellCardByName(cardName) == null) continue;
                     return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
+                }
             }
         }
         return false;
@@ -81,7 +85,7 @@ public class HandCardZone {
     }
 
     public static void showHandCard(String playerNickname) {
-        List<HandCardZone> handCardOwn=allHandCards.get(playerNickname);
+        List<HandCardZone> handCardOwn = allHandCards.get(playerNickname);
         for (int i = 0; i < handCardOwn.size(); i++)
             GameMatView.showInput(i + 1 + ". " + handCardOwn.get(i).getCardName());
     }
@@ -98,6 +102,5 @@ public class HandCardZone {
                 return eachCard.getAddress();
         return -1;
     }
-
 
 }

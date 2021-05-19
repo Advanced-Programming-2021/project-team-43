@@ -8,7 +8,7 @@ import java.util.*;
 public class Player {
 
     private final String nickname;
-    private int lifePoint = 1000;
+    private int lifePoint = 8000;
     private boolean isYourTurn;
     private int numberOfRound;
     private int counterOfTurn = 1;
@@ -40,7 +40,8 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-        firstDrawCard();
+        for (int i = 0; i < 5; i++)
+            new HandCardZone(nickname, drawCard(false));//////////////true//////////////////
         allPlayers.put(nickname, this);
     }
 
@@ -48,6 +49,9 @@ public class Player {
         allLifePoints.add(lifePoint);
         playerMainDeck.clear();
         playerSideDeck.clear();
+        HandCardZone.allHandCards.get(nickname).clear();
+        MonsterZoneCard.allMonsterCards.get(nickname).clear();
+        SpellTrapZoneCard.allSpellTrapCards.get(nickname).clear();
         numberOfRound--;
         this.lifePoint = 8000;
         this.isYourTurn = isYourTurn;
@@ -56,8 +60,10 @@ public class Player {
         this.counterOfTurn = 0;
         this.canUseTrap = true;
         this.canSetSummonMonster = true;
+        GameMatModel.getGameMatByNickname(nickname).setPhase(Phase.Draw_Phase);
         fillTheGameDecks(activeDeck);
-        firstDrawCard();
+        for (int i = 0; i < 5; i++)
+            new HandCardZone(nickname, drawCard(true));
     }
 
     public void fillTheGameDecks(DeckModel activeDeck) {
@@ -66,13 +72,6 @@ public class Player {
         for (String eachCard : cardName2) {
             for (int i = 0; i < activeDeck.cardsInSideDeck.get(eachCard); i++)
                 playerSideDeck.add(eachCard);
-        }
-    }
-
-    public void firstDrawCard() {
-        for (int i = 0; i < 5; i++) {
-            new HandCardZone(nickname, playerMainDeck.get(0));
-            playerMainDeck.remove(0);
         }
     }
 
@@ -94,9 +93,9 @@ public class Player {
             addToSideDeck(playerMainDeck.get(cardAddressInMainDeck));
             removeFromMainDeckByAddress(cardAddressInMainDeck);
             return 1;
-        } else {
-            return 0;
         }
+        else
+            return 0;
     }
 
     public String getNickname() {
@@ -289,5 +288,6 @@ public class Player {
     public static Player getPlayerByName(String playerNickname) {
         return allPlayers.get(playerNickname);
     }
+
 
 }
