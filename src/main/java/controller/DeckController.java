@@ -1,31 +1,31 @@
 package main.java.controller;
 
+
+import main.java.model.*;
 import main.java.view.DeckView;
 import main.java.view.MainMenuView;
-import main.java.model.*;
-
 
 import java.util.Arrays;
-
-
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DeckController {
-    public static void run(){
-        while (true){
+    public static int run() {
+        while (true) {
             String command = DeckView.getCommand();
             command = command.trim();
             int breaker = findMatcher(command);
-            if (breaker==0){
+            if (breaker == 0) {
                 break;
             }
         }
+        return 0;
     }
 
 
     public static int findMatcher(String command) {
+
 
         Pattern pattern = Pattern.compile("^deck \\s*create \\s*(.+?)$");
         Matcher matcher = pattern.matcher(command);
@@ -196,6 +196,12 @@ public class DeckController {
 
             return 0;
         }
+        pattern = Pattern.compile("^menu\\s* show-current$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            MainMenuView.showInput("Deck Menu");
+            return 1;
+        }
 
         pattern = Pattern.compile("^menu \\s*enter \\s*(.+?)$");
         matcher = pattern.matcher(command);
@@ -211,7 +217,6 @@ public class DeckController {
         return 1;
 
     }
-
 
 
     public static void setActivate(String deckName) {
@@ -239,6 +244,7 @@ public class DeckController {
         }
 
     }
+
     public static void createDeck(String deckName) {
         if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
             DeckView.showInput("deck with name " + deckName + " already exists");
@@ -294,26 +300,21 @@ public class DeckController {
                             } else {
                                 DeckView.showInput("there are already one cards with name " + cardName + " in deck " + deckName);
                             }
-                        } else {
-                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
-
-                                DeckModel deckModel = user.userAllDecks.get(deckName);
-
-                                deckModel.addCardToMain(cardName);
-
-                                user.userAllDecks.replace(deckName, deckModel);
-
-                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                DeckView.showInput("card added to deck successfully");
-
-
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-
-                            } else {
-                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
-                            }
                         }
+//                        else {
+//                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+//                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
+//                                DeckModel deckModel = user.userAllDecks.get(deckName);
+//                                deckModel.addCardToMain(cardName);
+//                                user.userAllDecks.replace(deckName, deckModel);
+//                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+//                                DeckView.showInput("card added to deck successfully");
+//                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+//
+//                            } else {
+//                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
+//                            }
+//                        }
 
                     } else {
                         if (TrapCard.getTrapCardByName(cardName).getStatus().equals("Unlimited")) {
@@ -340,21 +341,20 @@ public class DeckController {
                             } else {
                                 DeckView.showInput("there are already one cards with name " + cardName + " in deck " + deckName);
                             }
-                        } else {
-                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
-                                DeckModel deckModel = user.userAllDecks.get(deckName);
-                                deckModel.addCardToMain(cardName);
-                                user.userAllDecks.replace(deckName, deckModel);
-                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                DeckView.showInput("card added to deck successfully");
-
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-
-                            } else {
-                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
-                            }
                         }
+//                        else {
+//                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+//                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
+//                                DeckModel deckModel = user.userAllDecks.get(deckName);
+//                                deckModel.addCardToMain(cardName);
+//                                user.userAllDecks.replace(deckName, deckModel);
+//                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+//                                DeckView.showInput("card added to deck successfully");
+//                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+//                            } else {
+//                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
+//                            }
+//                        }
                     }
                 } else {
                     DeckView.showInput("main deck is full");
@@ -412,25 +412,20 @@ public class DeckController {
                             } else {
                                 DeckView.showInput("there are already one cards with name " + cardName + " in deck " + deckName);
                             }
-                        } else {
-                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
-
-                                DeckModel deckModel = user.userAllDecks.get(deckName);
-
-                                deckModel.addCardToSide(cardName);
-
-                                user.userAllDecks.replace(deckName, deckModel);
-
-                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                DeckView.showInput("card added to deck successfully");
-
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-
-                            } else {
-                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
-                            }
                         }
+//                        else {
+//                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+//                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
+//                                DeckModel deckModel = user.userAllDecks.get(deckName);
+//                                deckModel.addCardToSide(cardName);
+//                                user.userAllDecks.replace(deckName, deckModel);
+//                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+//                                DeckView.showInput("card added to deck successfully");
+//                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+//                            } else {
+//                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
+//                            }
+//                        }
                     } else {
                         if (TrapCard.getTrapCardByName(cardName).getStatus().equals("Unlimited")) {
                             if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
@@ -456,19 +451,21 @@ public class DeckController {
                             } else {
                                 DeckView.showInput("there are already one cards with name " + cardName + " in deck " + deckName);
                             }
-                        } else {
-                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
-                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
-                                DeckModel deckModel = user.userAllDecks.get(deckName);
-                                deckModel.addCardToSide(cardName);
-                                user.userAllDecks.replace(deckName, deckModel);
-                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                DeckView.showInput("card added to deck successfully");
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-                            } else {
-                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
-                            }
                         }
+//                        else
+//                            {
+//                            if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
+//                                    user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 2) {
+//                                DeckModel deckModel = user.userAllDecks.get(deckName);
+//                                deckModel.addCardToSide(cardName);
+//                                user.userAllDecks.replace(deckName, deckModel);
+//                                UserModel.allUsersInfo.replace(MainMenuController.username, user);
+//                                DeckView.showInput("card added to deck successfully");
+//                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+//                            } else {
+//                                DeckView.showInput("there are already two cards with name " + cardName + " in deck " + deckName);
+//                            }
+//                        }
                     }
 
                 } else {
@@ -481,6 +478,7 @@ public class DeckController {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
     }
+
     public static void removeCardFromMainDeck(String cardName, String deckName) {
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
         if (user.isUserHaveThisDeck(deckName)) {
@@ -546,9 +544,7 @@ public class DeckController {
 
     public static void showMainDeck(String deckName) {
         if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-
             DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
-
             DeckView.showInput("Deck: " + deckName);
             DeckView.showInput("Main deck:");
             DeckView.showInput("Monsters:");
@@ -604,6 +600,7 @@ public class DeckController {
             DeckView.showInput("deck with name " + deckName + " does not exist");
         }
     }
+
     public static void showCards() {
         HashMap<String, Integer> hashMap = UserModel.getUserByUsername(MainMenuController.username).userAllCards;
         String[] keys = hashMap.keySet().toArray(new String[0]);

@@ -1,43 +1,59 @@
 package main.java.controller;
 
 import main.java.model.Card;
+import main.java.model.DeckModel;
 import main.java.model.ShopModel;
 import main.java.model.UserModel;
-import main.java.view.*;
+import main.java.view.DeckView;
+import main.java.view.RegisterAndLoginView;
 
-
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterAndLoginController {
-    public static void run(){
-        if (JSON.readUserInfo()==null){
-            JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
-        }
-        else {
-            UserModel.allUsersInfo=JSON.readUserInfo();
-            UserModel.allUsernames=JSON.readUsernames();
-            UserModel.allUsersNicknames=JSON.readUserNicknames();
+    public static int run() {
+        if (JSON.readUserInfo() == null) {
+            UserModel userModel = new UserModel("AI", "p", "AI");
+            DeckModel deckModel = new DeckModel("AILevel1");
+            MainMenuController.username = "AI";
+            for (int i = 0; i < 6; i++) {
+                deckModel.addCardToMain("Axe Raider");
+                deckModel.addCardToMain("Horn Imp");
+                deckModel.addCardToMain("Silver Fang");
+                deckModel.addCardToMain("Fireyarou");
+                deckModel.addCardToMain("Curtain of the dark ones");
+                deckModel.addCardToMain("Dark Blade");
+                deckModel.addCardToMain("Warrior Dai Grepher");
+                deckModel.addCardToMain("Bitron");
+            }
+            userModel.addDeck(deckModel);
+            userModel.setActiveDeck("AILevel1");
+
+
+            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+        } else {
+            UserModel.allUsersInfo = JSON.readUserInfo();
+            UserModel.allUsernames = JSON.readUsernames();
+            UserModel.allUsersNicknames = JSON.readUserNicknames();
         }
 
-        if (JSON.exportCad()!=null)
-        {
-            UserModel.importedCards =JSON.exportCad();
+        if (JSON.exportCad() != null) {
+            UserModel.importedCards = JSON.exportCad();
         }
         new ShopModel(Card.getCards());
-        while (true){
-            String command = RegisterAndLoginView.getCommand();
+        while (true) {
+            String command = DeckView.getCommand();
             command = command.trim();
             int breaker = findMatcher(command);
-            if (breaker==0){
+            if (breaker == 0) {
                 break;
             }
         }
+        return 0;
     }
 
 
     public static int findMatcher(String command) {
-
-
 
 
         Pattern pattern = Pattern.compile("^user \\s*login \\s*--username\\s* (.+?) --password \\s*(.+?)$");
@@ -105,7 +121,7 @@ public class RegisterAndLoginController {
         pattern = Pattern.compile("^menu enter\\s* (.+?)$");
         matcher = pattern.matcher(command);
         if (matcher.find()) {
-            if (matcher.group(1).equals("duel")||matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
+            if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
                 RegisterAndLoginView.showInput("menu navigation is not possible");
             } else {
                 RegisterAndLoginView.showInput("invalid command");
@@ -132,7 +148,6 @@ public class RegisterAndLoginController {
 
         return 1;
     }
-
 
 
     public static void registerInGame(String username, String nickname, String password) {

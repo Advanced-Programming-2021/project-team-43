@@ -1,202 +1,181 @@
 package main.java.controller;
 
-import main.java.controller.DeckController;
-import main.java.controller.MainMenuController;
-import main.java.controller.SetCards;
 import main.java.model.DeckModel;
 import main.java.model.UserModel;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
 
 
 public class DeckControllerTest {
+
     @Test
-    public void findMatcher1() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck create deck";
-        MainMenuController.username = "ll";
-        Assert.assertEquals(1, DeckController.findMatcher(command));
+    public void testForAddCard() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        UserModel userModel = new UserModel("user12", "p", "n");
+        MainMenuController.username = "user12";
+        DeckModel deckModel = new DeckModel("deck1221");
+        userModel.addDeck(deckModel);
+        for (int i = 0; i < 10; i++) {
+            userModel.addCardToUserAllCards("Axe Raider");
+            userModel.addCardToUserAllCards("Mind Crush");
+            userModel.addCardToUserAllCards("Monster Reborn");
+            userModel.addCardToUserAllCards("Change of Heart");
+            userModel.addCardToUserAllCards("Pot of Greed");
+        }
+        DeckController.addCardToMainDeck("Axe Raider", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToMainDeck("Monster Reborn", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToMainDeck("Mind Crush", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToSideDeck("Axe Raider", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToSideDeck("Mind Crush", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToSideDeck("Change of Heart", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+
+        for (int i = 0; i < 2; i++) {
+            DeckController.addCardToMainDeck("Axe Raider", "deck1221");
+            DeckController.addCardToMainDeck("Mind Crush", "deck1221");
+
+        }
+        outContent.reset();
+        DeckController.addCardToMainDeck("Axe Raider", "deck1221");
+        Assert.assertEquals("there are already three cards with name Axe Raider in deck deck1221", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToMainDeck("Mind Crush", "deck1221");
+        Assert.assertEquals("there are already three cards with name Mind Crush in deck deck1221", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        DeckController.addCardToMainDeck("Monster Reborn", "deck1221");
+        Assert.assertEquals("there are already one cards with name Monster Reborn in deck deck1221", outContentWithOutEnter(outContent));
+
     }
+
+
     @Test
-    public void findMatcher2() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck rm-card --card rr --deck vv --side";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
+    public void run() {
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0, DeckController.run());
+
     }
+
     @Test
-    public void findMatcher3() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck rm-card --card jj --side --deck pp";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
+    public void findMatcher() {
+        new UserModel("user11", "p", "n");
+        MainMenuController.username = "user11";
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        DeckController.findMatcher("menu enter (.+?)");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        DeckController.findMatcher("menu show-current");
+        Assert.assertEquals("Deck Menu", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        DeckController.findMatcher("invalid command");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        outContent.reset();
+        DeckController.findMatcher("deck create (.+?)");
+        Assert.assertEquals("deck created successfully!", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --card (.+?) --deck (.+?) --side");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --card (.+?) --side --deck (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --side --card (.+?) --deck (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --side --deck (.+?) --card (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --deck (.+?) --side --card (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --deck (.+?)--card (.+?) --side");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --card (.+?) --deck (.+?) --side");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --card (.+?) --side --deck (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --side --card (.+?) --deck (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --side --deck (.+?) --card (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --deck (.+?) --side --card (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --deck (.+?)--card (.+?) --side");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck show --side --deck-name (.+?)1");
+        Assert.assertEquals("deck with name (.+?)1 does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck show --deck-name (.+?)1 --side");
+        Assert.assertEquals("deck with name (.+?)1 does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck delete (.+?)");
+        Assert.assertEquals("deck deleted successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck set-activate (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --card (.+?) --deck (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --deck (.+?) --card (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --card (.+?) --deck (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --deck (.+?) --card (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck show --all");
+        Assert.assertEquals(34, outContentWithOutEnter(outContent).length());
+        outContent.reset();
+        DeckController.findMatcher("deck show --deck-name (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck show --cards");
+        Assert.assertEquals("", outContent.toString());
+
+
     }
-    @Test
-    public void findMatcher4() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck rm-card --side --card ww --deck pp";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher5() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck rm-card --side --deck hh --card jj";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher6() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck rm-card --deck cc --side --card rr";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher7() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck rm-card --deck mm--card jjj --side";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher8() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck add-card --card nn --deck gg --side";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher9() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck add-card --card hh --side --deck ww";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher10() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck add-card --side --card ii --deck ll";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher11() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck add-card --side --deck hh --card h";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher12() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck add-card --deck o --side --card k";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher13() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck add-card --deck ll --card kk --side";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher14() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck show --side --deck-name m";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher15() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck show --deck-name nn --side";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher16() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck delete c";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher17() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck set-activate xx";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher18() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck add-card --card n --deck j";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher19() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck add-card --deck b --card mj";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher20() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck rm-card --card m --deck j";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher21() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck rm-card --deck hjj --card pp";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher22() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck show --all";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher23() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck show --deck-name gh";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher24() {
-        new UserModel("ll", "p", "mahin");
-        String command = "deck show --cards";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher25() {
-        new UserModel("ll", "p", "mahin");
-        String command = "menu exit";
-        MainMenuController.username = "ll";
-        assertEquals(0, DeckController.findMatcher(command));
-    }
-    @Test
-    public void findMatcher26() {
-        new UserModel("ll", "p", "mahin");
-        String command = "menu enter fd";
-        MainMenuController.username = "ll";
-        assertEquals(1, DeckController.findMatcher(command));
-    }
+
 
     @Test
     public void setActivate() {
@@ -476,6 +455,8 @@ public class DeckControllerTest {
         Assert.assertEquals(117, outContent.toString().length());
 
 
+
+
     }
 
     @Test
@@ -491,6 +472,20 @@ public class DeckControllerTest {
         outContent.reset();
         DeckController.showMainDeck("deck2");
         Assert.assertEquals(52, outContentWithOutEnter(outContent).length());
+
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        DeckModel deckModel2=new DeckModel("didi");
+        deckModel2.addCardToMain("Axe Raider");
+        deckModel2.addCardToMain("Mind Crush");
+        deckModel2.addCardToMain("Monster Reborn");
+        deckModel2.addCardToMain("Change of Heart");
+        deckModel2.addCardToMain("Pot of Greed");
+        userModel.addDeck(deckModel2);
+        outContent.reset();
+        DeckController.showMainDeck("didi");
+        Assert.assertEquals(510, outContentWithOutEnter(outContent).length());
+
     }
 
     @Test
@@ -506,6 +501,20 @@ public class DeckControllerTest {
         outContent.reset();
         DeckController.showSideDeck("deck2");
         Assert.assertEquals(52, outContentWithOutEnter(outContent).length());
+
+
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        DeckModel deckModel2=new DeckModel("didi");
+        deckModel2.addCardToSide("Axe Raider");
+        deckModel2.addCardToSide("Mind Crush");
+        deckModel2.addCardToSide("Monster Reborn");
+        deckModel2.addCardToSide("Change of Heart");
+        deckModel2.addCardToSide("Pot of Greed");
+        userModel.addDeck(deckModel2);
+        outContent.reset();
+        DeckController.showSideDeck("didi");
+        Assert.assertEquals(510, outContentWithOutEnter(outContent).length());
     }
 
     @Test

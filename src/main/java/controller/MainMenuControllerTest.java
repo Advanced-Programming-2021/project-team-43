@@ -4,70 +4,15 @@ import main.java.model.DeckModel;
 import main.java.model.UserModel;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class MainMenuControllerTest {
-
-
-    @Test
-    public void increaseMoney(){
-        UserModel userModel=  new UserModel("a","B","c");
-        MainMenuController.username="a";
-        MainMenuController.increaseMoney(100);
-        Assert.assertEquals(100100,userModel.getUserCoin());
-    }
-
-
-//    @Test
-//    public void run(){
-//        String input = "menu exit";
-//        InputStream in = new ByteArrayInputStream(input.getBytes());
-//        System.setIn(in);
-//        assertEquals(0,MainMenuController.run());
-//
-//    }
-
-//    @Test
-//    public void profileRun(){
-//        String input = "menu exit";
-//        InputStream in = new ByteArrayInputStream(input.getBytes());
-//        System.setIn(in);
-//        assertEquals(0,MainMenuController.profileRun());
-//
-//    }
-//
-//
-//    @Test
-//    public void importExport(){
-//
-//
-//        String input = "menu exit";
-//        InputStream in = new ByteArrayInputStream(input.getBytes());
-//        System.setIn(in);
-//        assertEquals(0,MainMenuController.importExport());
-//
-//
-//    }
-//
-//
-//
-//
-//    @Test
-//    public void duelRun(){
-//        String input = "menu exit";
-//        InputStream in = new ByteArrayInputStream(input.getBytes());
-//        System.setIn(in);
-//        assertEquals(0,MainMenuController.duelRun());
-//
-//    }
 
 
     @Test
@@ -85,26 +30,6 @@ public class MainMenuControllerTest {
         MainMenuController.findMatcher("invalid command");
         Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
 
-        String input = "menu exit";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter deck"));
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter duel"));
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter scoreboard"));
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter profile"));
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter shop"));
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        Assert.assertEquals(1,MainMenuController.findMatcher("menu enter Import/Export"));
 
     }
 

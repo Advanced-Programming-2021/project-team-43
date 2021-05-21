@@ -136,7 +136,7 @@ public class MonsterEffect {
                     response = GameMatView.getCommand();
                     if (response.equals("cancel"))
                         return 0;
-                    if (!response.matches("[1,8]"))
+                    if (!response.matches("[1-8]"))
                         continue;
                     address = Integer.parseInt(response);
                     if (address <= HandCardZone.getNumberOfFullHouse(onlineUser)) {
@@ -337,6 +337,11 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck to summon:");
                     response = GameMatView.getCommand();
                     while (!response.matches("\\d+") || !Player.getPlayerByName(rivalUser).doesAddressTypeMatchInMainDeck(Integer.parseInt(response), "Monster", "Cyberse")) {
+                        if (Integer.parseInt(response) > Player.getPlayerByName(rivalUser).getNumberOfMainDeckCards()) {
+                            GameMatView.showInput("Wrong Address!");
+                            GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck correctly:");
+                            continue;
+                        }
                         if (response.equals("cancel"))
                             return 0;
                         GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck correctly:");
