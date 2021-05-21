@@ -13,6 +13,18 @@ import java.util.regex.Pattern;
 public class RegisterAndLoginController {
     public static int run() {
         if (JSON.readUserInfo() == null) {
+            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+        } else {
+            UserModel.allUsersInfo = JSON.readUserInfo();
+            UserModel.allUsernames = JSON.readUsernames();
+            UserModel.allUsersNicknames = JSON.readUserNicknames();
+        }
+
+        if (JSON.exportCad() != null) {
+            UserModel.importedCards = JSON.exportCad();
+        }
+
+        if (!UserModel.isRepeatedUsername("AI")){
             UserModel userModel = new UserModel("AI", "p", "AI");
             DeckModel deckModel = new DeckModel("AILevel1");
             MainMenuController.username = "AI";
@@ -28,18 +40,9 @@ public class RegisterAndLoginController {
             }
             userModel.addDeck(deckModel);
             userModel.setActiveDeck("AILevel1");
-
-
-            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-        } else {
-            UserModel.allUsersInfo = JSON.readUserInfo();
-            UserModel.allUsernames = JSON.readUsernames();
-            UserModel.allUsersNicknames = JSON.readUserNicknames();
         }
 
-        if (JSON.exportCad() != null) {
-            UserModel.importedCards = JSON.exportCad();
-        }
+
         new ShopModel(Card.getCards());
         while (true) {
             String command = DeckView.getCommand();
