@@ -7,18 +7,24 @@ import java.util.Scanner;
 
 public class PickFirstPlayer {
     public static String chose(String player1, String player2) {
+        if(player1.equals("AI")){
+            return player2;
+        }
+        if (player2.equals("AI")){
+            return player1;
+        }
+
         Scanner scanner = new Scanner(System.in);
         Random rand = new Random();
         int n = rand.nextInt(2);
         if (n == 0) {
             String winner = chanceCoin(player1, player2);
-            System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
+            System.out.println(UserModel.getUserByUsername(winner) + " do you want play first ? (yes or no)");
             while (true) {
-                String string = scanner.nextLine();
-                if (string.equals("yes")) {
+                if (scanner.nextLine().equals("yes")) {
                     return winner;
                 }
-                if (string.equals("no")) {
+                if (scanner.nextLine().equals("no")) {
                     if (winner.equals(player1)) {
                         return player2;
                     }
@@ -33,13 +39,12 @@ public class PickFirstPlayer {
         }
 
         String winner = rockPaperScissors(player1, player2);
-        System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
+        System.out.println(UserModel.getUserByUsername(winner) + " do you want play first ? (yes or no)");
         while (true) {
-            String string = scanner.nextLine();
-            if (string.equals("yes")) {
+            if (scanner.nextLine().equals("yes")) {
                 return winner;
             }
-            if (string.equals("no")) {
+            if (scanner.nextLine().equals("no")) {
                 if (winner.equals(player1)) {
                     return player2;
                 }
