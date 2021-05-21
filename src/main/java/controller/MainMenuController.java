@@ -146,7 +146,7 @@ public class MainMenuController {
 
 
         }
-        return 0 ;
+        return 0;
     }
 
     public static int duelRun() {
@@ -264,7 +264,7 @@ public class MainMenuController {
                 break;
             }
         }
-        return 0 ;
+        return 0;
     }
 
     public static int profile(String command) {
@@ -440,9 +440,11 @@ public class MainMenuController {
                 }
             }
         }
-
+        int k = 1;
         for (int i = 0; i < keysUsers.length; i++) {
-            MainMenuView.showInput((i + 1) + "_" + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
+            if (keysUsers[i].equals("AI")) continue;
+            MainMenuView.showInput((k) + "_" + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
+            k++;
         }
     }
 
