@@ -5,11 +5,177 @@ import model.UserModel;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class DeckControllerTest {
+
+    @Test
+    public void testForAddCard() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        UserModel userModel = new UserModel("user12", "p", "n");
+        MainMenuController.username = "user12";
+        DeckModel deckModel = new DeckModel("deck1221");
+        userModel.addDeck(deckModel);
+        for (int i = 0; i < 10; i++) {
+            userModel.addCardToUserAllCards("Axe Raider");
+            userModel.addCardToUserAllCards("Mind Crush");
+            userModel.addCardToUserAllCards("Monster Reborn");
+            userModel.addCardToUserAllCards("Change of Heart");
+            userModel.addCardToUserAllCards("Pot of Greed");
+        }
+        DeckController.addCardToMainDeck("Axe Raider", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToMainDeck("Monster Reborn", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToMainDeck("Mind Crush", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToSideDeck("Axe Raider", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToSideDeck("Mind Crush", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToSideDeck("Change of Heart", "deck1221");
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+
+        for (int i = 0; i < 2; i++) {
+            DeckController.addCardToMainDeck("Axe Raider", "deck1221");
+            DeckController.addCardToMainDeck("Mind Crush", "deck1221");
+
+        }
+        outContent.reset();
+        DeckController.addCardToMainDeck("Axe Raider", "deck1221");
+        Assert.assertEquals("there are already three cards with name Axe Raider in deck deck1221", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.addCardToMainDeck("Mind Crush", "deck1221");
+        Assert.assertEquals("there are already three cards with name Mind Crush in deck deck1221", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        DeckController.addCardToMainDeck("Monster Reborn", "deck1221");
+        Assert.assertEquals("there are already one cards with name Monster Reborn in deck deck1221", outContentWithOutEnter(outContent));
+
+    }
+
+
+    @Test
+    public void run() {
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0, DeckController.run());
+
+    }
+
+    @Test
+    public void findMatcher() {
+        new UserModel("user11", "p", "n");
+        MainMenuController.username = "user11";
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        DeckController.findMatcher("menu enter (.+?)");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        DeckController.findMatcher("menu show-current");
+        Assert.assertEquals("Deck Menu", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        DeckController.findMatcher("invalid command");
+        Assert.assertEquals("invalid command", outContentWithOutEnter(outContent));
+
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        outContent.reset();
+        DeckController.findMatcher("deck create (.+?)");
+        Assert.assertEquals("deck created successfully!", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --card (.+?) --deck (.+?) --side");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --card (.+?) --side --deck (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --side --card (.+?) --deck (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --side --deck (.+?) --card (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --deck (.+?) --side --card (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --deck (.+?)--card (.+?) --side");
+        Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --card (.+?) --deck (.+?) --side");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --card (.+?) --side --deck (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --side --card (.+?) --deck (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --side --deck (.+?) --card (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --deck (.+?) --side --card (.+?)");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --deck (.+?)--card (.+?) --side");
+        Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck show --side --deck-name (.+?)1");
+        Assert.assertEquals("deck with name (.+?)1 does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck show --deck-name (.+?)1 --side");
+        Assert.assertEquals("deck with name (.+?)1 does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck delete (.+?)");
+        Assert.assertEquals("deck deleted successfully", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck set-activate (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --card (.+?) --deck (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck add-card --deck (.+?) --card (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --card (.+?) --deck (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck rm-card --deck (.+?) --card (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck show --all");
+        Assert.assertEquals(34, outContentWithOutEnter(outContent).length());
+        outContent.reset();
+        DeckController.findMatcher("deck show --deck-name (.+?)");
+        Assert.assertEquals("deck with name (.+?) does not exist", outContentWithOutEnter(outContent));
+        outContent.reset();
+        DeckController.findMatcher("deck show --cards");
+        Assert.assertEquals("", outContent.toString());
+
+
+    }
+
 
     @Test
     public void setActivate() {
@@ -289,6 +455,8 @@ public class DeckControllerTest {
         Assert.assertEquals(117, outContent.toString().length());
 
 
+
+
     }
 
     @Test
@@ -298,12 +466,26 @@ public class DeckControllerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         DeckController.showMainDeck("deck");
-        Assert.assertEquals("deck with name deck does not exist",outContentWithOutEnter(outContent));
+        Assert.assertEquals("deck with name deck does not exist", outContentWithOutEnter(outContent));
         DeckModel deckModel1 = new DeckModel("deck2");
         userModel.addDeck(deckModel1);
         outContent.reset();
         DeckController.showMainDeck("deck2");
-        Assert.assertEquals(52,outContentWithOutEnter(outContent).length());
+        Assert.assertEquals(52, outContentWithOutEnter(outContent).length());
+
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        DeckModel deckModel2=new DeckModel("didi");
+        deckModel2.addCardToMain("Axe Raider");
+        deckModel2.addCardToMain("Mind Crush");
+        deckModel2.addCardToMain("Monster Reborn");
+        deckModel2.addCardToMain("Change of Heart");
+        deckModel2.addCardToMain("Pot of Greed");
+        userModel.addDeck(deckModel2);
+        outContent.reset();
+        DeckController.showMainDeck("didi");
+        Assert.assertEquals(510, outContentWithOutEnter(outContent).length());
+
     }
 
     @Test
@@ -313,12 +495,26 @@ public class DeckControllerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         DeckController.showSideDeck("deck");
-        Assert.assertEquals("deck with name deck does not exist",outContentWithOutEnter(outContent));
+        Assert.assertEquals("deck with name deck does not exist", outContentWithOutEnter(outContent));
         DeckModel deckModel1 = new DeckModel("deck2");
         userModel.addDeck(deckModel1);
         outContent.reset();
         DeckController.showSideDeck("deck2");
-        Assert.assertEquals(52,outContentWithOutEnter(outContent).length());
+        Assert.assertEquals(52, outContentWithOutEnter(outContent).length());
+
+
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        DeckModel deckModel2=new DeckModel("didi");
+        deckModel2.addCardToSide("Axe Raider");
+        deckModel2.addCardToSide("Mind Crush");
+        deckModel2.addCardToSide("Monster Reborn");
+        deckModel2.addCardToSide("Change of Heart");
+        deckModel2.addCardToSide("Pot of Greed");
+        userModel.addDeck(deckModel2);
+        outContent.reset();
+        DeckController.showSideDeck("didi");
+        Assert.assertEquals(510, outContentWithOutEnter(outContent).length());
     }
 
     @Test
@@ -328,7 +524,7 @@ public class DeckControllerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         DeckController.showCards();
-        Assert.assertEquals("",outContent.toString());
+        Assert.assertEquals("", outContent.toString());
 
     }
 
