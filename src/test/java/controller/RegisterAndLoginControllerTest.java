@@ -3,11 +3,30 @@ package controller;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class RegisterAndLoginControllerTest {
+
+    @Test
+    public void run() {
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0, RegisterAndLoginController.run());
+
+        in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0, RegisterAndLoginController.run());
+    }
+
+
+
 
     @Test
     public void findMatcher(){
@@ -83,6 +102,14 @@ public class RegisterAndLoginControllerTest {
         outContent.reset();
         RegisterAndLoginController.loginInGame("alio", "p");
         Assert.assertEquals("Username and password didn’t match!", outContentWithOutEnter(outContent));
+
+        outContent.reset();
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        RegisterAndLoginController.loginInGame("reza", "p");
+        Assert.assertEquals("user logged in successfully!", outContentWithOutEnter(outContent));
+
 
     }
     public String outContentWithOutEnter(ByteArrayOutputStream outContent) {
