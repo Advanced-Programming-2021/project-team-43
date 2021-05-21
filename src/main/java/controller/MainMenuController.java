@@ -1,10 +1,11 @@
 package controller;
 
-import model.*;
-import view.*;
+import model.Player;
+import model.UserModel;
+import view.MainMenuView;
 
-import java.lang.*;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainMenuController {
@@ -90,9 +91,7 @@ public class MainMenuController {
     public static void increaseMoney(int money) {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.changeUserCoin(money);
-
     }
-
 
     public static int importExport() {
 
@@ -146,7 +145,7 @@ public class MainMenuController {
 
 
         }
-        return 0 ;
+        return 0;
     }
 
     public static int duelRun() {
@@ -228,7 +227,7 @@ public class MainMenuController {
 
                                 new Player(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()), true, roundNumber);
                                 new Player(UserModel.getUserByUsername(secondPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()), false, roundNumber);
-                                GameMatController.commandController(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).getNickname());
+                                //GameMatController.commandController(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).getNickname());
 
                             } else {
                                 MainMenuView.showInput("number of rounds is not supported");
@@ -264,7 +263,7 @@ public class MainMenuController {
                 break;
             }
         }
-        return 0 ;
+        return 0;
     }
 
     public static int profile(String command) {
@@ -441,8 +440,13 @@ public class MainMenuController {
             }
         }
 
+        int k = 1;
         for (int i = 0; i < keysUsers.length; i++) {
-            MainMenuView.showInput((i + 1) + "_" + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
+            if (keysUsers[i].equals("AI")) {
+                continue;
+            }
+            MainMenuView.showInput((k) + "_" + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
+            k++;
         }
     }
 
