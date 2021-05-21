@@ -85,6 +85,10 @@ public class SpellTrapZoneCard {
     }
 
     public void setRelatedMonsterAddress(String whoseMonster, int address) {
+        System.out.println("porrrr "+ whoseMonster+"   "+ address);///////////////////////////////////
+
+
+
         this.relatedMonsterAddress.put(whoseMonster, address);
     }
 
