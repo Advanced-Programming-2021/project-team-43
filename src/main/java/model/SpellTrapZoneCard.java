@@ -94,36 +94,40 @@ public class SpellTrapZoneCard {
         allSpellTrapCards.get(playerNickname).remove(address);
     }
 
-    public static boolean isAnyTrapQuickSpellSet(String playerNickname) {
-        String cardName;
+    public static int isAnyTrapSet(String playerNickname) {
         for (int i = 1; i < 6; i++) {
             SpellTrapZoneCard spellTrapCard = allSpellTrapCards.get(playerNickname).get(i);
-            if (spellTrapCard != null) {
-                cardName = allSpellTrapCards.get(playerNickname).get(i).getSpellTrapName();
-                if (spellTrapCard.getKind().equals("Spell") || spellTrapCard.getMode().equals("H")) {
-                    if (SpellCard.getSpellCardByName(cardName).getIcon().equals("Quick-play"))
-                        return true;
-                }
-                else if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap") || allSpellTrapCards.get(playerNickname).get(i).getMode().equals("H"))
-                    return true;
-            }
+            if (spellTrapCard != null && spellTrapCard.getKind().equals("Trap") && spellTrapCard.getMode().equals("H"))
+                return i;
         }
-        return false;
+        return -1;
     }
 
-    public static boolean isIsAttackedTrapSet(String playerNickname) {
-        String cardName;
-        for (int i = 0; i < 6; i++) {
-            if (allSpellTrapCards.get(playerNickname).get(i) != null) {
-                cardName = allSpellTrapCards.get(playerNickname).get(i).getSpellTrapName();
-                if (allSpellTrapCards.get(playerNickname).get(i).getKind().equals("Trap") && allSpellTrapCards.get(playerNickname).get(i).getMode().equals("H")) {
-                    if (cardName.equals("Negate Attack") || cardName.equals("Mirror Force") || cardName.equals("Magic Cylinder")) {
-                        return true;
-                    }
-                }
-            }
+    public static int isAnyQuickSpellSet(String playerNickname) {
+        for (int i = 1; i < 6; i++) {
+            SpellTrapZoneCard spellTrapCard = allSpellTrapCards.get(playerNickname).get(i);
+            if (spellTrapCard != null && spellTrapCard.getKind().equals("Spell") && spellTrapCard.getMode().equals("H") && spellTrapCard.getIcon().equals("Quick-play"))
+                return i;
         }
-        return false;
+        return -1;
+    }
+
+    public static int isThisTrapActivated(String playerNickname, String trapName) {
+        for (int i = 1; i < 6; i++) {
+            SpellTrapZoneCard trapCard = allSpellTrapCards.get(playerNickname).get(i);
+            if (trapCard != null && trapCard.getKind().equals("Trap") && trapCard.getSpellTrapName().equals(trapName) && trapCard.getMode().equals("O"))
+                return i;
+        }
+        return -1;
+    }
+
+    public static int isThisSpellActivated(String playerNickname, String spellName) {
+        for (int i = 1; i < 6; i++) {
+            SpellTrapZoneCard spellCard = allSpellTrapCards.get(playerNickname).get(i);
+            if (spellCard != null && spellCard.getKind().equals("Spell") && spellCard.getSpellTrapName().equals(spellName) && spellCard.getMode().equals("O"))
+                return i;
+        }
+        return -1;
     }
 
     public static int doesThisCardNameExist(String playerNickname, String cardName) {
@@ -143,28 +147,8 @@ public class SpellTrapZoneCard {
         return 0;
     }
 
-    public static boolean isThisTrapActivated(String playerNickname, String trapName) {
-        SpellTrapZoneCard trapCard;
-        for (int i = 1; i < 6; i++) {
-            trapCard = allSpellTrapCards.get(playerNickname).get(i);
-            if (trapCard.getKind().equals("Trap"))
-                if (trapCard.getSpellTrapName().equals(trapName) && trapCard.getMode().equals("O"))
-                    return true;
-        }
-        return false;
-    }
 
-    public static boolean isThisSpellActivated(String playerNickname, String spellName) {
-        SpellTrapZoneCard spellCard;
-        for (int i = 1; i < 6; i++) {
-            spellCard = allSpellTrapCards.get(playerNickname).get(i);
-            if (spellCard != null)
-                if (spellCard.getKind().equals("Spell"))
-                    if (spellCard.getSpellTrapName().equals(spellName) && spellCard.getMode().equals("O"))
-                        return true;
-        }
-        return false;
-    }
+
 
     public static String[] getAllSpellTrapMode(String playerNickname) {
         String[] allSpellsMode = new String[6];
