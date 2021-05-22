@@ -56,12 +56,8 @@ public class TrapEffect {
             GameMatView.showInput("Please enter the name of a game card: ");
             response = GameMatView.getCommand();
         } while (Card.getCardsByName(response) == null);
-        if (HandCardZone.doesThisCardNameExist(rivalUser, response)) {
-            int[] allAddress = HandCardZone.getAddressByName(rivalUser, response);
-            for (int address : allAddress) {
-                HandCardZone.getHandCardByAddress(address, onlineUser).removeFromHandCard();
-            }
-        }
+        if (HandCardZone.doesThisCardNameExist(rivalUser, response))
+            HandCardZone.removeAllTypeMonster(rivalUser, response);
         else {
             Random random = new Random();
             HandCardZone.getHandCardByAddress(random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1, rivalUser).removeFromHandCard();

@@ -44,14 +44,13 @@ public class HandCardZone {
         }
     }
 
-    public static int[] getAddressByName(String playerNickname, String cardName) {
-        int[] allAddresses = new int[6];
-        int counter = -1;
+    public static void removeAllTypeMonster(String playerNickname, String cardName) {
+        HandCardZone handCard;
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
-            if (allHandCards.get(playerNickname).get(i).getCardName().equals(cardName))
-                allAddresses[++counter] = allHandCards.get(playerNickname).get(i).getAddress();
+            handCard = allHandCards.get(playerNickname).get(i);
+            if (handCard.cardName.equals(cardName))
+                handCard.removeFromHandCard();
         }
-        return allAddresses;
     }
 
     public static int getNumberOfFullHouse(String playerNickname) {
