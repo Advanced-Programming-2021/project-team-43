@@ -412,15 +412,28 @@ public class GameMatController {
         /////////trap
         MonsterZoneCard ownMonster = MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser);
         if (ownMonster.getAttack() >= 1000) {
-            trapAddress = checkForSetTrapToActivateInRivalTurn("Trap Hole");
+            trapAddress = SpellTrapZoneCard.isThisTrapActivated(rivalUser, "Trap Hole");
             if (trapAddress != -1) {
                 MonsterZoneCard.getMonsterCardByAddress(ownMonster.getAddress(), onlineUser).removeMonsterFromZone();
                 SpellTrapZoneCard.getSpellCardByAddress(trapAddress, rivalUser).removeSpellTrapFromZone();
             }
+            else {
+                trapAddress = checkForSetTrapToActivateInRivalTurn("Trap Hole");
+                if (trapAddress != -1) {
+                    MonsterZoneCard.getMonsterCardByAddress(ownMonster.getAddress(), onlineUser).removeMonsterFromZone();
+                    SpellTrapZoneCard.getSpellCardByAddress(trapAddress, rivalUser).removeSpellTrapFromZone();
+                }
+            }
         }
-        trapAddress = checkForSetTrapToActivateInRivalTurn("Torrential Tribute");
+        trapAddress = SpellTrapZoneCard.isThisTrapActivated(rivalUser, "Torrential Tribute");
         if (trapAddress != -1) {
             SpellTrapZoneCard.getSpellCardByAddress(trapAddress, rivalUser).removeSpellTrapFromZone();
+        }
+        else {
+            trapAddress = checkForSetTrapToActivateInRivalTurn("Torrential Tribute");
+            if (trapAddress != -1) {
+                SpellTrapZoneCard.getSpellCardByAddress(trapAddress, rivalUser).removeSpellTrapFromZone();
+            }
         }
     }
 
@@ -1374,7 +1387,6 @@ public class GameMatController {
             System.out.println(split[2]);////////////////////
             ownTrap = SpellTrapZoneCard.getSpellCardByAddress(Integer.parseInt(split[2]), onlineUser);
             System.out.println(ownTrap.getAddress());/////////////////
-
             ownTrap.setMode("O");
         }
         GameMatView.showInput("trap activated");
@@ -1548,7 +1560,9 @@ public class GameMatController {
             GameMatView.showInput(winnerUsername + " won the game and the score is: " + UserModel.getUserByUsername(winnerUsername).getUserScore() + "-" + UserModel.getUserByUsername(loserUsername).getUserScore());
             UserModel.getUserByUsername(winnerUsername).changeUserCoin(1000 + winnerPlayer.getLifePoint());
             UserModel.getUserByUsername(loserUsername).changeUserCoin(100);
-        } else {
+            MainMenuController.run();
+        }
+        else {
             int round = winnerPlayer.getNumberOfRound();
             if (round == 3)
                 GameMatView.showInput("Round 1 is over!");
@@ -1561,16 +1575,20 @@ public class GameMatController {
                 if (winnerPlayer.getNumberOfWin() > loserPlayer.getNumberOfWin()) {
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(3000 + 3 * winnerPlayer.getMaxLifePoints());
                     UserModel.getUserByUsername(loserUsername).changeUserCoin(300);
-                } else {
+                }
+                else {
                     UserModel.getUserByUsername(loserUsername).changeUserCoin(3000 + 3 * loserPlayer.getMaxLifePoints());
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(300);
                 }
-            } else {
+                MainMenuController.run();
+            }
+            else {
                 String firstPlayer = PickFirstPlayer.chose(winnerUsername, loserUsername);
                 if (firstPlayer.equals(winnerUsername)) {
                     winnerPlayer.startNewGame(UserModel.getUserByUsername(winnerUsername).userAllDecks.get(UserModel.getUserByUsername(winnerUsername).getActiveDeck()), true);
                     loserPlayer.startNewGame(UserModel.getUserByUsername(loserUsername).userAllDecks.get(UserModel.getUserByUsername(loserUsername).getActiveDeck()), false);
-                } else {
+                }
+                else {
                     winnerPlayer.startNewGame(UserModel.getUserByUsername(winnerUsername).userAllDecks.get(UserModel.getUserByUsername(winnerUsername).getActiveDeck()), false);
                     loserPlayer.startNewGame(UserModel.getUserByUsername(loserUsername).userAllDecks.get(UserModel.getUserByUsername(loserUsername).getActiveDeck()), true);
                 }
