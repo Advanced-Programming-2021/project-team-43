@@ -6,6 +6,7 @@ import java.util.*;
 
 public class MonsterEffect {
 
+
     private static String response;
 
     public static int changeModeEffectController(MonsterZoneCard ownMonster, String onlineUser, String rivalUser) {
@@ -143,7 +144,6 @@ public class MonsterEffect {
                     address--;
                     if (address <= HandCardZone.getNumberOfFullHouse(onlineUser)) {
                         cardName = HandCardZone.getHandCardByAddress(address, onlineUser).getCardName();
-                        System.out.println(MonsterCard.getMonsterByName(cardName).getLevel());///////////////
                         if (Card.getCardsByName(cardName).getCardModel().equals("Monster") && MonsterCard.getMonsterByName(cardName).getLevel() <= 4)
                             break;
                     }

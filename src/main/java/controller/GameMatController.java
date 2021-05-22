@@ -1094,28 +1094,39 @@ public class GameMatController {
         if (!errorOfNoCardSelected("own"))
             return;
         String[] split = selectedOwnCard.split("/");
-        if (split[0].equals("Monster") || (split[0].equals("Hand") && !Card.getCardsByName(split[1]).getCardModel().equals("Spell"))) {
+        if (split[0].equals("Hand") && Card.getCardsByName(split[1]).getCardModel().equals("Trap")) {
+            GameMatView.showInput("You should set this trap first then activate it next turn!");
+            return;
+        }
+        if (split[0].equals("Monster") || (split[0].equals("Hand") && Card.getCardsByName(split[1]).getCardModel().equals("Monster"))) {
             GameMatView.showInput("activate effect is only for spell cards");
             return;
         }
         if (!errorOfWrongPhase("activate", currentPhase))
             return;
-        String spellIcon = SpellCard.getSpellCardByName(split[1]).getIcon();
         SpellTrapZoneCard ownSpell = SpellTrapZoneCard.getSpellCardByAddress(Integer.parseInt(split[2]), onlineUser);
+        String spellIcon = "";
+        if (ownSpell != null && ownSpell.getKind().equals("Spell"))
+            spellIcon = SpellCard.getSpellCardByName(split[1]).getIcon();
         HandCardZone handCard = HandCardZone.getHandCardByAddress(Integer.parseInt(split[2]), onlineUser);
         switch (split[0]) {
             case "Spell" -> {
-                if (ownSpell.getMode().equals("O")) {
-                    GameMatView.showInput("you have already activated this card");
-                    return;
-                }
-                if (spellIcon.equals("Ritual")) {
-                    if (ritualSummon(ownSpell, handCard, currentPhase) == 0)
-                        return;
+                if (ownSpell.getKind().equals("Trap")) {
+                    activateTrapEffect(null, true);
                 }
                 else {
-                    ownSpell.setMode("O");
-                    chooseSpellEffectController(spellIcon, ownSpell);
+                    if (ownSpell.getMode().equals("O")) {
+                        GameMatView.showInput("you have already activated this card");
+                        return;
+                    }
+                    if (spellIcon.equals("Ritual")) {
+                        if (ritualSummon(ownSpell, handCard, currentPhase) == 0)
+                            return;
+                    }
+                    else {
+                        ownSpell.setMode("O");
+                        chooseSpellEffectController(spellIcon, ownSpell);
+                    }
                 }
                 checkForSpellAbsorption();
             }
@@ -1504,7 +1515,7 @@ public class GameMatController {
                     while (true) {
                         GameMatView.showInput("Please enter the address of one of your hand card to drop:");
                         response = GameMatView.getCommand();
-                        if (!response.matches("[1,7]"))
+                        if (!response.matches("[1-7]"))
                             continue;
                         else if (response.equals("show my hand")) {
                             HandCardZone.showHandCard(onlineUser);

@@ -71,8 +71,9 @@ public class SpellEffect {
             }
             chosenAddress = getResponseForDeadCardToReborn(response, ownGameMat, rivalGameMat);
             if (chosenAddress != 0) {
+                chosenAddress--;
                 if (response.equals("own")) {
-                    GameMatController.addToMonsterZoneCard(rivalGameMat.getNameOfDeadCardByAddress(chosenAddress), "OO");
+                    GameMatController.addToMonsterZoneCard(ownGameMat.getNameOfDeadCardByAddress(chosenAddress), "OO");
                     ownGameMat.removeFromGraveyardByAddress(chosenAddress);
                 } else {
                     GameMatController.addToMonsterZoneCard(rivalGameMat.getNameOfDeadCardByAddress(chosenAddress), "OO");
@@ -91,7 +92,7 @@ public class SpellEffect {
             responseTwo = GameMatView.getCommand();
             if (responseTwo.equals("cancel"))
                 return 0;
-            if (!responseTwo.matches("[1,]"))
+            if (!responseTwo.matches("[^0][0-9]*"))
                 continue;
             deadCardAddress = Integer.parseInt(responseTwo);
             deadCardAddress--;
@@ -202,8 +203,6 @@ public class SpellEffect {
         }
     }
 
-
-
     private static int darkHole(String rivalUser, String onlineUser) {
         Map<Integer, MonsterZoneCard> monster;
         monster = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
@@ -229,7 +228,7 @@ public class SpellEffect {
         Player.getPlayerByName(onlineUser).changeLifePoint(500);
     }
 
-    public static void messengerOfPeace(String onlineUser, String rivalUser) {/////boolean isactivate
+    public static void messengerOfPeace(String onlineUser, String rivalUser) {
         Map<Integer, MonsterZoneCard> monsters;
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
@@ -245,7 +244,25 @@ public class SpellEffect {
                 MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).setCanAttack(false);
             }
         }
-        //need standby phase change after it its dead set attack true
+    }
+
+    public static void returnPermissionMessenger(int ownAddress, String rival,String onlineUser) {
+        Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
+        Integer[] addresses = monsters.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < monsters.size(); i++) {
+            List<Integer> spells = monsters.get(addresses[i]).getAllEffectedMonster(rival);
+            if (spells.size() == 1 && spells.get(0) == ownAddress) {
+                MonsterZoneCard.getMonsterCardByAddress(addresses[i], rival).setCanAttack(true);
+            }
+        }
+        Map<Integer, MonsterZoneCard> ownMonsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
+        Integer[] ownAddresses = ownMonsters.keySet().toArray(new Integer[0]);
+        for (int i = 0; i < ownMonsters.size(); i++) {
+            List<Integer> spells = ownMonsters.get(ownAddresses[i]).getAllEffectedMonster(onlineUser);
+            if (spells.size() == 1 && spells.get(0) == ownAddress) {
+                MonsterZoneCard.getMonsterCardByAddress(ownAddresses[i], onlineUser).setCanAttack(true);
+            }
+        }
     }
 
     private static int twinTwisters(String onlineUser, String rivalUser) {
@@ -271,7 +288,7 @@ public class SpellEffect {
             response = GameMatView.getCommand();
             if (response.equals("cancel"))
                 return 0;
-        } while (!response.matches("[1,2]"));
+        } while (!response.matches("[1-2]"));
         chosenAddress = Integer.parseInt(response);
         for (int i = 0; i < chosenAddress; i++) {
             do {
