@@ -61,7 +61,7 @@ public class MonsterEffect {
                 GameMatView.showInput("Please enter the correct address of a Rival Monster:");
                 response = GameMatView.getCommand();
             }
-            MonsterZoneCard.removeMonsterFromZone(rivalUser, Integer.parseInt(response));
+            MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser).removeMonsterFromZone();
             ownMonsterCard.setIsEffectUsed(true);
             return 1;
         }
@@ -104,9 +104,9 @@ public class MonsterEffect {
         Integer[] monster = monsters.keySet().toArray(new Integer[0]);
         int attack = 0;
         for (int s : monster) {
-            if (MonsterZoneCard.getMonsterCardByAddress(s, onlineUser).getMode().equals("OO") ||
-                    MonsterZoneCard.getMonsterCardByAddress(s, onlineUser).getMode().equals("DO")) {
-                attack += MonsterCard.getMonsterByName(MonsterZoneCard.getMonsterCardByAddress(s, onlineUser).getMonsterName()).getLevel();
+            MonsterZoneCard monsterCard = MonsterZoneCard.getMonsterCardByAddress(s, onlineUser);
+            if (!monsterCard.getMode().equals("DH") && !monsterCard.getMonsterName().equals("The Calculator")) {
+                attack += monsterCard.getLevel();
             }
         }
         attack *= 300;
@@ -136,7 +136,7 @@ public class MonsterEffect {
                     response = GameMatView.getCommand();
                     if (response.equals("cancel"))
                         return 0;
-                    if (!response.matches("[1,8]"))
+                    if (!response.matches("[1-8]"))
                         continue;
                     address = Integer.parseInt(response);
                     if (address <= HandCardZone.getNumberOfFullHouse(onlineUser)) {
@@ -145,7 +145,7 @@ public class MonsterEffect {
                             break;
                     }
                 }
-                HandCardZone.removeFromHandCard(onlineUser, address);
+                HandCardZone.getHandCardByAddress(address, onlineUser).removeFromHandCard();
                 new MonsterZoneCard(onlineUser, "The Tricky", "DO", false, false);
                 GameMatView.showInput("summoned successfully");
                 return 1;
@@ -177,7 +177,7 @@ public class MonsterEffect {
                         GameMatView.showInput("Please enter the address correctly!");
                         response = GameMatView.getCommand();
                     }
-                    MonsterZoneCard.removeMonsterFromZone(onlineUser, Integer.parseInt(response));
+                    MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser).removeMonsterFromZone();
                 }
                 else {
                     GameMatView.showInput("Please enter the address of rival Monster " + i + " to tribute: ");
@@ -188,9 +188,10 @@ public class MonsterEffect {
                         GameMatView.showInput("Please enter the address correctly!");
                         response = GameMatView.getCommand();
                     }
-                    MonsterZoneCard.removeMonsterFromZone(rivalUser, Integer.parseInt(response));         }
+                    MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser).removeMonsterFromZone();
+                }
             }
-            HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+            handCard.removeFromHandCard();
             new MonsterZoneCard(onlineUser, "Gate Guardian", "OO", false,false);
         }
         return 1;
@@ -206,7 +207,7 @@ public class MonsterEffect {
             response = GameMatView.getCommand();
         }
         if (response.equals("yes")) {
-            HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+            handCard.removeFromHandCard();
             new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
             MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser).setAttack(1900);
         }
@@ -225,17 +226,17 @@ public class MonsterEffect {
                         GameMatView.showInput("Please enter the address correctly!");
                         response = GameMatView.getCommand();
                     }
-                    MonsterZoneCard.removeMonsterFromZone(onlineUser, Integer.parseInt(response));
+                    MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
                 }
-                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+                handCard.removeFromHandCard();
                 new MonsterZoneCard(onlineUser, "Beast King Barbaros", "OO", false, false);
-                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress());
+                handCard.removeFromHandCard();
                 Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
                 Map<Integer, SpellTrapZoneCard> spellsTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rivalUser);
                 Integer[] monster = monsters.keySet().toArray(new Integer[0]);
                 Integer[] spellTraps = spellsTraps.keySet().toArray(new Integer[0]);
                 for (int s : monster) {
-                    MonsterZoneCard.removeMonsterFromZone(rivalUser, s);
+                    MonsterZoneCard.getMonsterCardByAddress(s, rivalUser).removeMonsterFromZone();
                 }
                 for (int s : spellTraps) {
                     SpellTrapZoneCard.getSpellCardByAddress(s, rivalUser).removeSpellTrapFromZone();
@@ -273,8 +274,8 @@ public class MonsterEffect {
                 int address = Integer.parseInt(response);
                 address--;
                 GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard(HandCardZone.getHandCardByAddress(address, onlineUser).getCardName());
-                HandCardZone.removeFromHandCard(onlineUser, address);
-                HandCardZone.removeFromHandCard(onlineUser, handCard.getAddress()-1);
+                HandCardZone.getHandCardByAddress(address, onlineUser).removeFromHandCard();
+                handCard.removeFromHandCard();
                 new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false);
             }
         }
@@ -310,7 +311,7 @@ public class MonsterEffect {
                     }
                     GameMatView.showInput("Texchanger Monster Effect is activated!");
                     new MonsterZoneCard(rivalUser, HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).getCardName(), "OO", false, false);
-                    HandCardZone.removeFromHandCard(rivalUser, Integer.parseInt(response));
+                    HandCardZone.getHandCardByAddress(Integer.parseInt(response), rivalUser).removeFromHandCard();
                 }
             }
             else if (response.equals("graveyard")) {
@@ -337,6 +338,11 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck to summon:");
                     response = GameMatView.getCommand();
                     while (!response.matches("\\d+") || !Player.getPlayerByName(rivalUser).doesAddressTypeMatchInMainDeck(Integer.parseInt(response), "Monster", "Cyberse")) {
+                        if (Integer.parseInt(response) > Player.getPlayerByName(rivalUser).getNumberOfMainDeckCards()) {
+                            GameMatView.showInput("Wrong Address!");
+                            GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck correctly:");
+                            continue;
+                        }
                         if (response.equals("cancel"))
                             return 0;
                         GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck correctly:");
@@ -373,8 +379,7 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the correct address of your hand card: ");
                     response = GameMatView.getCommand();
                 }
-                HandCardZone.removeFromHandCard(onlineUser, Integer.parseInt(response));
-
+                HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
                 GameMatView.showInput("Please enter the address of a seven level or higher level in your graveyard to add to your hand:");
                 response = GameMatView.getCommand();
                 while (!response.matches("\\d") || ownGameMat.getNameOfDeadCardByAddress(Integer.parseInt(response)).isEmpty()) {
@@ -390,5 +395,5 @@ public class MonsterEffect {
         ownMonster.setIsEffectUsed(true);
         return 1;
     }
-}
 
+}

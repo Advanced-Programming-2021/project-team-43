@@ -1,8 +1,7 @@
 package model;
 import java.util.*;
 import controller.GameMatController;
-import view.*;
-
+import view.GameMatView;
 
 public class SpellTrapZoneCard {
 
@@ -89,19 +88,19 @@ public class SpellTrapZoneCard {
         this.relatedMonsterAddress.put(whoseMonster, address);
     }
 
-    public void removeSpellTrapFromZone() {///////////check this
+    public void removeSpellTrapFromZone() {
         GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(spellTrapName);
         allSpellTrapCards.get(playerNickname).remove(address);
     }
 
-    public static int isAnyTrapSet(String playerNickname) {
-        for (int i = 1; i < 6; i++) {
-            SpellTrapZoneCard spellTrapCard = allSpellTrapCards.get(playerNickname).get(i);
-            if (spellTrapCard != null && spellTrapCard.getKind().equals("Trap") && spellTrapCard.getMode().equals("H"))
-                return i;
-        }
-        return -1;
-    }
+//    public static int isAnyTrapSet(String playerNickname) {
+//        for (int i = 1; i < 6; i++) {
+//            SpellTrapZoneCard spellTrapCard = allSpellTrapCards.get(playerNickname).get(i);
+//            if (spellTrapCard != null && spellTrapCard.getKind().equals("Trap") && spellTrapCard.getMode().equals("H"))
+//                return i;
+//        }
+//        return -1;
+//    }
 
     public static int isAnyQuickSpellSet(String playerNickname) {
         for (int i = 1; i < 6; i++) {
@@ -139,6 +138,24 @@ public class SpellTrapZoneCard {
         return -1;
     }
 
+    public static int getAddressOfSetTrap(String playerNickname, String trapName) {
+        SpellTrapZoneCard trapCard;
+        for (int i = 1; i < 6; i++) {
+            if (allSpellTrapCards.get(playerNickname).get(i) != null) {
+                trapCard = allSpellTrapCards.get(playerNickname).get(i);
+                if (trapCard.getKind().equals("Trap") && trapCard.getSpellTrapName().equals(trapName) && trapCard.getMode().equals("H"))
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean doesAddressAndTrapNameMatch(String playerNickname, String trapName, int address) {
+        SpellTrapZoneCard trapCard;
+        trapCard = allSpellTrapCards.get(playerNickname).get(address);
+        return trapCard.getKind().equals("Trap") && trapCard.getSpellTrapName().equals(trapName);
+    }
+
     public static int getAddressOfSpellByIcon(String playerNickname, String icon, String spellName) {
         for (int i = 1; i < 6; i++)
             if (allSpellTrapCards.get(playerNickname).get(i) != null && allSpellTrapCards.get(playerNickname).get(i).getIcon().equals(icon))
@@ -146,8 +163,6 @@ public class SpellTrapZoneCard {
                     return i;
         return 0;
     }
-
-
 
 
     public static String[] getAllSpellTrapMode(String playerNickname) {
@@ -264,4 +279,5 @@ public class SpellTrapZoneCard {
 //            }
 //        }
 //    }
+
 }

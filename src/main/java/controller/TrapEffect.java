@@ -27,13 +27,6 @@ public class TrapEffect {
         }
     }
 
-    public static int isAttackedController(String TrapName, String onlineUser, String rivalUser, MonsterZoneCard rivalMonster) {
-        if (TrapName.equals("Magic Cylinder"))
-            return magicCylinder(onlineUser, rivalUser, rivalMonster);
-        if (TrapName.equals("Mirror Force"))
-            return mirrorForce(rivalUser,onlineUser);
-        return 0;
-    }
 
     public static int magicCylinder(String onlineUser, String rivalUser, MonsterZoneCard ownMonster) {
         if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
@@ -49,7 +42,7 @@ public class TrapEffect {
             Integer[] addressOfOwnMonsters = ownMonster.keySet().toArray(new Integer[0]);
             for (int i = 0; i < ownMonster.size(); i++) {
                 if (MonsterZoneCard.getMonsterCardByAddress(addressOfOwnMonsters[i], onlineUser).getMode().equals("OO")) {
-                    MonsterZoneCard.removeMonsterFromZone(onlineUser, addressOfOwnMonsters[i]);
+                    MonsterZoneCard.getMonsterCardByAddress(addressOfOwnMonsters[i], onlineUser).removeMonsterFromZone();
                 }
             }
             return 1;
@@ -66,12 +59,12 @@ public class TrapEffect {
         if (HandCardZone.doesThisCardNameExist(rivalUser, response)) {
             int[] allAddress = HandCardZone.getAddressByName(rivalUser, response);
             for (int address : allAddress) {
-                HandCardZone.removeFromHandCard(onlineUser, address);
+                HandCardZone.getHandCardByAddress(address, onlineUser).removeFromHandCard();
             }
         }
         else {
             Random random = new Random();
-            HandCardZone.removeFromHandCard(rivalUser, random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1);
+            HandCardZone.getHandCardByAddress(random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1, rivalUser).removeFromHandCard();
         }
     }
 
@@ -101,12 +94,12 @@ public class TrapEffect {
             Map<Integer, MonsterZoneCard> rivalsMonster = MonsterZoneCard.getAllMonstersByPlayerName(rival);
             Integer[] monsterNames = rivalsMonster.keySet().toArray(new Integer[0]);
             for (int i = 0; i < rivalsMonster.size(); i++) {
-                MonsterZoneCard.removeMonsterFromZone(rival, monsterNames[i]);
+                MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], rival).removeMonsterFromZone();
             }
             Map<Integer, MonsterZoneCard> ownMonster = MonsterZoneCard.getAllMonstersByPlayerName(player1);
             Integer[] ownMonsterNames = ownMonster.keySet().toArray(new Integer[0]);
             for (int i = 0; i < ownMonster.size(); i++) {
-                MonsterZoneCard.removeMonsterFromZone(player1, ownMonsterNames[i]);
+                MonsterZoneCard.getMonsterCardByAddress(ownMonsterNames[i], player1);
             }
             return 1;
         }
@@ -122,12 +115,12 @@ public class TrapEffect {
             Player.getPlayerByName(player1).changeLifePoint(-2000);
             if (summonMine) {
                 if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.removeMonsterFromZone(player1, addressOfSummonCard);
+                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1);
                 }
             }
             if (!summonMine) {
                 if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.removeMonsterFromZone(rival, addressOfSummonCard);
+                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).removeMonsterFromZone();
                 }
             }
             return 1;
@@ -166,4 +159,5 @@ public class TrapEffect {
         new MonsterZoneCard(onlineUser, cardName, "OO", false, false);
         GameMatModel.getGameMatByNickname(onlineUser).removeFromGraveyardByAddress(Integer.parseInt(response));
     }
+
 }

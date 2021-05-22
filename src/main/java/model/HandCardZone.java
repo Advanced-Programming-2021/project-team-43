@@ -5,12 +5,15 @@ import java.util.*;
 
 public class HandCardZone {
 
+
+    private final String playerNickname;
     private final String cardName;
     private final int address;
     private final String kind;
     public static  Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
 
     public HandCardZone(String playerNickname, String cardName) {
+        this.playerNickname = playerNickname;
         this.cardName = cardName;
         this.address = allHandCards.get(playerNickname).size();
         this.kind = Card.getCardsByName(cardName).getCardModel();
@@ -29,7 +32,7 @@ public class HandCardZone {
         return kind;
     }
 
-    public static void removeFromHandCard(String playerNickname, int address) {
+    public void removeFromHandCard() {
         allHandCards.get(playerNickname).remove(address);//based of list index
     }
 
