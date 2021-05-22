@@ -8,7 +8,7 @@ public class HandCardZone {
 
     private final String playerNickname;
     private final String cardName;
-    private final int address;
+    private int address;
     private final String kind;
     public static  Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
 
@@ -28,12 +28,20 @@ public class HandCardZone {
         return address;
     }
 
+    public void changeAddress() {
+        address--;
+    }
+
     public String getKind() {
         return kind;
     }
 
+
     public void removeFromHandCard() {
-        allHandCards.get(playerNickname).remove(address);//based of list index
+        allHandCards.get(playerNickname).remove(address);
+        for (int i = address; i < allHandCards.get(playerNickname).size(); i++) {
+            allHandCards.get(playerNickname).get(i).changeAddress();
+        }
     }
 
     public static int[] getAddressByName(String playerNickname, String cardName) {
@@ -90,7 +98,7 @@ public class HandCardZone {
     }
 
     public static HandCardZone getHandCardByAddress(int address, String playerNickname) {
-        if (address > allHandCards.get(playerNickname).size() - 1 || address < 0)
+        if (address >= allHandCards.get(playerNickname).size() || address < 0)
             return null;
         return allHandCards.get(playerNickname).get(address);
     }
