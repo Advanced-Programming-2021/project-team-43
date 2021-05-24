@@ -205,10 +205,28 @@ public class GameMatController {
                 endGame("surrender", onlineUser);
                 break;
             }
+            if (getMatcher(command, "duel \\s*set-winner \\s*"+onlineUser).find()) {
+                endGame("cheat", rivalUser);
+                break;
+            }
+            if (getMatcher(command, "duel \\s*set-winner \\s*"+rivalUser).find()) {
+                endGame("cheat", onlineUser);
+                break;
+            }
+            if ((matcher =getMatcher(command, "increase\\s+--LP\\s+(\\d+)")).find()) {
+                increaseLP(Integer.parseInt(matcher.group(1)),onlineUser);
+                continue;
+            }
             if (getMatcher(command, "^menu exit$").find())
                 break;
             GameMatView.showInput("invalid command");
         }
+    }
+
+
+    public static void increaseLP(int lifePoint, String onlineUser) {
+        Player player= Player.getPlayerByName(onlineUser);
+        player.changeLifePoint(lifePoint);
     }
 
     public static String getRivalUser() {
@@ -415,7 +433,6 @@ public class GameMatController {
         player.setCanSetSummonMonster(false);
         handCard.removeFromHandCard();
         GameMatView.showInput("summoned successfully");
-        /////////trap
         MonsterZoneCard ownMonster = MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser);
         if (ownMonster.getAttack() >= 1000) {
             trapAddress = SpellTrapZoneCard.isThisTrapActivated(rivalUser, "Trap Hole");
@@ -1051,7 +1068,6 @@ public class GameMatController {
 
     public static int checkForSetTrapToActivateInRivalTurn(String trapName) {
         int trapAddress = SpellTrapZoneCard.getAddressOfSetTrap(rivalUser, trapName);
-        System.out.println(trapAddress);
         if (trapAddress != -1) {
             GameMatView.showInput("now it will be " + rivalUser + "’s turn");
             do {
@@ -1301,7 +1317,6 @@ public class GameMatController {
         if (response.equals("own")) {
             address = getResponseForEquipSpell("own", spellName);
             if (address != 0) {
-                System.out.println(address);///////////////////////
                 ownSpell.setRelatedMonsterAddress("own", address);
             }
             else

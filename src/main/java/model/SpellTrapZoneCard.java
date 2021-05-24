@@ -1,9 +1,8 @@
 package model;
-import java.beans.IntrospectionException;
 import java.util.*;
 import controller.GameMatController;
 import controller.SpellEffect;
-import view.GameMatView;
+
 
 public class SpellTrapZoneCard {
 

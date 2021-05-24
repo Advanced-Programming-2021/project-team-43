@@ -26,7 +26,7 @@ public class MonsterZoneCard {
         this.playerNickname = playerNickname;
         this.monsterName = monsterName;
         this.mode = mode;
-        this.address = allMonsterCards.get(playerNickname).size() + 1;
+        this.address = getNewMonsterAddress(playerNickname);
         MonsterCard monster = MonsterCard.getMonsterByName(monsterName);
         this.attack = monster.getAttack();
         this.defend = monster.getDefend();
@@ -162,7 +162,6 @@ public class MonsterZoneCard {
         allMonsterCards.get(playerNickname).put(address, this);
     }
 
-
     public static void changeOneTurnMonstersIsEffectUsed(String playerNickname) {
         String cardName;
         for (int i = 1; i < 6; i++) {
@@ -221,6 +220,14 @@ public class MonsterZoneCard {
         }
         return allMonstersMode;
     }
+
+    public int getNewMonsterAddress(String playerNickname) {
+        for (int i = 1; i < 6; i++)
+            if (allMonsterCards.get(playerNickname).get(i) == null)
+                return i;
+        return -1;
+    }
+
 
     public static boolean isThisMonsterTypeExisted(String monsterType, String playerNickname) {
         for (int i = 1; i < 6; i++)
