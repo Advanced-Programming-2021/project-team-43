@@ -382,6 +382,7 @@ public class MonsterEffect {
 
     public static int heraldOfCreation(MonsterZoneCard ownMonster, String onlineUser) {
         GameMatModel ownGameMat = GameMatModel.getGameMatByNickname(onlineUser);
+        int address;
         if (!ownMonster.getIsEffectUsed()) {
             if (!ownGameMat.isAnySevenLevelMonsterInGraveyard()) {
                 GameMatView.showInput("Oops! You cant use Herald of Creation effect because of no seven level or higher level monster in your graveyard!");
@@ -401,16 +402,20 @@ public class MonsterEffect {
                     response = GameMatView.getCommand();
                 }
                 HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
-                GameMatView.showInput("Please enter the address of a seven level or higher level in your graveyard to add to your hand:");
-                response = GameMatView.getCommand();
-                while (!response.matches("\\d") || ownGameMat.getDeadCardNameByAddress(Integer.parseInt(response)).isEmpty()) {
+                while (true) {
+                    GameMatView.showInput("Please enter the address of a seven level or higher level in your graveyard to add to your hand:");
+                    response = GameMatView.getCommand();
                     if (response.equals("cancel"))
                         return 0;
-                    GameMatView.showInput("Please enter the correct address of a dead monster from your own graveyard: ");
-                    response = GameMatView.getCommand();
+                    if (!response.matches("\\d"))
+                        continue;
+                    address = Integer.parseInt(response);
+                    address--;
+                    if (ownGameMat.getDeadCardNameByAddress(address) != null && Card.getCardsByName(ownGameMat.getDeadCardNameByAddress(address)).getCardModel().equals("Monster") && MonsterCard.getMonsterByName(ownGameMat.getDeadCardNameByAddress(address)).getLevel() > 6)
+                        break;
                 }
-                new HandCardZone(onlineUser, ownGameMat.getDeadCardNameByAddress(Integer.parseInt(response)));
-                ownGameMat.removeFromGraveyardByAddress(Integer.parseInt(response));
+                new HandCardZone(onlineUser, ownGameMat.getDeadCardNameByAddress(address));
+                ownGameMat.removeFromGraveyardByAddress(address);
             }
         }
         ownMonster.setIsEffectUsed(true);

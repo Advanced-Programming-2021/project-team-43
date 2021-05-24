@@ -70,8 +70,7 @@ public class SpellEffect {
                 return 1;
             }
             chosenAddress = getResponseForDeadCardToReborn(response, ownGameMat, rivalGameMat);
-            if (chosenAddress != 0) {
-                chosenAddress--;
+            if (chosenAddress != -1) {
                 if (response.equals("own")) {
                     GameMatController.addToMonsterZoneCard(ownGameMat.getDeadCardNameByAddress(chosenAddress), "OO");
                     ownGameMat.removeFromGraveyardByAddress(chosenAddress);
@@ -91,7 +90,7 @@ public class SpellEffect {
             GameMatView.showInput("Please enter a Monster address from your " + whoseGraveyard + " graveyard to reborn: ");
             responseTwo = GameMatView.getCommand();
             if (responseTwo.equals("cancel"))
-                return 0;
+                return -1;
             if (!responseTwo.matches("[^0][0-9]*"))
                 continue;
             deadCardAddress = Integer.parseInt(responseTwo);
@@ -218,23 +217,20 @@ public class SpellEffect {
         return 1;
     }
 
-    public static void supplySquad(String onlineUser) {
-        Player player = Player.getPlayerByName(onlineUser);
-        if (GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadMonsterThisTurn() != 0)
-            new HandCardZone(onlineUser, player.drawCard(true));
-    }
-
     public static void spellAbsorption(String onlineUser) {
         Player.getPlayerByName(onlineUser).changeLifePoint(500);
     }
 
-    public static void messengerOfPeace(String onlineUser, String rivalUser) {
+    public static void messengerOfPeace(String onlineUser, String rivalUser,int ownAddress) {
         Map<Integer, MonsterZoneCard> monsters;
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
         for (int i = 0; i < monsters.size(); i++) {
             if (MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], onlineUser).getAttack() >= 1500) {
                 MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], onlineUser).setCanAttack(false);
+                List<Integer> effectedMonsters = MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], onlineUser).getAllEffectedMonster(onlineUser);
+                effectedMonsters.add(ownAddress);
+                MonsterZoneCard.getMonsterCardByAddress(monsterNames[i], onlineUser).setAllEffectedMonster(onlineUser, effectedMonsters);
             }
         }
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser);
@@ -242,6 +238,9 @@ public class SpellEffect {
         for (int i = 0; i < monsters.size(); i++) {
             if (MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).getAttack() >= 1500) {
                 MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).setCanAttack(false);
+                List<Integer> effectedMonsters = MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).getAllEffectedMonster(rivalUser);
+                effectedMonsters.add(ownAddress);
+                MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).setAllEffectedMonster(rivalUser, effectedMonsters);
             }
         }
     }
