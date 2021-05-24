@@ -705,7 +705,6 @@ public class GameMatController {
 
     public static int ritualSummon(SpellTrapZoneCard ownSpell, HandCardZone handCardSpell, Phase currentPhase) {
         int ritualMonsterAddress = HandCardZone.doIHaveAnyRitualMonster(onlineUser);
-        System.out.println(ritualMonsterAddress);
         if (ritualMonsterAddress == -1) {
             GameMatView.showInput("there is no way you could ritual summon a monster");
             return 0;
@@ -714,7 +713,6 @@ public class GameMatController {
             GameMatView.showInput("there is no way you could ritual summon a monster");
             return 0;
         }
-
         GameMatView.showInput("Please enter the address of a Ritual Monster in your hand to summon: ");
         String response;
         while (true) {
@@ -1067,7 +1065,7 @@ public class GameMatController {
                 while (true) {
                     response = GameMatView.getCommand();
                     if ((matcher = getMatcher(response, "^select\\s+--spell\\s+(\\d+)$")).find()) {
-                        if (selectSpellCard(Integer.parseInt(matcher.group(1)), true) == 1) {
+                        if (selectSpellCard(Integer.parseInt(matcher.group(1)), false) == 1) {
                             if (trapAddress == Integer.parseInt(matcher.group(1)))
                                 break;
                             else
@@ -1108,7 +1106,7 @@ public class GameMatController {
                 while (true) {
                     response = GameMatView.getCommand();
                     if ((matcher = getMatcher(response, "^select\\s+--spell\\s+(\\d+)$")).find()) {
-                        if (selectSpellCard(Integer.parseInt(matcher.group(1)), true) == 1) {
+                        if (selectSpellCard(Integer.parseInt(matcher.group(1)), false) == 1) {
                             if (quickSpellAddress == Integer.parseInt(matcher.group(1)))
                                 break;
                             else
@@ -1125,6 +1123,7 @@ public class GameMatController {
                         spell.setMode("O");
                         showGameBoard();
                         SpellEffect.quickPlayEffectController(spell, rivalUser, onlineUser);
+                        spell.removeSpellTrapFromZone();
                         break;
                     }
                     else
@@ -1264,7 +1263,6 @@ public class GameMatController {
             SpellEffect.supplySquad(onlineUser);
     }
 
-
     public static int chooseSpellEffectController(String spellIcon, SpellTrapZoneCard ownSpell) {
         switch (spellIcon) {
             case "Normal":
@@ -1302,8 +1300,10 @@ public class GameMatController {
         int address;
         if (response.equals("own")) {
             address = getResponseForEquipSpell("own", spellName);
-            if (address != 0)
+            if (address != 0) {
+                System.out.println(address);///////////////////////
                 ownSpell.setRelatedMonsterAddress("own", address);
+            }
             else
                 return 0;
         } else {
@@ -1346,7 +1346,7 @@ public class GameMatController {
     }
 
     public static int activateTrapEffect(MonsterZoneCard rivalMonster, Boolean isInYourTurn) {
-        String[] split = selectedOwnCard.split("/");
+        String[] split = selectedRivalCard.split("/");
         SpellTrapZoneCard ownTrap = SpellTrapZoneCard.getSpellCardByAddress(Integer.parseInt(split[2]), onlineUser);
         ownTrap.setMode("O");
         GameMatView.showInput("trap activated");
