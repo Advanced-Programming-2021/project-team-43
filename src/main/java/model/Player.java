@@ -1,4 +1,5 @@
 package main.java.model;
+
 import main.java.view.GameMatView;
 
 import java.net.NetworkInterface;
@@ -13,7 +14,7 @@ public class Player {
     private int numberOfRound;
     private int counterOfTurn = 1;
     private boolean isYourMoveFinished;
-    private boolean canUseTrap = true;
+    private static boolean canUseTrap = true;
     private boolean canSetSummonMonster = true;
     private boolean canDrawCard;
     private int numberOfWin = 0;
@@ -40,9 +41,30 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-        for (int i = 0; i < 5; i++)
-            new HandCardZone(nickname, drawCard(false));//////////////true//////////////////
+        if (nickname.equals("pari")) {
+            new HandCardZone("pari", "Mirage Dragon");
+            new HandCardZone("pari", "Call of The Haunted");
+            new HandCardZone("pari", "Advanced Ritual Art");
+            new HandCardZone("pari", "Axe Raider");
+
+            new HandCardZone("pari", "Herald of Creation");
+            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Suijin");
+            new MonsterZoneCard(nickname, "Axe Raider", "OO", false, false);
+            new MonsterZoneCard(nickname, "Axe Raider", "OO", false, false);
+        } else {
+            if (nickname.equals("harry")) {
+                new HandCardZone("harry", "Call of The Haunted");
+                new HandCardZone("harry", "Advanced Ritual Art");
+                new HandCardZone("harry", "Axe Raider");
+                new HandCardZone("harry", "Axe Raider");
+                new HandCardZone("harry", "Herald of Creation");
+            } else {
+                for (int i = 0; i < 5; i++)
+                    new HandCardZone(nickname, drawCard(false));//////////////true//////////////////
+            }
+        }
         allPlayers.put(nickname, this);
+
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
@@ -93,8 +115,7 @@ public class Player {
             addToSideDeck(playerMainDeck.get(cardAddressInMainDeck));
             removeFromMainDeckByAddress(cardAddressInMainDeck);
             return 1;
-        }
-        else
+        } else
             return 0;
     }
 
@@ -279,7 +300,15 @@ public class Player {
     public void changeTurn() {
         changeCounterOfTurn();
         setIsYourMoveFinished(false);
-        setCanUseTrap(true);
+        int address = MonsterZoneCard.getAddressByMonsterName(nickname, "Mirage Dragon");
+        if (address == -1)
+            setCanUseTrap(true);
+        else {
+            if (MonsterZoneCard.getMonsterCardByAddress(address, nickname).getMode().equals("DO") || MonsterZoneCard.getMonsterCardByAddress(address, nickname).getMode().equals("OO")) {
+                setCanUseTrap(false);
+            }
+        }
+        setCanDrawCard(true);
         setCanSetSummonMonster(true);
         setCanBattle(true);
         GameMatModel.getGameMatByNickname(nickname).resetNumberOfDeadMonsterThisTurn();
