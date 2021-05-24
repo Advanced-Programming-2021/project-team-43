@@ -73,10 +73,10 @@ public class SpellEffect {
             if (chosenAddress != 0) {
                 chosenAddress--;
                 if (response.equals("own")) {
-                    GameMatController.addToMonsterZoneCard(ownGameMat.getNameOfDeadCardByAddress(chosenAddress), "OO");
+                    GameMatController.addToMonsterZoneCard(ownGameMat.getDeadCardNameByAddress(chosenAddress), "OO");
                     ownGameMat.removeFromGraveyardByAddress(chosenAddress);
                 } else {
-                    GameMatController.addToMonsterZoneCard(rivalGameMat.getNameOfDeadCardByAddress(chosenAddress), "OO");
+                    GameMatController.addToMonsterZoneCard(rivalGameMat.getDeadCardNameByAddress(chosenAddress), "OO");
                     rivalGameMat.removeFromGraveyardByAddress(chosenAddress);
                 }
                 GameMatView.showInput("Dead Monster reborn successfully!");
@@ -266,6 +266,7 @@ public class SpellEffect {
     }
 
     private static int twinTwisters(String onlineUser, String rivalUser) {
+        System.out.println("twin twister");
         if (HandCardZone.getNumberOfFullHouse(onlineUser) == 0)
             GameMatView.showInput("Oops! You dont have any card in your Hand to drop!");
         else {
@@ -327,27 +328,25 @@ public class SpellEffect {
             if (response.equals("cancel"))
                 return 0;
         } while (!response.matches("own|rival"));
-        if (response.equals("own")) {
-            while (true) {
-                GameMatView.showInput("Please enter the address of your " + response + " Spell/Trap to destroy:");
-                responseTwo = GameMatView.getCommand();
-                if (responseTwo.equals("cancel"))
-                    return 0;
-                if (!responseTwo.matches("[1-5]"))
-                    continue;
-                address = Integer.parseInt(responseTwo);
-                if (response.equals("own"))
-                    if (SpellTrapZoneCard.getSpellCardByAddress(address, onlineUser) != null)
-                        break;
-                    else
-                    if (SpellTrapZoneCard.getSpellCardByAddress(address, rivalUser) != null)
-                        break;
-            }
+        while (true) {
+            GameMatView.showInput("Please enter the address of your " + response + " Spell/Trap to destroy:");
+            responseTwo = GameMatView.getCommand();
+            if (responseTwo.equals("cancel"))
+                return 0;
+            if (!responseTwo.matches("[1-5]"))
+                continue;
+            address = Integer.parseInt(responseTwo);
             if (response.equals("own"))
-                SpellTrapZoneCard.getSpellCardByAddress(address, onlineUser).removeSpellTrapFromZone();
-            else
-                SpellTrapZoneCard.getSpellCardByAddress(address, rivalUser).removeSpellTrapFromZone();
+                if (SpellTrapZoneCard.getSpellCardByAddress(address, onlineUser) != null)
+                    break;
+                else
+                if (SpellTrapZoneCard.getSpellCardByAddress(address, rivalUser) != null)
+                    break;
         }
+        if (response.equals("own"))
+            SpellTrapZoneCard.getSpellCardByAddress(address, onlineUser).removeSpellTrapFromZone();
+        else
+            SpellTrapZoneCard.getSpellCardByAddress(address, rivalUser).removeSpellTrapFromZone();
         return 1;
     }
 

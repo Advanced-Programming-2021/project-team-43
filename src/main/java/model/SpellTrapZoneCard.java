@@ -1,6 +1,8 @@
 package model;
+import java.beans.IntrospectionException;
 import java.util.*;
 import controller.GameMatController;
+import controller.SpellEffect;
 import view.GameMatView;
 
 public class SpellTrapZoneCard {
@@ -62,7 +64,7 @@ public class SpellTrapZoneCard {
     }
 
     public void changeTurnCounter() {
-        turnCounter--;
+        turnCounter++;
     }
 
     public boolean getIsSetInThisTurn() {
@@ -89,23 +91,16 @@ public class SpellTrapZoneCard {
     }
 
     public void removeSpellTrapFromZone() {
+        if (spellTrapName.equals("Messenger of peace"))
+            SpellEffect.returnPermissionMessenger(address, GameMatController.getRivalUser(), playerNickname);
         GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(spellTrapName);
         allSpellTrapCards.get(playerNickname).remove(address);
     }
 
-//    public static int isAnyTrapSet(String playerNickname) {
-//        for (int i = 1; i < 6; i++) {
-//            SpellTrapZoneCard spellTrapCard = allSpellTrapCards.get(playerNickname).get(i);
-//            if (spellTrapCard != null && spellTrapCard.getKind().equals("Trap") && spellTrapCard.getMode().equals("H"))
-//                return i;
-//        }
-//        return -1;
-//    }
-
-    public static int isAnyQuickSpellSet(String playerNickname) {
+    public static int getAddressOfQuickSpellByName(String playerNickname, String spellName) {
         for (int i = 1; i < 6; i++) {
-            SpellTrapZoneCard spellTrapCard = allSpellTrapCards.get(playerNickname).get(i);
-            if (spellTrapCard != null && spellTrapCard.getKind().equals("Spell") && spellTrapCard.getMode().equals("H") && spellTrapCard.getIcon().equals("Quick-play"))
+            SpellTrapZoneCard spell = allSpellTrapCards.get(playerNickname).get(i);
+            if (spell != null && spell.getKind().equals("Spell") && spell.getMode().equals("H") && spell.getIcon().equals("Quick-play") && spell.getSpellTrapName().equals(spellName))
                 return i;
         }
         return -1;
@@ -164,7 +159,6 @@ public class SpellTrapZoneCard {
         return 0;
     }
 
-
     public static String[] getAllSpellTrapMode(String playerNickname) {
         String[] allSpellsMode = new String[6];
         if (getAllSpellTrapByPlayerName(playerNickname) == null)
@@ -197,6 +191,14 @@ public class SpellTrapZoneCard {
     public static HashMap<Integer, HashMap<Integer, String>> getEffectStack() {
         return effectStack;
     }
+
+    public static void changeTurn(String playerNickname) {
+        for (int i = 1; i < 6; i++)
+            if (allSpellTrapCards.get(playerNickname).get(i) != null)
+                allSpellTrapCards.get(playerNickname).get(i).setIsSetInThisTurn(false);
+    }
+
+
 
 //    public static void chain(String rivalNickname, String ownNickname) {
 //        Integer[] cards = allSpellTrapCards.get(rivalNickname).keySet().toArray(new Integer[0]);

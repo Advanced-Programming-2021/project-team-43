@@ -299,24 +299,25 @@ public class MonsterEffect {
             response = GameMatView.getCommand();
             while (!response.matches("hand|deck|graveyard")) {
                 if (response.equals("cancel"))
-                    return 0;
+                    return 1;
                 GameMatView.showInput("Please enter the correct zone name: (hand/graveyard/deck)");
                 response = GameMatView.getCommand();
             }
             if (response.equals("hand")) {
-                if (!HandCardZone.doesThisModelAndTypeExist(rivalUser, "Monster", "Cyberse"))
+                int realAddress = HandCardZone.getAddressOfCybreseMonster(rivalUser);
+                if (realAddress == -1)
                     GameMatView.showInput("Oops! You dont have any Cyberse in your hand to summon!");
                 else {
                     response = GameMatView.getCommand();
                     while (true) {
                         GameMatView.showInput("Please enter the address of a Cyberse Monster in your hand to summon:");
                         if (response.equals("cancel"))
-                            return 0;
+                            return 1;
                         if (!response.matches("[1-8]"))
                             continue;
                         address = Integer.parseInt(response);
                         address--;
-                        if (HandCardZone.getHandCardByAddress(address, rivalUser) != null || MonsterCard.getMonsterByName(HandCardZone.getHandCardByAddress(address, rivalUser).getCardName()).getMonsterType().equals("Cyberse"))
+                        if (realAddress == address)
                             break;
                         response = GameMatView.getCommand();
                     }
@@ -333,7 +334,7 @@ public class MonsterEffect {
                     response = GameMatView.getCommand();
                     while (!response.matches("\\d+") || !GameMatModel.getGameMatByNickname(rivalUser).doesAddressAndTypeMatch(Integer.parseInt(response), "Monster", "Cyberse")) {
                         if (response.equals("cancel"))
-                            return 0;
+                            return 1;
                         GameMatView.showInput("Please enter the address of a Cyberse Monster in your graveyard correctly:");
                         response = GameMatView.getCommand();
                     }
@@ -350,7 +351,7 @@ public class MonsterEffect {
                         GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck to summon:");
                         response = GameMatView.getCommand();
                         if (response.equals("cancel"))
-                            return 0;
+                            return 1;
                         if (!response.matches("\\d+"))
                             continue;
                         address = Integer.parseInt(response);
@@ -394,13 +395,13 @@ public class MonsterEffect {
                 HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser).removeFromHandCard();
                 GameMatView.showInput("Please enter the address of a seven level or higher level in your graveyard to add to your hand:");
                 response = GameMatView.getCommand();
-                while (!response.matches("\\d") || ownGameMat.getNameOfDeadCardByAddress(Integer.parseInt(response)).isEmpty()) {
+                while (!response.matches("\\d") || ownGameMat.getDeadCardNameByAddress(Integer.parseInt(response)).isEmpty()) {
                     if (response.equals("cancel"))
                         return 0;
                     GameMatView.showInput("Please enter the correct address of a dead monster from your own graveyard: ");
                     response = GameMatView.getCommand();
                 }
-                new HandCardZone(onlineUser, ownGameMat.getNameOfDeadCardByAddress(Integer.parseInt(response)));
+                new HandCardZone(onlineUser, ownGameMat.getDeadCardNameByAddress(Integer.parseInt(response)));
                 ownGameMat.removeFromGraveyardByAddress(Integer.parseInt(response));
             }
         }

@@ -57,18 +57,14 @@ public class HandCardZone {
         return allHandCards.get(playerNickname).size();
     }
 
-    public static boolean doesThisModelAndTypeExist(String playerNickname, String model, String type) {
-        String cardName;
+    public static int getAddressOfCybreseMonster(String playerNickname) {
+        HandCardZone handCard;
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
-            if (allHandCards.get(playerNickname).get(i) != null) {
-                cardName = allHandCards.get(playerNickname).get(i).getCardName();
-                if (model.equals("Monster"))
-                    return MonsterCard.getMonsterByName(cardName).getMonsterType().equals(type);
-                if (model.equals("Spell"))
-                    return SpellCard.getSpellCardByName(cardName).getIcon().equals(type);
-            }
+            handCard = allHandCards.get(playerNickname).get(i);
+            if (handCard != null && handCard.getKind().equals("Monster") && MonsterCard.getMonsterByName(handCard.getCardName()).getMonsterType().equals("Cyberse"))
+                return i;
         }
-        return false;
+        return -1;
     }
 
     public static boolean doesAnyLevelFourMonsterExisted(String playerNickname) {
