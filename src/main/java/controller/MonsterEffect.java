@@ -6,7 +6,6 @@ import java.util.*;
 
 public class MonsterEffect {
 
-
     private static String response;
 
     public static int changeModeEffectController(MonsterZoneCard ownMonster, String onlineUser, String rivalUser) {
@@ -81,7 +80,7 @@ public class MonsterEffect {
             while (!response.matches("yes|no")) {
                 if (response.equals("cancel"))
                     return 0;
-                GameMatView.showInput("Please enter the answer correctly! (yse/no)");
+                GameMatView.showInput("Please enter the answer correctly: (yse/no)");
                 response = GameMatView.getCommand();
             }
             if (response.equals("yes")) {
@@ -293,13 +292,16 @@ public class MonsterEffect {
         if (!rivalMonster.getIsEffectUsed()) {
             if (MonsterZoneCard.getNumberOfFullHouse(rivalUser) == 5) {
                 GameMatView.showInput("Oops! You cant use this monster effect because of no free space in monster zone!");
-                return -1;
+                rivalMonster.setIsEffectUsed(true);
+                return 0;
             }
             GameMatView.showInput("Please enter the zone name from which you want to pick a monster to summon: (hand/graveyard/deck)");
             response = GameMatView.getCommand();
             while (!response.matches("hand|deck|graveyard")) {
-                if (response.equals("cancel"))
+                if (response.equals("cancel")) {
+                    rivalMonster.setIsEffectUsed(true);
                     return 1;
+                }
                 GameMatView.showInput("Please enter the correct zone name: (hand/graveyard/deck)");
                 response = GameMatView.getCommand();
             }
@@ -311,8 +313,10 @@ public class MonsterEffect {
                     response = GameMatView.getCommand();
                     while (true) {
                         GameMatView.showInput("Please enter the address of a Cyberse Monster in your hand to summon:");
-                        if (response.equals("cancel"))
+                        if (response.equals("cancel")) {
+                            rivalMonster.setIsEffectUsed(true);
                             return 1;
+                        }
                         if (!response.matches("[1-8]"))
                             continue;
                         address = Integer.parseInt(response);
@@ -333,8 +337,10 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the address of a Cyberse Monster in your graveyard to summon:");
                     response = GameMatView.getCommand();
                     while (!response.matches("\\d+") || !GameMatModel.getGameMatByNickname(rivalUser).doesAddressAndTypeMatch(Integer.parseInt(response), "Monster", "Cyberse")) {
-                        if (response.equals("cancel"))
+                        if (response.equals("cancel")) {
+                            rivalMonster.setIsEffectUsed(true);
                             return 1;
+                        }
                         GameMatView.showInput("Please enter the address of a Cyberse Monster in your graveyard correctly:");
                         response = GameMatView.getCommand();
                     }
@@ -350,8 +356,10 @@ public class MonsterEffect {
                     while (true) {
                         GameMatView.showInput("Please enter the address of a Cyberse Monster in your main deck to summon:");
                         response = GameMatView.getCommand();
-                        if (response.equals("cancel"))
+                        if (response.equals("cancel")) {
+                            rivalMonster.setIsEffectUsed(true);
                             return 1;
+                        }
                         if (!response.matches("\\d+"))
                             continue;
                         address = Integer.parseInt(response);

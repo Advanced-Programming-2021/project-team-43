@@ -13,7 +13,6 @@ public class GameMatController {
     private static String command;
     private static String response;
     private static Matcher matcher;
-    private static int numberOfMonster;
     private static int trapAddress;
 
 
@@ -28,7 +27,6 @@ public class GameMatController {
         int counter = 0;
         int counter1 = 0;
         while (true) {
-            numberOfMonster = MonsterZoneCard.getNumberOfFullHouse(onlineUser);
             currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
             if (onlineUser.equals("AI")) {
                 try {
@@ -611,7 +609,7 @@ public class GameMatController {
                 handCard.removeFromHandCard();
                 addToSpellTrapZoneCard(handCard.getCardName(), "H", currentPhase);
                 SpellTrapZoneCard.getSpellCardByAddress(SpellTrapZoneCard.getNumberOfFullHouse(onlineUser), onlineUser).setIsSetInThisTurn(true);
-                GameMatView.showInput("Set successfully");
+                GameMatView.showInput("set successfully");
             }
         }
         selectedOwnCard = "";
@@ -943,6 +941,7 @@ public class GameMatController {
                     }
                 } else if (damage == 0) {
                     ownMonster.removeMonsterFromZone();
+                    rivalMonster.removeMonsterFromZone();
                     if (rivalMonsterName.equals("Yomi Ship"))
                         ownMonster.removeMonsterFromZone();
                     GameMatView.showInput("both you and your opponent monster cards are destroyed and no one receives damage");
@@ -1107,6 +1106,7 @@ public class GameMatController {
 
     public static int checkForQuickSpellInRivalTurn(String spellName) {
         int quickSpellAddress = SpellTrapZoneCard.getAddressOfQuickSpellByName(rivalUser, spellName);
+        System.out.println(quickSpellAddress);
         if (quickSpellAddress != -1) {
             GameMatView.showInput("now it will be " + rivalUser + "’s turn");
             do {
@@ -1123,10 +1123,12 @@ public class GameMatController {
                     response = GameMatView.getCommand();
                     if ((matcher = getMatcher(response, "^select\\s+--spell\\s+(\\d+)$")).find()) {
                         if (selectSpellCard(Integer.parseInt(matcher.group(1)), false) == 1) {
-                            if (quickSpellAddress == Integer.parseInt(matcher.group(1)))
+                            if (quickSpellAddress == Integer.parseInt(matcher.group(1))) {
+                                System.out.println(matcher.group(1));
                                 break;
+                            }
                             else
-                                GameMatView.showInput("Please select the trap " + spellName + " correctly");
+                                GameMatView.showInput("Please select the spell " + spellName + " correctly");
                         }
                     }
                     else
@@ -1227,7 +1229,7 @@ public class GameMatController {
                     }
                     else {
                         handCard.removeFromHandCard();
-                        new SpellTrapZoneCard(onlineUser, split[1], "O");
+                        addToSpellTrapZoneCard(split[1], "o", currentPhase);
                         ownSpell = SpellTrapZoneCard.getSpellCardByAddress(SpellTrapZoneCard.getNumberOfFullHouse(onlineUser), onlineUser);
                         if (chooseSpellEffectController(spellIcon, ownSpell) == 0) {
                             if (ownSpell.getIcon().equals("Continuous"))
@@ -1238,7 +1240,7 @@ public class GameMatController {
                     }
                 }
                 if (split[1].equals("Messenger of peace"))
-                    SpellEffect.messengerOfPeace(onlineUser, rivalUser);
+                    SpellEffect.messengerOfPeace(onlineUser, rivalUser, SpellTrapZoneCard.getNumberOfFullHouse(onlineUser));
                 checkForSpellAbsorption();
                 GameMatView.showInput("spell activated");
             }
@@ -1258,7 +1260,7 @@ public class GameMatController {
     public static void checkForMessengerOfPeace() {
         int address = SpellTrapZoneCard.isThisSpellActivated(onlineUser, "Messenger of peace");
         if (address != -1) {
-            SpellEffect.messengerOfPeace(onlineUser, rivalUser);
+            SpellEffect.messengerOfPeace(onlineUser, rivalUser, address);
             do {
                 GameMatView.showInput("Do you want to destroy Messenger of peace? (yes/no)");
                 response = GameMatView.getCommand();
@@ -1275,8 +1277,8 @@ public class GameMatController {
 
     public static void checkForSupplySquad() {
         int address = SpellTrapZoneCard.isThisSpellActivated(onlineUser, "Supply Squad");
-        if (address != -1 && numberOfMonster != MonsterZoneCard.getNumberOfFullHouse(onlineUser))
-            SpellEffect.supplySquad(onlineUser);
+        if (address != -1 && GameMatModel.getGameMatByNickname(onlineUser).getNumberOfDeadMonsterThisTurn() != MonsterZoneCard.getNumberOfFullHouse(onlineUser))
+            new HandCardZone(onlineUser, Player.getPlayerByName(onlineUser).drawCard(true));
     }
 
     public static int chooseSpellEffectController(String spellIcon, SpellTrapZoneCard ownSpell) {

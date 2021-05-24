@@ -1,8 +1,10 @@
 package model;
+import java.beans.IntrospectionException;
 import java.util.*;
+
 import controller.GameMatController;
 import controller.SpellEffect;
-
+import view.GameMatView;
 
 public class SpellTrapZoneCard {
 
@@ -26,7 +28,7 @@ public class SpellTrapZoneCard {
             this.icon = SpellCard.getSpellCardByName(spellTrapName).getIcon();
         else
             this.icon = TrapCard.getTrapCardByName(spellTrapName).getIcon();
-        this.address = allSpellTrapCards.get(playerNickname).size() + 1;
+        this.address = getNewSpellAddress(playerNickname);
         allSpellTrapCards.get(playerNickname).put(address, this);
     }
 
@@ -87,6 +89,13 @@ public class SpellTrapZoneCard {
 
     public void setRelatedMonsterAddress(String whoseMonster, int address) {
         this.relatedMonsterAddress.put(whoseMonster, address);
+    }
+
+    public int getNewSpellAddress(String playerNickname) {
+        for (int i = 1; i < 6; i++)
+            if (allSpellTrapCards.get(playerNickname).get(i) == null)
+                return i;
+        return -1;
     }
 
     public void removeSpellTrapFromZone() {
