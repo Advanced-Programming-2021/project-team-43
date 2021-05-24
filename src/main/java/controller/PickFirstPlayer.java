@@ -1,30 +1,24 @@
-package controller;
+package main.java.controller;
 
-import model.UserModel;
+import main.java.model.UserModel;
 
 import java.util.Random;
 import java.util.Scanner;
 
 public class PickFirstPlayer {
     public static String chose(String player1, String player2) {
-        if(player1.equals("AI")){
-            return player2;
-        }
-        if (player2.equals("AI")){
-            return player1;
-        }
-
         Scanner scanner = new Scanner(System.in);
         Random rand = new Random();
         int n = rand.nextInt(2);
         if (n == 0) {
             String winner = chanceCoin(player1, player2);
-            System.out.println(UserModel.getUserByUsername(winner) + " do you want play first ? (yes or no)");
+            System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
             while (true) {
-                if (scanner.nextLine().equals("yes")) {
+                String string = scanner.nextLine().trim();
+                if (string.equals("yes")) {
                     return winner;
                 }
-                if (scanner.nextLine().equals("no")) {
+                if (string.equals("no")) {
                     if (winner.equals(player1)) {
                         return player2;
                     }
@@ -39,12 +33,13 @@ public class PickFirstPlayer {
         }
 
         String winner = rockPaperScissors(player1, player2);
-        System.out.println(UserModel.getUserByUsername(winner) + " do you want play first ? (yes or no)");
+        System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
         while (true) {
-            if (scanner.nextLine().equals("yes")) {
+            String string = scanner.nextLine().trim();
+            if (string.equals("yes")) {
                 return winner;
             }
-            if (scanner.nextLine().equals("no")) {
+            if (string.equals("no")) {
                 if (winner.equals(player1)) {
                     return player2;
                 }
@@ -52,9 +47,7 @@ public class PickFirstPlayer {
             }
 
             System.out.println("invalid command");
-
         }
-
     }
 
 
@@ -63,21 +56,19 @@ public class PickFirstPlayer {
         while (true) {
             System.out.println(UserModel.getUserByUsername(player1).getNickname() + " is your turn");
             System.out.println("rock or paper or scissors?");
-            String t1 = scanner.nextLine();
+            String t1 = scanner.nextLine().trim();
             while (!t1.equals("rock") && !t1.equals("paper") && !t1.equals("scissors")) {
                 System.out.println("invalid command");
                 System.out.println("rock or paper or scissors?");
-                t1 = scanner.nextLine();
+                t1 = scanner.nextLine().trim();
             }
-
-
             System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is your turn");
             System.out.println("rock or paper or scissors?");
-            String t2 = scanner.nextLine();
+            String t2 = scanner.nextLine().trim();
             while (!t2.equals("rock") && !t2.equals("paper") && !t2.equals("scissors")) {
                 System.out.println("invalid command");
                 System.out.println("rock or paper or scissors?");
-                t2 = scanner.nextLine();
+                t2 = scanner.nextLine().trim();
             }
             if (t1.equals("rock")) {
                 if (t2.equals("rock")) {
@@ -87,39 +78,26 @@ public class PickFirstPlayer {
                 if (t2.equals("paper")) {
                     System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is win");
                     return player2;
-
-
                 }
-
-
                 if (t2.equals("scissors")) {
                     System.out.println(UserModel.getUserByUsername(player1).getNickname() + " is win");
                     return player1;
-
                 }
-
             }
-
             if (t1.equals("paper")) {
                 if (t2.equals("rock")) {
                     System.out.println(UserModel.getUserByUsername(player1).getNickname() + " is win");
                     return player1;
-
                 }
                 if (t2.equals("paper")) {
                     System.out.println("The game equalised");
 
-
                 }
-
-
                 if (t2.equals("scissors")) {
                     System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is win");
                     return player2;
 
-
                 }
-
             }
 
 
@@ -134,16 +112,10 @@ public class PickFirstPlayer {
                     return player1;
 
                 }
-
-
                 if (t2.equals("scissors")) {
                     System.out.println("The game equalised");
-
                 }
-
             }
-
-
         }
     }
 
@@ -153,9 +125,7 @@ public class PickFirstPlayer {
         if (n == 0) {
             return player1;
         }
-
         return player2;
-
 
     }
 }
