@@ -1,7 +1,5 @@
 package model;
 import view.GameMatView;
-
-import java.net.NetworkInterface;
 import java.util.*;
 
 
@@ -13,7 +11,6 @@ public class Player {
     private int numberOfRound;
     private int counterOfTurn = 1;
     private boolean isYourMoveFinished;
-    private boolean canUseTrap = true;
     private boolean canSetSummonMonster = true;
     private boolean canDrawCard;
     private int numberOfWin = 0;
@@ -21,6 +18,7 @@ public class Player {
     private final List<String> playerMainDeck = new ArrayList<>();
     private final List<String> playerSideDeck = new ArrayList<>();
     private final List<Integer> allLifePoints = new ArrayList<>();
+    private static boolean canUseTrap = true;
     private static final Map<String, Player> allPlayers = new HashMap<>();
     private static int randomCardNumber;
     public static boolean isOneRound;
@@ -40,9 +38,37 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-        for (int i = 0; i < 5; i++)
-            new HandCardZone(nickname, drawCard(true));
+        if (nickname.equals("roya")) {
+            new HandCardZone("roya", "Magnum Shield");
+            new HandCardZone("roya", "Call of The Haunted");
+            new HandCardZone("roya", "Advanced Ritual Art");
+            new HandCardZone("roya", "Axe Raider");
+            new HandCardZone("roya", "Herald of Creation");
+            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Suijin");
+            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Axe Raider");
+            new MonsterZoneCard(nickname, "\"Terratiger, the Empowered Warrior\"", "OO", false, false);
+            new MonsterZoneCard(nickname, "Flame manipulator", "OO", false, false);
+            new MonsterZoneCard(nickname, "Yomi Ship", "DO", false, false);
+            new MonsterZoneCard(nickname, "Curtain of the dark ones", "DH", false, false);
+
+        } else {
+            new HandCardZone("foroozan", "Call of The Haunted");
+            new HandCardZone("foroozan", "Advanced Ritual Art");
+            new HandCardZone("foroozan", "Axe Raider");
+            new HandCardZone("foroozan", "Axe Raider");
+            new HandCardZone("foroozan", "Herald of Creation");
+            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Suijin");
+            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Mirage Dragon");
+            new MonsterZoneCard(nickname, "Dark Blade", "OO", false, false);
+            new MonsterZoneCard(nickname, "Suijin", "OO", false, false);
+            new MonsterZoneCard(nickname, "Yomi Ship", "OO", false, false);
+            new MonsterZoneCard(nickname, "Dark magician", "DO", false, false);
+            for (int i = 0; i < 5; i++)
+                new HandCardZone(nickname, drawCard(false));//////////////true//////////////////
+
+        }
         allPlayers.put(nickname, this);
+
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
@@ -93,8 +119,7 @@ public class Player {
             addToSideDeck(playerMainDeck.get(cardAddressInMainDeck));
             removeFromMainDeckByAddress(cardAddressInMainDeck);
             return 1;
-        }
-        else
+        } else
             return 0;
     }
 
@@ -279,7 +304,15 @@ public class Player {
     public void changeTurn() {
         changeCounterOfTurn();
         setIsYourMoveFinished(false);
-        setCanUseTrap(true);
+        int address = MonsterZoneCard.getAddressByMonsterName(nickname, "Mirage Dragon");
+        if (address == -1)
+            setCanUseTrap(true);
+        else {
+            if (MonsterZoneCard.getMonsterCardByAddress(address, nickname).getMode().equals("DO") || MonsterZoneCard.getMonsterCardByAddress(address, nickname).getMode().equals("OO")) {
+                setCanUseTrap(false);
+            }
+        }
+        setCanDrawCard(true);
         setCanSetSummonMonster(true);
         setCanBattle(true);
         GameMatModel.getGameMatByNickname(nickname).resetNumberOfDeadMonsterThisTurn();

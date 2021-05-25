@@ -38,6 +38,8 @@ public class MonsterZoneCard {
         this.canAttackToThisMonster = true;
         this.isForOneTurn = isForOneTurn;
         allMonsterCards.get(playerNickname).put(address, this);
+        List<Integer> add=new ArrayList<>();
+        allEffectiveSpell.put(playerNickname,add);
     }
 
     public String getMonsterName() {
@@ -173,12 +175,6 @@ public class MonsterZoneCard {
         }
     }
 
-    public static void changeAllHaveChangePosition(String playerNickname) {
-        for (int i = 1; i < 6; i++)
-            if (allMonsterCards.get(playerNickname).get(i) != null)
-                allMonsterCards.get(playerNickname).get(i).setHaveChangedPositionThisTurn(false);
-    }
-
     public static int getAddressByMonsterName(String playerNickname, String monsterName) {
         for (int i = 1; i < 6; i++)
             if (allMonsterCards.get(playerNickname).get(i) != null)
@@ -228,7 +224,6 @@ public class MonsterZoneCard {
         return -1;
     }
 
-
     public static boolean isThisMonsterTypeExisted(String monsterType, String playerNickname) {
         for (int i = 1; i < 6; i++)
             if (allMonsterCards.get(playerNickname).get(i) != null)
@@ -264,7 +259,8 @@ public class MonsterZoneCard {
             if (allMonsters.get(i) != null) {
                 allMonsters.get(i).setHaveChangedPositionThisTurn(false);
                 allMonsters.get(i).setHaveAttackThisTurn(false);
-                allMonsters.get(i).setIsEffectUsed(false);////////////
+                allMonsters.get(i).setIsEffectUsed(false);
+                allMonsters.get(i).setCanAttack(true);
             }
         }
     }

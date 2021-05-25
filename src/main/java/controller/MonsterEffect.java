@@ -113,17 +113,18 @@ public class MonsterEffect {
         ownMonster.setAttack(attack);
     }
 
-    public static int terratiger(MonsterZoneCard ownMonster, String onlineUser) {
+    public static void terratiger(String onlineUser) {
         GameMatView.showInput("Do you want Summon another Monster in Defend position? (yes/no)");
         response = GameMatView.getCommand();
         while (!response.matches("yes|no")) {
             if (response.equals("cancel"))
-                return 0;
+                return;
             GameMatView.showInput("Please enter the correct answer: (yes/no)");
             response = GameMatView.getCommand();
         }
-        if (response.equals("no"))
-            return 0;
+        if (response.equals("no")) {
+            ////////////////////////
+        }
         else {
             if (HandCardZone.getNumberOfFullHouse(onlineUser) == 0)
                 GameMatView.showInput("Oops! You cant have Special Summon because of lack of HandCard!");
@@ -136,7 +137,7 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the address of a 4 level or less to summon in Defend Position:");
                     response = GameMatView.getCommand();
                     if (response.equals("cancel"))
-                        return 0;
+                        return;
                     if (!response.matches("[1-8]"))
                         continue;
                     address = Integer.parseInt(response);
@@ -150,10 +151,8 @@ public class MonsterEffect {
                 HandCardZone.getHandCardByAddress(address, onlineUser).removeFromHandCard();
                 new MonsterZoneCard(onlineUser, cardName, "DO", false, false);
                 GameMatView.showInput("summoned successfully");
-                return 1;
             }
         }
-        return 0;
     }
 
     public static int gateGuardian(HandCardZone handCard, String onlineUser, String rivalUser) {
@@ -380,24 +379,24 @@ public class MonsterEffect {
         return 0;
     }
 
-    public static int heraldOfCreation(MonsterZoneCard ownMonster, String onlineUser) {
+    public static void heraldOfCreation(MonsterZoneCard ownMonster, String onlineUser) {
         GameMatModel ownGameMat = GameMatModel.getGameMatByNickname(onlineUser);
         int address;
         if (!ownMonster.getIsEffectUsed()) {
             if (!ownGameMat.isAnySevenLevelMonsterInGraveyard()) {
                 GameMatView.showInput("Oops! You cant use Herald of Creation effect because of no seven level or higher level monster in your graveyard!");
-                return 0;
+                return;
             }
             else if (HandCardZone.getNumberOfFullHouse(onlineUser) == 0) {
                 GameMatView.showInput("Oops! You cant use Herald of Creation effect because of lack of Hand Card!");
-                return 0;
+                return;
             }
             else {
                 GameMatView.showInput("Please enter the address of a hand card to remove: ");
                 response = GameMatView.getCommand();
                 while (!response.matches("[1-6]") || HandCardZone.getHandCardByAddress(Integer.parseInt(response), onlineUser) == null) {
                     if (response.equals("cancel"))
-                        return 0;
+                        return;
                     GameMatView.showInput("Please enter the correct address of your hand card: ");
                     response = GameMatView.getCommand();
                 }
@@ -406,7 +405,7 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the address of a seven level or higher level in your graveyard to add to your hand:");
                     response = GameMatView.getCommand();
                     if (response.equals("cancel"))
-                        return 0;
+                        return;
                     if (!response.matches("\\d"))
                         continue;
                     address = Integer.parseInt(response);
@@ -419,7 +418,6 @@ public class MonsterEffect {
             }
         }
         ownMonster.setIsEffectUsed(true);
-        return 1;
     }
 
 }

@@ -1,7 +1,5 @@
 package model;
-import java.beans.IntrospectionException;
 import java.util.*;
-
 import controller.GameMatController;
 import controller.SpellEffect;
 import view.GameMatView;
@@ -83,8 +81,8 @@ public class SpellTrapZoneCard {
             return 0;
     }
 
-    public Map<String, Integer> getRelatedMonsterAddress() {
-        return relatedMonsterAddress;
+    public HashMap<String, Integer> getRelatedMonsterAddress() {
+        return (HashMap<String, Integer>)relatedMonsterAddress;
     }
 
     public void setRelatedMonsterAddress(String whoseMonster, int address) {
@@ -124,10 +122,13 @@ public class SpellTrapZoneCard {
     }
 
     public static int isThisSpellActivated(String playerNickname, String spellName) {
+        SpellTrapZoneCard spellCard;
         for (int i = 1; i < 6; i++) {
-            SpellTrapZoneCard spellCard = allSpellTrapCards.get(playerNickname).get(i);
-            if (spellCard != null && spellCard.getKind().equals("Spell") && spellCard.getSpellTrapName().equals(spellName) && spellCard.getMode().equals("O"))
+            spellCard = allSpellTrapCards.get(playerNickname).get(i);
+            if (spellCard != null && spellCard.getKind().equals("Spell") && spellCard.getSpellTrapName().equals(spellName) && spellCard.getMode().equals("O")) {
+                System.out.println(i);
                 return i;
+            }
         }
         return -1;
     }
@@ -205,8 +206,6 @@ public class SpellTrapZoneCard {
             if (allSpellTrapCards.get(playerNickname).get(i) != null)
                 allSpellTrapCards.get(playerNickname).get(i).setIsSetInThisTurn(false);
     }
-
-
 
 //    public static void chain(String rivalNickname, String ownNickname) {
 //        Integer[] cards = allSpellTrapCards.get(rivalNickname).keySet().toArray(new Integer[0]);
