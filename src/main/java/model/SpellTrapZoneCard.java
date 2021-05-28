@@ -126,7 +126,6 @@ public class SpellTrapZoneCard {
         for (int i = 1; i < 6; i++) {
             spellCard = allSpellTrapCards.get(playerNickname).get(i);
             if (spellCard != null && spellCard.getKind().equals("Spell") && spellCard.getSpellTrapName().equals(spellName) && spellCard.getMode().equals("O")) {
-                System.out.println(i);
                 return i;
             }
         }

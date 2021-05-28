@@ -39,10 +39,23 @@ public class GameMatModel {
     }
 
     public String getDeadCardNameByAddress(int address) {
-        if (graveyard.size() - 1 < address||address<0)
+        if (graveyard.size() - 1 < address || address < 0)
             return null;
         else
             return graveyard.get(address);
+    }
+
+    public boolean isAnyMonsterInGraveyard() {
+        for (String deadCard : graveyard)
+            if (Card.getCardsByName(deadCard).getCardModel().equals("Monster"))
+                return true;
+        return false;
+    }
+
+    public void removeDeadCardByName(String cardName) {
+        for (int i = 0; i < graveyard.size(); i++)
+            if (graveyard.get(i).equals(cardName))
+                removeFromGraveyardByAddress(i);
     }
 
     public void addToGraveyard(String cardName) {
@@ -58,13 +71,6 @@ public class GameMatModel {
             return null;
         else
             return Card.getCardsByName(graveyard.get(address)).getCardModel();
-    }
-
-    public String getNameOfDeadCardByAddress(int address) {
-        if (address<0 || address > graveyard.size() - 1)
-            return null;
-        else
-            return graveyard.get(address);
     }
 
     public int getNumberOfDeadCards() {
@@ -161,6 +167,5 @@ public class GameMatModel {
     public static GameMatModel getGameMatByNickname(String playerNickname) {
         return playerGameMat.get(playerNickname);
     }
-
 
 }

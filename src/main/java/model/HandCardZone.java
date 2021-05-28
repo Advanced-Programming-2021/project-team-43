@@ -36,7 +36,6 @@ public class HandCardZone {
         return kind;
     }
 
-
     public void removeFromHandCard() {
         allHandCards.get(playerNickname).remove(address);
         for (int i = address; i < allHandCards.get(playerNickname).size(); i++) {
@@ -44,12 +43,13 @@ public class HandCardZone {
         }
     }
 
-    public static void removeAllTypeMonster(String playerNickname, String cardName) {
+    public static void removeAllTypeCard(String playerNickname, String cardName) {
         HandCardZone handCard;
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
             handCard = allHandCards.get(playerNickname).get(i);
-            if (handCard.cardName.equals(cardName))
+            if (handCard.cardName.equals(cardName)) {
                 handCard.removeFromHandCard();
+            }
         }
     }
 
@@ -68,11 +68,11 @@ public class HandCardZone {
     }
 
     public static boolean doesAnyLevelFourMonsterExisted(String playerNickname) {
-        String cardName;
+        HandCardZone handCard;
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
-            cardName = allHandCards.get(playerNickname).get(i).getCardName();
-            if (allHandCards.get(playerNickname).get(i).getKind().equals("Monster"))
-                if (MonsterCard.getMonsterByName(cardName).getLevel() < 5)
+            handCard = allHandCards.get(playerNickname).get(i);
+            if (handCard.getKind().equals("Monster"))
+                if (MonsterCard.getMonsterByName(handCard.getCardName()).getLevel() < 5)
                     return true;
         }
         return false;
@@ -101,7 +101,7 @@ public class HandCardZone {
     public static int doIHaveAnyRitualMonster(String playerNickname) {
         for (HandCardZone eachCard : allHandCards.get(playerNickname))
             if (eachCard.getCardName().equals("Crab Turtle") || eachCard.getCardName().equals("Skull Guardian"))
-                return eachCard.getAddress();
+                return eachCard.getAddress() + 1;
         return -1;
     }
 
