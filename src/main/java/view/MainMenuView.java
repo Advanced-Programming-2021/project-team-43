@@ -114,10 +114,11 @@ public class MainMenuView extends Application {
                     "Description: " + SpellCard.getSpellCardByName(cardName).getDescription() + "\n" +
                     "Price: " + SpellCard.getSpellCardByName(cardName).getPrice();
         }
-
-        ArrayList<String> cards = JSON.exportCad();
-        cards.add(cardName);
-        JSON.importCard(cards);
+        if (!cardInfo.equals("There is no card with this name!")) {
+            ArrayList<String> cards = JSON.exportCad();
+            cards.add(cardName);
+            JSON.importCard(cards);
+        }
         Stage stage = new Stage();
         Text text = new Text(150, 80, cardInfo);
         text.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
