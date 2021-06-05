@@ -76,20 +76,18 @@ public class ImportCardView extends Application {
                 boolean success = false;
                 if (file.hasFiles()) {
                     dragboard = file;
+                    show();
                     target.setText("File Imported");
                     success = true;
-                    show();
+
                 }
                 event.setDropCompleted(success);
                 event.consume();
             }
         });
-
         root.getChildren().add(target);
         stage.setScene(scene);
         stage.show();
-
-
     }
 
     static Dragboard dragboard;
@@ -98,7 +96,8 @@ public class ImportCardView extends Application {
         String cardName="Not known card!" ;
         String cardInfo = "There is no card with this name!";
         try {
-            String readCardNames = new String(Files.readAllBytes(Paths.get(dragboard.getUrl())));//moshkel
+            String address=dragboard.getUrl().substring(6);
+            String readCardNames = new String(Files.readAllBytes(Paths.get(address)));
           cardName= new Gson().fromJson(readCardNames,
                     new TypeToken<String>() {
                     }.getType());

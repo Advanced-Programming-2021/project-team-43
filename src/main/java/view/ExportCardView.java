@@ -19,6 +19,7 @@ import java.io.IOException;
 public class ExportCardView extends Application {
     static Dragboard dragboard;
 
+
     @Override
     public void start(Stage stg) throws Exception {
         Stage stage = new Stage();
