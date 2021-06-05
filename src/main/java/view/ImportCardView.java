@@ -96,6 +96,7 @@ public class ImportCardView extends Application {
         String cardName="Not known card!" ;
         String cardInfo = "There is no card with this name!";
         try {
+
             String address=dragboard.getUrl().substring(6);
             String readCardNames = new String(Files.readAllBytes(Paths.get(address)));
           cardName= new Gson().fromJson(readCardNames,

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.ExportCardView"
+            prefHeight="400.0" prefWidth="600.0">
+    <TextField  id="cardName" fx:id="cardName" layoutX="115.0" layoutY="28.0" />
+    <Button layoutX="47.0" layoutY="180.0" mnemonicParsing="false" onAction="#export" prefHeight="37.0" prefWidth="79.0" text="Export" />
+    <Text layoutX="29.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card Name:" wrappingWidth="69.677734375" />
+<Label fx:id="label" visible="false"/>
+<Label fx:id="label2" visible="false"/>
+
+</AnchorPane>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.StartClass">
+   <children>
+      <TilePane layoutX="-8.0" layoutY="3.0" prefHeight="109.0" prefWidth="438.0" stylesheets="@design.css">
+         <children>
+            <Button onMouseClicked="#showAll" mnemonicParsing="false" prefHeight="35.0" prefWidth="113.0" text="Show all cards" textFill="#a43535">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button onMouseClicked="#export" mnemonicParsing="false" prefHeight="34.0" prefWidth="86.0" text="Export card" textFill="#a14b4b">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button onMouseClicked="#importCard" mnemonicParsing="false" prefHeight="35.0" prefWidth="86.0" text="Import card" textFill="#9a3d3d">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+         </children>
+      </TilePane>
+   </children>
+</AnchorPane>
