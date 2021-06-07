@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import model.MonsterCard;
 import model.SpellCard;
 import model.TrapCard;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -100,31 +101,32 @@ public class ImportCardView extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        if (card.get(9).equals("Monster")) {
-            cardInfo = "Name: " + card.get(0) + "\n" + "Level: " + card.get(1) + "\n" +
-                    "Attribute: " + card.get(2) + "\n" +
-                    "Monster Type: " + card.get(3) + "\n" +
-                    "Card Type: " + card.get(4) + "\n" +
-                    "Atk: " + card.get(5) + "\n" +
-                    "Def: " + card.get(6) + "\n" +
-                    "Description: " + card.get(7) + "\n" +
-                    "Price: " + card.get(8);
-            new MonsterCard(card.get(2), card.get(0), Integer.parseInt(card.get(1)), card.get(3),
-                    Integer.parseInt(card.get(5)), Integer.parseInt(card.get(6)), "Monster", card.get(4),
-                    false, card.get(7), Integer.parseInt(card.get(8)));
-        } else if (card.get(6).equals("Trap")  ) {
-            cardInfo = "Name: " + card.get(0) + "\n" + "Type: " + card.get(1) + "\n" +
-                    "Icon (Property): " + card.get(2) + "\n" +
-                    "Description: " + card.get(3) + "\n" +
-                    "Price: " + card.get(4);
-            new TrapCard(card.get(0),card.get(1),card.get(2),card.get(3),Integer.parseInt(card.get(4)),card.get(5));
-        }else  if (card.get(6).equals("Spell")){
-            cardInfo = "Name: " + card.get(0) + "\n" + "Type: " + card.get(1) + "\n" +
-                    "Icon (Property): " + card.get(2) + "\n" +
-                    "Description: " + card.get(3) + "\n" +
-                    "Price: " + card.get(4);
-            new SpellCard(card.get(0),card.get(1),card.get(2),card.get(3),Integer.parseInt(card.get(4)),card.get(5));
+        if (card != null) {
+            if (card.get(9).equals("Monster")) {
+                cardInfo = "Name: " + card.get(0) + "\n" + "Level: " + card.get(1) + "\n" +
+                        "Attribute: " + card.get(2) + "\n" +
+                        "Monster Type: " + card.get(3) + "\n" +
+                        "Card Type: " + card.get(4) + "\n" +
+                        "Atk: " + card.get(5) + "\n" +
+                        "Def: " + card.get(6) + "\n" +
+                        "Description: " + card.get(7) + "\n" +
+                        "Price: " + card.get(8);
+                new MonsterCard(card.get(2), card.get(0), Integer.parseInt(card.get(1)), card.get(3),
+                        Integer.parseInt(card.get(5)), Integer.parseInt(card.get(6)), "Monster", card.get(4),
+                        false, card.get(7), Integer.parseInt(card.get(8)));
+            } else if (card.get(6).equals("Trap")) {
+                cardInfo = "Name: " + card.get(0) + "\n" + "Type: " + card.get(1) + "\n" +
+                        "Icon (Property): " + card.get(2) + "\n" +
+                        "Description: " + card.get(3) + "\n" +
+                        "Price: " + card.get(4);
+                new TrapCard(card.get(0), card.get(1), card.get(2), card.get(3), Integer.parseInt(card.get(4)), card.get(5));
+            } else if (card.get(6).equals("Spell")) {
+                cardInfo = "Name: " + card.get(0) + "\n" + "Type: " + card.get(1) + "\n" +
+                        "Icon (Property): " + card.get(2) + "\n" +
+                        "Description: " + card.get(3) + "\n" +
+                        "Price: " + card.get(4);
+                new SpellCard(card.get(0), card.get(1), card.get(2), card.get(3), Integer.parseInt(card.get(4)), card.get(5));
+            }
         }
         Stage stage = new Stage();
         Text text = new Text(150, 80, cardInfo);

@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
 <HBox>
-    <Button mnemonicParsing="false" onAction="#exportMonster" prefHeight="39.0" prefWidth="152.0" text="Export Monster card" />
-    <Button mnemonicParsing="false" onAction="#exportSpellTrap" prefHeight="39.0" prefWidth="154.0" text="Export spellTrap card" />
-      <Button layoutX="162.0" layoutY="10.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="154.0" text="Back" textFill="#ae6b6b" onMouseClicked="#back"/>
+    <Button mnemonicParsing="false" onAction="#exportMonster" prefHeight="39.0" prefWidth="152.0" text="Export Monster card">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+    <Button mnemonicParsing="false" onAction="#exportSpellTrap" prefHeight="39.0" prefWidth="154.0" text="Export spellTrap card">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button layoutX="162.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="39.0" prefWidth="154.0" text="Back" textFill="#ae6b6b">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
 </HBox>
     <Label fx:id="label2" visible="false" />
 
