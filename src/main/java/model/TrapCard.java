@@ -1,7 +1,9 @@
 package main.java.model;
 import java.util.HashMap;
 
+
 public class TrapCard extends Card {
+
     private String icon;
     private String status;
     private static HashMap<String, TrapCard> trapCards = new HashMap<>();
@@ -33,4 +35,5 @@ public class TrapCard extends Card {
     public static TrapCard getTrapCardByName(String cardName) {
         return trapCards.get(cardName);
     }
+
 }

@@ -1,1 +1,1 @@
-{"aa":"dd","s":"nn"}
+{"q":{"username":"q","password":"q","nickname":"q","userScore":0,"userCoin":100000,"imageUrl":"/images/profile/char32.jpg","userAllCards":{},"userAllDecks":{},"activeDeck":""},"e":{"username":"e","password":"e","nickname":"e","userScore":0,"userCoin":100000,"imageUrl":"/images/profile/char7.jpg","userAllCards":{},"userAllDecks":{},"activeDeck":""}}

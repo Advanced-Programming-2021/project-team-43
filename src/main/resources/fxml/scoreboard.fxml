@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="750.0" maxWidth="1000.0" prefHeight="750.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/scoreboard.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.Scoreboard">
+
+</AnchorPane>

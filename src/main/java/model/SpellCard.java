@@ -1,6 +1,7 @@
 package main.java.model;
 import java.util.HashMap;
 
+
 public class SpellCard extends Card {
 
     private String icon;
@@ -35,4 +36,5 @@ public class SpellCard extends Card {
     public static SpellCard getSpellCardByName(String cardName) {
         return spellCards.get(cardName);
     }
+
 }

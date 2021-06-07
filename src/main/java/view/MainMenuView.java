@@ -1,12 +1,15 @@
 package main.java.view;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import java.util.Scanner;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class MainMenuView {
+
+public class MainMenuView extends Application {
 
     public static String getCommand() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        return scanner.nextLine().trim();
     }
 
     public static void showInput(String input) {
@@ -14,4 +17,8 @@ public class MainMenuView {
 
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+    }
 }

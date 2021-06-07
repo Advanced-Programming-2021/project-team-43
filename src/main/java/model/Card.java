@@ -1,8 +1,9 @@
 package main.java.model;
-
 import java.util.HashMap;
-////////////////////////////////////////////////////////////////////////////////////////
+
+
 public class Card {
+
     protected String cardName;
     protected String cardModel;
     protected String description;
@@ -40,4 +41,5 @@ public class Card {
     public static Card getCardsByName(String name) {
         return cards.get(name);
     }
+
 }

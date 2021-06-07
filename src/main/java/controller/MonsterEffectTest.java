@@ -15,6 +15,11 @@ public class MonsterEffectTest {
     }
 
     @Test
+    public void commandKnight() {
+
+    }
+
+    @Test
     public void marshmallon() {
     }
 
