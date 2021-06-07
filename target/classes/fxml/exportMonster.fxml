@@ -29,6 +29,6 @@
          <Cursor fx:constant="HAND" />
       </cursor>
    </Button>
-<!--   <Label fx:id="label" visible="false" />-->
+
    <Label fx:id="label2" visible="false" />
 </AnchorPane>

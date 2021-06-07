@@ -1,1 +1,1 @@
-["Battle OX","Trap Hole","Trap Hole","Trap Hole","Trap Hole","Trap Hole","Trap Hole","Trap Hole","2","","","1","1","","nullName","nullName","","nullName"]
+["Battle OX","Trap Hole","Trap Hole","Trap Hole","Trap Hole","Trap Hole","Trap Hole","Trap Hole","2","","","1","1","","nullName","nullName","","nullName","","nullName","nullName","nullName"]
