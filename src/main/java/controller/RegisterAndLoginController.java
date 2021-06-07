@@ -127,30 +127,30 @@ public class RegisterAndLoginController {
 
     public static String registerInGame(String username, String nickname, String password, String imageUrl) {
         if (username.isEmpty())
-            return "please fill the username field!";
+            return "Please fill the username field!";
         if (nickname.isEmpty())
-            return "please fill the nickname field!";
+            return "Please fill the nickname field!";
         if (password.isEmpty())
-            return "please fill the password filed!";
+            return "Please fill the password filed!";
         if (UserModel.isRepeatedUsername(username))
-            return "user with username " + username + " already exists";
+            return "User with username " + username + " already exists";
         if (UserModel.isRepeatedNickname(nickname))
-            return "user with nickname " + nickname + " already exists";
+            return "User with nickname " + nickname + " already exists";
         else {
             new UserModel(username, password, nickname, imageUrl);
-            return "user created successfully!";
+            return "User created successfully!";
         }
     }
 
     public static String loginInGame(String username, String password) {
         if (username.isEmpty())
-            return "please fill the username field!";
+            return "Please fill the username field!";
         if (password.isEmpty())
-            return "please fill the password filed!";
+            return "Please fill the password filed!";
         if (UserModel.isRepeatedUsername(username)) {
             if (UserModel.getUserByUsername(username).getPassword().equals(password)) {
                 MainMenuController.username = username;
-                return "user logged in successfully!";
+                return "User logged in successfully!";
             }
             else
                 return "Username and password didn’t match!";

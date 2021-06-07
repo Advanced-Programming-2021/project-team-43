@@ -25,7 +25,6 @@ public class ShopController {
         if (matcher.find()) {
             shopBuy(matcher.group(1));
             return 1;
-
         }
         Pattern pattern1 = Pattern.compile("^shop \\s*show\\s* --all$");
         Matcher matcher1 = pattern1.matcher(command);
@@ -66,21 +65,16 @@ public class ShopController {
             ShopView.showInput(entry.getKey() + " : " + entry.getValue());
     }
 
-    public static void shopBuy(String cardName) {
+    public static String shopBuy(String cardName) {
         int cardPrice = ShopModel.getCardPriceByName(cardName);
-        if (cardPrice == 0) {
-            ShopView.showInput("there is no card with this name");
-            return;
-        }
+        if (cardPrice == -1)
+            return "There is no card with this name";
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-        if (user.getUserCoin() < cardPrice) {
-            ShopView.showInput("not enough money");
-            return;
-        }
+        if (user.getUserCoin() < cardPrice)
+            return "Not enough money";
         user.changeUserCoin(-1 * cardPrice);
         user.addCardToUserAllCards(cardName);
-        ShopView.showInput("your shopping was successful!");
-        //UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get("a").addCardToMain(cardName);//////
+        return "Card added successfully!";
     }
 
 }

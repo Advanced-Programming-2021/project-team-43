@@ -32,7 +32,7 @@ public class ShowCardsView extends Application {
         allCards.put("Battle warrior", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Battle warrior.jpg")).toExternalForm())));
         allCards.put("Beast King Barbaros", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Beast King Barbaros.jpg")).toExternalForm())));
         allCards.put("Bitron", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Bitron.jpg")).toExternalForm())));
-        allCards.put("BlackPendant", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/BlackPendant.jpg")).toExternalForm())));
+        allCards.put("Black Pendant", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Black Pendant.jpg")).toExternalForm())));
         allCards.put("Blue-Eyes white dragon", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Blue-Eyes white dragon.jpg")).toExternalForm())));
         allCards.put("Call of The Haunted", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Call of The Haunted.jpg")).toExternalForm())));
         allCards.put("Change of Heart", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Change of Heart.jpg")).toExternalForm())));
@@ -43,7 +43,7 @@ public class ShowCardsView extends Application {
         allCards.put("Curtain of the dark ones", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Curtain of the dark ones.jpg")).toExternalForm())));
         allCards.put("Dark Blade", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Dark Blade.jpg")).toExternalForm())));
         allCards.put("Dark magician", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Dark magician.jpg")).toExternalForm())));
-        allCards.put("DarkHole", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/DarkHole.jpg")).toExternalForm())));
+        allCards.put("Dark Hole", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Dark Hole.jpg")).toExternalForm())));
         allCards.put("Exploder Dragon", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Exploder Dragon.jpg")).toExternalForm())));
         allCards.put("Feral Imp", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Feral Imp.jpg")).toExternalForm())));
         allCards.put("Fireyarou", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Fireyarou.jpg")).toExternalForm())));
@@ -105,7 +105,7 @@ public class ShowCardsView extends Application {
         allCardImage.put("Battle warrior", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Battle warrior.jpg")).toExternalForm()));
         allCardImage.put("Beast King Barbaros", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Beast King Barbaros.jpg")).toExternalForm()));
         allCardImage.put("Bitron", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Bitron.jpg")).toExternalForm()));
-        allCardImage.put("BlackPendant", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/BlackPendant.jpg")).toExternalForm()));
+        allCardImage.put("Black Pendant", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Black Pendant.jpg")).toExternalForm()));
         allCardImage.put("Blue-Eyes white dragon", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Blue-Eyes white dragon.jpg")).toExternalForm()));
         allCardImage.put("Call of The Haunted", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Call of The Haunted.jpg")).toExternalForm()));
         allCardImage.put("Change of Heart", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Change of Heart.jpg")).toExternalForm()));
@@ -116,7 +116,7 @@ public class ShowCardsView extends Application {
         allCardImage.put("Curtain of the dark ones", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Curtain of the dark ones.jpg")).toExternalForm()));
         allCardImage.put("Dark Blade", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Dark Blade.jpg")).toExternalForm()));
         allCardImage.put("Dark magician", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Dark magician.jpg")).toExternalForm()));
-        allCardImage.put("DarkHole", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/DarkHole.jpg")).toExternalForm()));
+        allCardImage.put("Dark Hole", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Dark Hole.jpg")).toExternalForm()));
         allCardImage.put("Exploder Dragon", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Exploder Dragon.jpg")).toExternalForm()));
         allCardImage.put("Feral Imp", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Feral Imp.jpg")).toExternalForm()));
         allCardImage.put("Fireyarou", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Fireyarou.jpg")).toExternalForm()));
@@ -222,6 +222,14 @@ public class ShowCardsView extends Application {
 
     public static HashMap<String, Image> getAllCardImage() {
         return (HashMap<String, Image>)allCardImage;
+    }
+
+    public static String getNameByImage(Image cardImage) {
+        for (Map.Entry<String, Image> entry : allCardImage.entrySet()) {
+            if (entry.getValue().equals(cardImage))
+                return entry.getKey();
+        }
+        return null;
     }
 
 }

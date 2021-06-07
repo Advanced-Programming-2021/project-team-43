@@ -11,9 +11,9 @@ public class UserModel {
     private int userScore;
     private int userCoin;
     private String imageUrl;
+    private String activeDeck;
     public HashMap<String, Integer> userAllCards = new HashMap<>();
     public HashMap<String, DeckModel> userAllDecks = new HashMap<>();
-    private String activeDeck;
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
@@ -51,6 +51,10 @@ public class UserModel {
 
     public int getUserCoin() {
         return userCoin;
+    }
+
+    public HashMap<String, Integer> getUserAllCards() {
+        return userAllCards;
     }
 
     public void changePassword(String password) {

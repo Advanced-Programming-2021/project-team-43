@@ -1,6 +1,5 @@
 package main.java.view;
-
-import controller.MainMenuController;
+import main.java.controller.MainMenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,14 +12,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.UserModel;
-
+import main.java.controller.MainMenuController;
+import main.java.model.UserModel;
+import main.java.model.UserModel;
 import java.io.IOException;
 import java.util.Objects;
 
+
 public class ProfileView extends Application {
 
-    private static Stage profileStage;
     public Label usernameLbl;
     public TextField nicknameTxt;
     public Button changeNicknameBtn;
@@ -36,6 +36,7 @@ public class ProfileView extends Application {
     private UserModel user;
     private Image[] profileImages = new Image[32];
     private static int imageCounter = 0;
+    private static Stage profileStage;
 
 
     @Override
@@ -54,14 +55,14 @@ public class ProfileView extends Application {
         for (int i = 0; i < 31; i++)
             profileImages[i] = new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/profile/char" + i + ".jpg")).toExternalForm()));
         user = UserModel.getUserByUsername(MainMenuController.username);
+        System.out.println(user.getImageUrl());
         profileImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByUsername(MainMenuController.username).getImageUrl())).toExternalForm()));
-        profilePane.getChildren().add(profileImg);
         profileImg.setX(436);
         profileImg.setY(110);
         usernameLbl.setText(user.getUsername());
         nicknameTxt.setText(user.getNickname());
+        profilePane.getChildren().add(profileImg);
     }
-
 
     public void pressChangeNickname() {
         if (!nicknameTxt.getText().equals(user.getNickname())) {
@@ -103,8 +104,8 @@ public class ProfileView extends Application {
         profileImg.setImage(profileImages[imageCounter]);
     }
 
-    public void pressBack() throws IOException {
-        new RegisterAndLoginView().start(profileStage);
+    public void pressBack() throws Exception {
+        new MainMenuView().start(profileStage);
     }
 
 }

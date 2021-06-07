@@ -2,6 +2,7 @@ package main.java.controller;
 import main.java.model.*;
 import main.java.view.MainMenuView;
 import java.lang.*;
+import java.util.ArrayList;
 import java.util.regex.*;
 
 
@@ -396,10 +397,11 @@ public class MainMenuController {
         return 1;
     }
 
-    public static void showScoreboard() {
+    public static ArrayList<String> showScoreboard() {
         String[] keysUsers;
         String temp;
         keysUsers = UserModel.allUsernames.toArray(new String[0]);
+        System.out.println(keysUsers.length);
         for (int x = 0; x < keysUsers.length; x++) {
             for (int y = x + 1; y < keysUsers.length; y++) {
                 if (UserModel.getUserByUsername(keysUsers[x]).getUserScore() < UserModel.getUserByUsername(keysUsers[y]).getUserScore()) {
@@ -418,11 +420,16 @@ public class MainMenuController {
             }
         }
         int k = 1;
+        ArrayList<String> arrayList =new ArrayList<>();
         for (int i = 0; i < keysUsers.length; i++) {
             if (keysUsers[i].equals("AI")) continue;
+            arrayList.add(keysUsers[i]);
             MainMenuView.showInput((k) + "_" + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
             k++;
+
         }
+
+        return arrayList;
     }
 
     public static void changePassword(String currentPassword, String newPassword) {
@@ -440,5 +447,4 @@ public class MainMenuController {
         }
 
     }
-
 }
