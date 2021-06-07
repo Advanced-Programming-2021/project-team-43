@@ -3,22 +3,27 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
-<HBox>
-    <Button mnemonicParsing="false" onAction="#exportMonster" prefHeight="39.0" prefWidth="152.0" text="Export Monster card">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-    <Button mnemonicParsing="false" onAction="#exportSpellTrap" prefHeight="39.0" prefWidth="154.0" text="Export spellTrap card">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Button layoutX="162.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="39.0" prefWidth="154.0" text="Back" textFill="#ae6b6b">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-</HBox>
-    <Label fx:id="label2" visible="false" />
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="chart" stylesheets="@start.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
+    <Label fx:id="label2" prefHeight="46.0" prefWidth="161.0" visible="false" />
+ <Button layoutX="276.0" layoutY="301.0" mnemonicParsing="false" onAction="#exportMonster" prefHeight="39.0" prefWidth="152.0" text="Export Monster card">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
+ <Button layoutX="275.0" layoutY="233.0" mnemonicParsing="false" onAction="#exportSpellTrap" prefHeight="39.0" prefWidth="154.0" text="Export spellTrap card">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
+   <Button layoutX="20.0" layoutY="623.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="39.0" prefWidth="122.0" text="Back" textFill="#ae6b6b" underline="true">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+      <font>
+         <Font name="System Bold Italic" size="12.0" />
+      </font>
+   </Button>
 
 </AnchorPane>

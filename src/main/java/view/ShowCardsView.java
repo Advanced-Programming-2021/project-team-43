@@ -180,7 +180,7 @@ public class ShowCardsView extends Application {
                 k = 0;
                 j++;
             }
-            Image image = new Image(Objects.requireNonNull(getClass().getResource("/cards/" + i + ".jpg")).toExternalForm());
+            Image image = new Image(getClass().getResource("/images/cards/" + i + ".jpg").toExternalForm());
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(140);
             imageView.setFitWidth(140);
@@ -200,7 +200,7 @@ public class ShowCardsView extends Application {
                 k = 0;
                 j++;
             }
-            Image image = new Image(Objects.requireNonNull(getClass().getResource("/cards2/" + i + ".jpg")).toExternalForm());
+            Image image = new Image(getClass().getResource("/images/cards2/" + i + ".jpg").toExternalForm());
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(150);
             imageView.setFitWidth(150);

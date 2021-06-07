@@ -6,34 +6,38 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="pane1" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
-    <TextField id="cardName" fx:id="cardName" layoutX="115.0" layoutY="28.0" />
-    <Text layoutX="29.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card Name:" wrappingWidth="69.677734375" />
-   <TextField id="level" fx:id="level" layoutX="115.0" layoutY="60.0" />
-   <TextField id="attribute" fx:id="attribute" layoutX="115.0" layoutY="95.0" />
-   <TextField id="monsterType" fx:id="monsterType" layoutX="115.0" layoutY="130.0" />
-   <TextField id="cardType" fx:id="cardType" layoutX="115.0" layoutY="163.0" />
-   <TextField id="atk" fx:id="atk" layoutX="115.0" layoutY="200.0" />
-   <TextField id="def" fx:id="def" layoutX="115.0" layoutY="238.0" />
-   <TextField id="description" fx:id="description" layoutX="115.0" layoutY="274.0" />
-   <TextField id="price" fx:id="price" layoutX="115.0" layoutY="308.0" />
-   <Text layoutX="50.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level:" wrappingWidth="47.67773437499997" />
-   <Text layoutX="36.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attribute:" wrappingWidth="69.677734375" />
-   <Text layoutX="14.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monster Type:" wrappingWidth="80.677734375" />
-   <Text layoutX="29.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card Type:" wrappingWidth="69.677734375" />
-   <Text layoutX="57.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Def:" wrappingWidth="34.677734375" />
-   <Text layoutX="36.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="69.677734375" />
-   <Text layoutX="47.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" wrappingWidth="47.677734375" />
-   <Text layoutX="57.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Atk:" wrappingWidth="27.677734375" />
-   <Button layoutX="409.0" layoutY="314.0" mnemonicParsing="false" onMouseClicked="#exportCard" prefHeight="31.0" prefWidth="95.0" text="Export" textFill="#b92b2b" underline="true">
+<AnchorPane fx:id="pane1" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="chart" stylesheets="@exportMonster.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
+   <Button layoutX="55.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#exportCard" prefHeight="48.0" prefWidth="117.0" text="Export" textFill="#b92b2b" underline="true">
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor>
    </Button>
-
-   <ImageView fx:id="imageView1" fitHeight="244.0" fitWidth="174.0" layoutX="358.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+   <Text layoutX="189.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card Builder:" wrappingWidth="72.0" />
+   <ImageView fx:id="imageView11" fitHeight="546.0" fitWidth="382.0" layoutX="341.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@../newCards/0.jpg" />
-      </image></ImageView>
-   <Text layoutX="286.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Defualt Image:" wrappingWidth="95.0" />
+         <Image url="@../images/empty.jpg" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imageView12" fitHeight="342.0" fitWidth="281.0" layoutX="385.0" layoutY="156.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/0.jpg" />
+      </image>
+   </ImageView>
+   <TextField id="cardName" fx:id="cardName" layoutX="378.0" layoutY="67.0" prefHeight="31.0" prefWidth="166.0" promptText="Card name" />
+   <TextField id="level" fx:id="level" layoutX="556.0" layoutY="114.0" prefHeight="25.0" prefWidth="124.0" promptText="Level" />
+   <TextField id="attribute" fx:id="attribute" layoutX="610.0" layoutY="58.0" prefHeight="16.0" prefWidth="72.0" promptText="Attribute" />
+   <TextField id="monsterType" fx:id="monsterType" layoutX="376.0" layoutY="462.0" prefHeight="25.0" prefWidth="103.0" promptText="Monster Type" />
+   <TextField id="cardType" fx:id="cardType" layoutX="585.0" layoutY="460.0" prefHeight="25.0" prefWidth="89.0" promptText="Card Type" />
+   <TextField id="atk" fx:id="atk" layoutX="544.0" layoutY="550.0" prefHeight="17.0" prefWidth="56.0" promptText="Atk" />
+   <TextField id="def" fx:id="def" layoutX="618.0" layoutY="550.0" prefHeight="17.0" prefWidth="56.0" promptText="Def" />
+   <TextField id="description" fx:id="description" layoutX="376.0" layoutY="486.0" prefHeight="59.0" prefWidth="306.0" promptText="Name of card's effect" />
+   <Label id="label" fx:id="Label" layoutX="43.0" layoutY="293.0" prefHeight="73.0" prefWidth="185.0" textAlignment="CENTER" textFill="WHITE" />
+   <Button layoutX="18.0" layoutY="601.0" mnemonicParsing="false" onMouseClicked="#backToMenu" prefHeight="48.0" prefWidth="117.0" text="Back" textFill="#d31f1f" underline="true">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+      <font>
+         <Font name="System Bold Italic" size="12.0" />
+      </font>
+   </Button>
 </AnchorPane>

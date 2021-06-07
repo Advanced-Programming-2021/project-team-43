@@ -1,0 +1,1 @@
+["file:/C:/Users/Partiran/Desktop/ap2ap/target/classes/images/newCards/0.jpg","SDF","1","FIRE","Fiend","Normal","1","1","Battle OX","100","Monster"]

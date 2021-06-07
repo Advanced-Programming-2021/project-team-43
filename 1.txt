@@ -1,1 +1,1 @@
-["file:/C:/Users/Partiran/Desktop/ap2ap/target/classes/newCards/0.jpg","1","2","2","22","2","2","22","2","2","Monster"]
+["file:/C:/Users/Partiran/Desktop/ap2ap/target/classes/images/newCards/0.jpg","1","1","1","r","1","1","1","Battle OX","100","Monster"]
