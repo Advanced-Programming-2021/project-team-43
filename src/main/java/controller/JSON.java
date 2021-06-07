@@ -2,6 +2,7 @@ package controller;
 import java.io.IOException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import javafx.scene.image.Image;
 import model.UserModel;
 import java.io.*;
 import java.nio.file.Files;
@@ -79,7 +80,7 @@ public class JSON {
         return null;
     }
 
-    public static void importCard(ArrayList<String> cardNames) {
+    public static void importCard(ArrayList<String > cardNames) {
         try {
             FileWriter writerInfo = new FileWriter("jsonAddedCards.txt");
             writerInfo.write(new Gson().toJson(cardNames));
@@ -102,5 +103,26 @@ public class JSON {
         }
         return null;
     }
-
+    public static void importCards(ArrayList<Image > cardNames) {
+        try {
+            FileWriter writerInfo = new FileWriter("jsonNewCards.txt");
+            writerInfo.write(new Gson().toJson(cardNames));
+            writerInfo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static ArrayList<Image> exportCards() {
+        try {
+            String readCardNames = new String(Files.readAllBytes(Paths.get("jsonNewCards.txt")));
+            ArrayList<Image> cardNames;
+            cardNames = new Gson().fromJson(readCardNames,
+                    new TypeToken<List<Image>>() {
+                    }.getType());
+            return cardNames;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

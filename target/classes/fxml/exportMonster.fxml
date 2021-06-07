@@ -2,10 +2,11 @@
 
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
+<AnchorPane fx:id="pane1" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
     <TextField id="cardName" fx:id="cardName" layoutX="115.0" layoutY="28.0" />
     <Text layoutX="29.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card Name:" wrappingWidth="69.677734375" />
    <TextField id="level" fx:id="level" layoutX="115.0" layoutY="60.0" />
@@ -24,11 +25,15 @@
    <Text layoutX="36.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="69.677734375" />
    <Text layoutX="47.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" wrappingWidth="47.677734375" />
    <Text layoutX="57.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Atk:" wrappingWidth="27.677734375" />
-   <Button layoutX="383.0" layoutY="171.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="95.0" text="Export" textFill="#b92b2b" underline="true" onMouseClicked="#exportCard">
+   <Button layoutX="409.0" layoutY="314.0" mnemonicParsing="false" onMouseClicked="#exportCard" prefHeight="31.0" prefWidth="95.0" text="Export" textFill="#b92b2b" underline="true">
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor>
    </Button>
 
-   <Label fx:id="label2" visible="false" />
+   <ImageView fx:id="imageView1" fitHeight="244.0" fitWidth="174.0" layoutX="358.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../newCards/0.jpg" />
+      </image></ImageView>
+   <Text layoutX="286.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Defualt Image:" wrappingWidth="95.0" />
 </AnchorPane>

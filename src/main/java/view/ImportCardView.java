@@ -5,8 +5,13 @@ import com.google.gson.reflect.TypeToken;
 import controller.SetCards;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -73,7 +78,11 @@ public class ImportCardView extends Application {
                 boolean success = false;
                 if (file.hasFiles()) {
                     dragboard = file;
-                    show();
+                    try {
+                        show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     target.setText("File Imported");
                     success = true;
 
@@ -89,7 +98,7 @@ public class ImportCardView extends Application {
 
     static Dragboard dragboard;
 
-    public void show() {
+    public void show() throws IOException {
         ArrayList<String> card = new ArrayList<>();
         String cardInfo = "There is no info in this file!";
         try {
@@ -102,37 +111,41 @@ public class ImportCardView extends Application {
             e.printStackTrace();
         }
         if (card != null) {
-            if (card.get(9).equals("Monster")) {
-                cardInfo = "Name: " + card.get(0) + "\n" + "Level: " + card.get(1) + "\n" +
-                        "Attribute: " + card.get(2) + "\n" +
-                        "Monster Type: " + card.get(3) + "\n" +
-                        "Card Type: " + card.get(4) + "\n" +
-                        "Atk: " + card.get(5) + "\n" +
-                        "Def: " + card.get(6) + "\n" +
-                        "Description: " + card.get(7) + "\n" +
-                        "Price: " + card.get(8);
-                new MonsterCard(card.get(2), card.get(0), Integer.parseInt(card.get(1)), card.get(3),
-                        Integer.parseInt(card.get(5)), Integer.parseInt(card.get(6)), "Monster", card.get(4),
-                        false, card.get(7), Integer.parseInt(card.get(8)));
-            } else if (card.get(6).equals("Trap")) {
-                cardInfo = "Name: " + card.get(0) + "\n" + "Type: " + card.get(1) + "\n" +
-                        "Icon (Property): " + card.get(2) + "\n" +
-                        "Description: " + card.get(3) + "\n" +
-                        "Price: " + card.get(4);
-                new TrapCard(card.get(0), card.get(1), card.get(2), card.get(3), Integer.parseInt(card.get(4)), card.get(5));
-            } else if (card.get(6).equals("Spell")) {
-                cardInfo = "Name: " + card.get(0) + "\n" + "Type: " + card.get(1) + "\n" +
-                        "Icon (Property): " + card.get(2) + "\n" +
-                        "Description: " + card.get(3) + "\n" +
-                        "Price: " + card.get(4);
-                new SpellCard(card.get(0), card.get(1), card.get(2), card.get(3), Integer.parseInt(card.get(4)), card.get(5));
+            if (card.get(10).equals("Monster")) {
+                cardInfo = "Name: " + card.get(1) + "\n" + "Level: " + card.get(2) + "\n" +
+                        "Attribute: " + card.get(3) + "\n" +
+                        "Monster Type: " + card.get(4) + "\n" +
+                        "Card Type: " + card.get(5) + "\n" +
+                        "Atk: " + card.get(6) + "\n" +
+                        "Def: " + card.get(7) + "\n" +
+                        "Description: " + card.get(8) + "\n" +
+                        "Price: " + card.get(9);
+                new MonsterCard(card.get(3), card.get(1), Integer.parseInt(card.get(2)), card.get(4),
+                        Integer.parseInt(card.get(6)), Integer.parseInt(card.get(7)), "Monster", card.get(5),
+                        false, card.get(8), Integer.parseInt(card.get(9)));
+            } else if (card.get(7).equals("Trap")) {
+                cardInfo = "Name: " + card.get(1) + "\n" + "Type: " + card.get(2) + "\n" +
+                        "Icon (Property): " + card.get(3) + "\n" +
+                        "Description: " + card.get(4) + "\n" +
+                        "Price: " + card.get(5);
+                new TrapCard(card.get(1), card.get(2), card.get(3), card.get(4), Integer.parseInt(card.get(5)), card.get(6));
+            } else if (card.get(7).equals("Spell")) {
+                cardInfo = "Name: " + card.get(1) + "\n" + "Type: " + card.get(2) + "\n" +
+                        "Icon (Property): " + card.get(3) + "\n" +
+                        "Description: " + card.get(4) + "\n" +
+                        "Price: " + card.get(5);
+                new SpellCard(card.get(1), card.get(2), card.get(3), card.get(4), Integer.parseInt(card.get(5)), card.get(6));
             }
         }
         Stage stage = new Stage();
         Text text = new Text(150, 80, cardInfo);
         text.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 16));
+        ImageView imageView=new ImageView();
+        imageView.setX(650);
+        imageView.setY(60);
+        imageView.setImage(new Image(card.get(0)));
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(new Group(text));
+        Scene scene = new Scene(new Group(text,imageView));
         scene.setFill(Color.DARKRED);
         stage.setTitle("Card Info");
         stage.setScene(scene);

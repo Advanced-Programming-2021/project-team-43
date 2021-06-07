@@ -1,0 +1,1 @@
+["file:/C:/Users/Partiran/Desktop/ap2ap/target/classes/newCards/17.jpg","a1","1","1","1","1","11","11","1","1","Monster"]

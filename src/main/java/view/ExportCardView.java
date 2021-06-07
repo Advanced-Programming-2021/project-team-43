@@ -12,19 +12,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.Card;
-import model.MonsterCard;
-import model.UserModel;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ExportCardView extends Application {
     private static Stage stage;
@@ -32,16 +31,13 @@ public class ExportCardView extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
         stage.setTitle("EXPORT CARD");
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/export.fxml"));
-        Scene scene = new Scene(root, 400, 200);
+        Scene scene = new Scene(root, 200, 200);
         scene.setFill(Color.DARKRED);
         stage.setScene(scene);
         stage.show();
     }
-
     @FXML
     TextField cardName;
     @FXML
@@ -61,20 +57,21 @@ public class ExportCardView extends Application {
     @FXML
     TextField price;
 
+
     public void exportMonster(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/exportMonster.fxml"));
         Scene scene = new Scene(root, 400, 200);
         scene.setFill(Color.DARKRED);
         stage.setScene(scene);
         stage.show();
-
     }
 
     @FXML
-    Label label2;
+    public AnchorPane pane1;
 
     public void exportCard(MouseEvent mouseEvent) throws Exception {
         ArrayList<String> cardInfo = new ArrayList<>();
+        cardInfo.add(getClass().getResource("/newCards/0.jpg").toExternalForm());
         cardInfo.add(cardName.getText());
         cardInfo.add(level.getText());
         cardInfo.add(attribute.getText());
@@ -88,7 +85,7 @@ public class ExportCardView extends Application {
         String id;
         if (cardName == null) {
             id = "nullName";
-        }    else  {
+        } else {
             id = cardName.getText();
         }
         try {
@@ -101,8 +98,6 @@ public class ExportCardView extends Application {
         ArrayList<String> cards = JSON.exportCad();
         cards.add(id);
         JSON.importCard(cards);
-        label2.setText("Card exported!");
-        label2.setVisible(true);
         new StartClass().start(stage);
     }
 
@@ -129,6 +124,7 @@ public class ExportCardView extends Application {
 
     public void exportCard2(MouseEvent mouseEvent) throws Exception {
         ArrayList<String> cardInfo = new ArrayList<>();
+        cardInfo.add(getClass().getResource("/newCards/3.jpg").toExternalForm());
         cardInfo.add(cardNam.getText());
         cardInfo.add(type.getText());
         cardInfo.add(Icon.getText());
@@ -136,8 +132,9 @@ public class ExportCardView extends Application {
         cardInfo.add(price2.getText());
         cardInfo.add(status.getText());
         cardInfo.add("Spell");
+
         String id;
-        if (cardName == null) {
+        if (cardNam == null) {
             id = "nullName";
         } else {
             id = cardNam.getText();
@@ -152,13 +149,12 @@ public class ExportCardView extends Application {
         ArrayList<String> cards = JSON.exportCad();
         cards.add(id);
         JSON.importCard(cards);
-        label2.setText("Card exported!");
-        label2.setVisible(true);
         new StartClass().start(stage);
     }
 
     public void exportCard3(MouseEvent mouseEvent) throws Exception {
         ArrayList<String> cardInfo = new ArrayList<>();
+        cardInfo.add(getClass().getResource("/newCards/3.jpg").toExternalForm());
         cardInfo.add(cardNam.getText());
         cardInfo.add(type.getText());
         cardInfo.add(Icon.getText());
@@ -166,8 +162,9 @@ public class ExportCardView extends Application {
         cardInfo.add(price2.getText());
         cardInfo.add(status.getText());
         cardInfo.add("Trap");
+
         String id;
-        if (cardName == null) {
+        if (cardNam == null) {
             id = "nullName";
         } else {
             id = cardNam.getText();
@@ -182,8 +179,6 @@ public class ExportCardView extends Application {
         ArrayList<String> cards = JSON.exportCad();
         cards.add(id);
         JSON.importCard(cards);
-        label2.setText("Card exported!");
-        label2.setVisible(true);
         new StartClass().start(stage);
     }
 
