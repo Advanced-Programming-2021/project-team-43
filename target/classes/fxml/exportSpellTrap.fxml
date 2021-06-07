@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
+   <children>
+      <TextField id="cardNam" fx:id="cardNam" layoutX="127.0" layoutY="83.0" />
+      <Text layoutX="51.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="card name:" />
+      <TextField id="type" fx:id="type" layoutX="127.0" layoutY="129.0" />
+      <TextField id="Icon" fx:id="Icon" layoutX="127.0" layoutY="175.0" />
+      <TextField id="description2" fx:id="description2" layoutX="127.0" layoutY="219.0" />
+      <Text layoutX="61.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" />
+      <Text layoutX="35.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Icon (Property):" />
+      <Text layoutX="49.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" />
+      <TextField id="price2" fx:id="price2" layoutX="127.0" layoutY="258.0" />
+      <Text layoutX="61.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" />
+      <Button layoutX="406.0" layoutY="167.0" mnemonicParsing="false" onMouseClicked="#exportCard2" prefHeight="33.0" prefWidth="169.0" text="Export as Spell card" textFill="#cd4747" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button layoutX="406.0" layoutY="203.0" mnemonicParsing="false" onMouseClicked="#exportCard3" prefHeight="33.0" prefWidth="169.0" text="Export as Trap card" textFill="#cd4747" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <TextField id="status" fx:id="status" layoutX="127.0" layoutY="297.0" />
+      <Text layoutX="54.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:" />
+   </children>
+   <Label fx:id="label2" visible="false" />
+</AnchorPane>

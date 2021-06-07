@@ -28,7 +28,7 @@ public class StartClass extends Application {
 
     public void export(MouseEvent mouseEvent) throws Exception {
         new ShowCardsView().start(stage);
-        new ExportCardView().start(null);
+        new ExportCardView().start(stage);
     }
 
     public void importCard(MouseEvent mouseEvent) throws Exception {
@@ -39,4 +39,7 @@ public class StartClass extends Application {
        new ShowCardsView().start(null);
     }
 
+    public void exit(MouseEvent mouseEvent) {
+        System.exit(0);
+    }
 }

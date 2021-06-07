@@ -2,13 +2,10 @@ package view;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import controller.JSON;
 import controller.SetCards;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -20,7 +17,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Card;
 import model.MonsterCard;
 import model.SpellCard;
 import model.TrapCard;
@@ -28,11 +24,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ImportCardView extends Application {
     @Override
     public void start(Stage stg) throws Exception {
-        Stage stage=new Stage();
+        Stage stage = new Stage();
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
         stage.setTitle("IMPORT CARD");
@@ -42,7 +39,6 @@ public class ImportCardView extends Application {
         final Text target = new Text(100, 100, "DROP CARD'S FILE HERE");
         target.setScaleX(2.0);
         target.setScaleY(2.0);
-
         target.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 if (event.getGestureSource() != target &&
@@ -93,43 +89,42 @@ public class ImportCardView extends Application {
     static Dragboard dragboard;
 
     public void show() {
-        String cardName="Not known card!" ;
-        String cardInfo = "There is no card with this name!";
+        ArrayList<String> card = new ArrayList<>();
+        String cardInfo = "There is no info in this file!";
         try {
-
-            String address=dragboard.getUrl().substring(6);
+            String address = dragboard.getUrl().substring(6);
             String readCardNames = new String(Files.readAllBytes(Paths.get(address)));
-          cardName= new Gson().fromJson(readCardNames,
-                    new TypeToken<String>() {
+            card = new Gson().fromJson(readCardNames,
+                    new TypeToken<List<String>>() {
                     }.getType());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
-            cardInfo = "Name: " + cardName + "\n" + "Level: " + MonsterCard.getMonsterByName(cardName).getLevel() + "\n" +
-                    "Attribute: " + MonsterCard.getMonsterByName(cardName).getAttribute() + "\n" +
-                    "Monster Type: " + MonsterCard.getMonsterByName(cardName).getMonsterType() + "\n" +
-                    "Card Type: " + MonsterCard.getMonsterByName(cardName).getCardType() + "\n" +
-                    "Atk: " + MonsterCard.getMonsterByName(cardName).getAttack() + "\n" +
-                    "Def: " + MonsterCard.getMonsterByName(cardName).getDefend() + "\n" +
-                    "Description: " + MonsterCard.getMonsterByName(cardName).getDescription() + "\n" +
-                    "Price: " + MonsterCard.getMonsterByName(cardName).getPrice();
-        } else if (Card.getCardsByName(cardName).getCardModel().equals("Trap")) {
-            cardInfo = "Name: " + cardName + "\n" + "Type: Trap" + "\n" +
-                    "Icon (Property): " + TrapCard.getTrapCardByName(cardName).getIcon() + "\n" +
-                    "Description: " + TrapCard.getTrapCardByName(cardName).getDescription() + "\n" +
-                    "Price: " + TrapCard.getTrapCardByName(cardName).getPrice();
-        } else if (Card.getCardsByName(cardName).getCardModel().equals("Spell")) {
-            cardInfo = "Name: " + cardName + "\n" + "Type: Spell" + "\n" +
-                    "Icon (Property): " + SpellCard.getSpellCardByName(cardName).getIcon() + "\n" +
-                    "Description: " + SpellCard.getSpellCardByName(cardName).getDescription() + "\n" +
-                    "Price: " + SpellCard.getSpellCardByName(cardName).getPrice();
-        }
-        if (!cardInfo.equals("There is no card with this name!")) {
-            ArrayList<String> cards = JSON.exportCad();
-            cards.add(cardName);
-            JSON.importCard(cards);
+        if (card.get(9).equals("Monster")) {
+            cardInfo = "Name: " + card.get(0) + "\n" + "Level: " + card.get(1) + "\n" +
+                    "Attribute: " + card.get(2) + "\n" +
+                    "Monster Type: " + card.get(3) + "\n" +
+                    "Card Type: " + card.get(4) + "\n" +
+                    "Atk: " + card.get(5) + "\n" +
+                    "Def: " + card.get(6) + "\n" +
+                    "Description: " + card.get(7) + "\n" +
+                    "Price: " + card.get(8);
+            new MonsterCard(card.get(2), card.get(0), Integer.parseInt(card.get(1)), card.get(3),
+                    Integer.parseInt(card.get(5)), Integer.parseInt(card.get(6)), "Monster", card.get(4),
+                    false, card.get(7), Integer.parseInt(card.get(8)));
+        } else if (card.get(6).equals("Trap")  ) {
+            cardInfo = "Name: " + card.get(0) + "\n" + "Type: " + card.get(1) + "\n" +
+                    "Icon (Property): " + card.get(2) + "\n" +
+                    "Description: " + card.get(3) + "\n" +
+                    "Price: " + card.get(4);
+            new TrapCard(card.get(0),card.get(1),card.get(2),card.get(3),Integer.parseInt(card.get(4)),card.get(5));
+        }else  if (card.get(6).equals("Spell")){
+            cardInfo = "Name: " + card.get(0) + "\n" + "Type: " + card.get(1) + "\n" +
+                    "Icon (Property): " + card.get(2) + "\n" +
+                    "Description: " + card.get(3) + "\n" +
+                    "Price: " + card.get(4);
+            new SpellCard(card.get(0),card.get(1),card.get(2),card.get(3),Integer.parseInt(card.get(4)),card.get(5));
         }
         Stage stage = new Stage();
         Text text = new Text(150, 80, cardInfo);
@@ -142,7 +137,5 @@ public class ImportCardView extends Application {
         stage.sizeToScene();
         stage.show();
     }
-
-
 
 }
