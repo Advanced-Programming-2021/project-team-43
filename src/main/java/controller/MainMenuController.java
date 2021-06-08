@@ -201,7 +201,6 @@ public class MainMenuController {
 
                             if (roundNumber == 1 || roundNumber == 3) {
                                 username2 = playerName;
-
                                 String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
                                 String secondPlayer;
                                 if (firstPlayer.equals(playerName)) {

@@ -1,1 +1,1 @@
-{"dd":{"username":"dd","password":"dd","nickname":"dd","userScore":0,"userCoin":100000,"userAllCards":{},"userAllDecks":{},"activeDeck":""}}
+{"rr":{"username":"rr","password":"rr","nickname":"rr","userScore":0,"userCoin":100000,"userAllCards":{},"userAllDecks":{},"activeDeck":""},"qq":{"username":"qq","password":"rqqq","nickname":"qq","userScore":0,"userCoin":100000,"userAllCards":{},"userAllDecks":{},"activeDeck":""}}
