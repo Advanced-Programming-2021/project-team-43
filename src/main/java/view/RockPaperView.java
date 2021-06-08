@@ -20,8 +20,8 @@ public class RockPaperView extends Application {
     @FXML
     private Label showResult;
     private static Stage stage;
-    public static String ply1 ;
-    public static String ply2 ;
+    public static String ply1 ="rr";
+    public static String ply2 ="qq";
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
@@ -38,8 +38,8 @@ public class RockPaperView extends Application {
     public void initialize() {
         new UserModel("rr", "rr", "rr");//
         new UserModel("qq", "rqqq", "qq");//
-        showTurn.setText(UserModel.getUserByUsername(ply1).getNickname()+ " select one");
-        showTurn1.setText(UserModel.getUserByUsername(ply2).getNickname()+ " select one");
+        showTurn.setText((ply1)+ " select one");
+        showTurn1.setText((ply2)+ " select one");
     }
 
 
@@ -82,9 +82,6 @@ public class RockPaperView extends Application {
             showTurn.setText(ply1 + " you did not selected,select again");
         }
         if (secondChoice != null && firstChoice != null) {
-
-
-
             winnerPlayer = PickFirstPlayer.rockPaperScissors(ply1, ply2, firstChoice, secondChoice);
             showResult.setText(PickFirstPlayer.result);
 
