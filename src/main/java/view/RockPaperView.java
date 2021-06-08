@@ -43,6 +43,7 @@ public class RockPaperView extends Application {
     }
 
 
+
     public void stone(MouseEvent mouseEvent) {
         firstChoice = "rock";
         result();

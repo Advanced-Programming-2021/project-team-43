@@ -17,6 +17,7 @@ import java.util.Random;
 public class PickFirstPlayerView extends Application {
     private static Stage stage;
 
+
     @Override
     public void start(Stage stge) throws Exception {
        // this.stage = stage;

@@ -8,7 +8,9 @@ import java.util.*;
 
 
 public class PickFirstPlayer {
-
+    public static String chose(String ss,String vv) {
+        return null;
+    }
 
     public static String result;
 
