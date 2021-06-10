@@ -7,7 +7,6 @@ import view.RockPaperView;
 import java.util.*;
 
 
-
 public class PickFirstPlayer {
 
     public static String result;

@@ -28,7 +28,7 @@ public class PickFirstPlayerView extends Application {
         int chance = random.nextInt(50);
         if (chance % 2 == 0) {
             try {
-               new CoinChanceView().start(stage);
+                new CoinChanceView().start(stage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -43,3 +43,8 @@ public class PickFirstPlayerView extends Application {
 
 
 }
+
+
+
+
+
