@@ -213,6 +213,8 @@ public class ShowCardsView extends Application {
     }
 
     public static ImageView getCardImageViewByName(String cardName) {
+        allCards.get(cardName).setFitWidth(80);
+        allCards.get(cardName).setFitHeight(80);
         return allCards.get(cardName);
     }
 
@@ -232,4 +234,7 @@ public class ShowCardsView extends Application {
         return null;
     }
 
+    public static Image getCardImageByName(String cardName) {
+        return allCardImage.get(cardName);
+    }
 }

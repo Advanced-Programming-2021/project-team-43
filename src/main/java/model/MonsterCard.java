@@ -11,11 +11,12 @@ public class MonsterCard extends Card {
     private String cardType;
     private boolean isScanner;
     private String attribute;
+
     private static HashMap<String, MonsterCard> allMonsters = new HashMap<>();
 
     public MonsterCard(String attribute, String name, int level, String MonsterType, int attack, int defend,
-                       String cardModel, String cardType, boolean isScanner, String description, int price) {
-        super(name, cardModel, description, price);
+                       String cardModel, String cardType, boolean isScanner, String description, int price,String secondName) {
+        super(name, cardModel, description, price,secondName);
         this.attack = attack;
         this.level = level;
         this.defend = defend;
@@ -33,10 +34,6 @@ public class MonsterCard extends Card {
     public String getCardType() {
         return cardType;
     }
-
-//    //public void addScanner() {
-//        allMonsters.put("Scanner", this);
-//    }
 
     public int getLevel() {
         return level;

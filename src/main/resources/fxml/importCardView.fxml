@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ImportCardView">
+    <children>
+        <ImageView fx:id="image" fitHeight="158.0" fitWidth="150.0" layoutX="778.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
+        <Text fx:id="text" layoutX="50.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="184.13671875" />
+    </children>
+</AnchorPane>
