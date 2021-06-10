@@ -7,10 +7,8 @@ import view.RockPaperView;
 import java.util.*;
 
 
+
 public class PickFirstPlayer {
-    public static String chose(String ss,String vv) {
-        return null;
-    }
 
     public static String result;
 
@@ -57,7 +55,7 @@ public class PickFirstPlayer {
         return null;
     }
 
-    private static String chanceCoin(String player1, String player2) {
+    public static String chanceCoin(String player1, String player2) {
         Random rand = new Random();
         int n = rand.nextInt(2);
         if (n == 0) {

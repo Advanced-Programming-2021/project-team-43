@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.PickFirstPlayerView"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.text.*?>
 
 
-
+<AnchorPane maxHeight="761.0" maxWidth="1523.0" prefHeight="761.0" prefWidth="1498.0" styleClass="coin" stylesheets="@design.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CoinChanceView">
+   <children>
+      <Label fx:id="label" layoutX="658.0" layoutY="263.0" prefHeight="89.0" prefWidth="159.0" text="aa" textFill="#34ff00" textOverrun="WORD_ELLIPSIS" visible="false">
+         <font>
+            <Font name="System Italic" size="22.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

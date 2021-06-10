@@ -20,8 +20,8 @@ public class RockPaperView extends Application {
     @FXML
     private Label showResult;
     private static Stage stage;
-    public static String ply1 ="rr";
-    public static String ply2 ="qq";
+    public static String ply1 ;//in dota bayad az main menu por beshan
+    public static String ply2 ;
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
@@ -36,8 +36,8 @@ public class RockPaperView extends Application {
 
     @FXML
     public void initialize() {
-        new UserModel("rr", "rr", "rr");//
-        new UserModel("qq", "rqqq", "qq");//
+       // new UserModel("rr", "rr", "rr");//
+        //new UserModel("qq", "rqqq", "qq");//
         showTurn.setText((ply1)+ " select one");
         showTurn1.setText((ply2)+ " select one");
     }

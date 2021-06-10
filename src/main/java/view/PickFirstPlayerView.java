@@ -20,22 +20,23 @@ public class PickFirstPlayerView extends Application {
 
     @Override
     public void start(Stage stge) throws Exception {
-       // this.stage = stage;
-        Stage stage=new Stage();
+        // this.stage = stage;
+        Stage stage = new Stage();
         stage.setTitle("Pick first player");
 
         Random random = new Random();
-        int chance = 3;// random.nextInt(50);
+        int chance = random.nextInt(50);
         if (chance % 2 == 0) {
-//            try {
-//                coin();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            try {
+               new CoinChanceView().start(stage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             try {
-              new RockPaperView().start(stage);
+                new RockPaperView().start(stage);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
