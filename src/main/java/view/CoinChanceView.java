@@ -1,5 +1,6 @@
 package view;
 
+import controller.MainMenuController;
 import controller.PickFirstPlayer;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -14,8 +15,8 @@ import javafx.stage.Stage;
 public class CoinChanceView extends Application {
     private static Stage stage;
     public static String winnerUsername;
-    public static String ply1;
-    public static String ply2;///in dota bayad az main menu por beshan
+    public static String ply1= MainMenuController.username;
+    public static String ply2=MainMenuController.username2;
     @FXML
     Label label;
     @FXML

@@ -1,5 +1,6 @@
 package view;
 
+import controller.MainMenuController;
 import controller.PickFirstPlayer;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -20,8 +21,9 @@ public class RockPaperView extends Application {
     @FXML
     private Label showResult;
     private static Stage stage;
-    public static String ply1 ;//in dota bayad az main menu por beshan
-    public static String ply2 ;
+    public static String ply1 = MainMenuController.username;
+    public static String ply2 = MainMenuController.username2;
+
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
@@ -36,12 +38,9 @@ public class RockPaperView extends Application {
 
     @FXML
     public void initialize() {
-       // new UserModel("rr", "rr", "rr");//
-        //new UserModel("qq", "rqqq", "qq");//
-        showTurn.setText((ply1)+ " select one");
-        showTurn1.setText((ply2)+ " select one");
+        showTurn.setText((ply1) + " select one");
+        showTurn1.setText((ply2) + " select one");
     }
-
 
 
     public void stone(MouseEvent mouseEvent) {
