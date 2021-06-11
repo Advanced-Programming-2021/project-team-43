@@ -32,6 +32,10 @@ public class RegisterAndLoginView extends Application {
     private static Stage registerLoginStage;
 
 
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         SetCards.readingCSVFileTrapSpell();
@@ -40,7 +44,7 @@ public class RegisterAndLoginView extends Application {
         registerLoginStage = stage;
         registerLoginStage.setWidth(1000);
         registerLoginStage.setHeight(760);
-        registerLoginStage.setTitle("Yo Gi Oh");
+        registerLoginStage.setTitle("Yu Gi Oh");
         registerLoginStage.setResizable(false);
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/welcomePage.fxml")));
@@ -55,14 +59,11 @@ public class RegisterAndLoginView extends Application {
         new ShowCardsView().setAllCards();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
-
     public void pressRegisterBtn() {
         Random random = new Random();
         int whichImage = random.nextInt(32);
-        registerMessageLbl.setText(RegisterAndLoginController.registerInGame(registerUsernameTxt.getText(), registerNicknameTxt.getText(), registerPassword.getText(), "/images/profile/char" + whichImage + ".jpg"));
+        if (!registerUsernameTxt.getText().trim().isEmpty() && !registerNicknameTxt.getText().trim().isEmpty() && !registerPassword.getText().trim().isEmpty())
+            registerMessageLbl.setText(RegisterAndLoginController.registerInGame(registerUsernameTxt.getText(), registerNicknameTxt.getText(), registerPassword.getText(), "/images/profile/char" + whichImage + ".jpg"));
         registerUsernameTxt.clear();
         registerNicknameTxt.clear();
         registerPassword.clear();
@@ -72,8 +73,10 @@ public class RegisterAndLoginView extends Application {
         loginMessageLbl.setText(RegisterAndLoginController.loginInGame(loginUsernameTxt.getText(), loginPassword.getText()));
         loginUsernameTxt.clear();
         loginPassword.clear();
-        if (loginMessageLbl.getText().equals("User logged in successfully!"))
+        if (loginMessageLbl.getText().equals("User logged in successfully!")) {
+            ShopView.resetFields();
             new MainMenuView().start(registerLoginStage);
+        }
     }
 
     public void goToRegisterPage() throws IOException {
@@ -81,7 +84,7 @@ public class RegisterAndLoginView extends Application {
         registerLoginStage.setScene(new Scene(root));
     }
 
-    public void gotToLoginPage() throws IOException {
+    public void gotToLoginPage() throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/loginPage.fxml")));
         registerLoginStage.setScene(new Scene(root));
     }

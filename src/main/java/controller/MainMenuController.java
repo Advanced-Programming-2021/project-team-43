@@ -187,7 +187,7 @@ public class MainMenuController {
         return 1;
     }
 
-    public static void duelMenu(String playerName, int roundNumber) {
+    public static String duelMenu(String playerName, int roundNumber) {
         if (UserModel.isRepeatedUsername(playerName)) {
             UserModel user1 = UserModel.getUserByUsername(MainMenuController.username);
             UserModel user2 = UserModel.getUserByUsername(playerName);
@@ -203,40 +203,40 @@ public class MainMenuController {
                             if (roundNumber == 1 || roundNumber == 3) {
                                 username2 = playerName;
 
-                                String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
-                                String secondPlayer;
-                                if (firstPlayer.equals(playerName)) {
-                                    secondPlayer = MainMenuController.username;
-                                } else {
-                                    secondPlayer = playerName;
-                                }
+//                                String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
+//                                String secondPlayer;
+//                                if (firstPlayer.equals(playerName)) {
+//                                    secondPlayer = MainMenuController.username;
+//                                } else {
+//                                    secondPlayer = playerName;
+//                                }
 
-                                new Player(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()), true, roundNumber);
-                                new Player(UserModel.getUserByUsername(secondPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()), false, roundNumber);
-                                GameMatController.commandController(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).getNickname());
-
+//                                new Player(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()), true, roundNumber);
+//                                new Player(UserModel.getUserByUsername(secondPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()), false, roundNumber);
+//                                GameMatController.commandController(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).getNickname());
+                                return "00";
                             } else {
-                                MainMenuView.showInput("number of rounds is not supported");
+                                return ("number of rounds is not supported");
                             }
 
 
                         } else {
-                            MainMenuView.showInput(user2.getUsername() + "’s deck is invalid");
+                            return (user2.getUsername() + "’s deck is invalid");
                         }
 
                     } else {
-                        MainMenuView.showInput(user1.getUsername() + "’s deck is invalid");
+                        return (user1.getUsername() + "’s deck is invalid");
                     }
 
                 } else {
-                    MainMenuView.showInput(user2.getUsername() + " has no active deck");
+                    return (user2.getUsername() + " has no active deck");
                 }
             } else {
-                MainMenuView.showInput(user1.getUsername() + " has no active deck");
+                return (user1.getUsername() + " has no active deck");
             }
 
         } else {
-            MainMenuView.showInput("there is no player with this username");
+            return ("there is no player with this username");
         }
     }
 
@@ -420,7 +420,7 @@ public class MainMenuController {
             }
         }
         int k = 1;
-        ArrayList<String> arrayList =new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < keysUsers.length; i++) {
             if (keysUsers[i].equals("AI")) continue;
             arrayList.add(keysUsers[i]);
@@ -447,4 +447,5 @@ public class MainMenuController {
         }
 
     }
+
 }

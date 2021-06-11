@@ -78,6 +78,6 @@
          <font>
             <Font name="Bodoni MT" size="13.0" />
          </font></Button>
-      <Button fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="215.0" layoutY="537.0" mnemonicParsing="false" onAction="#pressBack" text="Back" />
+      <Button fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="208.0" layoutY="585.0" mnemonicParsing="false" onAction="#pressBack" prefHeight="35.0" prefWidth="96.0" text="Back" />
    </children>
 </AnchorPane>

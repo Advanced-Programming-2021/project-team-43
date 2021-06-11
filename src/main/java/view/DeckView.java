@@ -136,25 +136,26 @@ public class DeckView extends Application {
         int y = 0;
         int counter = 0;
         String cardName = "";
-        DeckModel pickedDeck = user.userAllDecks.get(deckName);
-        mainDeck.putAll(pickedDeck.cardsInMainDeck);
-        for (Map.Entry<String, Integer> eachCard : mainDeck.entrySet()) {
-            for (int j = 0; j < eachCard.getValue(); j++) {
-                System.out.println(eachCard.getKey());///////////
-                if (eachCard.getKey().equals("\"Terratiger, the Empowered Warrior\""))
-                    cardName = "Terratiger, the Empowered Warrior";
-                else
-                    cardName = eachCard.getKey();
-                mainCardsImg.add(ShowCardsView.getCardImageViewByName(cardName));
-                mainCardsImg.get(counter).setX(x);
-                mainCardsImg.get(counter).setY(y);
-                mainDeckPane.getChildren().add(mainCardsImg.get(counter));
-                x += 80;
-                if (x >= 500) {
-                    y += 80;
-                    x = 0;
+        if (deckName != null) {
+            DeckModel pickedDeck = user.userAllDecks.get(deckName);
+            mainDeck.putAll(pickedDeck.cardsInMainDeck);
+            for (Map.Entry<String, Integer> eachCard : mainDeck.entrySet()) {
+                for (int j = 0; j < eachCard.getValue(); j++) {
+                    if (eachCard.getKey().equals("\"Terratiger, the Empowered Warrior\""))
+                        cardName = "Terratiger, the Empowered Warrior";
+                    else
+                        cardName = eachCard.getKey();
+                    mainCardsImg.add(ShowCardsView.getCardImageViewByName(cardName));
+                    mainCardsImg.get(counter).setX(x);
+                    mainCardsImg.get(counter).setY(y);
+                    mainDeckPane.getChildren().add(mainCardsImg.get(counter));
+                    x += 80;
+                    if (x >= 500) {
+                        y += 80;
+                        x = 0;
+                    }
+                    counter++;
                 }
-                counter++;
             }
         }
         mainDeck.clear();
@@ -165,25 +166,27 @@ public class DeckView extends Application {
         int y = 0;
         int counter = 0;
         String cardName = "";
-        DeckModel pickedDeck = user.userAllDecks.get(deckName);
-        sideDeck.putAll(pickedDeck.cardsInSideDeck);
-        for (Map.Entry<String, Integer> eachCard : sideDeck.entrySet()) {
-            for (int j = 0; j < eachCard.getValue(); j++) {
-                System.out.println(eachCard.getKey());///////////
-                if (eachCard.getKey().equals("\"Terratiger, the Empowered Warrior\""))
-                    cardName = "Terratiger, the Empowered Warrior";
-                else
-                    cardName = eachCard.getKey();
-                sideCardsImg.add(ShowCardsView.getCardImageViewByName(cardName));
-                sideCardsImg.get(counter).setX(x);
-                sideCardsImg.get(counter).setY(y);
-                sideDeckPane.getChildren().add(sideCardsImg.get(counter));
-                x += 80;
-                if (x >= 500) {
-                    y += 80;
-                    x = 0;
+        if (deckName != null) {
+            DeckModel pickedDeck = user.userAllDecks.get(deckName);
+            sideDeck.putAll(pickedDeck.cardsInSideDeck);
+            for (Map.Entry<String, Integer> eachCard : sideDeck.entrySet()) {
+                for (int j = 0; j < eachCard.getValue(); j++) {
+                    System.out.println(eachCard.getKey());///////////
+                    if (eachCard.getKey().equals("\"Terratiger, the Empowered Warrior\""))
+                        cardName = "Terratiger, the Empowered Warrior";
+                    else
+                        cardName = eachCard.getKey();
+                    sideCardsImg.add(ShowCardsView.getCardImageViewByName(cardName));
+                    sideCardsImg.get(counter).setX(x);
+                    sideCardsImg.get(counter).setY(y);
+                    sideDeckPane.getChildren().add(sideCardsImg.get(counter));
+                    x += 80;
+                    if (x >= 500) {
+                        y += 80;
+                        x = 0;
+                    }
+                    counter++;
                 }
-                counter++;
             }
         }
         sideDeck.clear();

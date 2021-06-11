@@ -15,11 +15,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.java.controller.ShopController;
+import main.java.model.Card;
 import main.java.model.UserModel;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
+
+import java.util.*;
 
 
 public class ShopView extends Application {
@@ -30,14 +29,17 @@ public class ShopView extends Application {
     public ImageView nextBtn;
     public Label messageLbl;
     public VBox cardsVBox;
+    public Button buyBtn;
+    public Label moneyLbl;
+    public Label priceLbl;
     private boolean isShowBtnPressed;
     private UserModel user;
-    private Image[] cardImages = new Image[74];
+    private List<Image> cardImages = new ArrayList<>();
+    private List<Label> cardInfo = new ArrayList<>();
     private static int imageCounter = 0;
-    private final Label[] cardInfo = new Label[74];
     private static int cardInfoCounter = 0;
+    private static boolean isBuyBtnDisable;
     private static Stage shopStage;
-
 
     public static String getCommand() {
         Scanner scanner = new Scanner(System.in);
@@ -57,62 +59,74 @@ public class ShopView extends Application {
     }
 
     public void initialize() {
+        moneyLbl.setFont(new Font(20));
+        // moneyLbl.setText(String.valueOf(user.getUserCoin()));///////////////
+        buyBtn.setDisable(isBuyBtnDisable);
         user = UserModel.getUserByUsername(MainMenuController.username);
         HashMap<String, Image> allCards = new HashMap<>(ShowCardsView.getAllCardImage());
-        int i = 0;
-        for (Map.Entry eachCard : allCards.entrySet()) {
-            cardImages[i] = (Image) eachCard.getValue();
-            i++;
-        }
-        cardImgView = new ImageView(cardImages[0]);
+        for (Map.Entry<String, Image> eachCard : allCards.entrySet())
+            cardImages.add(eachCard.getValue());
+        cardImgView = new ImageView(cardImages.get(0));
         cardImgView.setY(46);
         cardImgView.setX(76);
         cardImgView.setFitWidth(350);
         cardImgView.setFitHeight(500);
+        priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(0))).getPrice());
         shopPane.getChildren().add(cardImgView);
     }
 
-    public void pressPreviousBtn() throws Exception {
+    public void pressPreviousBtn() {
         if (imageCounter != 0)
             imageCounter--;
         else
-            imageCounter = 73;
-        cardImgView.setImage(cardImages[imageCounter]);
+            imageCounter = cardImages.size() - 1;
+        cardImgView.setImage(cardImages.get(imageCounter));
+        priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(imageCounter))).getPrice());
     }
 
-    public void pressNextBtn() throws Exception {
-        if (imageCounter != 72)
+    public void pressNextBtn() {
+        if (imageCounter != cardImages.size() - 1)
             imageCounter++;
         else
             imageCounter = 0;
-        cardImgView.setImage(cardImages[imageCounter]);
+        cardImgView.setImage(cardImages.get(imageCounter));
+        priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(imageCounter))).getPrice());
     }
 
     public void pressBuyBtn() {
-        String cardName = ShowCardsView.getNameByImage(cardImages[imageCounter]);
-        if (cardName.equals("Terratiger, the Empowered Warrior"))
-            cardName = "\"Terratiger, the Empowered Warrior\"";
-        messageLbl.setText(ShopController.shopBuy(cardName));
-        if (messageLbl.getText().equals("Card added successfully!")) {
-            if (getCardInfoLblByCardName(cardName) != null)
-                getCardInfoLblByCardName(cardName).setText(cardName + "  :  " + user.getUserAllCards().get(cardName));
-            else {
-                cardInfo[cardInfoCounter] = new Label(cardName + "  :  " + user.getUserAllCards().get(cardName));
-                cardInfo[cardInfoCounter].setTextFill(Color.rgb(255, 255, 0));
-                cardInfo[cardInfoCounter].setFont(new Font("Bodoni MT", 15));
-                cardsVBox.getChildren().add(cardInfo[cardInfoCounter]);
+        String cardName = ShowCardsView.getNameByImage(cardImages.get(imageCounter));
+        String message = ShopController.shopBuy(cardName);
+        if (message.equals("Not enough money")) {
+            messageLbl.setText("");
+            buyBtn.setDisable(true);
+            isBuyBtnDisable = true;
+        }
+        else {
+            isBuyBtnDisable = false;
+            messageLbl.setText(message);
+            if (message.equals("Card added successfully!")) {
+                if (getCardInfoLblByCardName(cardName) != null)
+                    getCardInfoLblByCardName(cardName).setText(cardName + "  :  " + user.getUserAllCards().get(cardName));
+                else {
+                    cardInfo.add(new Label(cardName + "  :  " + user.getUserAllCards().get(cardName)));
+                    cardInfo.get(cardInfoCounter).setTextFill(Color.rgb(255, 255, 0));
+                    cardInfo.get(cardInfoCounter).setFont(new Font("Bodoni MT", 15));
+                    cardsVBox.getChildren().add(cardInfo.get(cardInfoCounter));
+                    cardInfoCounter++;
+                }
             }
         }
+        moneyLbl.setText("Coin: " + user.getUserCoin());
     }
 
     public void pressMyCardsBtn() {
         if (!isShowBtnPressed) {
             HashMap<String, Integer> myCards = new HashMap<>(user.getUserAllCards());
-            for (Map.Entry eachCard : myCards.entrySet()) {
-                cardInfo[cardInfoCounter] = new Label(eachCard.getKey().toString() + "  :  " + eachCard.getValue().toString());
-                cardInfo[cardInfoCounter].setTextFill(Color.rgb(255, 255, 0));
-                cardInfo[cardInfoCounter].setFont(new Font("Bodoni MT", 15));
-                cardsVBox.getChildren().add(cardInfo[cardInfoCounter]);
+            for (Map.Entry<String, Integer> eachCard : myCards.entrySet()) {
+                cardInfo.add(new Label(eachCard.getKey() + "  :  " + eachCard.getValue()));
+                cardInfo.get(cardInfoCounter).setTextFill(Color.rgb(255, 255, 0));
+                cardInfo.get(cardInfoCounter).setFont(new Font("Bodoni MT", 15));
+                cardsVBox.getChildren().add(cardInfo.get(cardInfoCounter));
                 cardInfoCounter++;
             }
             cardsVBox.setVisible(true);
@@ -123,15 +137,21 @@ public class ShopView extends Application {
     public Label getCardInfoLblByCardName(String cardName) {
         String[] text;
         for (int i = 0; i < cardInfoCounter; i++) {
-            text = cardInfo[i].getText().split("\\s\\s");
+            text = cardInfo.get(i).getText().split("\\s\\s");
             if (text[0].equals(cardName))
-                return cardInfo[i];
+                return cardInfo.get(i);
         }
         return null;
     }
 
     public void pressBackBtn() throws Exception {
         new MainMenuView().start(shopStage);
+    }
+
+    public static void resetFields() {
+        cardInfoCounter = 0;
+        imageCounter = 0;
+        isBuyBtnDisable = false;
     }
 
 }

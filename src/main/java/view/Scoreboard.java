@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.java.controller.MainMenuController;
 import main.java.model.UserModel;
@@ -36,6 +37,7 @@ public class Scoreboard extends Application {
             if (MainMenuController.username.equals(users.get(i))) {
                 Label label = new Label(((i + 1) + "_" + UserModel.getUserByUsername(users.get(i)).getNickname() + ": " + UserModel.getUserByUsername(users.get(i)).getUserScore()));
                 label.setTextFill(Color.rgb(0, 26, 255));
+                label.setFont(new Font(20));
                 list.add(label);
                 continue;
             }
@@ -50,5 +52,6 @@ public class Scoreboard extends Application {
     public void Back() throws Exception {
         new MainMenuView().start(stage);
     }
+
 
 }

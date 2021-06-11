@@ -44,6 +44,8 @@ public class EditDeckView extends Application {
     private final HashMap<String, Integer> sideDeckCards = new HashMap<>();
     private static Stage editDeckStage;
     private String selectedCard = "";
+    private int nextMainCardPlace = 0;
+    private int nextSideCardPlace = 0;
 
 
     @Override
@@ -55,6 +57,7 @@ public class EditDeckView extends Application {
     }
 
     public void initialize() {
+        //  ScrollPane scrollPane = new ScrollPane(mainDeckPane);
         deckName = DeckView.getWhichDeckName();
         deckNameLbl.setText(deckName);
         String cardName;
@@ -97,6 +100,7 @@ public class EditDeckView extends Application {
                 counter++;
             }
         }
+        nextMainCardPlace = counter + 1;
         selectMainDeck();
     }
 
@@ -120,26 +124,34 @@ public class EditDeckView extends Application {
                 counter++;
             }
         }
+        nextSideCardPlace = counter + 1;
         selectSideDeck();
     }
 
     public void deleteCard() {
+        DeckModel pickedDeck = user.userAllDecks.get(deckName);
         if (!selectedCard.isEmpty()) {
             String[] split = selectedCard.split(" ");
             if (split[0].equals("main")) {
+                pickedDeck.removeCardFromMain(ShowCardsView.getNameByImageView(mainDeckCardImg.get(Integer.parseInt(split[1]))));
+                DeckController.removeCardFromMainDeck(ShowCardsView.getNameByImageView(mainDeckCardImg.get(Integer.parseInt(split[1]))), deckName);
                 mainDeckCardImg.remove(Integer.parseInt(split[1]));
                 mainDeckPane.getChildren().remove(Integer.parseInt(split[1]));
+                nextMainCardPlace = Integer.parseInt(split[1]);
             } else {
+                pickedDeck.removeCardFromSide(ShowCardsView.getNameByImageView(sideDeckCardImg.get(Integer.parseInt(split[1]))));
+                DeckController.removeCardFromSideDeck(ShowCardsView.getNameByImageView(sideDeckCardImg.get(Integer.parseInt(split[1]))), deckName);
                 sideDeckCardImg.remove(Integer.parseInt(split[1]));
                 sideDeckPane.getChildren().remove(Integer.parseInt(split[1]));
+                nextSideCardPlace = Integer.parseInt(split[1]);
             }
             selectedCard = "";
         }
         else {
             messageLbl.setText("No Card Selected!");
         }
-        fillSideDeck();
-        fillMainDeck();
+        selectSideDeck();
+        selectMainDeck();
     }
 
     public void selectMainDeck() {
@@ -185,10 +197,13 @@ public class EditDeckView extends Application {
     }
 
     public void addToMainDeck() {
+        DeckModel pickedDeck = user.userAllDecks.get(deckName);
+        pickedDeck.addCardToMain(ShowCardsView.getNameByImage(cardImages.get(cardCounter)));
         DeckController.addCardToMainDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
         mainDeckCardImg.add(new ImageView(cardImages.get(cardCounter)));
         mainDeckCardImg.get(mainDeckCardImg.size() - 1).setFitWidth(80);
         mainDeckCardImg.get(mainDeckCardImg.size() - 1).setFitHeight(80);
+
         mainDeckCardImg.get(mainDeckCardImg.size() - 1).setX(mainCardX);
         mainDeckCardImg.get(mainDeckCardImg.size() - 1).setY(mainCardY);
         if (mainCardX >= 500) {
@@ -196,13 +211,15 @@ public class EditDeckView extends Application {
             mainCardY += 80;
         }
         else
-            mainCardX += 70;
+            mainCardX += 80;
         mainDeckPane.getChildren().add(mainDeckCardImg.get(mainDeckCardImg.size() - 1));
         clickOnDeck();
         selectMainDeck();
     }
 
     public void addToSideDeck() {
+        DeckModel pickedDeck = user.userAllDecks.get(deckName);
+        pickedDeck.addCardToSide(ShowCardsView.getNameByImage(cardImages.get(cardCounter)));
         DeckController.addCardToSideDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
         sideDeckCardImg.add(new ImageView(cardImages.get(cardCounter)));
         sideDeckCardImg.get(sideDeckCardImg.size() - 1).setFitWidth(80);
@@ -214,7 +231,7 @@ public class EditDeckView extends Application {
             sideCardY += 80;
         }
         else
-            sideCardX += 70;
+            sideCardX += 80;
         sideDeckPane.getChildren().add(sideDeckCardImg.get(sideDeckCardImg.size() - 1));
         clickOnDeck();
         selectSideDeck();

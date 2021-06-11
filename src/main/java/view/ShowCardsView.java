@@ -228,8 +228,18 @@ public class ShowCardsView extends Application {
 
     public static String getNameByImage(Image cardImage) {
         for (Map.Entry<String, Image> entry : allCardImage.entrySet()) {
-            if (entry.getValue().equals(cardImage))
+            if (entry.getValue().equals(cardImage)) {
                 return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public static String getNameByImageView(ImageView cardImageView) {
+        for (Map.Entry<String, ImageView> entry : allCards.entrySet()) {
+            if (entry.getValue().equals(cardImageView)) {
+                return entry.getKey();
+            }
         }
         return null;
     }
@@ -237,4 +247,5 @@ public class ShowCardsView extends Application {
     public static Image getCardImageByName(String cardName) {
         return allCardImage.get(cardName);
     }
+
 }

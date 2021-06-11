@@ -2,6 +2,7 @@ package main.java.view;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import main.java.controller.SetCards;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -18,16 +19,16 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import main.java.controller.SetCards;
 import main.java.model.MonsterCard;
 import main.java.model.SpellCard;
 import main.java.model.TrapCard;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class ImportCardView extends Application {
 
@@ -154,7 +155,6 @@ public class ImportCardView extends Application {
         stage.sizeToScene();
         stage.show();
     }
-
     public boolean isSpellTrap(String description2) {
         return SpellCard.getSpellCardByName(description2) != null ||
                 TrapCard.getTrapCardByName(description2) != null;
@@ -164,7 +164,6 @@ public class ImportCardView extends Application {
     public boolean isMonsterExit(String description) {
         return MonsterCard.getMonsterByName(description) != null;
     }
-
     public boolean isValidAttribute(String attribute) {
         return attribute.equals("EARHT") ||
                 attribute.equals("WATER") ||

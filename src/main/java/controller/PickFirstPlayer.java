@@ -5,120 +5,52 @@ import java.util.*;
 
 public class PickFirstPlayer {
 
-    public static String chose(String player1, String player2) {
-        Scanner scanner = new Scanner(System.in);
-        Random rand = new Random();
-        int n = rand.nextInt(2);
-        if (n == 0) {
-            String winner = chanceCoin(player1, player2);
-            System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
-            while (true) {
-                String string = scanner.nextLine().trim();
-                if (string.equals("yes")) {
-                    return winner;
-                }
-                if (string.equals("no")) {
-                    if (winner.equals(player1)) {
-                        return player2;
-                    }
-                    return player1;
-                }
+    public static String result;
 
-                System.out.println("invalid command");
-
+    public static String rockPaperScissors(String player1, String player2, String firstChoice, String secondChoice) {
+        if (firstChoice.equals("rock")) {
+            if (secondChoice.equals("rock")) {
+                result = "The game equalised";
             }
-
-
-        }
-
-        String winner = rockPaperScissors(player1, player2);
-        System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
-        while (true) {
-            String string = scanner.nextLine().trim();
-            if (string.equals("yes")) {
-                return winner;
+            if (secondChoice.equals("paper")) {
+                result = UserModel.getUserByUsername(player2).getNickname() + " is win";
+                return player2;
             }
-            if (string.equals("no")) {
-                if (winner.equals(player1)) {
-                    return player2;
-                }
+            if (secondChoice.equals("scissors")) {
+                result = UserModel.getUserByUsername(player1).getNickname() + " is win";
                 return player1;
             }
-
-            System.out.println("invalid command");
         }
-    }
-
-
-    private static String rockPaperScissors(String player1, String player2) {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println(UserModel.getUserByUsername(player1).getNickname() + " is your turn");
-            System.out.println("rock or paper or scissors?");
-            String t1 = scanner.nextLine().trim();
-            while (!t1.equals("rock") && !t1.equals("paper") && !t1.equals("scissors")) {
-                System.out.println("invalid command");
-                System.out.println("rock or paper or scissors?");
-                t1 = scanner.nextLine().trim();
+        if (firstChoice.equals("paper")) {
+            if (secondChoice.equals("rock")) {
+                result = UserModel.getUserByUsername(player1).getNickname() + " is win";
+                return player1;
             }
-            System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is your turn");
-            System.out.println("rock or paper or scissors?");
-            String t2 = scanner.nextLine().trim();
-            while (!t2.equals("rock") && !t2.equals("paper") && !t2.equals("scissors")) {
-                System.out.println("invalid command");
-                System.out.println("rock or paper or scissors?");
-                t2 = scanner.nextLine().trim();
+            if (secondChoice.equals("paper")) {
+                result = "The game equalised";
             }
-            if (t1.equals("rock")) {
-                if (t2.equals("rock")) {
-                    System.out.println("The game equalised");
-                    continue;
-                }
-                if (t2.equals("paper")) {
-                    System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is win");
-                    return player2;
-                }
-                if (t2.equals("scissors")) {
-                    System.out.println(UserModel.getUserByUsername(player1).getNickname() + " is win");
-                    return player1;
-                }
-            }
-            if (t1.equals("paper")) {
-                if (t2.equals("rock")) {
-                    System.out.println(UserModel.getUserByUsername(player1).getNickname() + " is win");
-                    return player1;
-                }
-                if (t2.equals("paper")) {
-                    System.out.println("The game equalised");
-
-                }
-                if (t2.equals("scissors")) {
-                    System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is win");
-                    return player2;
-
-                }
-            }
-
-
-            if (t1.equals("scissors")) {
-                if (t2.equals("rock")) {
-                    System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is win");
-                    return player2;
-
-                }
-                if (t2.equals("paper")) {
-                    System.out.println(UserModel.getUserByUsername(player1).getNickname() + " is win");
-                    return player1;
-
-                }
-                if (t2.equals("scissors")) {
-                    System.out.println("The game equalised");
-                }
+            if (secondChoice.equals("scissors")) {
+                result = UserModel.getUserByUsername(player2).getNickname() + " is win";
+                return player2;
             }
         }
+        if (firstChoice.equals("scissors")) {
+            if (secondChoice.equals("rock")) {
+                result = UserModel.getUserByUsername(player2).getNickname() + " is win";
+                return player2;
+            }
+            if (secondChoice.equals("paper")) {
+                result = UserModel.getUserByUsername(player1).getNickname() + " is win";
+                return player1;
+            }
+            if (secondChoice.equals("scissors")) {
+                result = "The game equalised";
+            }
+        }
+        return null;
     }
 
-    private static String chanceCoin(String player1, String player2) {
+    public static String chanceCoin(String player1, String player2) {
         Random rand = new Random();
         int n = rand.nextInt(2);
         if (n == 0) {

@@ -44,7 +44,7 @@ public class MainMenuView extends Application {
     }
 
     public void Duel() throws Exception {
-        new DeckView().start(stage);
+        new Duel().start(stage);
     }
 
     public void Deck() throws Exception {
@@ -64,7 +64,7 @@ public class MainMenuView extends Application {
     }
 
     public void ImportExport() throws Exception {
-
+        new ImportCardView().start(stage);
     }
 
     public void LogOut() throws Exception {
