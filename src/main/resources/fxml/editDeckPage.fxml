@@ -6,37 +6,37 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="editDeckPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EditDeckView">
-    <children>
-        <ImageView fx:id="boughtCardImgView" fitHeight="391.0" fitWidth="275.0" layoutX="27.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
-        <ImageView fx:id="nextCardBtn" fitHeight="26.0" fitWidth="26.0" layoutX="295.0" layoutY="243.0" onMouseClicked="#nextCard" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../images/nextBtn.jpg" />
-            </image>
-        </ImageView>
-        <ImageView fx:id="previousCardBtn" fitHeight="26.0" fitWidth="26.0" layoutX="1.0" layoutY="242.0" onMouseClicked="#previousCard" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-            <image>
-                <Image url="@../images/nextBtn.jpg" />
-            </image>
-        </ImageView>
-        <Label fx:id="cardAmountLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="69.0" layoutY="454.0" prefHeight="34.0" prefWidth="195.0" />
-        <Button fx:id="backBtn" layoutX="27.0" layoutY="691.0" mnemonicParsing="false" onAction="#pressBackBtn" prefHeight="42.0" prefWidth="107.0" text="Back" />
-        <Label fx:id="deckNameLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="69.0" layoutY="21.0" prefHeight="34.0" prefWidth="195.0" textAlignment="CENTER" textFill="RED">
-            <font>
-                <Font size="25.0" />
-            </font></Label>
-        <Button fx:id="addToSideBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="167.0" layoutY="517.0" mnemonicParsing="false" onAction="#addToSideDeck" prefHeight="42.0" prefWidth="120.0" text="Add To Side Deck" textAlignment="CENTER" />
-        <Button fx:id="addToMainBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="517.0" mnemonicParsing="false" onAction="#addToMainDeck" prefHeight="42.0" prefWidth="120.0" text="Add To Main Deck" />
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="348.0" layoutY="4.0" prefHeight="34.0" prefWidth="127.0" text="Main Deck" textFill="RED">
-            <font>
-                <Font name="Bodoni MT" size="18.0" />
-            </font></Label>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="358.0" layoutY="454.0" prefHeight="34.0" prefWidth="107.0" text="Side Deck" textFill="RED">
-            <font>
-                <Font name="Bodoni MT" size="18.0" />
-            </font></Label>
-        <Button fx:id="deleteCardBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="594.0" mnemonicParsing="false" onAction="#deleteCard" prefHeight="50.0" prefWidth="94.0" text="Delete Card" />
-        <Label fx:id="messageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="644.0" prefHeight="34.0" prefWidth="179.0" />
-        <AnchorPane fx:id="mainDeckPane" layoutX="333.0" layoutY="40.0" prefHeight="410.0" prefWidth="657.0" />
-        <AnchorPane fx:id="sideDeckPane" layoutX="338.0" layoutY="494.0" prefHeight="258.0" prefWidth="657.0" />
-    </children>
+   <children>
+      <ImageView fx:id="boughtCardImgView" fitHeight="391.0" fitWidth="275.0" layoutX="27.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="nextCardBtn" fitHeight="26.0" fitWidth="26.0" layoutX="295.0" layoutY="243.0" onMouseClicked="#nextCard" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/nextBtn.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="previousCardBtn" fitHeight="26.0" fitWidth="26.0" layoutX="1.0" layoutY="242.0" onMouseClicked="#previousCard" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+         <image>
+            <Image url="@../images/nextBtn.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="cardAmountLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="69.0" layoutY="454.0" prefHeight="34.0" prefWidth="195.0" />
+      <Button fx:id="backBtn" layoutX="27.0" layoutY="691.0" mnemonicParsing="false" onAction="#pressBackBtn" prefHeight="42.0" prefWidth="107.0" text="Back" />
+      <Label fx:id="deckNameLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="69.0" layoutY="21.0" prefHeight="34.0" prefWidth="195.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font size="25.0" />
+         </font></Label>
+      <Button fx:id="addToSideBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="167.0" layoutY="517.0" mnemonicParsing="false" onAction="#addToSideDeck" prefHeight="42.0" prefWidth="120.0" text="Add To Side Deck" textAlignment="CENTER" />
+      <Button fx:id="addToMainBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="517.0" mnemonicParsing="false" onAction="#addToMainDeck" prefHeight="42.0" prefWidth="120.0" text="Add To Main Deck" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="348.0" layoutY="4.0" prefHeight="34.0" prefWidth="127.0" text="Main Deck" textFill="RED">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font></Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="358.0" layoutY="454.0" prefHeight="34.0" prefWidth="107.0" text="Side Deck" textFill="RED">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font></Label>
+      <Button fx:id="deleteCardBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="594.0" mnemonicParsing="false" onAction="#deleteCard" prefHeight="50.0" prefWidth="94.0" text="Delete Card" />
+      <Label fx:id="messageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="644.0" prefHeight="34.0" prefWidth="179.0" />
+      <AnchorPane fx:id="mainDeckPane" layoutX="333.0" layoutY="40.0" prefHeight="410.0" prefWidth="657.0" />
+      <AnchorPane fx:id="sideDeckPane" layoutX="338.0" layoutY="494.0" prefHeight="258.0" prefWidth="657.0" />
+   </children>
 </AnchorPane>

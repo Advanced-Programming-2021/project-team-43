@@ -10,12 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.java.controller.MainMenuController;
 import main.java.model.UserModel;
-import main.java.model.UserModel;
-import java.io.IOException;
 import java.util.Objects;
 
 

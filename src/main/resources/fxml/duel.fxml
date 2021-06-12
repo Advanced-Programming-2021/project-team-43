@@ -2,16 +2,31 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="750.0" maxWidth="1000.0" prefHeight="750.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/duel.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Duel">
-    <children>
-        <Button fx:id="AIBtt" layoutX="256.0" layoutY="378.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="108.0" text="play with ai" />
-        <TextField fx:id="playerId" layoutX="210.0" layoutY="107.0" />
-        <Button fx:id="duelBtt" layoutX="396.0" layoutY="179.0" mnemonicParsing="false" onAction="#duel" text="duel " textFill="#3c01ff" />
-        <Label layoutX="171.0" layoutY="56.0" prefHeight="32.0" prefWidth="141.0" text="play with player" textFill="#7ae0fc" />
-        <Label fx:id="text" layoutX="89.0" layoutY="191.0" prefHeight="32.0" prefWidth="267.0" textFill="#a463ff" />
-        <TextField fx:id="number" layoutX="210.0" layoutY="140.0" />
-        <Label layoutX="103.0" layoutY="111.0" text="player name" textFill="#ff20ec" />
-        <Label layoutX="101.0" layoutY="144.0" text="round number" textFill="#b314ff" />
-    </children>
+<AnchorPane maxHeight="750.0" maxWidth="1000.0" prefHeight="750.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/duel.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Duel">
+   <children>
+      <Button fx:id="AIBtt" layoutX="213.0" layoutY="362.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="112.0" text="Duel with AI">
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font></Button>
+      <TextField fx:id="playerId" layoutX="195.0" layoutY="106.0" />
+      <Button fx:id="duelBtt" layoutX="219.0" layoutY="290.0" mnemonicParsing="false" onAction="#duel" prefHeight="40.0" prefWidth="99.0" text="Start Duel" textFill="#3c01ff">
+         <font>
+            <Font name="Bodoni MT" size="16.0" />
+         </font></Button>
+      <Label fx:id="text" alignment="CENTER" contentDisplay="CENTER" layoutX="84.0" layoutY="198.0" prefHeight="65.0" prefWidth="369.0" textAlignment="CENTER" textFill="#a463ff">
+         <font>
+            <Font name="Bodoni MT" size="20.0" />
+         </font></Label>
+      <TextField fx:id="number" layoutX="195.0" layoutY="139.0" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="106.0" text="Rival Name" textAlignment="CENTER" textFill="#ff20ec">
+         <font>
+            <Font name="Bodoni MT" size="17.0" />
+         </font></Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="45.0" layoutY="139.0" text="Round Number" textAlignment="CENTER" textFill="#b314ff">
+         <font>
+            <Font name="Bodoni MT" size="17.0" />
+         </font></Label>
+   </children>
 </AnchorPane>

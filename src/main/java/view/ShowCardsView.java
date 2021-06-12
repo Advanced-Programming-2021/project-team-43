@@ -1,5 +1,4 @@
 package main.java.view;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -7,15 +6,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-
 import java.util.*;
 
 
 public class ShowCardsView extends Application {
 
-
     private static final Map<String, ImageView> allCards = new HashMap<>();
     private static final Map<String, Image> allCardImage = new HashMap<>();
+    private static final Map<String, ImageView> allMonsterCardRotatedImage = new HashMap<>();
 
     @Override
     public void start(Stage stg) throws Exception {
@@ -24,6 +22,50 @@ public class ShowCardsView extends Application {
     }
 
     public void setAllCards() {
+        allMonsterCardRotatedImage.put("Alexandrite DragonRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Alexandrite DragonRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Axe RaiderRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Axe RaiderRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Baby dragonRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Baby dragonRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Battle OXRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Battle OXRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Battle warriorRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Battle warriorRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Beast King BarbarosRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Beast King BarbarosRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("BitronRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/BitronRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Blue-Eyes white dragonRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Blue-Eyes white dragonRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Command knightRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Command knightRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Crab TurtleRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Crab TurtleRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Crawling dragonRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Crawling dragonRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Curtain of the dark onesRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Curtain of the dark onesRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Dark BladeRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Dark BladeRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Dark magicianRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Dark magicianRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Exploder DragonRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Exploder DragonRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Feral ImpRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Feral ImpRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("FireyarouRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/FireyarouRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Flame manipulatorRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Flame manipulatorRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Gate GuardianRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Gate GuardianRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("HaniwaRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/HaniwaRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Herald of CreationRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Herald of CreationRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Hero of the eastRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Hero of the eastRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Horn ImpRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Horn ImpRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("LeotronRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/LeotronRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Man-Eater BugRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Man-Eater BugRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("MarshmallonRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/MarshmallonRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Mirage DragonRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Mirage DragonRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("ScannerRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/ScannerRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Silver FangRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Silver FangRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Skull GuardianRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Skull GuardianRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Slot MachineRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Slot MachineRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Spiral SerpentRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Spiral SerpentRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("SuijinRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/SuijinRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Terratiger, the Empowered WarriorRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Terratiger, the Empowered WarriorRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("TexchangerRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/TexchangerRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("The CalculatorRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/The CalculatorRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("The TrickyRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/The TrickyRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Warrior Dai GrepherRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Warrior Dai GrepherRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("WattaildragonRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/WattaildragonRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("WattkidRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/WattkidRo.jpg")).toExternalForm())));
+        allMonsterCardRotatedImage.put("Yomi ShipRo",new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/MonstersRotated/Yomi ShipRo.jpg")).toExternalForm())));
+
+
+
         allCards.put("Advanced Ritual Art", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Advanced Ritual Art.jpg")).toExternalForm())));
         allCards.put("Alexandrite Dragon", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Alexandrite Dragon.jpg")).toExternalForm())));
         allCards.put("Axe Raider", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Axe Raider.jpg")).toExternalForm())));
@@ -54,6 +96,7 @@ public class ShowCardsView extends Application {
         allCards.put("Harpie's Feather Duster", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Harpie's Feather Duster.jpg")).toExternalForm())));
         allCards.put("Herald of Creation", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Herald of Creation.jpg")).toExternalForm())));
         allCards.put("Hero of the east", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Hero of the east.jpg")).toExternalForm())));
+        allCards.put("Horn Imp", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Horn Imp.jpg")).toExternalForm())));
         allCards.put("Leotron", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Leotron.jpg")).toExternalForm())));
         allCards.put("Magic Cylinder", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Magic Cylinder.jpg")).toExternalForm())));
         allCards.put("Magic Jammer", new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Magic Jammer.jpg")).toExternalForm())));
@@ -127,6 +170,7 @@ public class ShowCardsView extends Application {
         allCardImage.put("Harpie's Feather Duster", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Harpie's Feather Duster.jpg")).toExternalForm()));
         allCardImage.put("Herald of Creation", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Herald of Creation.jpg")).toExternalForm()));
         allCardImage.put("Hero of the east", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Hero of the east.jpg")).toExternalForm()));
+        allCardImage.put("Horn Imp", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Horn Imp.jpg")).toExternalForm()));
         allCardImage.put("Leotron", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Leotron.jpg")).toExternalForm()));
         allCardImage.put("Magic Cylinder", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Magic Cylinder.jpg")).toExternalForm()));
         allCardImage.put("Magic Jammer", new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/Magic Jammer.jpg")).toExternalForm()));
@@ -246,6 +290,10 @@ public class ShowCardsView extends Application {
 
     public static Image getCardImageByName(String cardName) {
         return allCardImage.get(cardName);
+    }
+
+    public static ImageView getRotatedImageViewByName(String cardName) {
+        return allMonsterCardRotatedImage.get(cardName);
     }
 
 }

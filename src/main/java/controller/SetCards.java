@@ -6,6 +6,7 @@ import java.io.*;
 public class SetCards {
 
     public static void readingCSVFileMonster() {
+        int counter = 0;
         String filePath = "Monster.csv";
         try {
             BufferedReader readFile = new BufferedReader(new FileReader(filePath));
@@ -20,9 +21,13 @@ public class SetCards {
                     int defend = Integer.parseInt(data[6]);
                     int price = Integer.parseInt(data[8]);
                     boolean isScanner = false;
+                    if (counter == 37) {
+                        data[0]=data[0].substring(1,34);
+                    }
                     if (data[0].equals("Scanner")) {
                         isScanner = true;
                     }
+                    counter++;
                     new MonsterCard(data[2], data[0], level, data[3], attack, defend, "Monster", data[4], isScanner, data[7], price,null);
                     r = 0;
                     continue;

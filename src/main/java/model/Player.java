@@ -38,38 +38,15 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-        if (nickname.equals("roya")) {
-            new HandCardZone("roya", "Magic Jammer");
-            new HandCardZone("roya", "Forest");
-            new HandCardZone("roya", "Advanced Ritual Art");
-            new HandCardZone("roya", "Dark Blade");
-            new HandCardZone("roya", "Herald of Creation");
-            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Suijin");
-            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Axe Raider");
-            //new MonsterZoneCard(nickname, "\"Terratiger, the Empowered Warrior\"", "OO", false, false);
-            //new MonsterZoneCard(nickname, "Flame manipulator", "OO", false, false);
-//            new SpellTrapZoneCard(nickname, "Trap Hole", "O");
-//            new SpellTrapZoneCard(nickname, "Dark Hole", "H");
-
-        } else {
-            new HandCardZone("foroozan", "Spell Absorption");
-            new HandCardZone("foroozan", "Spell Absorption");
-            new HandCardZone("foroozan", "Axe Raider");
-            new HandCardZone("foroozan", "Axe Raider");
-            new HandCardZone("foroozan", "Herald of Creation");
-            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Suijin");
-            GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Mirage Dragon");
-            new MonsterZoneCard(nickname, "Dark Blade", "OO", false, false);
-            new MonsterZoneCard(nickname, "Suijin", "OO", false, false);
-            new MonsterZoneCard(nickname, "Yomi Ship", "OO", false, false);
-            new MonsterZoneCard(nickname, "Dark magician", "DO", false, false);
-//            new SpellTrapZoneCard(nickname, "Dark Hole", "H");
-//            new SpellTrapZoneCard(nickname, "Trap Hole", "O");
-//                for (int i = 0; i < 5; i++)
-//                    new HandCardZone(nickname, drawCard(false));//////////////true//////////////////
-
-        }
+        new HandCardZone(nickname, "Scanner");/////////////////////
+        for (int i = 0; i < 5; i++)
+            new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
+        if (nickname.equals("roya")) {
+            new MonsterZoneCard(nickname, "Battle OX", "DO", false, false);
+            new MonsterZoneCard(nickname, "Silver Fang", "DH", false, false);
+            new MonsterZoneCard(nickname, "Dark magician", "OO", false, false);
+        }
 
     }
 
@@ -86,7 +63,7 @@ public class Player {
         this.canDrawCard = !isYourTurn;
         canBattle = !isYourTurn;
         this.counterOfTurn = 0;
-        this.canUseTrap = true;
+        canUseTrap = true;
         this.canSetSummonMonster = true;
         GameMatModel.getGameMatByNickname(nickname).setPhase(Phase.Draw_Phase);
         fillTheGameDecks(activeDeck);

@@ -1,11 +1,13 @@
 package main.java.view;
-import main.java.controller.*;
+import main.java.controller.DeckController;
+import main.java.controller.MainMenuController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -13,7 +15,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import main.java.model.*;
 import java.util.*;
-
 
 
 

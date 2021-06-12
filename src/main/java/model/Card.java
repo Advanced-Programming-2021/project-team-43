@@ -47,4 +47,5 @@ public class Card {
     public static Card getCardsByName(String name) {
         return cards.get(name);
     }
+
 }

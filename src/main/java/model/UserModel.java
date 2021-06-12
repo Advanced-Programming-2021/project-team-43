@@ -1,5 +1,7 @@
 package main.java.model;
 import main.java.controller.JSON;
+import javafx.scene.image.ImageView;
+
 import java.util.*;
 
 
@@ -177,4 +179,11 @@ public class UserModel {
         return userAllDecks.containsKey(deckName);
     }
 
+    public static UserModel getUserByNickname(String nickname){
+        for (Map.Entry<String, UserModel> eachUsermodel : allUsersInfo.entrySet())
+            if(eachUsermodel.getValue().getNickname().equals(nickname)){
+                return eachUsermodel.getValue();
+            }
+        return null;
+    }
 }

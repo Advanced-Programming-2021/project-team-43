@@ -1,5 +1,4 @@
 package main.java.view;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import main.java.controller.SetCards;
@@ -19,15 +18,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import main.java.model.MonsterCard;
-import main.java.model.SpellCard;
-import main.java.model.TrapCard;
+import main.java.model.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class ImportCardView extends Application {

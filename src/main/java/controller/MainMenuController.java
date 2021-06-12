@@ -1,15 +1,16 @@
 package main.java.controller;
-import main.java.model.*;
+import main.java.model.UserModel;
 import main.java.view.MainMenuView;
-import java.lang.*;
 import java.util.ArrayList;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainMenuController {
 
     public static String username;
     public static String username2;
+    public static int roundNumber1;
 
     public static int run() {
         while (true) {
@@ -202,7 +203,7 @@ public class MainMenuController {
 
                             if (roundNumber == 1 || roundNumber == 3) {
                                 username2 = playerName;
-
+                                roundNumber1 = roundNumber;
 //                                String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
 //                                String secondPlayer;
 //                                if (firstPlayer.equals(playerName)) {
@@ -211,8 +212,6 @@ public class MainMenuController {
 //                                    secondPlayer = playerName;
 //                                }
 
-//                                new Player(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()), true, roundNumber);
-//                                new Player(UserModel.getUserByUsername(secondPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()), false, roundNumber);
 //                                GameMatController.commandController(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).getNickname());
                                 return "00";
                             } else {

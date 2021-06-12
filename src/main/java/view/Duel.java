@@ -18,7 +18,7 @@ public class Duel extends Application {
     public Button AIBtt;
     public TextField playerId;
     public Button duelBtt;
-    public Stage stage;
+    public static Stage duelStage;
     public Label text;
     public TextField number;
 
@@ -26,7 +26,7 @@ public class Duel extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/duel.fxml")));
         stage.setScene(new Scene(root));
-        this.stage = stage;
+        duelStage = stage;
         stage.show();
     }
 
@@ -41,8 +41,8 @@ public class Duel extends Application {
                 Matcher matcher = pattern.matcher(number.getText());
                 if (matcher.find()) {
                     text.setText(MainMenuController.duelMenu(playerId.getText(), Integer.parseInt(matcher.group(1))));
-                    if (text.getText().equals("abbas boo azar")) {
-                        new PickFirstPlayerView().start(stage);
+                    if (text.getText().equals("00")) {
+                        new PickFirstPlayerView().start(duelStage);
                     }
                 } else {
                     text.setText("invalid round number");

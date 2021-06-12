@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/mainMenu.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenuView">
+    <children>
+        <Label layoutX="44.0" layoutY="28.0" prefHeight="96.0" prefWidth="490.0" text="main menu">
+            <textFill>
+                <LinearGradient endX="1.0" endY="1.0">
+                    <stops>
+                        <Stop>
+                            <color>
+                                <Color red="1.0" green="1.0" blue="1.0" />
+                            </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                            <color>
+                                <Color red="0.6447368264198303" green="0.0208942499011755" blue="0.0208942499011755" />
+                            </color>
+                        </Stop>
+                    </stops>
+                </LinearGradient>
+            </textFill>
+            <font>
+                <Font size="48.0" />
+            </font>
+        </Label>
+      <VBox alignment="CENTER" layoutX="69.0" layoutY="160.0" prefHeight="318.0" prefWidth="196.0" spacing="10.0">
+         <children>
+              <Button fx:id="profile" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Profile" prefHeight="21.0" prefWidth="167.0" text="Profile">
+                  <font>
+                      <Font name="Bodoni MT" size="20.0" />
+                  </font>
+            </Button>
+              <Button fx:id="shop" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Shop" prefHeight="21.0" prefWidth="167.0" text="Shop">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
+              <Button fx:id="duel" focusTraversable="false" mnemonicParsing="false" onAction="#Duel" prefHeight="21.0" prefWidth="167.0" text="Duel">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
+              <Button fx:id="deck" focusTraversable="false" mnemonicParsing="false" onAction="#Deck" prefHeight="21.0" prefWidth="167.0" text="Deck">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
+              <Button fx:id="scoreboard" focusTraversable="false" mnemonicParsing="false" onAction="#Scoreboard" prefHeight="21.0" prefWidth="167.0" text="Scoreboard">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
+              <Button fx:id="cardCreator" focusTraversable="false" mnemonicParsing="false" onAction="#CardCreator" prefHeight="21.0" prefWidth="167.0" text="card creator">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
+              <Button fx:id="importExport" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#ImportExport" prefHeight="21.0" prefWidth="167.0" text="Import/export">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
+              <Button fx:id="logout" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#LogOut" prefHeight="21.0" prefWidth="167.0" text="Log out">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+    </children>
+    <opaqueInsets>
+        <Insets />
+    </opaqueInsets>
+</AnchorPane>

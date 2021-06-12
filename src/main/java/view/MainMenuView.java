@@ -5,9 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
 import java.util.Objects;
 import java.util.Scanner;
+
 
 
 public class MainMenuView extends Application {

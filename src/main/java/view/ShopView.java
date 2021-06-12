@@ -1,5 +1,6 @@
 package main.java.view;
 import main.java.controller.MainMenuController;
+import main.java.controller.ShopController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,19 +10,17 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import main.java.controller.ShopController;
 import main.java.model.Card;
 import main.java.model.UserModel;
-
 import java.util.*;
 
 
 public class ShopView extends Application {
+
 
     public AnchorPane shopPane;
     public ImageView cardImgView;

@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginView">
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginView">
    <children>
-      <Button fx:id="welcomeLoginBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="622.0" layoutY="560.0" mnemonicParsing="false" onAction="#gotToLoginPage" prefHeight="45.0" prefWidth="121.0" style="-fx-background-color: #ec1c24;" text="Login" textFill="WHITE">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="622.0" layoutY="560.0" mnemonicParsing="false" onAction="#gotToLoginPage" prefHeight="46.0" prefWidth="140.0" style="-fx-background-color: #ec1c24;" text="Login" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="17.0" />
          </font>
@@ -15,7 +15,7 @@
             <Bloom />
          </effect>
       </Button>
-      <Button fx:id="welcomeRegisterBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="622.0" layoutY="617.0" mnemonicParsing="false" onAction="#goToRegisterPage" prefHeight="45.0" prefWidth="121.0" style="-fx-background-color: #ec1c24;" text="Register" textFill="WHITE">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="622.0" layoutY="617.0" mnemonicParsing="false" onAction="#goToRegisterPage" prefHeight="46.0" prefWidth="140.0" style="-fx-background-color: #ec1c24;" text="Register" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="17.0" />
          </font>
@@ -23,7 +23,7 @@
             <Bloom />
          </effect>
       </Button>
-      <Button fx:id="welcomeSettingBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="622.0" layoutY="675.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="121.0" style="-fx-background-color: #ec1c24;" text="Setting" textFill="WHITE">
+      <Button fx:id="pauseBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="622.0" layoutY="675.0" mnemonicParsing="false" onAction="#pressPauseMusicBtn" prefHeight="46.0" prefWidth="140.0" style="-fx-background-color: #ec1c24;" text="Pause Music" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="17.0" />
          </font>

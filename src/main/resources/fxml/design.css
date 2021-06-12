@@ -1,0 +1,15 @@
+.chart {
+   -fx-padding: 10px;
+   -fx-background-size:1000 760;
+   -fx-background-image: url("backgrounds.jpg");
+}
+
+.back {
+   -fx-padding: 10px;
+   -fx-background-size:1000 760;
+   -fx-background-image: url("e.jpg");
+}
+.coin{
+    -fx-background-size:1000 760;
+    -fx-background-image: url("21.jpg");
+}

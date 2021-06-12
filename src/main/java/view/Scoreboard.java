@@ -1,5 +1,5 @@
 package main.java.view;
-
+import main.java.controller.MainMenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,11 +10,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import main.java.controller.MainMenuController;
 import main.java.model.UserModel;
-
 import java.util.ArrayList;
 import java.util.Objects;
+
+
 
 public class Scoreboard extends Application {
 
@@ -52,6 +52,5 @@ public class Scoreboard extends Application {
     public void Back() throws Exception {
         new MainMenuView().start(stage);
     }
-
 
 }

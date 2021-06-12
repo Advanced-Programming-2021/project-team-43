@@ -4,5 +4,6 @@ module org.example {
     requires gson;
     requires java.sql;
     opens view to javafx.fxml;
+    requires javafx.media;
     exports view;
 }
