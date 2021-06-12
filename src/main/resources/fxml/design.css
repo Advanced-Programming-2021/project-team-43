@@ -13,3 +13,11 @@
     -fx-background-size:1500 760;
     -fx-background-image: url("21.jpg");
 }
+.pause{
+    -fx-background-size:1500 760;
+    -fx-background-image: url("pause.jpg");
+}
+.pauseBack{
+    -fx-background-size:1500 760;
+    -fx-background-image: url("pauseBack.jpg");
+}
