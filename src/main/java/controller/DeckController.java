@@ -192,7 +192,7 @@ public class DeckController {
         }
         if (user.isUserHaveCard(cardName) && counter < user.userAllCards.get(cardName)) {
             if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-                if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 60 && user.isUserHaveCard(cardName)) {/////////////
+                if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 6 && user.isUserHaveCard(cardName)) {/////////////////////////
                     if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
                         if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
                                 user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
@@ -454,9 +454,7 @@ public class DeckController {
 
     public static void showSideDeck(String deckName) {
         if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-
             DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
-
             DeckView.showInput("Deck: " + deckName);
             DeckView.showInput("Side deck:");
             DeckView.showInput("Monsters:");
@@ -487,7 +485,7 @@ public class DeckController {
         String[] keys = hashMap.keySet().toArray(new String[0]);
         Arrays.sort(keys);
         for (String key : keys) {
-            DeckView.showInput(key + ":" + Card.getCards().get(key).getDescription() + "  " + hashMap.get(key));
+            DeckView.showInput(key + ": " + Card.getCards().get(key).getDescription() + " (" + hashMap.get(key) + ")");
         }
     }
 

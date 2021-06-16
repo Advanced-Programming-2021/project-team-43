@@ -68,7 +68,7 @@ public class RegisterAndLoginController {
             registerInGame(matcher.group(2), matcher.group(1), matcher.group(3));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^user\\s* create\\s* --nickname\\s* (.+?)\\s* --password \\s*(.+?)\\s*--username \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^user\\s* create\\s* -n\\s* (.+?)\\s* -p \\s*(.+?)\\s*-u \\s*(.+?)$")).find()) {
+        if ((matcher = getMatcher(command, "^user\\s+create\\s+--nickname\\s+(.+?)\\s+--password\\s+(.+?)\\s+--username\\s+(.+?)$")).find() || (matcher = getMatcher(command, "^user\\s+create\\s+-n\\s+(.+?)\\s+-p\\s+(.+?)\\s+-u\\s+(.+?)$")).find()) {
             registerInGame(matcher.group(3), matcher.group(1), matcher.group(2));
             return 1;
         }
@@ -76,7 +76,7 @@ public class RegisterAndLoginController {
             registerInGame(matcher.group(2), matcher.group(3), matcher.group(1));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^user\\s* create\\s* --password\\s* (.+?)\\s* --nickname\\s* (.+?)\\s* --username\\s* (.+?)\\s*$")).find() || (matcher = getMatcher(command, "^user\\s* create\\s* -p\\s* (.+?)\\s* -n\\s* (.+?)\\s* -u\\s* (.+?)\\s*$")).find()) {
+        if ((matcher = getMatcher(command, "^user\\s* create\\s* --password\\s* (.+?)\\s* --nickname\\s* (.+?)\\s* --username\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^user\\s* create\\s* -p\\s* (.+?)\\s* -n\\s* (.+?)\\s* -u\\s* (.+?)\\s*$")).find()) {
             registerInGame(matcher.group(3), matcher.group(2), matcher.group(1));
             return 1;
         }

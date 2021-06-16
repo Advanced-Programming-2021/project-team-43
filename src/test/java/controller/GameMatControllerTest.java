@@ -329,8 +329,6 @@ public class GameMatControllerTest {
         assertEquals(0, GameMatController.activateSpellEffect(Phase.Main_Phase1));
     }
 
-
-
     @Test
     public void errorOfInvalidSelection() {
         assertFalse(GameMatController.errorOfInvalidSelection(6, "Monster"));
@@ -382,10 +380,43 @@ public class GameMatControllerTest {
 
     @Test
     public void changeMonsterPosition() {
+        MonsterZoneCard mm=new MonsterZoneCard("me","Battle OX","OO",false,true);
+        assertEquals(1, GameMatController.changeMonsterPosition("set --position attack", Phase.Battle_Phase));
+
+        GameMatController.selectedOwnCard = "Modnster/Battle OX/1";
+        assertEquals(1, GameMatController.changeMonsterPosition("set --position attack", Phase.Battle_Phase));
+
+        GameMatController.selectedOwnCard = "Monster/Battle OX/1";
+        assertEquals(1, GameMatController.changeMonsterPosition("set --position attack", Phase.Battle_Phase));
+
+        GameMatController.selectedOwnCard = "Monster/Battle OX/1";
+        assertEquals(1, GameMatController.changeMonsterPosition("set --position attack", Phase.Main_Phase1));
+
+        mm.setMode("DO");
+        mm.setHaveChangedPositionThisTurn(true);
+        assertEquals(1, GameMatController.changeMonsterPosition("set --position attack", Phase.Main_Phase1));
+
+        mm.setHaveChangedPositionThisTurn(false);
+        assertEquals(1, GameMatController.changeMonsterPosition("set --position attack", Phase.Main_Phase1));
     }
 
     @Test
     public void set() {
+        new HandCardZone("me","Battle OX");
+        assertEquals(1,GameMatController.set(Phase.Main_Phase1));
+
+        GameMatController.selectedOwnCard = "Modnster/Battle OX/1";
+        assertEquals(2,GameMatController.set(Phase.Main_Phase1));
+
+        GameMatController.selectedOwnCard = "Hand/Battle OX/1";
+        assertEquals(3,GameMatController.set(Phase.Draw_Phase));
+
+        GameMatController.selectedOwnCard = "Hand/Battle OX/1";
+        Player.getPlayerByName("me").setCanSetSummonMonster(true);
+        assertEquals(0,GameMatController.set(Phase.Main_Phase1));
+
+        GameMatController.selectedOwnCard = "Hand/Trap Hole/1";
+        assertEquals(0,GameMatController.set(Phase.Main_Phase1));
     }
 
     @Test

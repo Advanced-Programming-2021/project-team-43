@@ -538,30 +538,30 @@ public class GameMatController {
         return 0;
     }
 
-    public static void set(Phase currentPhase) {
+    public static int set(Phase currentPhase) {
         if (!errorOfNoCardSelected("own"))
-            return;
+            return 1;
         String[] split = selectedOwnCard.split("/");
         if (!split[0].equals("Hand")) {
             GameMatView.showInput("you can’t set this card");
-            return;
+            return 2;
         }
         if (!errorOfWrongPhase("set", currentPhase))
-            return;
+            return 3;
         HandCardZone handCard = HandCardZone.getHandCardByAddress(Integer.parseInt(split[2]), onlineUser);
         Player player = Player.getPlayerByName(onlineUser);
         String cardName = handCard.getCardName();
         switch (handCard.getKind()) {
             case "Monster":
                 if (!errorOfFullZone("Monster"))
-                    return;
+                    return 4;
                 if (!player.getCanSetSummonMonster())
                     GameMatView.showInput("you already summoned/set on this turn");
                 else if (cardName.equals("Beast King Barbaros"))
                     GameMatView.showInput("Oops! Beast King Barbaros cant be set!");
                 else {
                     if (addToMonsterZoneCard(cardName, "DH") == 0)
-                        return;
+                        return 5;
                     handCard.removeFromHandCard();
                     player.setCanSetSummonMonster(false);
                     GameMatView.showInput("set successfully");
@@ -569,7 +569,7 @@ public class GameMatController {
                 break;
             case "Spell":
                 if (!errorOfFullZone("Spell"))
-                    return;
+                    return 6;
                 handCard.removeFromHandCard();
                 if (SpellCard.getSpellCardByName(cardName).getIcon().equals("Field")) {
                     GameMatModel ownGameMat = GameMatModel.getGameMatByNickname(onlineUser);
@@ -584,7 +584,7 @@ public class GameMatController {
                 break;
             case "Trap":
                 if (!errorOfFullZone("Spell"))
-                    return;
+                    return 7;
                 handCard.removeFromHandCard();
                 addToSpellTrapZoneCard(handCard.getCardName(), "H");
                 SpellTrapZoneCard.getSpellCardByAddress(SpellTrapZoneCard.getNumberOfFullHouse(onlineUser), onlineUser).setIsSetInThisTurn(true);
@@ -592,6 +592,7 @@ public class GameMatController {
                 break;
         }
         selectedOwnCard = "";
+        return 0;
     }
 
     public static int addToMonsterZoneCard(String monsterName, String mode) {

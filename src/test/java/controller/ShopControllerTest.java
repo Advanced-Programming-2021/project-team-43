@@ -51,7 +51,7 @@ public class ShopControllerTest {
         new ShopModel(Card.getCards());
         String cammand2 = "shop show --all";
         ShopController.findMatcher(cammand2);
-        assertEquals(1658, show.toString().length());
+        assertEquals(1655, show.toString().length());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class ShopControllerTest {
         new ShopModel(Card.getCards());
         String command = "menu show-current";
         ShopController.findMatcher(command);
-        assertEquals("shop", show.toString().substring(0, show.toString().length() - 2));
+        assertEquals("Shop", show.toString().substring(0, show.toString().length() - 2));
     }
     @Test
     public void findMatcher5() {
@@ -103,7 +103,7 @@ public class ShopControllerTest {
         SetCards.readingCSVFileMonster();
         new ShopModel(Card.getCards());
         ShopController.shopShow();
-        assertEquals(1658, show.toString().length());
+        assertEquals(1655, show.toString().length());
     }
 
     @Test

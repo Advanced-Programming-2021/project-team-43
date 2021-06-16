@@ -52,7 +52,7 @@ public class RegisterAndLoginControllerTest {
         Assert.assertEquals("user created successfully!",outContentWithOutEnter(outContent));
         outContent.reset();
 
-        RegisterAndLoginController.findMatcher("user create --nickname \\s* (.+?)\\s* --password \\s*(.+?)\\s*--username \\s*(.+?)");
+        RegisterAndLoginController.findMatcher("^user\\s+create\\s+--nickname\\s+(.+?)\\s+--password\\s+(.+?)\\s+--username\\s+(.+?)$");
         Assert.assertEquals("user created successfully!",outContentWithOutEnter(outContent));
         outContent.reset();
 
