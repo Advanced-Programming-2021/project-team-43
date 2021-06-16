@@ -1,0 +1,1 @@
+{"a":{"username":"a","password":"b","nickname":"c","userScore":0,"userCoin":-4290,"userAllCards":{"Yami":1},"userAllDecks":{},"activeDeck":""}}
