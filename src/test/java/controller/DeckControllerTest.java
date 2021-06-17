@@ -336,7 +336,7 @@ public class DeckControllerTest {
         DeckController.addCardToSideDeck("Yami", "deck");
         outContent.reset();
         DeckController.addCardToSideDeck("Yami", "deck");
-        Assert.assertEquals("there are already three cards with name Yami in deck deck", outContentWithOutEnter(outContent));
+        Assert.assertEquals("side deck is full", outContentWithOutEnter(outContent));///////////////
         DeckModel deckModel1 = new DeckModel("fullDeck");
         for (int i = 0; i < 60; i++) {
             deckModel1.addCardToSide("card12");

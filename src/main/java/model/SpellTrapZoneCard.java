@@ -13,7 +13,7 @@ public class SpellTrapZoneCard {
     private final int address;
     private int turnCounter = 0;
     private boolean isSetInThisTurn;
-    private final Map<String, Integer> relatedMonsterAddress = new HashMap<>();
+    public final Map<String, Integer> relatedMonsterAddress = new HashMap<>();
     public static final Map<String, Map<Integer, SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
 
     public SpellTrapZoneCard(String playerNickname, String spellTrapName, String mode) {

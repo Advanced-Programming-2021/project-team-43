@@ -256,10 +256,14 @@ public class MonsterZoneCard {
     public static void changeTurn(String playerNickname) {
         Map<Integer, MonsterZoneCard> allMonsters = new HashMap<>(allMonsterCards.get(playerNickname));
         for (int i = 1; i < 6; i++) {
+            if (allMonsters.size() == 1 && allMonsters.get(i) != null) {
+                allMonsters.get(i).setCanAttackToThisMonster(true);
+            }
             if (allMonsters.get(i) != null) {
                 allMonsters.get(i).setHaveChangedPositionThisTurn(false);
                 allMonsters.get(i).setHaveAttackThisTurn(false);
-                allMonsters.get(i).setIsEffectUsed(false);
+                if (!allMonsters.get(i).getMonsterName().equals("Suijin"))
+                    allMonsters.get(i).setIsEffectUsed(false);
                 allMonsters.get(i).setCanAttack(true);
             }
         }

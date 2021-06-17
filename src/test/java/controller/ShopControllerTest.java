@@ -98,7 +98,7 @@ public class ShopControllerTest {
         ByteArrayOutputStream show = new ByteArrayOutputStream();
         System.setOut(new PrintStream(show));
         ShopController.shopShow();
-        assertEquals(0, show.toString().length());
+        assertEquals(1655, show.toString().length());///////////////////
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
         new ShopModel(Card.getCards());

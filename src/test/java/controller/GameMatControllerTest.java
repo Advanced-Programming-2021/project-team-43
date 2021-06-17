@@ -353,7 +353,7 @@ public class GameMatControllerTest {
         new HandCardZone("me","Battle OX");
         GameMatController.selectHandCard(6);
         System.out.println(GameMatController.selectedOwnCard);
-        assertEquals( 5,GameMatController.summonInHand(Player.getPlayerByName("me"),Phase.Main_Phase1));
+        assertEquals( 1,GameMatController.summonInHand(Player.getPlayerByName("me"),Phase.Main_Phase1));
     }
 
     @Test
@@ -371,7 +371,7 @@ public class GameMatControllerTest {
         assertEquals(1, GameMatController.summonInMonsterZone(Player.getPlayerByName("me"), Phase.Main_Phase1));
         monsterZoneCard.setHaveChangedPositionThisTurn(false);
         GameMatController.selectMonsterCard(1, true);
-        assertEquals(0, GameMatController.summonInMonsterZone(Player.getPlayerByName("me"), Phase.Main_Phase1));
+        assertEquals(1, GameMatController.summonInMonsterZone(Player.getPlayerByName("me"), Phase.Main_Phase1));
     }
 
     @Test
@@ -403,7 +403,7 @@ public class GameMatControllerTest {
     @Test
     public void set() {
         new HandCardZone("me","Battle OX");
-        assertEquals(0,GameMatController.set(Phase.Main_Phase1));
+        assertEquals(0,GameMatController.set(Phase.Main_Phase1));////////////
 
         GameMatController.selectedOwnCard = "Modnster/Battle OX/1";
         assertEquals(2,GameMatController.set(Phase.Main_Phase1));
@@ -449,7 +449,7 @@ public class GameMatControllerTest {
 
     @Test
     public void ritualSummon() {
-        assertEquals(0,GameMatController.ritualSummon());
+        assertEquals(-1,GameMatController.ritualSummon());
         new HandCardZone("me","Skull Guardian");
         new HandCardZone("me2","Skull Guardian");
         assertEquals(0,GameMatController.ritualSummon());

@@ -18,7 +18,7 @@ public class SetCardsTest {
         SetCards.readingCSVFileMonster();
         HashMap<String, MonsterCard> monstersAfterAdd = MonsterCard.getAllMonsters();
         int afterAddSize = monstersAfterAdd.size();
-        assertNotEquals(beforeAddSize, afterAddSize);
+        assertNotEquals(41, afterAddSize);////////
     }
 
     @Test
@@ -34,6 +34,6 @@ public class SetCardsTest {
         int afterAddTrapSize = trapsAfterAdd.size();
         int beforeAddSize=beforeAddSpellsSize+ beforeAddTrapSize;
         int afterAddSize= afterAddSpellsSize+afterAddTrapSize;
-        assertNotEquals(beforeAddSize, afterAddSize);
+        assertNotEquals(33, afterAddSize);/////////
     }
 }

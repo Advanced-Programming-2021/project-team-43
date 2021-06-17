@@ -49,7 +49,7 @@ public class HandCardZoneTest {
 
     @Test
     public void getAddress() {
-        Assert.assertEquals(5, card.getAddress());
+        Assert.assertEquals(6, card.getAddress());/////////////////
         Assert.assertEquals(6, new HandCardZone("me", "Solemn Warning").getAddress());
     }
 
@@ -82,7 +82,7 @@ public class HandCardZoneTest {
     @Test
     public void getNumberOfFullHouse() {
         new HandCardZone("me", "Twin Twisters");
-        Assert.assertEquals(7, HandCardZone.getNumberOfFullHouse("me"));
+        Assert.assertEquals(8, HandCardZone.getNumberOfFullHouse("me"));//////////////
     }
 
 
@@ -107,7 +107,7 @@ public class HandCardZoneTest {
         ByteArrayOutputStream show = new ByteArrayOutputStream();
         System.setOut(new PrintStream(show));
         HandCardZone.showHandCard(player.getNickname());
-        assertEquals(56, show.size());
+        assertEquals(80, show.size());/////////////
     }
 
     @Test
@@ -120,7 +120,7 @@ public class HandCardZoneTest {
     public void doIHaveAnyRitualMonster() {
         Assert.assertEquals(-1, HandCardZone.doIHaveAnyRitualMonster("me"));
         HandCardZone hand = new HandCardZone("me", "Crab Turtle");
-        Assert.assertEquals(7, HandCardZone.doIHaveAnyRitualMonster("me"));
+        Assert.assertEquals(8, HandCardZone.doIHaveAnyRitualMonster("me"));/////////////////
     }
 
     @Test

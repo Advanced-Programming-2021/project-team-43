@@ -1,6 +1,8 @@
 package controller;
+
 import model.*;
 import view.GameMatView;
+
 import java.util.*;
 
 public class SpellEffect {
@@ -124,8 +126,7 @@ public class SpellEffect {
             if (whoseGraveyard.equals("own") && ownGameMat.getDeadCardNameByAddress(deadCardAddress) != null) {
                 if (Card.getCardsByName(ownGameMat.getDeadCardNameByAddress(deadCardAddress)).getCardModel().equals("Monster"))
                     break;
-            }
-            else if (whoseGraveyard.equals("rival") && rivalGameMat.getDeadCardNameByAddress(deadCardAddress) != null) {
+            } else if (whoseGraveyard.equals("rival") && rivalGameMat.getDeadCardNameByAddress(deadCardAddress) != null) {
                 if (Card.getCardsByName(rivalGameMat.getDeadCardNameByAddress(deadCardAddress)).getCardModel().equals("Monster"))
                     break;
             }
@@ -137,8 +138,7 @@ public class SpellEffect {
         if (!player.doesThisModelAndTypeExist("Spell", "Field")) {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no Field Spell in Your Main Deck!");
             return 0;
-        }
-        else {
+        } else {
             GameMatView.showInput("Please enter the address of a Field Spell in your Main Deck to add to your Hand Cards: ");
             response = GameMatView.getCommand();
             while (!response.matches("\\d+") || !player.doesAddressTypeMatchInMainDeck(Integer.parseInt(response), "Spell", "Field")) {
@@ -158,8 +158,7 @@ public class SpellEffect {
         if (player.getNumberOfMainDeckCards() < 2) {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no enough card in Your Main Deck!");
             return 0;
-        }
-        else {
+        } else {
             String cardName = player.drawCard(false);
             new HandCardZone(onlineUser, cardName);
             cardName = player.drawCard(false);
@@ -171,7 +170,7 @@ public class SpellEffect {
     public static int raigeki(String rivalUser) {
         Integer[] keys = MonsterZoneCard.getAllMonstersByPlayerName(rivalUser).keySet().toArray(new Integer[0]);
         if (keys.length == 0) {
-            GameMatView.showInput("Oops! Your rival doesnt have any monster in control to destroy!");
+            GameMatView.showInput("Oops! Your rival doesn't have any monster in control to destroy!");
             return 0;
         }
         for (int key : keys) {
@@ -182,14 +181,14 @@ public class SpellEffect {
     }
 
     public static int changeOfHeart(String onlineUser, String rivalUser) {
-        if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 5)
+        if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 5) {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no free space in Your Monster Zone!");
-        else if (MonsterZoneCard.getNumberOfFullHouse(rivalUser) == 0)
+        } else if (MonsterZoneCard.getNumberOfFullHouse(rivalUser) == 0) {
             GameMatView.showInput("Oops! You cant use this Spell Effect Because of no Monster in rival Zone!");
-        else {
+        } else {
             GameMatView.showInput("Please enter the address of one of the Rival Monster to control in your Turn: ");
             response = GameMatView.getCommand();
-            while (!response.matches("[1-5]") || MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response),rivalUser) == null) {
+            while (!response.matches("[1-5]") || MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser) == null) {
                 if (response.equals("cancel"))
                     return 0;
                 GameMatView.showInput("Please enter the Monster address correctly: ");
@@ -265,7 +264,7 @@ public class SpellEffect {
         Player.getPlayerByName(onlineUser).changeLifePoint(500);
     }
 
-    public static void messengerOfPeace(String onlineUser, String rivalUser,int ownAddress) {
+    public static void messengerOfPeace(String onlineUser, String rivalUser, int ownAddress) {
         Map<Integer, MonsterZoneCard> monsters;
         monsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
         Integer[] monsterNames = monsters.keySet().toArray(new Integer[0]);
@@ -289,7 +288,7 @@ public class SpellEffect {
         }
     }
 
-    public static void returnPermissionMessenger(int ownAddress, String rival,String onlineUser) {
+    public static void returnPermissionMessenger(int ownAddress, String rival, String onlineUser) {
         Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
         Integer[] addresses = monsters.keySet().toArray(new Integer[0]);
         for (int i = 0; i < monsters.size(); i++) {
@@ -325,7 +324,7 @@ public class SpellEffect {
                     break;
             }
             chosenAddress = Integer.parseInt(response);
-            HandCardZone.getHandCardByAddress(chosenAddress-1, onlineUser).removeFromHandCard();
+            HandCardZone.getHandCardByAddress(chosenAddress - 1, onlineUser).removeFromHandCard();
         }
         do {
             GameMatView.showInput("Please enter the number of Spell/Trap you want to destroy: (1 or 2)");
@@ -351,8 +350,7 @@ public class SpellEffect {
                 if (response.equals("own"))
                     if (SpellTrapZoneCard.getSpellCardByAddress(Integer.parseInt(responseTwo), onlineUser) != null)
                         break;
-                    else
-                    if (SpellTrapZoneCard.getSpellCardByAddress(Integer.parseInt(responseTwo), rivalUser) != null)
+                    else if (SpellTrapZoneCard.getSpellCardByAddress(Integer.parseInt(responseTwo), rivalUser) != null)
                         break;
             }
             if (response.equals("own"))
@@ -382,8 +380,7 @@ public class SpellEffect {
             if (response.equals("own"))
                 if (SpellTrapZoneCard.getSpellCardByAddress(address, onlineUser) != null)
                     break;
-                else
-                if (SpellTrapZoneCard.getSpellCardByAddress(address, rivalUser) != null)
+                else if (SpellTrapZoneCard.getSpellCardByAddress(address, rivalUser) != null)
                     break;
         }
         if (response.equals("own"))
@@ -492,7 +489,7 @@ public class SpellEffect {
         }
     }
 
-    public static void blackPendant(String onlineUser, SpellTrapZoneCard ownSpell,  String rivalUser) {
+    public static void blackPendant(String onlineUser, SpellTrapZoneCard ownSpell, String rivalUser) {
         Map<String, Integer> relatedMonster = new HashMap<>(ownSpell.getRelatedMonsterAddress());
         if (relatedMonster.get("own") != null)
             MonsterZoneCard.getMonsterCardByAddress(relatedMonster.get("own"), onlineUser).changeAttack(500);
@@ -511,8 +508,7 @@ public class SpellEffect {
                     counter++;
             }
             monster = MonsterZoneCard.getMonsterCardByAddress(relatedMonster.get("own"), onlineUser);
-        }
-        else  {
+        } else {
             for (int i = 1; i < 6; i++) {
                 monster = MonsterZoneCard.getMonsterCardByAddress(i, rivalUser);
                 if (monster != null && monster.getAddress() != relatedMonster.get("rival") && !monster.getMode().equals("DH"))
@@ -524,7 +520,7 @@ public class SpellEffect {
         monster.changeDefend(800 * counter);
     }
 
-    public static void magnumShield(String onlineUser, SpellTrapZoneCard ownSpell,  String rivalUser) {
+    public static void magnumShield(String onlineUser, SpellTrapZoneCard ownSpell, String rivalUser) {
         Map<String, Integer> relatedMonster = new HashMap<>(ownSpell.getRelatedMonsterAddress());
         MonsterZoneCard monster;
         if (relatedMonster.get("own") != null)

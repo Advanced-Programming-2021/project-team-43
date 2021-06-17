@@ -93,7 +93,7 @@ public class TrapEffect {
             Player.getPlayerByName(player1).changeLifePoint(-2000);
             if (summonMine) {
                 if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1);
+                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).removeMonsterFromZone();
                 }
             }
             if (!summonMine) {
@@ -109,7 +109,7 @@ public class TrapEffect {
     public static int magicJammer(String onlineUser, String rivalUser, SpellTrapZoneCard trapCard) {
         if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
             if (HandCardZone.getNumberOfFullHouse(onlineUser) == 0) {
-                GameMatView.showInput("Oops! You dont have any card in your hand to drop!");
+                GameMatView.showInput("Oops! You don't have any card in your hand to drop!");
             }
             else {
                 int address;

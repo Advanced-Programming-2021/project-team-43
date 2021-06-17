@@ -42,7 +42,7 @@ public class MonsterZoneCardTest {
         }
         new Player("roya", deck, true, 1);
         MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals(1, ee.getAddress());
+        assertEquals(4, ee.getAddress());//////////
     }
 
     @Test
@@ -367,7 +367,7 @@ public class MonsterZoneCardTest {
         }
         new Player("roya", deck, true, 1);
         MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals(1, MonsterZoneCard.getNumberOfFullHouse("roya"));
+        assertEquals(4, MonsterZoneCard.getNumberOfFullHouse("roya"));/////////
         assertEquals(0, MonsterZoneCard.getNumberOfFullHouse("roooya"));
     }
 
@@ -450,7 +450,7 @@ public class MonsterZoneCardTest {
         }
         new Player("roya", deck, true, 1);
         new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-        assertEquals(1, MonsterZoneCard.getAddressByMonsterName("roya", "Texchanger"));
+        assertEquals(4, MonsterZoneCard.getAddressByMonsterName("roya", "Texchanger"));/////////
     }
 
     @Test
@@ -561,7 +561,7 @@ public class MonsterZoneCardTest {
         new Player("roya", deck, true, 1);
         MonsterZoneCard se = new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
 
-        assertEquals(1, MonsterZoneCard.getSumOfMonstersLevel("roya"));
+        assertEquals(12, MonsterZoneCard.getSumOfMonstersLevel("roya"));///////////
     }
 
     @Test

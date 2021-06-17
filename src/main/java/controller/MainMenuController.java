@@ -131,20 +131,20 @@ public class MainMenuController {
     }
 
     public static int duelFindMatcher(String command) {
-        if ((matcher = getMatcher(command, "^duel\\s* --new \\s*--second-player\\s* (.+?)\\s* --rounds \\s*(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s* -n \\s*-s-p\\s* (.+?)\\s* -r \\s*(\\d+)$")).find()) {
+        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--second-player\\s+(.+?)\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-s-p\\s+(.+?)\\s+-r\\s+(\\d+)$")).find()) {
             duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^duel\\s* --second-player \\s*--new\\s* (.+?)\\s* --rounds \\s*(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s* -s-p \\s*-n\\s* (.+?)\\s* -r \\s*(\\d+)$")).find()) {
+        if ((matcher = getMatcher(command, "^duel\\s+--second-player\\s+(.+?)\\s+--new\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-s-p\\s+(.+?)\\s+-n\\s+-r\\s+(\\d+)$")).find()) {
             duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
             return 1;
         }
         if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--second-player\\s+(.+?)\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-s-p\\s+(.+?)\\s+-n\\s*$")).find()) {
-            duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
+            duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
             return 1;
         }
         if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--rounds\\s+(\\d+)--second-player\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-r\\s+(\\d+)-s-p\\s+(.+?)$")).find()) {
-            duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
+            duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
             return 1;
         }
         if ((matcher = getMatcher(command, "^duel\\s+--second-player\\s+(.+?)\\s+--rounds\\s+(\\d+)\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-s-p\\s+(.+?)\\s+-r\\s+(\\d+)\\s+-n$")).find()) {
@@ -152,7 +152,7 @@ public class MainMenuController {
             return 1;
         }
         if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--new\\s+--second-player\\s+(.+?)$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-n\\s+-s-p\\s+(.+?)$")).find()) {
-            duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
+            duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
             return 1;
         }
         if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--ai\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-ai\\s+-r\\s+(\\d+)$")).find())

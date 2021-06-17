@@ -15,8 +15,8 @@ public class Player {
     private boolean canDrawCard;
     private int numberOfWin = 0;
     private boolean canBattle;
-    private final List<String> playerMainDeck = new ArrayList<>();
-    private final List<String> playerSideDeck = new ArrayList<>();
+    public final List<String> playerMainDeck = new ArrayList<>();
+    public final List<String> playerSideDeck = new ArrayList<>();
     private final List<Integer> allLifePoints = new ArrayList<>();
     private static boolean canUseTrap = true;
     public static final Map<String, Player> allPlayers = new HashMap<>();
@@ -38,11 +38,27 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-        for (int i = 0; i < 5; i++)
-            new HandCardZone(nickname, drawCard(true));
+//        for (int i = 0; i < 5; i++)
+//            new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
-        new HandCardZone(nickname, "Command knight");
-        new MonsterZoneCard(nickname, "Battle OX", "OO", false,false);
+        if (nickname.equals("forooz")) {
+            new HandCardZone(nickname, "Herald of Creation");
+            new HandCardZone(nickname, "Texchanger");
+            new HandCardZone(nickname, "Gate Guardian");
+            new HandCardZone(nickname, "Scanner");
+
+            new HandCardZone(nickname, "Beast King Barbaros");
+        }
+        else {
+            new HandCardZone(nickname, "Call of The Haunted");
+            for (int i = 0; i < 5; i++)
+                new HandCardZone(nickname, drawCard(true));
+        }
+        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Beast King Barbaros");
+        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Marshmallon");
+        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Gate Guardian");
+        new MonsterZoneCard(nickname, "Exploder Dragon", "DH", false,false);
+        new MonsterZoneCard(nickname, "Horn Imp", "OO", false,false);
         new MonsterZoneCard(nickname, "Axe Raider", "OO", false,false);
     }
 
@@ -59,7 +75,7 @@ public class Player {
         this.canDrawCard = !isYourTurn;
         canBattle = !isYourTurn;
         this.counterOfTurn = 0;
-        this.canUseTrap = true;
+        canUseTrap = true;
         this.canSetSummonMonster = true;
         GameMatModel.getGameMatByNickname(nickname).setPhase(Phase.Draw_Phase);
         fillTheGameDecks(activeDeck);
@@ -248,7 +264,7 @@ public class Player {
         String kind;
         for (String eachCard : playerMainDeck) {
             kind = Card.getCardsByName(eachCard).getCardModel();
-            if (kind.equals("Monster") && model.equals("Monster")) {
+            if (kind.equals("Monster") && model.equals(kind)) {
                 if (MonsterCard.getMonsterByName(eachCard).getMonsterType().equals(type))
                     return true;
             } else if (kind.equals("Spell") && model.equals("Spell")) {

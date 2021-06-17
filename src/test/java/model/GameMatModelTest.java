@@ -15,7 +15,7 @@ public class GameMatModelTest {
     public void startNewGame() {
         GameMatModel gameMatModel = new GameMatModel("n1");
         gameMatModel.startNewGame();
-        Assert.assertEquals(1, GameMatModel.getPlayerGameMat().size());
+        Assert.assertEquals(3, GameMatModel.getPlayerGameMat().size());////////////////
     }
 
     @Test

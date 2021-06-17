@@ -3,7 +3,9 @@ package controller;
 import model.*;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
+
 import static org.junit.Assert.*;
 
 public class MonsterEffectTest {
@@ -11,10 +13,11 @@ public class MonsterEffectTest {
     MonsterZoneCard ownMonster;
     MonsterZoneCard ownMonster2;
     MonsterZoneCard rivalMonster2;
+    DeckModel deckModel;
+    DeckModel deckModel2;
 
     @Before
     public void beforeAllClassTest() {
-        DeckModel deckModel;
         SetCards.readingCSVFileMonster();
         SetCards.readingCSVFileTrapSpell();
         new UserModel("Guy", "123", "me");
@@ -22,20 +25,28 @@ public class MonsterEffectTest {
         MainMenuController.username = "Guy";
         MainMenuController.username = "Guy2";
         deckModel = new DeckModel("myDeck");
+        deckModel2 = new DeckModel("rivalDeck");
         for (int i = 0; i < 10; i++) {
             deckModel.addCardToMain("Yami");
+            deckModel2.addCardToMain("Yami");
         }
         for (int i = 0; i < 5; i++) {
             deckModel.addCardToSide("Battle Ox");
+            deckModel2.addCardToSide("Battle Ox");
         }
         new Player("me", deckModel, true, 1);
-        new Player("me2", deckModel, false, 1);
+        new Player("me2", deckModel2, false, 1);
         GameMatController.onlineUser = "me";
         GameMatController.onlineUser = "me2";
         ownMonster = new MonsterZoneCard("me", "Battle OX", "DO", false, true);
         ownMonster2 = new MonsterZoneCard("me", "Battle OX", "DH", false, true);
         rivalMonster2 = new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
 
+    }
+
+    @Test
+    public void changeModeEffectController() {
+        assertEquals(0, MonsterEffect.changeModeEffectController(ownMonster2, "me", "me2"));
     }
 
     @Test
@@ -101,32 +112,89 @@ public class MonsterEffectTest {
 
     @Test
     public void gateGuardian() {
-        HandCardZone tt=new HandCardZone("me","Battle OX");
-        assertEquals(1,MonsterEffect.gateGuardian(tt,"me","me2"));
+        HandCardZone tt = new HandCardZone("me", "Battle OX");
+        assertEquals(1, MonsterEffect.gateGuardian(tt, "me", "me2"));
+    }
+
+
+///
+
+    @Test
+    public void beastKingBarbaros() {
+        System.setIn(new ByteArrayInputStream("cancel".getBytes()));
+        HandCardZone tt = new HandCardZone("me", "Battle OX");
+        assertEquals(0, MonsterEffect.beastKingBarbaros(tt, "me", "me2"));
+
+        System.setIn(new ByteArrayInputStream("yes".getBytes()));
+        assertEquals(1, MonsterEffect.beastKingBarbaros(tt, "me", "me2"));
+
+    }
+
+
+    @Test
+    public void theTricky() {
+        System.setIn(new ByteArrayInputStream("cancel".getBytes()));
+        HandCardZone tt = new HandCardZone("me", "Battle OX");
+        assertEquals(0, MonsterEffect.theTricky(tt, "me"));
+
+        System.setIn(new ByteArrayInputStream("no".getBytes()));
+        assertEquals(0, MonsterEffect.theTricky(tt, "me"));
     }
 
     @Test
     public void texchanger() {
+        rivalMonster2.setIsEffectUsed(false);
+        new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
+        new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
+        new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
+        new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
+        assertEquals(0, MonsterEffect.texchanger(rivalMonster2, "me2"));
+
+        rivalMonster2.setIsEffectUsed(false);
+        new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
+        System.setIn(new ByteArrayInputStream("cancel".getBytes()));
+        assertEquals(1, MonsterEffect.texchanger(rivalMonster2, "me2"));
+
+        rivalMonster2.setIsEffectUsed(false);
+        new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
+        System.setIn(new ByteArrayInputStream("hand".getBytes()));
+        assertEquals(1, MonsterEffect.texchanger(rivalMonster2, "me2"));
+
+
+        rivalMonster2.setIsEffectUsed(false);
+        new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
+        System.setIn(new ByteArrayInputStream("graveyard".getBytes()));
+        assertEquals(1, MonsterEffect.texchanger(rivalMonster2, "me2"));
+
+
+        rivalMonster2.setIsEffectUsed(false);
+        Player.getPlayerByName("me2").playerMainDeck.add("Bitron");
+        new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
+        System.setIn(new ByteArrayInputStream("deck".getBytes()));
+        assertEquals(1, MonsterEffect.texchanger(rivalMonster2, "me2"));
+
+        rivalMonster2.setIsEffectUsed(true);
+        assertEquals(0, MonsterEffect.texchanger(rivalMonster2, "me2"));
+
     }
 
     @Test
     public void heraldOfCreation() {
+        ownMonster.setIsEffectUsed(true);
+        assertEquals(0, MonsterEffect.heraldOfCreation(ownMonster, "me"));
+
+        ownMonster.setIsEffectUsed(false);
+        assertEquals(1, MonsterEffect.heraldOfCreation(ownMonster, "me"));
+
+        ownMonster.setIsEffectUsed(false);
+        GameMatModel.getGameMatByNickname("me").graveyard.add("Spiral Serpent");
+        HandCardZone.allHandCards.get("me").clear();
+        assertEquals(2, MonsterEffect.heraldOfCreation(ownMonster, "me"));
+
+        ownMonster.setIsEffectUsed(false);
+        System.setIn(new ByteArrayInputStream("cancel".getBytes()));
+        HandCardZone.allHandCards.get("me").add(new HandCardZone("me", "Spiral Serpent"));
+        assertEquals(3, MonsterEffect.heraldOfCreation(ownMonster, "me"));
     }
-
-    @Test
-    public void changeModeEffectController() {
-    }
-
-
-
-
-    @Test
-    public void beastKingBarbaros() {
-    }
-
-    @Test
-    public void theTricky() {
-    }
-
 
 }

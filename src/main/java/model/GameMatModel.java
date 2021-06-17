@@ -8,7 +8,7 @@ public class GameMatModel {
     private Phase phase;
     private String fieldZone = "";
     private int numberOfDeadMonsterThisTurn = 0;
-    private final List<String> graveyard = new ArrayList<>();
+    public final List<String> graveyard = new ArrayList<>();
     public static final Map<String, GameMatModel> playerGameMat = new HashMap<>();
 
     public GameMatModel (String playerNickname) {

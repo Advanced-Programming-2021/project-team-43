@@ -43,11 +43,11 @@ public class GameMatController {
 
     public static void AI() {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
         if (currentPhase.equals(Phase.Draw_Phase)) {
             command = "next phase";
         }
@@ -456,7 +456,7 @@ public class GameMatController {
                     MonsterZoneCard ownMonster = MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser);
                     if (ownMonster != null) {
                         if (MonsterEffect.changeModeEffectController(ownMonster, onlineUser, rivalUser) == 0) {
-                            if (split[1].equals("\"Terratiger, the Empowered Warrior\""))
+                            if (split[1].equals("Terratiger, the Empowered Warrior"))
                                 MonsterEffect.terratiger(onlineUser);
                             if (split[1].equals("Herald of Creation"))
                                 MonsterEffect.heraldOfCreation(ownMonster, onlineUser);
@@ -569,6 +569,8 @@ public class GameMatController {
                     ownMonster.setMode("OO");
                 else
                     ownMonster.setMode("DO");
+                if (ownMonster.getMonsterName().equals("The Calculator"))
+                    MonsterEffect.theCalculator(onlineUser, ownMonster);
                 selectedOwnCard = "";
                 GameMatView.showInput("monster card position changed successfully");
                 MonsterEffect.changeModeEffectController(ownMonster, onlineUser, rivalUser);
@@ -755,18 +757,18 @@ public class GameMatController {
         int ritualMonsterAddress = HandCardZone.doIHaveAnyRitualMonster(onlineUser);
         if (ritualMonsterAddress == -1) {
             GameMatView.showInput("there is no way you could ritual summon a monster");
-            return 0;
+            return -1;
         }
         if (MonsterZoneCard.getSumOfMonstersLevel(onlineUser) < 7) {
             GameMatView.showInput("there is no way you could ritual summon a monster");
-            return 0;
+            return -1;
         }
         int address;
         while (true) {
             GameMatView.showInput("Please enter the address of a Ritual Monster in your hand to summon: ");
             String response = GameMatView.getCommand();
             if (response.equals("cancel"))
-                return 0;
+                return -1;
             if (!response.matches("\\d+")) {
                 GameMatView.showInput("you should ritual summon right now");
                 continue;
@@ -788,7 +790,7 @@ public class GameMatController {
             GameMatView.showInput("Please enter the number of Monsters you want to tribute (Maximum 3 Monsters):");
             response = GameMatView.getCommand();
             if (response.equals("cancel"))
-                return 0;
+                return -1;
             if (!response.matches("[1-3]"))
                 continue;
             numberOfTribute = Integer.parseInt(response);
@@ -808,6 +810,7 @@ public class GameMatController {
                 new MonsterZoneCard(onlineUser, ritualMonsterName, "DO", false, false);
             else
                 new MonsterZoneCard(onlineUser, ritualMonsterName, "OO", false, false);
+            GameMatView.showInput("summoned successfully");
             handCardRitualMonster.removeFromHandCard();
         }
         return 0;
@@ -961,12 +964,13 @@ public class GameMatController {
                 }
             }
             else if (rivalMonsterName.equals("Texchanger")) {
-                if (MonsterEffect.texchanger(rivalMonster, rivalUser) == 1) {
+                if (MonsterEffect.texchanger(rivalMonster, rivalUser) != 0) {
                     selectedOwnCard = "";
                     return 1;
                 }
             }
             if (rivalMonsterName.equals("Exploder Dragon")) {
+                GameMatView.showInput("Exploder Dragon Effect is activated!");
                 rivalMonster.removeMonsterFromZone();
                 ownMonster.removeMonsterFromZone();
                 GameMatModel.getGameMatByNickname(rivalUser).changeNumberOfDeadMonsterThisTurn();
@@ -981,6 +985,9 @@ public class GameMatController {
                     if (!rivalMonsterName.equals("Marshmallon")) {
                         rivalMonster.removeMonsterFromZone();
                         GameMatModel.getGameMatByNickname(rivalUser).changeNumberOfDeadMonsterThisTurn();
+                    }
+                    else {
+                        MonsterEffect.marshmallon(rivalMonster, onlineUser);
                     }
                     if (rivalMonsterName.equals("Yomi Ship")) {
                         ownMonster.removeMonsterFromZone();
@@ -1001,6 +1008,14 @@ public class GameMatController {
                 }
                 else {
                     Player.getPlayerByName(onlineUser).changeLifePoint(damage);
+                    if (ownMonster.getMonsterName().equals("Exploder Dragon")) {
+                        GameMatView.showInput("Exploder Dragon Effect is activated!");
+                        rivalMonster.removeMonsterFromZone();
+                        ownMonster.removeMonsterFromZone();
+                        GameMatModel.getGameMatByNickname(rivalUser).changeNumberOfDeadMonsterThisTurn();
+                        GameMatModel.getGameMatByNickname(onlineUser).changeNumberOfDeadMonsterThisTurn();
+                        return 1;
+                    }
                     ownMonster.removeMonsterFromZone();
                     GameMatModel.getGameMatByNickname(onlineUser).changeNumberOfDeadMonsterThisTurn();
                     GameMatView.showInput("your monster card is destroyed and you received " + -1 * damage + " battle damage");
@@ -1012,13 +1027,19 @@ public class GameMatController {
             }
             else {
                 if (ownMonster.getAttack() > rivalMonster.getDefend()) {
-                    if (rivalMonster.getMode().equals("DH")) {
-                        rivalMonster.setMode("DO");
-                        showGameBoard();
-                    }
                     if (!rivalMonsterName.equals("Marshmallon")) {
                         rivalMonster.removeMonsterFromZone();
                         GameMatModel.getGameMatByNickname(rivalUser).changeNumberOfDeadMonsterThisTurn();
+                    }
+                    else {
+                        MonsterEffect.marshmallon(rivalMonster, onlineUser);
+                    }
+                    if (rivalMonster.getMode().equals("DH")) {
+                        if (ownMonster.getMonsterName().equals("The Calculator"))
+                            MonsterEffect.theCalculator(onlineUser, ownMonster);
+                        rivalMonster.setMode("DO");
+                        MonsterEffect.changeModeEffectController(rivalMonster, rivalUser, onlineUser);
+                        showGameBoard();
                     }
                     if (rivalMonsterName.equals("Yomi Ship")) {
                         ownMonster.removeMonsterFromZone();
@@ -1032,7 +1053,13 @@ public class GameMatController {
                     }
                 } else if (ownMonster.getAttack() == rivalMonster.getDefend()) {
                     if (rivalMonsterMode.equals("DH")) {
+                        if (rivalMonsterName.equals("Marshmallon")) {
+                            MonsterEffect.marshmallon(rivalMonster, onlineUser);
+                        }
+                        if (ownMonster.getMonsterName().equals("The Calculator"))
+                            MonsterEffect.theCalculator(onlineUser, ownMonster);
                         rivalMonster.setMode("DO");
+                        MonsterEffect.changeModeEffectController(rivalMonster, rivalUser, onlineUser);
                         showGameBoard();
                         GameMatView.showInput("opponent’s monster card was " + rivalMonsterName + " and no card is destroyed");
                     } else
@@ -1041,7 +1068,13 @@ public class GameMatController {
                     damage = rivalMonster.getDefend() - ownMonster.getAttack();
                     Player.getPlayerByName(onlineUser).changeLifePoint(-1 * damage);
                     if (rivalMonsterMode.equals("DH")) {
+                        if (rivalMonsterName.equals("Marshmallon")) {
+                            MonsterEffect.marshmallon(rivalMonster, onlineUser);
+                        }
+                        if (ownMonster.getMonsterName().equals("The Calculator"))
+                            MonsterEffect.theCalculator(onlineUser, ownMonster);
                         rivalMonster.setMode("DO");
+                        MonsterEffect.changeModeEffectController(rivalMonster, rivalUser, onlineUser);
                         showGameBoard();
                         GameMatView.showInput("opponent’s monster card was " + rivalMonsterName + " and no card is destroyed but you received " + damage + " battle damage");
                     } else
@@ -1052,8 +1085,6 @@ public class GameMatController {
                     }
                 }
             }
-            if (rivalMonsterName.equals("Marshmallon"))
-                MonsterEffect.marshmallon(rivalMonster, onlineUser);
             selectedOwnCard = "";
             return 1;
         }
@@ -1690,9 +1721,11 @@ public class GameMatController {
                     return 6;
                 }
                 if (spellIcon.equals("Ritual")) {
-                    ritualSummon();
-                    GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard("Advanced Ritual Art");
-                    ownSpell.removeSpellTrapFromZone();
+                    int result = ritualSummon();
+                    if (result != -1) {
+                        GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard("Advanced Ritual Art");
+                        ownSpell.removeSpellTrapFromZone();
+                    }
                     return 7 ;
                 } else {
                     if (spellIcon.equals("Quick-play") && ownSpell.getIsSetInThisTurn()) {
@@ -1723,9 +1756,11 @@ public class GameMatController {
                     if (!errorOfFullZone("Spell"))
                         return 1;
                     if (spellIcon.equals("Ritual")) {
-                        ritualSummon();
-                        GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard("Advanced Ritual Art");
-                        handCard.removeFromHandCard();
+                        int result = ritualSummon();
+                        if (result != -1) {
+                            GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard("Advanced Ritual Art");
+                            handCard.removeFromHandCard();
+                        }
                         selectedOwnCard = "";
                         return 1;
                     }
