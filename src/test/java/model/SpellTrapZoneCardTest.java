@@ -21,12 +21,9 @@ public class SpellTrapZoneCardTest {
             deckModel.addCardToMain("Yami");
             deckModel.addCardToMain("Trap Hole");
             deckModel.addCardToMain("Suijin");
-            deckModel.addCardToMain("Magic Jamamer");
-
+            deckModel.addCardToMain("Magic Jammer");
         }
         new Player("n", deckModel, true, 1);
-
-
         DeckModel deckModel1 = new DeckModel("deck");
         new UserModel("u1", "p", "n1");
         MainMenuController.username = "u1";
@@ -37,19 +34,15 @@ public class SpellTrapZoneCardTest {
 
         }
         new Player("n1", deckModel1, false, 1);
-
     }
 
 
     @Test
     public void getSpellTrapName() {
-
         SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
         SpellTrapZoneCard spellTrapZoneCard1 = new SpellTrapZoneCard("n", "Trap Hole", "H");
-
         assertEquals("Yami", spellTrapZoneCard.getSpellTrapName());
         assertEquals("Trap Hole", spellTrapZoneCard1.getSpellTrapName());
-
     }
 
     @Test
@@ -169,28 +162,23 @@ public class SpellTrapZoneCardTest {
 
     @Test
     public void isThisTrapActivated() {
-
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Magic Jamamer", "H");
-
-        assertEquals(-1,SpellTrapZoneCard.isThisTrapActivated("n", "Magic Jamamer"));
+        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Magic Jammer", "H");
+        assertEquals(-1,SpellTrapZoneCard.isThisTrapActivated("n", "Magic Jammer"));
         spellTrapZoneCard.setMode("O");
-        assertEquals(1,SpellTrapZoneCard.isThisTrapActivated("n", "Magic Jamamer"));
+        assertEquals(1,SpellTrapZoneCard.isThisTrapActivated("n", "Magic Jammer"));
     }
 
     @Test
     public void isThisSpellActivated() {
         SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-
         assertEquals(-1,SpellTrapZoneCard.isThisSpellActivated("n", "Yami"));
         spellTrapZoneCard.setMode("O");
         assertEquals(1,SpellTrapZoneCard.isThisSpellActivated("n", "Yami"));
-
     }
 
     @Test
     public void getAllSpellTrapMode() {
         Assert.assertEquals(6,SpellTrapZoneCard.getAllSpellTrapMode("n").length);
-
     }
 
     @Test

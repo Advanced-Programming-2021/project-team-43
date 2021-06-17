@@ -41,6 +41,9 @@ public class Player {
         for (int i = 0; i < 5; i++)
             new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
+        new HandCardZone(nickname, "Command knight");
+        new MonsterZoneCard(nickname, "Battle OX", "OO", false,false);
+        new MonsterZoneCard(nickname, "Axe Raider", "OO", false,false);
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {

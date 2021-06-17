@@ -403,7 +403,7 @@ public class GameMatControllerTest {
     @Test
     public void set() {
         new HandCardZone("me","Battle OX");
-        assertEquals(1,GameMatController.set(Phase.Main_Phase1));
+        assertEquals(0,GameMatController.set(Phase.Main_Phase1));
 
         GameMatController.selectedOwnCard = "Modnster/Battle OX/1";
         assertEquals(2,GameMatController.set(Phase.Main_Phase1));
@@ -460,17 +460,20 @@ public class GameMatControllerTest {
 
     @Test
     public void tributeMonster() {
+        System.setIn(new ByteArrayInputStream("cancel".getBytes()));
+        assertEquals(0, GameMatController.tributeMonster(-1, "Ritual"));
+        assertEquals(1, GameMatController.tributeMonster(-1, "Normal"));
     }
 
     @Test
     public void flipSummon() {
+        GameMatController.rivalUser = "me2";
         GameMatModel.getGameMatByNickname(GameMatController.onlineUser).setPhase(Phase.Main_Phase1);
         assertEquals(1, GameMatController.flipSummon(Phase.Main_Phase1));
-        new MonsterZoneCard(GameMatController.onlineUser, "Battle OX", "DH", false, false);
+        MonsterZoneCard monsterZoneCard = new MonsterZoneCard(GameMatController.onlineUser, "Battle OX", "DH", false, false);
+        monsterZoneCard.setHaveChangedPositionThisTurn(false);
         GameMatController.selectMonsterCard(1, true);
-//        assertEquals(1, GameMatController.flipSummon(Phase.Main_Phase1));
-//        assertEquals(1, GameMatController.flipSummon(Phase.Main_Phase1));
-//        System.out.println("23");
+        assertEquals(4, GameMatController.flipSummon(Phase.Main_Phase1));
     }
 
     @Test
@@ -507,6 +510,37 @@ public class GameMatControllerTest {
 
     @Test
     public void attackDirect() {
+        GameMatController.rivalUser = "me2";
+        MonsterZoneCard ownMonster = new MonsterZoneCard("me", "Battle OX", "DH", false, true);
+
+        assertEquals(1, GameMatController.attackDirect(Phase.Draw_Phase));
+
+        GameMatController.selectedOwnCard = "Hand/Magic Cylinder/1";
+        assertEquals(2, GameMatController.attackDirect(Phase.Draw_Phase));
+
+        GameMatController.selectedOwnCard = "Monster/Battle OX/1";
+        assertEquals(3, GameMatController.attackDirect(Phase.Draw_Phase));
+
+        ownMonster.setHaveAttackThisTurn(true);
+        GameMatController.selectedOwnCard = "Monster/Battle OX/1";
+        assertEquals(0, GameMatController.attackDirect(Phase.Battle_Phase));
+
+        ownMonster.setHaveAttackThisTurn(false);
+        GameMatController.selectedOwnCard = "Monster/Battle OX/1";
+        ownMonster.setCanAttack(false);
+        assertEquals(0, GameMatController.attackDirect(Phase.Battle_Phase));
+
+        ownMonster.setHaveAttackThisTurn(false);
+        GameMatController.selectedOwnCard = "Monster/Battle OX/1";
+        ownMonster.setCanAttack(true);
+        assertEquals(0, GameMatController.attackDirect(Phase.Battle_Phase));
+
+        GameMatController.selectedOwnCard = "Monster/Battle OX/1";
+        Player.getPlayerByName("me2").changeLifePoint(-100000);
+        UserModel.getUserByUsername("Guy").setUserScore(1);
+        MainMenuController.username2="Guy2";
+        System.setIn(new ByteArrayInputStream("menu  exit".getBytes()));
+        assertEquals(0, GameMatController.attackDirect(Phase.Battle_Phase));
     }
 
     @Test
@@ -574,7 +608,7 @@ public class GameMatControllerTest {
     @Test
     public void getAddressOfTributeMonster() {
         System.setIn( new ByteArrayInputStream("cancel".getBytes()));
-        assertEquals(null,GameMatController.getAddressOfTributeMonster(1));
+        assertNull(GameMatController.getAddressOfTributeMonster(1));
         new MonsterZoneCard(GameMatController.onlineUser,"Battle OX","OO",false,false);
         System.setIn( new ByteArrayInputStream("1".getBytes()));
         assertEquals(1,GameMatController.getAddressOfTributeMonster(1).length);
@@ -605,15 +639,24 @@ public class GameMatControllerTest {
     public void showSelectedCard() {
         GameMatController.onlineUser = "me";
         GameMatController.rivalUser = "me2";
+        MonsterZoneCard.allMonsterCards.get("me").clear();
+        MonsterZoneCard.allMonsterCards.get("me2").clear();
+        HandCardZone.allHandCards.get("me").clear();
+        HandCardZone.allHandCards.get("me2").clear();
         new MonsterZoneCard("me", "Battle OX", "OO", false, false);
         new MonsterZoneCard("me", "Battle OX", "OO", false, false);
         new MonsterZoneCard("me2", "Battle OX", "OO", false, false);
         new MonsterZoneCard("me2", "Battle OX", "OO", false, false);
+        new HandCardZone("me","Battle OX");
         GameMatController.selectMonsterCard(1, false);
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         GameMatController.showSelectedCard();
         assertEquals(158, outContent.size());
+        outContent.reset();
+        GameMatController.selectHandCard(1);
+        GameMatController.showSelectedCard();
+        assertEquals(173,outContent.size());
     }
 
     @Test
@@ -624,7 +667,6 @@ public class GameMatControllerTest {
     public void checkForSpellAbsorption() {
         GameMatController.rivalUser = "me2";
         assertEquals(1, GameMatController.checkForSpellAbsorption());
-
     }
 
     @Test
@@ -654,7 +696,6 @@ public class GameMatControllerTest {
         SpellTrapZoneCard card = new SpellTrapZoneCard("me", "Monster Reborn", "H");
         assertEquals(1,  GameMatController.chooseSpellEffectController("Quick-play",card));
         assertEquals(1,  GameMatController.chooseSpellEffectController("Norimal",card));
-
     }
 
     @Test

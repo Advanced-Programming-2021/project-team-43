@@ -192,7 +192,7 @@ public class DeckController {
         }
         if (user.isUserHaveCard(cardName) && counter < user.userAllCards.get(cardName)) {
             if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-                if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 6 && user.isUserHaveCard(cardName)) {/////////////////////////
+                if (user.userAllDecks.get(deckName).getMainAllCardNumber() < 60 && user.isUserHaveCard(cardName)) {
                     if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
                         if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) +
                                 user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
@@ -281,7 +281,7 @@ public class DeckController {
         }
         if (user.isUserHaveCard(cardName) && counter < user.userAllCards.get(cardName)) {
             if ( UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-                if (user.userAllDecks.get(deckName).getSideAllCardNumber() < 15 && user.isUserHaveCard(cardName)) {
+                if (user.userAllDecks.get(deckName).getSideAllCardNumber() < 3 && user.isUserHaveCard(cardName)) {
                     if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
                         if (user.userAllDecks.get(deckName).getNumberOfCardInMainDeck(cardName) + user.userAllDecks.get(deckName).getNumberOfCardInSideDeck(cardName) < 3) {
                             DeckModel deckModel = user.userAllDecks.get(deckName);

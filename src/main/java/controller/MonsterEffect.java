@@ -21,7 +21,7 @@ public class MonsterEffect {
         return 0;
     }
 
-    private static int commandKnight(MonsterZoneCard ownMonster, String onlineUser, String rivalUser) {
+    public static int commandKnight(MonsterZoneCard ownMonster, String onlineUser, String rivalUser) {
         if (!ownMonster.getMode().equals("DH") && !ownMonster.getIsEffectUsed()) {
             int counter = 0;
             Map<Integer, MonsterZoneCard> monsters;
@@ -54,7 +54,7 @@ public class MonsterEffect {
         return 1;
     }
 
-    private static int manEaterBug(MonsterZoneCard ownMonsterCard, String rivalUser) {
+    public static int manEaterBug(MonsterZoneCard ownMonsterCard, String rivalUser) {
         if (!ownMonsterCard.getMode().equals("DH") && !ownMonsterCard.getIsEffectUsed()) {
             GameMatView.showInput("Please enter the address of a Rival Monster to destroy:");
             response = GameMatView.getCommand();
@@ -71,7 +71,7 @@ public class MonsterEffect {
         return 0;
     }
 
-    private static int mirageDragon(MonsterZoneCard ownMonster, String rivalUser) {
+    public static int mirageDragon(MonsterZoneCard ownMonster, String rivalUser) {
         Player.getPlayerByName(rivalUser).setCanUseTrap(ownMonster.getMode().equals("DH"));
         return 1;
     }
@@ -116,12 +116,12 @@ public class MonsterEffect {
         ownMonster.setAttack(attack);
     }
 
-    public static void terratiger(String onlineUser) {
+    public static int terratiger(String onlineUser) {
         GameMatView.showInput("Do you want Summon another Monster in Defend position? (yes/no)");
         response = GameMatView.getCommand();
         while (!response.matches("yes|no")) {
             if (response.equals("cancel"))
-                return;
+                return 0;
             GameMatView.showInput("Please enter the correct answer: (yes/no)");
             response = GameMatView.getCommand();
         }
@@ -140,7 +140,7 @@ public class MonsterEffect {
                     GameMatView.showInput("Please enter the address of a 4 level or less to summon in Defend Position:");
                     response = GameMatView.getCommand();
                     if (response.equals("cancel"))
-                        return;
+                        return 1;
                     if (!response.matches("[1-8]"))
                         continue;
                     address = Integer.parseInt(response);
@@ -156,6 +156,7 @@ public class MonsterEffect {
                 GameMatView.showInput("summoned successfully");
             }
         }
+        return 2;
     }
 
     public static int gateGuardian(HandCardZone handCard, String onlineUser, String rivalUser) {

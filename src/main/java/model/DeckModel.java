@@ -18,7 +18,6 @@ public class DeckModel {
         return deckName;
     }
 
-
     public void addCardToMain(String cardName) {
         if (cardsInMainDeck.get(cardName) == null) {
             cardsInMainDeck.put(cardName, 1);
@@ -100,25 +99,22 @@ public class DeckModel {
         return cardsInSideDeck.get(cardName) != null;
     }
 
-
     public String validOrInvalid(){
-        if (getMainAllCardNumber()>9){////40///////////////////////////////
-
+        if (getMainAllCardNumber()>9){////40//////////////////////////////////////////////////
             return "valid";}
-
         return "invalid";
     }
-
 
     public  List<String> getArrayMain(){
         List<String>List= new ArrayList<>();
         String [] key = cardsInMainDeck.keySet().toArray(new String[0]);
-        for (int i = 0; i < key.length ; i++) {
-            for (int j = 0; j <cardsInMainDeck.get(key[i]) ; j++) {
-                List.add(key[i]);
+        for (String s : key) {
+            for (int j = 0; j < cardsInMainDeck.get(s); j++) {
+                List.add(s);
             }
         }
         return List ;
     }
+
 }
 

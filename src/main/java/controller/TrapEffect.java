@@ -44,7 +44,7 @@ public class TrapEffect {
         return 1;
     }
 
-    private static boolean ringOfDefenseEffect(String rival, String onlineUser) {
+    public static boolean ringOfDefenseEffect(String rival, String onlineUser) {
         Map<Integer, SpellTrapZoneCard> spellTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rival);
         Integer[] keys = spellTraps.keySet().toArray(new Integer[0]);
         int counter = 0;
