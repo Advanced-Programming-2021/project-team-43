@@ -42,12 +42,13 @@ public class Player {
 //            new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
         if (nickname.equals("forooz")) {
-            new HandCardZone(nickname, "Herald of Creation");
+            new HandCardZone(nickname, "The Tricky");
             new HandCardZone(nickname, "Texchanger");
             new HandCardZone(nickname, "Gate Guardian");
             new HandCardZone(nickname, "Scanner");
-
+            new HandCardZone(nickname, "Scanner");
             new HandCardZone(nickname, "Beast King Barbaros");
+            new HandCardZone(nickname, "Scanner");
         }
         else {
             new HandCardZone(nickname, "Call of The Haunted");

@@ -62,7 +62,6 @@ public class PlayerTest {
             expectedSideDeck.add("Battle Ox");
         Assert.assertEquals(expectedMainDeck, player.getPlayerDeck("main"));
         Assert.assertEquals(expectedSideDeck, player.getPlayerDeck("side"));
-
     }
 
     @Test
@@ -73,7 +72,6 @@ public class PlayerTest {
         expectedDeck.remove(0);
         player.drawCard(false);
         Assert.assertEquals(expectedDeck, player.getPlayerDeck("main"));
-
     }
 
     @Test

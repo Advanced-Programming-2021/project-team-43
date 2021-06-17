@@ -1722,10 +1722,8 @@ public class GameMatController {
                 }
                 if (spellIcon.equals("Ritual")) {
                     int result = ritualSummon();
-                    if (result != -1) {
-                        GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard("Advanced Ritual Art");
+                    if (result != -1)
                         ownSpell.removeSpellTrapFromZone();
-                    }
                     return 7 ;
                 } else {
                     if (spellIcon.equals("Quick-play") && ownSpell.getIsSetInThisTurn()) {
@@ -1757,10 +1755,8 @@ public class GameMatController {
                         return 1;
                     if (spellIcon.equals("Ritual")) {
                         int result = ritualSummon();
-                        if (result != -1) {
-                            GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard("Advanced Ritual Art");
+                        if (result != -1)
                             handCard.removeFromHandCard();
-                        }
                         selectedOwnCard = "";
                         return 1;
                     }

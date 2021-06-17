@@ -11,7 +11,7 @@ public class ShopModelTest {
 
     @Test
     public void getCardPriceByName() {
-        Assert.assertEquals(4300, ShopModel.getCardPriceByName("Yami"));///////////
+        Assert.assertEquals(0, ShopModel.getCardPriceByName("Yami"));
         HashMap<String, Card> cards = new HashMap<>();
         Card card= new Card("Yami","Monster","take no action",200);
         cards.put("Yami",card);

@@ -279,13 +279,12 @@ public class MonsterEffect {
                     if (!response.matches("[1-7]"))
                         continue;
                     address = Integer.parseInt(response);
+                    address--;
                     if (address == handCard.getAddress())
                         continue;
-                    address--;
                     if (HandCardZone.getHandCardByAddress(address, onlineUser) != null)
                         break;
                 }
-                GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard(HandCardZone.getHandCardByAddress(address, onlineUser).getCardName());
                 HandCardZone.getHandCardByAddress(address, onlineUser).removeFromHandCard();
                 handCard.removeFromHandCard();
                 new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false);

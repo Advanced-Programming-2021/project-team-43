@@ -14,12 +14,10 @@ import static org.junit.Assert.*;
 
 public class HandCardZoneTest {
 
-
     UserModel user;
     DeckModel deckModel;
     Player player;
     ArrayList<String> mainDeck;
-    ArrayList<String> sideDeck = new ArrayList<>();
     HandCardZone card;
 
     @Before
@@ -29,76 +27,57 @@ public class HandCardZoneTest {
         user = new UserModel("Guy", "123", "me");
         MainMenuController.username = "Guy";
         deckModel = new DeckModel("myDeck");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
             deckModel.addCardToMain("Yami");
-        }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++)
             deckModel.addCardToSide("Battle Ox");
-        }
         user.addDeck(deckModel);
         player = new Player("me", deckModel, true, 3);
         mainDeck = new ArrayList<>(deckModel.getArrayMain());
-        card = new HandCardZone("me", "Forest");
+        card = new HandCardZone("me", "The Tricky");
     }
 
     @Test
     public void getCardName() {
-        Assert.assertEquals("Forest", card.getCardName());
+        Assert.assertEquals("The Tricky", card.getCardName());
         Assert.assertEquals("Negate Attack", new HandCardZone("me", "Negate Attack").getCardName());
     }
 
     @Test
     public void getAddress() {
-        Assert.assertEquals(6, card.getAddress());/////////////////
-        Assert.assertEquals(6, new HandCardZone("me", "Solemn Warning").getAddress());
+        Assert.assertEquals(6, card.getAddress());
+        Assert.assertEquals(7, new HandCardZone("me", "Solemn Warning").getAddress());
     }
 
     @Test
     public void getKind() {
-        Assert.assertEquals("Spell", card.getKind());
+        Assert.assertEquals("Monster", card.getKind());
         Assert.assertEquals("Trap", new HandCardZone("me", "Solemn Warning").getKind());
     }
 
     @Test
     public void removeFromHandCard() {
         HandCardZone.getHandCardByAddress(card.getAddress(),"me").removeFromHandCard();
-//        HandCardZone.removeFromHandCard("me", card.getAddress());
-        assertNull(HandCardZone.getHandCardByAddress(5, "me"));
+        assertEquals(6,HandCardZone.getNumberOfFullHouse("me"));
     }
-
-//    @Test
-//    public void getAddressByName() {
-//        int[] addresses = HandCardZone.getAddressByName("me", "Yami");
-//        int[] expectedAddresses = new int[5];
-//        for (int i = 0; i < 5; i++)
-//            expectedAddresses[i] = i;
-//        Assert.assertEquals(expectedAddresses[0], addresses[0]);
-//        Assert.assertEquals(expectedAddresses[1], addresses[1]);
-//        Assert.assertEquals(expectedAddresses[2], addresses[2]);
-//        Assert.assertEquals(expectedAddresses[3], addresses[3]);
-//        Assert.assertEquals(expectedAddresses[4], addresses[4]);
-//    }
 
     @Test
     public void getNumberOfFullHouse() {
         new HandCardZone("me", "Twin Twisters");
-        Assert.assertEquals(8, HandCardZone.getNumberOfFullHouse("me"));//////////////
+        Assert.assertEquals(8, HandCardZone.getNumberOfFullHouse("me"));
     }
-
-
-
-
 
     @Test
     public void doesAnyLevelFourMonsterExisted() {
         assertFalse(HandCardZone.doesAnyLevelFourMonsterExisted(player.getNickname()));
-        new HandCardZone(player.getNickname(), "Flame manipulator");
+        HandCardZone hand = new HandCardZone(player.getNickname(), "Flame manipulator");
         assertTrue(HandCardZone.doesAnyLevelFourMonsterExisted(player.getNickname()));
+        hand.removeFromHandCard();
     }
 
     @Test
     public void doesThisCardNameExist() {
-        assertEquals(true,HandCardZone.doesThisCardNameExist(player.getNickname(), "Yami"));
+        assertTrue(HandCardZone.doesThisCardNameExist(player.getNickname(), "Yami"));
         assertFalse(HandCardZone.doesThisCardNameExist(player.getNickname(), "Magic jammer"));
     }
 
@@ -106,14 +85,14 @@ public class HandCardZoneTest {
     public void showHandCard() {
         ByteArrayOutputStream show = new ByteArrayOutputStream();
         System.setOut(new PrintStream(show));
-        HandCardZone.showHandCard(player.getNickname());
-        assertEquals(80, show.size());/////////////
+        HandCardZone.showHandCard("me");
+        assertEquals(84, show.size());
     }
 
     @Test
     public void getHandCardByAddress() {
         assertNull(HandCardZone.getHandCardByAddress(-1, player.getNickname()));
-        assertEquals("Yami",HandCardZone.getHandCardByAddress(3, player.getNickname()).getCardName());
+        assertEquals("Yami", HandCardZone.getHandCardByAddress(3, player.getNickname()).getCardName());
     }
 
     @Test
@@ -121,18 +100,19 @@ public class HandCardZoneTest {
         Assert.assertEquals(-1, HandCardZone.doIHaveAnyRitualMonster("me"));
         HandCardZone hand = new HandCardZone("me", "Crab Turtle");
         Assert.assertEquals(8, HandCardZone.doIHaveAnyRitualMonster("me"));/////////////////
-    }
-
-    @Test
-    public void changeAddress() {
+        hand.removeFromHandCard();
     }
 
     @Test
     public void removeAllTypeCard() {
+        HandCardZone.removeAllTypeCard("me", "Yami");
+        Assert.assertEquals(4, HandCardZone.getNumberOfFullHouse("me"));
     }
 
     @Test
     public void getAddressOfCybreseMonster() {
+        HandCardZone hand = new HandCardZone("me","Texchanger");
+        Assert.assertEquals(7, HandCardZone.getAddressOfCybreseMonster("me"));
     }
 
 }
