@@ -265,7 +265,6 @@ public class SpellEffect {
         }
         for (int i = 0; i < numberOfDeadMonster; i++)
             GameMatModel.getGameMatByNickname(rivalUser).changeNumberOfDeadMonsterThisTurn();
-
         return 1;
     }
 
@@ -293,25 +292,6 @@ public class SpellEffect {
                 List<Integer> effectedMonsters = MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).getAllEffectedMonster(rivalUser);
                 effectedMonsters.add(ownAddress);
                 MonsterZoneCard.getMonsterCardByAddress(rivalMonsterNames[i], rivalUser).setAllEffectedMonster(rivalUser, effectedMonsters);
-            }
-        }
-    }
-
-    public static void returnPermissionMessenger(int ownAddress, String rival, String onlineUser) {
-        Map<Integer, MonsterZoneCard> monsters = MonsterZoneCard.getAllMonstersByPlayerName(rival);
-        Integer[] addresses = monsters.keySet().toArray(new Integer[0]);
-        for (int i = 0; i < monsters.size(); i++) {
-            List<Integer> spells = monsters.get(addresses[i]).getAllEffectedMonster(rival);
-            if (spells.size() == 1 && spells.get(0) == ownAddress) {
-                MonsterZoneCard.getMonsterCardByAddress(addresses[i], rival).setCanAttack(true);
-            }
-        }
-        Map<Integer, MonsterZoneCard> ownMonsters = MonsterZoneCard.getAllMonstersByPlayerName(onlineUser);
-        Integer[] ownAddresses = ownMonsters.keySet().toArray(new Integer[0]);
-        for (int i = 0; i < ownMonsters.size(); i++) {
-            List<Integer> spells = ownMonsters.get(ownAddresses[i]).getAllEffectedMonster(onlineUser);
-            if (spells.size() == 1 && spells.get(0) == ownAddress) {
-                MonsterZoneCard.getMonsterCardByAddress(ownAddresses[i], onlineUser).setCanAttack(true);
             }
         }
     }

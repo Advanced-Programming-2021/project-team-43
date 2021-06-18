@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.junit.Assert.*;
 
@@ -47,6 +49,10 @@ public class MonsterEffectTest {
     @Test
     public void changeModeEffectController() {
         assertEquals(0, MonsterEffect.changeModeEffectController(ownMonster2, "me", "me2"));
+        MonsterZoneCard monster = new MonsterZoneCard("me", "Command knight", "OO", false, false);
+        assertEquals(1, MonsterEffect.changeModeEffectController(monster, "me", "me2"));
+        MonsterZoneCard monster2 = new MonsterZoneCard("me", "Mirage Dragon", "OO", false, false);
+        assertEquals(1, MonsterEffect.changeModeEffectController(monster2, "me", "me2"));
     }
 
     @Test
@@ -57,7 +63,6 @@ public class MonsterEffectTest {
         ownMonster.setIsEffectUsed(false);
         assertEquals(1, MonsterEffect.commandKnight(ownMonster, "me", "me2"));
         assertEquals(1, MonsterEffect.commandKnight(ownMonster2, "me", "me2"));
-
     }
 
     @Test
@@ -65,10 +70,8 @@ public class MonsterEffectTest {
         ownMonster.setIsEffectUsed(false);
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(0, MonsterEffect.manEaterBug(ownMonster, "me2"));
-
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         assertEquals(1, MonsterEffect.manEaterBug(ownMonster, "me2"));
-
         assertEquals(0, MonsterEffect.manEaterBug(ownMonster2, "me2"));
 
     }
@@ -105,9 +108,14 @@ public class MonsterEffectTest {
     public void terratiger() {
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(0, MonsterEffect.terratiger("me"));
-
+        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        ByteArrayOutputStream show = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(show));
         System.setIn(new ByteArrayInputStream("yes".getBytes()));
+        HandCardZone.allHandCards.get("me").clear();
         assertEquals(2, MonsterEffect.terratiger("me"));
+        assertNotEquals("Oops! You cant have Special Summon because of lack of HandCard!", "Oops! You cant have Special Summon because");
     }
 
     @Test

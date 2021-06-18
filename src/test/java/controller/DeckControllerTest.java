@@ -351,7 +351,7 @@ public class DeckControllerTest {
         userModel.addCardToUserAllCards("Trap Hole");
         outContent.reset();
         DeckController.addCardToSideDeck("Trap Hole", "deck");
-        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
+        Assert.assertEquals("side deck is full", outContentWithOutEnter(outContent));
         DeckController.addCardToSideDeck("Trap Hole", "deck");
         DeckController.addCardToSideDeck("Trap Hole", "deck");
         outContent.reset();

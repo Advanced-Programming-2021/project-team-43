@@ -1,4 +1,6 @@
 package model;
+import controller.GameMatController;
+
 import java.util.*;
 
 
@@ -19,7 +21,7 @@ public class MonsterZoneCard {
     private boolean canAttackToThisMonster;
     private boolean isEffectUsed;
     private boolean isForOneTurn;
-    private final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
+    public final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
     public static final Map<String, Map<Integer, MonsterZoneCard>> allMonsterCards = new HashMap<>();
 
     public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn) {
@@ -260,11 +262,40 @@ public class MonsterZoneCard {
                 allMonsters.get(i).setCanAttackToThisMonster(true);
             }
             if (allMonsters.get(i) != null) {
+                //////////////
+                int coun = 0;
+                List<Integer> allEffectedOwn = allMonsters.get(i).allEffectiveSpell.get(playerNickname);
+                String rivalName;
+                if (GameMatController.rivalUser.equals(playerNickname)) {
+                    rivalName = GameMatController.onlineUser;
+                } else {
+                    rivalName = GameMatController.rivalUser;
+                }
+                List<Integer> allEffectedRival = allMonsters.get(i).allEffectiveSpell.get(rivalName);
+                if (allEffectedOwn != null) {
+                    for (int j = 0; j < allEffectedOwn.size(); j++) {
+                        if (SpellTrapZoneCard.getSpellCardByAddress(allEffectedOwn.get(j), rivalName) != null) {
+                            coun++;
+                        }
+                    }
+                }
+                if (allEffectedRival != null) {
+                    for (int t = 0; t < allEffectedRival.size(); t++) {
+                        if (SpellTrapZoneCard.getSpellCardByAddress(allEffectedRival.get(t), playerNickname) != null) {
+                            coun++;
+                        }
+                    }
+                }
+                if (coun == 0) {
+                    allMonsters.get(i).setCanAttack(true);
+                    if (allMonsterCards.get(rivalName).get(i) != null)
+                        allMonsterCards.get(rivalName).get(i).setCanAttack(true);
+                }
+                ///////////
                 allMonsters.get(i).setHaveChangedPositionThisTurn(false);
                 allMonsters.get(i).setHaveAttackThisTurn(false);
                 if (!allMonsters.get(i).getMonsterName().equals("Suijin"))
                     allMonsters.get(i).setIsEffectUsed(false);
-                allMonsters.get(i).setCanAttack(true);
             }
         }
     }

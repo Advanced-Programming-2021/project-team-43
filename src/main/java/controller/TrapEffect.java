@@ -38,7 +38,8 @@ public class TrapEffect {
             HandCardZone.removeAllTypeCard(rivalUser, response);
         else {
             Random random = new Random();
-            HandCardZone.getHandCardByAddress(random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1, rivalUser).removeFromHandCard();
+            int n = random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1;
+            HandCardZone.getHandCardByAddress(n, onlineUser).removeFromHandCard();
         }
         trapCard.removeSpellTrapFromZone();
         return 1;

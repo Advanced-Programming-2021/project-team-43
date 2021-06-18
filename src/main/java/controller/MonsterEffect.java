@@ -56,13 +56,15 @@ public class MonsterEffect {
 
     public static int manEaterBug(MonsterZoneCard ownMonsterCard, String rivalUser) {
         if (!ownMonsterCard.getMode().equals("DH") && !ownMonsterCard.getIsEffectUsed()) {
-            GameMatView.showInput("Please enter the address of a Rival Monster to destroy:");
-            response = GameMatView.getCommand();
-            while (!response.matches("[1-5]") || MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser) == null) {
+            while (true) {
+                GameMatView.showInput("Please enter the address of a Rival Monster to destroy:");
+                response = GameMatView.getCommand();
                 if (response.equals("cancel"))
                     return 0;
-                GameMatView.showInput("Please enter the correct address of a Rival Monster:");
-                response = GameMatView.getCommand();
+                if (!response.matches("[1-5]"))
+                    continue;
+                if (MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser) != null)
+                    break;
             }
             MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser).removeMonsterFromZone();
             ownMonsterCard.setIsEffectUsed(true);

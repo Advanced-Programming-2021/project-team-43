@@ -4,7 +4,8 @@ import java.util.*;
 
 
 public class DeckModel {
-    private String deckName;
+
+    private final String deckName;
     private int mainAllCardNumber = 0;
     private int sideAllCardNumber = 0;
     public HashMap<String, Integer> cardsInMainDeck = new HashMap<>();
@@ -100,7 +101,7 @@ public class DeckModel {
     }
 
     public String validOrInvalid(){
-        if (getMainAllCardNumber()>9){////40//////////////////////////////////////////////////
+        if (getMainAllCardNumber() > 9){//////////////////////////////////////40
             return "valid";}
         return "invalid";
     }

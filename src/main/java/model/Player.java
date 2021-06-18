@@ -42,21 +42,20 @@ public class Player {
 //            new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
         if (nickname.equals("forooz")) {
-            new HandCardZone(nickname, "Supply Squad");
-            new HandCardZone(nickname, "Mystical space typhoon");
+            new HandCardZone(nickname, "Solemn Warning");
             new HandCardZone(nickname, "Gate Guardian");
             new HandCardZone(nickname, "Beast King Barbaros");
             new HandCardZone(nickname, "Scanner");
         }
         else {
-            new HandCardZone(nickname, "Call of The Haunted");
+            new HandCardZone(nickname, "Pot of Greed");
             for (int i = 0; i < 5; i++)
                 new HandCardZone(nickname, drawCard(true));
         }
-        new MonsterZoneCard(nickname, "Wattkid", "OO", false, false);
-        new MonsterZoneCard(nickname, "Dark magician", "DO", false, false);
-        new MonsterZoneCard(nickname, "Hero of the east", "OO", false, false);
-        new MonsterZoneCard(nickname, "Wattkid", "Dh", false, false);
+        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("The Tricky");
+        new MonsterZoneCard(nickname, "Wattkid", "DH", false, false);
+        new MonsterZoneCard(nickname, "Dark magician", "OO", false, false);
+        new SpellTrapZoneCard(nickname, "Raigeki", "H");
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {

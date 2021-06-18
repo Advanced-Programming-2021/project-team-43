@@ -10,6 +10,9 @@ import static org.junit.Assert.*;
 
 public class SpellTrapZoneCardTest {
 
+    SpellTrapZoneCard spell1;
+    SpellTrapZoneCard spell2;
+
     @Before
     public void before() {
         SetCards.readingCSVFileTrapSpell();
@@ -31,126 +34,105 @@ public class SpellTrapZoneCardTest {
             deckModel1.addCardToMain("Yami");
             deckModel1.addCardToMain("Trap Hole");
             deckModel1.addCardToMain("Twin Twisters");
-
         }
         new Player("n1", deckModel1, false, 1);
+        spell1 = new SpellTrapZoneCard("n", "Yami", "H");
+        spell2 = new SpellTrapZoneCard("n", "Trap Hole", "H");;
     }
 
 
     @Test
     public void getSpellTrapName() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        SpellTrapZoneCard spellTrapZoneCard1 = new SpellTrapZoneCard("n", "Trap Hole", "H");
-        assertEquals("Yami", spellTrapZoneCard.getSpellTrapName());
-        assertEquals("Trap Hole", spellTrapZoneCard1.getSpellTrapName());
+        assertEquals("Yami", spell1.getSpellTrapName());
+        assertEquals("Trap Hole", spell2.getSpellTrapName());
     }
 
     @Test
     public void getMode() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        assertEquals("H", spellTrapZoneCard.getMode());
-
+        assertEquals("H", spell1.getMode());
     }
 
     @Test
     public void setMode() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        spellTrapZoneCard.setMode("O");
-        assertEquals("O", spellTrapZoneCard.getMode());
+        spell1.setMode("O");
+        assertEquals("O", spell1.getMode());
     }
 
     @Test
     public void getKind() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        assertEquals("Spell", spellTrapZoneCard.getKind());
+        assertEquals("Spell", spell1.getKind());
     }
 
     @Test
     public void getIcon() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        assertEquals("Field", spellTrapZoneCard.getIcon());
+        assertEquals("Field", spell1.getIcon());
     }
 
     @Test
     public void getAddress() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        assertEquals(1, spellTrapZoneCard.getAddress());
+        assertEquals(1, spell1.getAddress());
     }
 
     @Test
     public void getTurnCounter() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        assertEquals(0, spellTrapZoneCard.getTurnCounter());
+        assertEquals(0, spell1.getTurnCounter());
     }
 
     @Test
     public void setTurnCounter() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        spellTrapZoneCard.setTurnCounter(5);
-        assertEquals(5, spellTrapZoneCard.getTurnCounter());
+        spell1.setTurnCounter(5);
+        assertEquals(5, spell1.getTurnCounter());
     }
 
     @Test
     public void changeTurnCounter() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        spellTrapZoneCard.setTurnCounter(5);
-        spellTrapZoneCard.changeTurnCounter();
-        assertEquals(6, spellTrapZoneCard.getTurnCounter());
+        spell1.setTurnCounter(5);
+        spell1.changeTurnCounter();
+        assertEquals(6, spell1.getTurnCounter());
     }
 
     @Test
     public void getIsSetInThisTurn() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        assertFalse(spellTrapZoneCard.getIsSetInThisTurn());
+        assertFalse(spell1.getIsSetInThisTurn());
     }
 
     @Test
     public void setIsSetInThisTurn() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        spellTrapZoneCard.setIsSetInThisTurn(true);
-        assertTrue(spellTrapZoneCard.getIsSetInThisTurn());
+        spell1.setIsSetInThisTurn(true);
+        assertTrue(spell1.getIsSetInThisTurn());
     }
 
     @Test
     public void getNumberOfFullHouse() {
-        assertEquals(0, SpellTrapZoneCard.getNumberOfFullHouse("n"));
+        assertEquals(2, SpellTrapZoneCard.getNumberOfFullHouse("n"));
         new SpellTrapZoneCard("n", "Yami", "H");
-        assertEquals(1, SpellTrapZoneCard.getNumberOfFullHouse("n"));
-
+        assertEquals(3, SpellTrapZoneCard.getNumberOfFullHouse("n"));
     }
 
     @Test
     public void getRelatedMonsterAddress() {
-        assertEquals(0, SpellTrapZoneCard.getNumberOfFullHouse("n"));
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        assertEquals(0, spellTrapZoneCard.getRelatedMonsterAddress().size());
+        assertEquals(0, spell1.getRelatedMonsterAddress().size());
     }
 
     @Test
     public void setRelatedMonsterAddress() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
+        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Black Pendant", "H");
         Assert.assertEquals(0, spellTrapZoneCard.getRelatedMonsterAddress().size());
         spellTrapZoneCard.setRelatedMonsterAddress("Suijin", 1);
         Assert.assertEquals(1, spellTrapZoneCard.getRelatedMonsterAddress().size());
-
-
     }
 
     @Test
     public void removeSpellTrapFromZone() {
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
-        spellTrapZoneCard.removeSpellTrapFromZone();
-        assertEquals(0, SpellTrapZoneCard.getNumberOfFullHouse("n"));
+        spell1.removeSpellTrapFromZone();
+        assertEquals(1, SpellTrapZoneCard.getNumberOfFullHouse("n"));
     }
-
-
 
     @Test
     public void doesThisCardNameExist() {
         Assert.assertEquals(-1, SpellTrapZoneCard.doesThisCardNameExist("n", "Magic Cylinder"));
         new SpellTrapZoneCard("n", "Magic Cylinder", "H");
         Assert.assertEquals(1, SpellTrapZoneCard.doesThisCardNameExist("n", "Magic Cylinder"));
-
     }
 
     @Test
@@ -184,8 +166,7 @@ public class SpellTrapZoneCardTest {
     @Test
     public void getSpellCardByAddress() {
         assertNull(SpellTrapZoneCard.getSpellCardByAddress(1, "n"));
-        SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n","Yami","O");
-        Assert.assertEquals(spellTrapZoneCard,SpellTrapZoneCard.getSpellCardByAddress(1,"n"));
+        Assert.assertEquals("Yami",SpellTrapZoneCard.getSpellCardByAddress(1,"n").getSpellTrapName());
     }
 
 

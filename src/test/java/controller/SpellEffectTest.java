@@ -150,10 +150,6 @@ public class SpellEffectTest {
     }
 
     @Test
-    public void returnPermissionMessenger() {
-        SpellEffect.returnPermissionMessenger(1, "me2","me");
-    }
-    @Test
     public void returnPermission() {
         SpellEffect.returnPermission(1, "me2");
     }

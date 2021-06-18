@@ -24,18 +24,6 @@ public class JsonTest {
     }
 
     @Test
-    public void readUserInfo() {
-    }
-
-    @Test
-    public void readUsernames() {
-    }
-
-    @Test
-    public void readUserNicknames() {
-    }
-
-    @Test
     public void importCard() {
         ArrayList<String> cards=UserModel.importedCards;
         Json.importCard(cards);
@@ -43,7 +31,4 @@ public class JsonTest {
         assertEquals(cards,cardsAfterWriting);
     }
 
-    @Test
-    public void exportCad() {
-    }
 }

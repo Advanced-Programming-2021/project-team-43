@@ -353,7 +353,6 @@ public class DeckController {
                     DeckView.showInput("side deck is full");
                 }
             } else {
-
                 DeckView.showInput("deck with name " + deckName + " does not exist");
             }
         } else {

@@ -96,8 +96,6 @@ public class SpellTrapZoneCard {
     }
 
     public void removeSpellTrapFromZone() {
-        if (spellTrapName.equals("Messenger of peace"))
-            SpellEffect.returnPermissionMessenger(address, GameMatController.rivalUser, playerNickname);
         GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(spellTrapName);
         allSpellTrapCards.get(playerNickname).remove(address);
     }
