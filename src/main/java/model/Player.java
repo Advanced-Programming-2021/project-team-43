@@ -12,13 +12,13 @@ public class Player {
     private int counterOfTurn = 1;
     private boolean isYourMoveFinished;
     private boolean canSetSummonMonster = true;
+    private boolean canUseTrap = true;
     private boolean canDrawCard;
     private int numberOfWin = 0;
     private boolean canBattle;
     public final List<String> playerMainDeck = new ArrayList<>();
     public final List<String> playerSideDeck = new ArrayList<>();
     private final List<Integer> allLifePoints = new ArrayList<>();
-    private static boolean canUseTrap = true;
     public static final Map<String, Player> allPlayers = new HashMap<>();
     private static int randomCardNumber;
     public static boolean isOneRound;
@@ -42,11 +42,9 @@ public class Player {
 //            new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
         if (nickname.equals("forooz")) {
-            new HandCardZone(nickname, "The Tricky");
-            new HandCardZone(nickname, "Texchanger");
+            new HandCardZone(nickname, "Supply Squad");
+            new HandCardZone(nickname, "Mystical space typhoon");
             new HandCardZone(nickname, "Gate Guardian");
-            new HandCardZone(nickname, "Scanner");
-            new HandCardZone(nickname, "Scanner");
             new HandCardZone(nickname, "Beast King Barbaros");
             new HandCardZone(nickname, "Scanner");
         }
@@ -55,12 +53,10 @@ public class Player {
             for (int i = 0; i < 5; i++)
                 new HandCardZone(nickname, drawCard(true));
         }
-        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Beast King Barbaros");
-        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Marshmallon");
-        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("Gate Guardian");
-        new MonsterZoneCard(nickname, "Exploder Dragon", "DH", false,false);
-        new MonsterZoneCard(nickname, "Horn Imp", "OO", false,false);
-        new MonsterZoneCard(nickname, "Axe Raider", "OO", false,false);
+        new MonsterZoneCard(nickname, "Wattkid", "OO", false, false);
+        new MonsterZoneCard(nickname, "Dark magician", "DO", false, false);
+        new MonsterZoneCard(nickname, "Hero of the east", "OO", false, false);
+        new MonsterZoneCard(nickname, "Wattkid", "Dh", false, false);
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
@@ -222,10 +218,9 @@ public class Player {
     public void showMainDeck() {
         if (playerMainDeck.isEmpty())
             GameMatView.showInput("Main Deck Empty!");
-        else {
+        else
             for (int i = 0; i < playerMainDeck.size(); i++)
                 GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
-        }
     }
 
     public void addToSideDeck(String cardName) {

@@ -13,7 +13,6 @@ public class SpellCard extends Card {
         this.icon = icon;
         this.status=status;
         spellCards.put(cardName, this);
-
     }
 
     public static HashMap<String, SpellCard> getSpellCards() {

@@ -10,7 +10,7 @@ public class SpellTrapZoneCard {
     private String mode;
     private final String kind;
     private final String icon;
-    private final int address;
+    private int address;
     private int turnCounter = 0;
     private boolean isSetInThisTurn;
     public final Map<String, Integer> relatedMonsterAddress = new HashMap<>();
@@ -97,7 +97,7 @@ public class SpellTrapZoneCard {
 
     public void removeSpellTrapFromZone() {
         if (spellTrapName.equals("Messenger of peace"))
-            SpellEffect.returnPermissionMessenger(address, GameMatController.getRivalUser(), playerNickname);
+            SpellEffect.returnPermissionMessenger(address, GameMatController.rivalUser, playerNickname);
         GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(spellTrapName);
         allSpellTrapCards.get(playerNickname).remove(address);
     }

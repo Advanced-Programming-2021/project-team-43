@@ -1,5 +1,7 @@
 package model;
 import view.GameMatView;
+
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.*;
 
 
@@ -46,9 +48,11 @@ public class GameMatModel {
     }
 
     public boolean isAnyMonsterInGraveyard() {
-        for (String deadCard : graveyard)
-            if (Card.getCardsByName(deadCard).getCardModel().equals("Monster"))
+        for (String deadCard : graveyard) {
+            String[] split = deadCard.split("/");
+            if (Card.getCardsByName(split[0]).getCardModel().equals("Monster"))
                 return true;
+        }
         return false;
     }
 
@@ -73,21 +77,24 @@ public class GameMatModel {
 
     public int getNumberOfDeadCardByModel(String model) {
         int numberOfDeadCard = 0;
-        for (String deadCardName : graveyard)
-            if (Card.getCardsByName(deadCardName).getCardModel().equals(model))
+        for (String deadCardName : graveyard) {
+            String[] split = deadCardName.split("/");
+            if (Card.getCardsByName(split[0]).getCardModel().equals(model))
                 numberOfDeadCard++;
+        }
         return numberOfDeadCard;
     }
 
     public boolean doesThisModelAndTypeExist(String model, String type) {
         for (String eachCard : graveyard) {
-            String kind = Card.getCardsByName(eachCard).getCardModel();
+            String[] split = eachCard.split("/");
+            String kind = Card.getCardsByName(split[0]).getCardModel();
             if (kind.equals("Monster") && model.equals("Monster")) {
-                if (MonsterCard.getMonsterByName(eachCard).getMonsterType().equals(type))
+                if (MonsterCard.getMonsterByName(split[0]).getMonsterType().equals(type))
                     return true;
             }
             else if (kind.equals("Spell") && model.equals("Spell")) {
-                if (SpellCard.getSpellCardByName(eachCard).getIcon().equals(type))
+                if (SpellCard.getSpellCardByName(split[0]).getIcon().equals(type))
                     return true;
             }
         }
@@ -103,16 +110,19 @@ public class GameMatModel {
     }
 
     public boolean isAnySevenLevelMonsterInGraveyard() {
-        for (String deadCardName : graveyard)
-            if (Card.getCardsByName(deadCardName).getCardModel().equals("Monster"))
-                if (MonsterCard.getMonsterByName(deadCardName).getLevel() > 6)
+        for (String deadCardName : graveyard) {
+            String[] split = deadCardName.split("/");
+            if (Card.getCardsByName(split[0]).getCardModel().equals("Monster"))
+                if (MonsterCard.getMonsterByName(split[0]).getLevel() > 6)
                     return true;
+        }
         return false;
     }
 
     public boolean doesThisMonsterExistInGraveyard(String monsterName) {
         for (String deadCard : graveyard) {
-            if (Card.getCardsByName(deadCard).getCardModel().equals("Monster") && deadCard.equals(monsterName))
+            String[] split = deadCard.split("/");
+            if (Card.getCardsByName(split[0]).getCardModel().equals("Monster") && deadCard.equals(monsterName))
                 return true;
         }
         return false;
@@ -124,7 +134,8 @@ public class GameMatModel {
         else {
             int counter = 1;
             for (String eachDeadCard : graveyard) {
-                GameMatView.showInput(counter + ". " + eachDeadCard + " : " + Card.getCardsByName(eachDeadCard).getDescription());
+                String[] split = eachDeadCard.split("/");
+                GameMatView.showInput(counter + ". " + split[0] + " : " + Card.getCardsByName(split[0]).getDescription());
                 counter++;
             }
         }

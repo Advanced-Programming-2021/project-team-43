@@ -37,8 +37,6 @@ public class HandCardZone {
     }
 
     public void removeFromHandCard() {
-        if (!cardName.equals("The Tricky"))
-            GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(cardName);
         allHandCards.get(playerNickname).remove(address);
         for (int i = address; i < allHandCards.get(playerNickname).size(); i++) {
             allHandCards.get(playerNickname).get(i).changeAddress();

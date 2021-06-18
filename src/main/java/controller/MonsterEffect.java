@@ -285,6 +285,7 @@ public class MonsterEffect {
                     if (HandCardZone.getHandCardByAddress(address, onlineUser) != null)
                         break;
                 }
+                GameMatModel.getGameMatByNickname(onlineUser).addToGraveyard(HandCardZone.getHandCardByAddress(address, onlineUser).getCardName());
                 HandCardZone.getHandCardByAddress(address, onlineUser).removeFromHandCard();
                 handCard.removeFromHandCard();
                 new MonsterZoneCard(onlineUser, "The Tricky", "OO", false, false);
@@ -301,7 +302,7 @@ public class MonsterEffect {
                 return 1;
             }
             do {
-                GameMatView.showInput("Please enter the zone name from which you want to pick a monster to summon: (hand/graveyard/deck)");
+                GameMatView.showInput(rivalUser + ", Please enter the zone name from which you want to pick a monster to summon: (hand/graveyard/deck)");
                 response = GameMatView.getCommand();
                 if (response.equals("cancel"))
                     return 1;
