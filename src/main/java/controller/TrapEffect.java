@@ -50,7 +50,7 @@ public class TrapEffect {
         Integer[] keys = spellTraps.keySet().toArray(new Integer[0]);
         int counter = 0;
         for (Integer key : keys) {
-            if (SpellTrapZoneCard.getSpellCardByAddress(key, rival).getSpellTrapName().equals("Ring of Defense") &&
+            if (SpellTrapZoneCard.getSpellCardByAddress(key, rival).getSpellTrapName().equals("Ring of defense") &&
                     SpellTrapZoneCard.getSpellCardByAddress(key, rival).getMode().equals("O")) {
                 counter++;
             }
@@ -58,7 +58,7 @@ public class TrapEffect {
         spellTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(onlineUser);
         keys = spellTraps.keySet().toArray(new Integer[0]);
         for (Integer key : keys) {
-            if (SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getSpellTrapName().equals("Ring of Defense") &&
+            if (SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getSpellTrapName().equals("Ring of defense") &&
                     SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getMode().equals("O")) {
                 counter++;
             }
@@ -89,19 +89,12 @@ public class TrapEffect {
         Player.getPlayerByName(rival).setCanDrawCard(false);
     }
 
-    public static int solemnWarning(String player1, int addressOfSummonCard, boolean summonMine, String rival) {
-        if (!ringOfDefenseEffect(rival, player1)) {
-            Player.getPlayerByName(player1).changeLifePoint(-2000);
-            if (summonMine) {
-                if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).removeMonsterFromZone();
-                }
-            }
-            if (!summonMine) {
-                if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).removeMonsterFromZone();
-                }
-            }
+    public static int solemnWarning(String onlineUser, String rivalUser, MonsterZoneCard monster, SpellTrapZoneCard trapCard) {
+        if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
+            Player.getPlayerByName(onlineUser).changeLifePoint(-2000);
+            if (monster != null)
+                monster.removeMonsterFromZone();
+            trapCard.removeSpellTrapFromZone();
             return 1;
         }
         return 0;

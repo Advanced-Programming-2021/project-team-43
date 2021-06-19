@@ -1,14 +1,10 @@
 package model;
-
 import controller.SetCards;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
+import org.junit.*;
+import java.io.*;
 import static org.junit.Assert.*;
+
+
 
 public class GameMatModelTest {
 
@@ -17,18 +13,23 @@ public class GameMatModelTest {
 
     @Before
     public void beforeAll() {
+        SetCards.readingCSVFileMonster();
+        SetCards.readingCSVFileTrapSpell();
         gameMatModel1 = new GameMatModel("n1");
     }
 
-
     @Test
     public void startNewGame() {
-        //Assert.assertEquals(2, GameMatModel.getPlayerGameMat().size());
+        gameMatModel1.startNewGame();
+        Assert.assertEquals(0, gameMatModel1.getNumberOfDeadCards());
+        Assert.assertEquals(Phase.Draw_Phase, gameMatModel1.getPhase());
+        Assert.assertEquals("", gameMatModel1.getFieldZone());
     }
 
     @Test
     public void getPhase() {
         Assert.assertEquals(Phase.Draw_Phase, gameMatModel1.getPhase());
+        Assert.assertNotEquals(Phase.End_Phase, gameMatModel1.getPhase());
     }
 
     @Test
@@ -129,6 +130,7 @@ public class GameMatModelTest {
         SetCards.readingCSVFileMonster();
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
+        gameMatModel1.graveyard.clear();
         gameMatModel1.showGraveyard();
         Assert.assertEquals("Graveyard Empty", outContentWithOutEnter(outContent));
         gameMatModel1.addToGraveyard("Axe Raider");
@@ -191,10 +193,9 @@ public class GameMatModelTest {
 
     @Test
     public void doesThisMonsterExistInGraveyard() {
-
-//        gameMatModel1.addToGraveyard("Exploder Dragon");
-//        System.out.println(gameMatModel1.graveyard.get(0));
-//        assertTrue(gameMatModel1.doesThisMonsterExistInGraveyard("Exploder Dragon"));
+        gameMatModel1.addToGraveyard("Exploder Dragon");
+        assertTrue(gameMatModel1.doesThisMonsterExistInGraveyard("Exploder Dragon"));
+        assertFalse(gameMatModel1.doesThisMonsterExistInGraveyard("Alexandrite Dragon"));
     }
 
 }

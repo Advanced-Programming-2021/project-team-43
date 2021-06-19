@@ -22,10 +22,6 @@ public class GameMatModel {
         return graveyard;
     }
 
-    public static Map<String, GameMatModel> getPlayerGameMat() {
-        return playerGameMat;
-    }
-
     public void startNewGame() {
         this.phase = Phase.Draw_Phase;
         removeFromFieldZone();
@@ -122,7 +118,7 @@ public class GameMatModel {
     public boolean doesThisMonsterExistInGraveyard(String monsterName) {
         for (String deadCard : graveyard) {
             String[] split = deadCard.split("/");
-            if (Card.getCardsByName(split[0]).getCardModel().equals("Monster") && deadCard.equals(monsterName))
+            if (Card.getCardsByName(split[0]).getCardModel().equals("Monster") && split[0].equals(monsterName))
                 return true;
         }
         return false;

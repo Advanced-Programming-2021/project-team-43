@@ -1,4 +1,5 @@
 package model;
+import controller.GameMatController;
 import view.GameMatView;
 import java.util.*;
 
@@ -6,7 +7,7 @@ import java.util.*;
 public class Player {
 
     private final String nickname;
-    private int lifePoint = 8000;
+    private int lifePoint = 100;
     private boolean isYourTurn;
     private int numberOfRound;
     private int counterOfTurn = 1;
@@ -38,24 +39,13 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-//        for (int i = 0; i < 5; i++)
-//            new HandCardZone(nickname, drawCard(true));
+        for (int i = 0; i < 5; i++)
+            new HandCardZone(nickname, drawCard(true));
+        if (nickname.equals("forooz"))
+            new MonsterZoneCard(nickname, "Blue-Eyes white dragon", "OO", false, false);
         allPlayers.put(nickname, this);
-        if (nickname.equals("forooz")) {
-            new HandCardZone(nickname, "Solemn Warning");
-            new HandCardZone(nickname, "Gate Guardian");
-            new HandCardZone(nickname, "Beast King Barbaros");
-            new HandCardZone(nickname, "Scanner");
-        }
-        else {
-            new HandCardZone(nickname, "Pot of Greed");
-            for (int i = 0; i < 5; i++)
-                new HandCardZone(nickname, drawCard(true));
-        }
-        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("The Tricky");
-        new MonsterZoneCard(nickname, "Wattkid", "DH", false, false);
-        new MonsterZoneCard(nickname, "Dark magician", "OO", false, false);
-        new SpellTrapZoneCard(nickname, "Raigeki", "H");
+        showSideDeck();
+        showSideDeck();
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
@@ -75,8 +65,6 @@ public class Player {
         this.canSetSummonMonster = true;
         GameMatModel.getGameMatByNickname(nickname).setPhase(Phase.Draw_Phase);
         fillTheGameDecks(activeDeck);
-        for (int i = 0; i < 5; i++)
-            new HandCardZone(nickname, drawCard(true));
     }
 
     public void fillTheGameDecks(DeckModel activeDeck) {
@@ -100,14 +88,23 @@ public class Player {
     }
 
     public int exchangeCard(int cardAddressInMainDeck, int cardAddressInSideDeck) {
-        if (playerSideDeck.get(cardAddressInSideDeck) != null) {
-            addToMainDeck(playerSideDeck.get(cardAddressInSideDeck));
-            removeFromSideDeckByAddress(cardAddressInSideDeck);
-            addToSideDeck(playerMainDeck.get(cardAddressInMainDeck));
-            removeFromMainDeckByAddress(cardAddressInMainDeck);
-            return 1;
-        } else
-            return 0;
+        if (cardAddressInSideDeck < playerSideDeck.size() && cardAddressInSideDeck > -1 && cardAddressInMainDeck < playerMainDeck.size() && cardAddressInMainDeck > -1) {
+            if (playerSideDeck.get(cardAddressInSideDeck) != null) {
+                String mainCard = playerMainDeck.get(cardAddressInMainDeck);
+                String sideCard = playerSideDeck.get(cardAddressInSideDeck);
+                System.out.println(mainCard + "main size");
+                System.out.println(sideCard + "side size");
+                playerSideDeck.remove(cardAddressInSideDeck);
+                playerMainDeck.remove(cardAddressInMainDeck);
+                playerMainDeck.add(sideCard);
+                playerSideDeck.add(mainCard);
+                System.out.println(playerMainDeck.size() + "main" + playerSideDeck.size());
+
+                return 1;
+            } else
+                return 0;
+        }
+        return 0;
     }
 
     public String getNickname() {
@@ -194,16 +191,8 @@ public class Player {
         this.canBattle = canBattle;
     }
 
-    public void addToMainDeck(String cardName) {
-        playerMainDeck.add(playerMainDeck.size(), cardName);
-    }
-
     public void removeFromMainDeck() {
         playerMainDeck.remove(randomCardNumber);
-    }
-
-    public void removeFromMainDeckByAddress(int address) {
-        playerMainDeck.remove(address);
     }
 
     public String getCardNameByAddress(int address) {
@@ -220,14 +209,6 @@ public class Player {
         else
             for (int i = 0; i < playerMainDeck.size(); i++)
                 GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
-    }
-
-    public void addToSideDeck(String cardName) {
-        playerSideDeck.add(playerSideDeck.size(), cardName);
-    }
-
-    public void removeFromSideDeckByAddress(int address) {
-        playerSideDeck.remove(address);
     }
 
     public int getNumberOfSideDeckCards() {
@@ -290,11 +271,17 @@ public class Player {
     public void changeTurn() {
         changeCounterOfTurn();
         setIsYourMoveFinished(false);
-        int address = MonsterZoneCard.getAddressByMonsterName(nickname, "Mirage Dragon");
+        String rivalName;
+        if (GameMatController.rivalUser.equals(nickname)) {
+            rivalName = GameMatController.onlineUser;
+        } else {
+            rivalName = GameMatController.rivalUser;
+        }
+        int address = MonsterZoneCard.getAddressByMonsterName(rivalName, "Mirage Dragon");
         if (address == -1)
             setCanUseTrap(true);
         else {
-            if (MonsterZoneCard.getMonsterCardByAddress(address, nickname).getMode().equals("DO") || MonsterZoneCard.getMonsterCardByAddress(address, nickname).getMode().equals("OO")) {
+            if (!MonsterZoneCard.getMonsterCardByAddress(address, rivalName).getMode().equals("DH")) {
                 setCanUseTrap(false);
             }
         }

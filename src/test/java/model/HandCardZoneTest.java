@@ -86,7 +86,7 @@ public class HandCardZoneTest {
         ByteArrayOutputStream show = new ByteArrayOutputStream();
         System.setOut(new PrintStream(show));
         HandCardZone.showHandCard("me");
-        assertEquals(84, show.size());
+        assertEquals(74, show.size());
     }
 
     @Test
@@ -113,6 +113,8 @@ public class HandCardZoneTest {
     public void getAddressOfCybreseMonster() {
         HandCardZone hand = new HandCardZone("me","Texchanger");
         Assert.assertEquals(7, HandCardZone.getAddressOfCybreseMonster("me"));
+        hand.removeFromHandCard();
+        Assert.assertEquals(-1, HandCardZone.getAddressOfCybreseMonster("me"));
     }
 
 }

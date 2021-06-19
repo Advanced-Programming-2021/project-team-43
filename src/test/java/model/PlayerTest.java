@@ -225,15 +225,6 @@ public class PlayerTest {
         assertTrue(player.getCanUseTrap());
     }
 
-    @Test
-    public void addToMainDeck() {
-        ArrayList<String> expectedDeck = new ArrayList<>();
-        for (int i = 0; i < 5; i++)
-            expectedDeck.add("Yami");
-        expectedDeck.add("Axe Raider");
-        player.addToMainDeck("Axe Raider");
-        Assert.assertEquals(expectedDeck, player.getPlayerDeck("main"));
-    }
 
     @Test
     public void removeFromMainDeck() {
@@ -246,29 +237,9 @@ public class PlayerTest {
     }
 
     @Test
-    public void removeFromMainDeckByAddress() {
-        ArrayList<String> expectedDeck = new ArrayList<>();
-        for (int i = 0; i < 4; i++)
-            expectedDeck.add("Yami");
-        player.removeFromMainDeckByAddress(4);
-        Assert.assertEquals(expectedDeck, player.getPlayerDeck("main"));
-    }
-
-    @Test
     public void addToSideDeck() {
         ////////
     }
-
-    @Test
-    public void removeFromSideDeckByAddress() {
-        ArrayList<String> expectedDeck = new ArrayList<>();
-        for (int i = 0; i < 5; i++)
-            expectedDeck.add("Battle Ox");
-        expectedDeck.remove(3);
-        player.removeFromSideDeckByAddress(3);
-        Assert.assertEquals(expectedDeck, player.getPlayerDeck("side"));
-    }
-
     @Test
     public void getMaxLifePoints() {
         //////////////

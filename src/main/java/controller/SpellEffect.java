@@ -149,7 +149,7 @@ public class SpellEffect {
             }
             chosenAddress = Integer.parseInt(response);
             new HandCardZone(onlineUser, player.getCardNameByAddress(chosenAddress));
-            player.removeFromMainDeckByAddress(chosenAddress);
+            player.playerMainDeck.remove(chosenAddress);
         }
         return 1;
     }

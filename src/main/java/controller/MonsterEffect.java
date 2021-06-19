@@ -378,7 +378,7 @@ public class MonsterEffect {
                     }
                     GameMatView.showInput("Texchanger Effect is activated!");
                     new MonsterZoneCard(rivalUser, Player.getPlayerByName(rivalUser).getCardNameByAddress(address), "OO", false, false);
-                    Player.getPlayerByName(rivalUser).removeFromMainDeckByAddress(address);
+                    Player.getPlayerByName(rivalUser).playerMainDeck.remove(address);
                 }
             }
             rivalMonster.setIsEffectUsed(true);
