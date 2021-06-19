@@ -38,24 +38,24 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-//        for (int i = 0; i < 5; i++)
-//            new HandCardZone(nickname, drawCard(true));
+        for (int i = 0; i < 5; i++)
+            new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
-        if (nickname.equals("forooz")) {
-            new HandCardZone(nickname, "Solemn Warning");
-            new HandCardZone(nickname, "Gate Guardian");
-            new HandCardZone(nickname, "Beast King Barbaros");
-            new HandCardZone(nickname, "Scanner");
-        }
-        else {
-            new HandCardZone(nickname, "Pot of Greed");
-            for (int i = 0; i < 5; i++)
-                new HandCardZone(nickname, drawCard(true));
-        }
-        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("The Tricky");
-        new MonsterZoneCard(nickname, "Wattkid", "DH", false, false);
-        new MonsterZoneCard(nickname, "Dark magician", "OO", false, false);
-        new SpellTrapZoneCard(nickname, "Raigeki", "H");
+//        if (nickname.equals("forooz")) {
+//            new HandCardZone(nickname, "Solemn Warning");
+//            new HandCardZone(nickname, "Gate Guardian");
+//            new HandCardZone(nickname, "Beast King Barbaros");
+//            new HandCardZone(nickname, "Scanner");
+//        }
+//        else {
+//            new HandCardZone(nickname, "Pot of Greed");
+//            for (int i = 0; i < 5; i++)
+//                new HandCardZone(nickname, drawCard(true));
+////        }
+//        GameMatModel.getGameMatByNickname(nickname).addToGraveyard("The Tricky");
+//        new MonsterZoneCard(nickname, "Wattkid", "DH", false, false);
+//        new MonsterZoneCard(nickname, "Dark magician", "OO", false, false);
+//        new SpellTrapZoneCard(nickname, "Raigeki", "H");
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
