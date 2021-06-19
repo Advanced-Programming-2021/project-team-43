@@ -1,17 +1,39 @@
 package controller;
 
-import model.*;
+import model.DeckModel;
+import model.UserModel;
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.assertEquals;
 
 
 public class DeckControllerTest {
+
+    @Test
+    public void addLimitedCard() {
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        UserModel userModel = new UserModel("alie", "n", "p");
+        MainMenuController.username = "alie";
+        DeckModel deckModel = new DeckModel("deck");
+        userModel.addDeck(deckModel);
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        userModel.addCardToUserAllCards("Terraforming");
+        userModel.addCardToUserAllCards("Terraforming");
+        DeckController.addCardToSideDeck("Terraforming", "deck");
+        outContent.reset();
+        DeckController.addCardToSideDeck("Terraforming", "deck");
+        assertEquals("there are already one cards with name Terraforming in deck deck", outContentWithOutEnter(outContent));
+
+    }
 
     @Test
     public void testForAddCard() {
@@ -336,7 +358,7 @@ public class DeckControllerTest {
         DeckController.addCardToSideDeck("Yami", "deck");
         outContent.reset();
         DeckController.addCardToSideDeck("Yami", "deck");
-        Assert.assertEquals("side deck is full", outContentWithOutEnter(outContent));///////////////
+        Assert.assertEquals("there are already three cards with name Yami in deck deck", outContentWithOutEnter(outContent));///////////////
         DeckModel deckModel1 = new DeckModel("fullDeck");
         for (int i = 0; i < 60; i++) {
             deckModel1.addCardToSide("card12");
@@ -351,7 +373,7 @@ public class DeckControllerTest {
         userModel.addCardToUserAllCards("Trap Hole");
         outContent.reset();
         DeckController.addCardToSideDeck("Trap Hole", "deck");
-        Assert.assertEquals("side deck is full", outContentWithOutEnter(outContent));
+        Assert.assertEquals("card added to deck successfully", outContentWithOutEnter(outContent));
         DeckController.addCardToSideDeck("Trap Hole", "deck");
         DeckController.addCardToSideDeck("Trap Hole", "deck");
         outContent.reset();
@@ -464,7 +486,7 @@ public class DeckControllerTest {
 
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
-        DeckModel deckModel2=new DeckModel("didi");
+        DeckModel deckModel2 = new DeckModel("didi");
         deckModel2.addCardToMain("Axe Raider");
         deckModel2.addCardToMain("Mind Crush");
         deckModel2.addCardToMain("Monster Reborn");
@@ -494,7 +516,7 @@ public class DeckControllerTest {
 
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
-        DeckModel deckModel2=new DeckModel("didi");
+        DeckModel deckModel2 = new DeckModel("didi");
         deckModel2.addCardToSide("Axe Raider");
         deckModel2.addCardToSide("Mind Crush");
         deckModel2.addCardToSide("Monster Reborn");

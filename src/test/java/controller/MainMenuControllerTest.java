@@ -38,6 +38,13 @@ public class MainMenuControllerTest {
         System.setIn(in);
         assertEquals(0, MainMenuController.profileRun());
     }
+    @Test
+    public void scoreboardRun() {
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        assertEquals(0, MainMenuController.scoreboardRun());
+    }
 
 
     @Test

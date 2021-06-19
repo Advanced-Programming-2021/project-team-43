@@ -1,9 +1,9 @@
 package controller;
 
-import model.*;
+import model.Player;
+import model.UserModel;
 import view.MainMenuView;
 
-import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -297,7 +297,7 @@ public class MainMenuController {
         }
     }
 
-    public static void scoreboardRun() {
+    public static int scoreboardRun() {
         while (true) {
             String command = MainMenuView.getCommand();
             command = command.trim();
@@ -306,6 +306,7 @@ public class MainMenuController {
                 break;
             }
         }
+        return 0;
     }
 
     public static int scoreboard(String command) {
@@ -355,7 +356,7 @@ public class MainMenuController {
         int rank = 1;
         for (int i = 0; i < keysUsers.length; i++) {
             MainMenuView.showInput((rank) + "- " + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
-            if (i < keysUsers.length - 1 && UserModel.getUserByUsername(keysUsers[i]).getUserScore() != UserModel.getUserByUsername(keysUsers[i+1]).getUserScore())
+            if (i < keysUsers.length - 1 && UserModel.getUserByUsername(keysUsers[i]).getUserScore() != UserModel.getUserByUsername(keysUsers[i + 1]).getUserScore())
                 rank++;
         }
     }

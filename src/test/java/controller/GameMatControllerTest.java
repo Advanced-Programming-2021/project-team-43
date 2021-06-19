@@ -35,6 +35,10 @@ public class GameMatControllerTest {
         new Player("me2", deckModel, false, 1);
         GameMatController.onlineUser = "me";
         GameMatController.rivalUser = "me2";
+
+        String input = "menu exit";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
     }
 
     @Test
@@ -48,42 +52,42 @@ public class GameMatControllerTest {
     @Test
     public void commandController() {
         MainMenuController.username2 = "Guy2";
-        run();
-        assertEquals(0, GameMatController.commandController("menu exit"));
+
+        assertEquals(38, GameMatController.commandController("menu exit"));
         assertEquals(1, GameMatController.commandController("select --monster 5 --opponent"));
         assertEquals(2, GameMatController.commandController("select --monster 2"));
         assertEquals(3, GameMatController.commandController("select --opponent --monster 1"));
-        assertEquals(4, GameMatController.commandController("select --spell 1 --opponent"));
-        assertEquals(5, GameMatController.commandController("select --spell 1"));
-        assertEquals(6, GameMatController.commandController("select --opponent --spell 1"));
-        assertEquals(7, GameMatController.commandController("s -f"));
-        assertEquals(8, GameMatController.commandController("select --field --opponent"));
-        assertEquals(9, GameMatController.commandController("select --hand 1"));
-        assertEquals(10, GameMatController.commandController("select -d"));
-        assertEquals(11, GameMatController.commandController("next phase"));
-        assertEquals(12, GameMatController.commandController("summon"));
-        assertEquals(13, GameMatController.commandController("set"));
+        assertEquals(8, GameMatController.commandController("select --spell 1 --opponent"));
+        assertEquals(9, GameMatController.commandController("select --spell 1"));
+        assertEquals(10, GameMatController.commandController("select --opponent --spell 1"));
+        assertEquals(15, GameMatController.commandController("s -f"));
+        assertEquals(16, GameMatController.commandController("select --field --opponent"));
+        assertEquals(17, GameMatController.commandController("select --hand 1"));
+        assertEquals(19, GameMatController.commandController("select -d"));
+        assertEquals(20, GameMatController.commandController("next phase"));
+        assertEquals(21, GameMatController.commandController("summon"));
+        assertEquals(22, GameMatController.commandController("set"));
 //        assertEquals(14,GameMatController.commandController(""));
-        assertEquals(15, GameMatController.commandController("flip-summon"));
+        assertEquals(24, GameMatController.commandController("flip-summon"));
 //        assertEquals(16,GameMatController.commandController(""));
-        assertEquals(17, GameMatController.commandController("attack direct"));
-        assertEquals(18, GameMatController.commandController("activate effect"));
+        assertEquals(26, GameMatController.commandController("attack direct"));
+        assertEquals(27, GameMatController.commandController("activate effect"));
         System.setIn(new ByteArrayInputStream("back".getBytes()));
-        assertEquals(19, GameMatController.commandController("card show --selected"));
+        assertEquals(28, GameMatController.commandController("card show --selected"));
         System.setIn(new ByteArrayInputStream("back".getBytes()));
-        assertEquals(21, GameMatController.commandController("show graveyard"));
-        System.setIn(new ByteArrayInputStream("no".getBytes()));
-        assertEquals(22, GameMatController.commandController("show graveyard --opponent"));
+//        assertEquals(29, GameMatController.commandController("show graveyard"));
+//        System.setIn(new ByteArrayInputStream("yes".getBytes()));
+        assertEquals(30, GameMatController.commandController("show graveyard --opponent"));
         System.setIn(new ByteArrayInputStream("back".getBytes()));
-        assertEquals(23, GameMatController.commandController("show main deck"));
+        assertEquals(31, GameMatController.commandController("show main deck"));
         System.setIn(new ByteArrayInputStream("back".getBytes()));
-        assertEquals(24, GameMatController.commandController("show side deck"));
+        assertEquals(32, GameMatController.commandController("show side deck"));
         System.setIn(new ByteArrayInputStream("back".getBytes()));
-        assertEquals(25, GameMatController.commandController("show my hand"));
-        assertEquals(26, GameMatController.commandController("increase --LP 12133"));
-        assertEquals(27, GameMatController.commandController(""));
+        assertEquals(33, GameMatController.commandController("show my hand"));
+        assertEquals(37, GameMatController.commandController("increase --LP 12133"));
+        assertEquals(39, GameMatController.commandController(""));
         System.setIn(new ByteArrayInputStream("menu exit".getBytes()));
-        assertEquals(0, GameMatController.commandController("surrender"));
+        assertEquals(34, GameMatController.commandController("surrender"));
 //        System.setIn(new ByteArrayInputStream("menu exit".getBytes()));
 //        assertEquals(0, GameMatController.commandController("duel set-winner me"));
 //        System.setIn(new ByteArrayInputStream("menu exit".getBytes()));
@@ -92,7 +96,7 @@ public class GameMatControllerTest {
 
     @Test
     public void AI() {
-        run();
+
         GameMatController.AI();
         assertEquals("next phase", GameMatController.command);
         GameMatController.changePhase(GameMatModel.getGameMatByNickname("me").getPhase());
@@ -342,7 +346,7 @@ public class GameMatControllerTest {
         new HandCardZone("me","Battle OX");
         GameMatController.selectHandCard(6);
         System.out.println(GameMatController.selectedOwnCard);
-        assertEquals( 1,GameMatController.summonInHand(Player.getPlayerByName("me"),Phase.Main_Phase1));
+        assertEquals( 5,GameMatController.summonInHand(Player.getPlayerByName("me"),Phase.Main_Phase1));
     }
 
     @Test
@@ -369,7 +373,7 @@ public class GameMatControllerTest {
         assertEquals(1, GameMatController.summonInMonsterZone(Player.getPlayerByName("me"), Phase.Main_Phase1));
         monsterZoneCard.setHaveChangedPositionThisTurn(false);
         GameMatController.selectMonsterCard(1, true);
-        assertEquals(1, GameMatController.summonInMonsterZone(Player.getPlayerByName("me"), Phase.Main_Phase1));
+        assertEquals(0, GameMatController.summonInMonsterZone(Player.getPlayerByName("me"), Phase.Main_Phase1));
     }
 
     @Test
@@ -450,10 +454,10 @@ public class GameMatControllerTest {
         assertEquals(-1,GameMatController.ritualSummon());
         new HandCardZone("me","Skull Guardian");
         new HandCardZone("me2","Skull Guardian");
-        assertEquals(0,GameMatController.ritualSummon());
+        assertEquals(-1,GameMatController.ritualSummon());
         new MonsterZoneCard("me","Skull Guardian","OO",false,false);
         System.setIn( new ByteArrayInputStream("cancel".getBytes()));
-        assertEquals(0,GameMatController.ritualSummon());
+        assertEquals(-1,GameMatController.ritualSummon());
     }
 
     @Test
