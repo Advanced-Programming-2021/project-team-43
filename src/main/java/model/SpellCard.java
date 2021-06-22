@@ -1,6 +1,7 @@
 package model;
 import java.util.HashMap;
 
+
 public class SpellCard extends Card {
 
     private String icon;

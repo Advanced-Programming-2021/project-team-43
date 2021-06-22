@@ -45,8 +45,8 @@ public class HandCardZoneTest {
 
     @Test
     public void getAddress() {
-        Assert.assertEquals(6, card.getAddress());
-        Assert.assertEquals(7, new HandCardZone("me", "Solemn Warning").getAddress());
+        Assert.assertEquals(5, card.getAddress());
+        Assert.assertEquals(6, new HandCardZone("me", "Solemn Warning").getAddress());
     }
 
     @Test
@@ -58,13 +58,13 @@ public class HandCardZoneTest {
     @Test
     public void removeFromHandCard() {
         HandCardZone.getHandCardByAddress(card.getAddress(),"me").removeFromHandCard();
-        assertEquals(6,HandCardZone.getNumberOfFullHouse("me"));
+        assertEquals(5,HandCardZone.getNumberOfFullHouse("me"));
     }
 
     @Test
     public void getNumberOfFullHouse() {
         new HandCardZone("me", "Twin Twisters");
-        Assert.assertEquals(8, HandCardZone.getNumberOfFullHouse("me"));
+        Assert.assertEquals(7, HandCardZone.getNumberOfFullHouse("me"));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class HandCardZoneTest {
         ByteArrayOutputStream show = new ByteArrayOutputStream();
         System.setOut(new PrintStream(show));
         HandCardZone.showHandCard("me");
-        assertEquals(74, show.size());
+        assertEquals(60, show.size());
     }
 
     @Test
@@ -99,20 +99,20 @@ public class HandCardZoneTest {
     public void doIHaveAnyRitualMonster() {
         Assert.assertEquals(-1, HandCardZone.doIHaveAnyRitualMonster("me"));
         HandCardZone hand = new HandCardZone("me", "Crab Turtle");
-        Assert.assertEquals(8, HandCardZone.doIHaveAnyRitualMonster("me"));/////////////////
+        Assert.assertEquals(7, HandCardZone.doIHaveAnyRitualMonster("me"));/////////////////
         hand.removeFromHandCard();
     }
 
     @Test
     public void removeAllTypeCard() {
         HandCardZone.removeAllTypeCard("me", "Yami");
-        Assert.assertEquals(4, HandCardZone.getNumberOfFullHouse("me"));
+        Assert.assertEquals(3, HandCardZone.getNumberOfFullHouse("me"));
     }
 
     @Test
     public void getAddressOfCybreseMonster() {
         HandCardZone hand = new HandCardZone("me","Texchanger");
-        Assert.assertEquals(7, HandCardZone.getAddressOfCybreseMonster("me"));
+        Assert.assertEquals(6, HandCardZone.getAddressOfCybreseMonster("me"));
         hand.removeFromHandCard();
         Assert.assertEquals(-1, HandCardZone.getAddressOfCybreseMonster("me"));
     }

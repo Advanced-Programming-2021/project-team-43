@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 
 public class MonsterCard extends Card {
+
     private int level;
     private String monsterType;
     private int attack;
@@ -13,8 +14,7 @@ public class MonsterCard extends Card {
     private static HashMap<String, MonsterCard> allMonsters = new HashMap<>();
 
 
-    public MonsterCard(String attribute, String name, int level, String MonsterType, int attack, int defend,
-                       String cardModel, String cardType, boolean isScanner, String description, int price) {
+    public MonsterCard(String attribute, String name, int level, String MonsterType, int attack, int defend, String cardModel, String cardType, boolean isScanner, String description, int price) {
         super(name, cardModel, description, price);
         this.attack = attack;
         this.level = level;
@@ -26,18 +26,13 @@ public class MonsterCard extends Card {
         allMonsters.put(name, this);
     }
 
-
     public String getAttribute() {
         return attribute;
     }
 
     public String getCardType() {
         return cardType;
-    }//Normal
-
-//    //public void addScanner() {
-//        allMonsters.put("Scanner", this);
-//    }
+    }
 
     public int getLevel() {
         return level;
@@ -45,7 +40,7 @@ public class MonsterCard extends Card {
 
     public String getMonsterType() {
         return monsterType;
-    }//Fair
+    }
 
     public int getAttack() {
         return attack;
@@ -78,6 +73,5 @@ public class MonsterCard extends Card {
     public void setAttack(int change) {
         this.attack += change;
     }
-
 
 }

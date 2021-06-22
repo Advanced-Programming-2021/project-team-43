@@ -1,7 +1,6 @@
 package model;
 import java.util.*;
-import controller.*;
-import view.GameMatView;
+
 
 public class SpellTrapZoneCard {
 

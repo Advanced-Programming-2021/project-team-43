@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 
 public class Card {
+
     protected String cardName;
     protected String cardModel;
     protected String description;

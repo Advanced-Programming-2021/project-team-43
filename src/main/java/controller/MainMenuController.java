@@ -155,18 +155,30 @@ public class MainMenuController {
             duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--ai\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-ai\\s+-r\\s+(\\d+)$")).find())
-            duelMenu("ai", Integer.parseInt(matcher.group(2)));
-        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--rounds\\s+(\\d+)\\s+--ai$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-r\\s+(\\d+)\\s+-ai$")).find())
-            duelMenu("ai", Integer.parseInt(matcher.group(2)));
-        if ((matcher = getMatcher(command, "^duel\\s+--ai\\s+--rounds\\s+(\\d+)\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-ai\\s+-r\\s+(\\d+)\\s+-n$")).find())
-            duelMenu("ai", Integer.parseInt(matcher.group(2)));
-        if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--ai\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-ai\\s+-n$")).find())
-            duelMenu("ai", Integer.parseInt(matcher.group(2)));
-        if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--new\\s+--ai$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-n\\s+-ai$")).find())
-            duelMenu("ai", Integer.parseInt(matcher.group(2)));
-        if ((matcher = getMatcher(command, "^duel\\s+--ai\\s+--new\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-ai\\s+-n\\s+-r\\s+(\\d+)$")).find())
-            duelMenu("ai", Integer.parseInt(matcher.group(2)));
+        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--ai\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-ai\\s+-r\\s+(\\d+)$")).find()) {
+            duelMenu("AI", Integer.parseInt(matcher.group(1)));
+            return 1;
+        }
+        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--rounds\\s+(\\d+)\\s+--ai$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-r\\s+(\\d+)\\s+-ai$")).find()) {
+            duelMenu("AI", Integer.parseInt(matcher.group(1)));
+            return 1;
+        }
+        if ((matcher = getMatcher(command, "^duel\\s+--ai\\s+--rounds\\s+(\\d+)\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-ai\\s+-r\\s+(\\d+)\\s+-n$")).find()) {
+            duelMenu("AI", Integer.parseInt(matcher.group(1)));
+            return 1;
+        }
+        if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--ai\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-ai\\s+-n$")).find()) {
+            duelMenu("AI", Integer.parseInt(matcher.group(1)));
+            return 1;
+        }
+        if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--new\\s+--ai$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-n\\s+-ai$")).find()) {
+            duelMenu("AI", Integer.parseInt(matcher.group(1)));
+            return 1;
+        }
+        if ((matcher = getMatcher(command, "^duel\\s+--ai\\s+--new\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-ai\\s+-n\\s+-r\\s+(\\d+)$")).find()) {
+            duelMenu("AI", Integer.parseInt(matcher.group(1)));
+            return 1;
+        }
         if (getMatcher(command, "^menu \\s*show-current$").find() || getMatcher(command, "^m \\s*s-c$").find()) {
             MainMenuView.showInput("Duel Menu");
             return 1;
@@ -196,12 +208,18 @@ public class MainMenuController {
                         if (user2.userAllDecks.get(user2.getActiveDeck()).validOrInvalid().equals("valid")) {
                             if (roundNumber == 1 || roundNumber == 3) {
                                 username2 = playerName;
-                                String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
+                                String firstPlayer;
                                 String secondPlayer;
-                                if (firstPlayer.equals(playerName)) {
-                                    secondPlayer = MainMenuController.username;
-                                } else {
-                                    secondPlayer = playerName;
+                                if (playerName.equals("AI")) {
+                                    firstPlayer = username;
+                                    secondPlayer = "AI";
+                                }
+                                else {
+                                    firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
+                                    if (firstPlayer.equals(playerName))
+                                        secondPlayer = MainMenuController.username;
+                                    else
+                                        secondPlayer = playerName;
                                 }
                                 new Player(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()), true, roundNumber);
                                 new Player(UserModel.getUserByUsername(secondPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()), false, roundNumber);

@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class PickFirstPlayer {
+
     public static String chose(String player1, String player2) {
         if(player2.equals("ai")){
             return player1;
@@ -25,14 +26,9 @@ public class PickFirstPlayer {
                     }
                     return player1;
                 }
-
                 System.out.println("invalid command");
-
             }
-
-
         }
-
         String winner = rockPaperScissors(player1, player2);
         System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
         while (true) {
@@ -46,11 +42,9 @@ public class PickFirstPlayer {
                 }
                 return player1;
             }
-
             System.out.println("invalid command");
         }
     }
-
 
     private static String rockPaperScissors(String player1, String player2) {
         Scanner scanner = new Scanner(System.in);
@@ -97,11 +91,8 @@ public class PickFirstPlayer {
                 if (t2.equals("scissors")) {
                     System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is win");
                     return player2;
-
                 }
             }
-
-
             if (t1.equals("scissors")) {
                 if (t2.equals("rock")) {
                     System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is win");
@@ -127,6 +118,6 @@ public class PickFirstPlayer {
             return player1;
         }
         return player2;
-
     }
+
 }

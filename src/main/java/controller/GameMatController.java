@@ -1704,21 +1704,21 @@ public class GameMatController {
         Player.getPlayerByName(rivalUser).setIsYourTurn(false);
     }
 
-    public static void endGame(String loser) {
-        String winner, winnerUsername, loserUsername;
-        if (loser.equals(onlineUser))
-            winner = rivalUser;
+    public static void endGame(String loserNickname) {
+        String winnerNickname, winnerUsername, loserUsername;
+        if (loserNickname.equals(onlineUser))
+            winnerNickname = rivalUser;
         else
-            winner = onlineUser;
-        if (UserModel.getUserByUsername(MainMenuController.username).getNickname().equals(winner)) {
+            winnerNickname = onlineUser;
+        if (UserModel.getUserByUsername(MainMenuController.username).getNickname().equals(winnerNickname)) {
             winnerUsername = MainMenuController.username;
             loserUsername = MainMenuController.username2;
         } else {
             winnerUsername = MainMenuController.username2;
             loserUsername = MainMenuController.username;
         }
-        Player winnerPlayer = Player.getPlayerByName(winner);
-        Player loserPlayer = Player.getPlayerByName(loser);
+        Player winnerPlayer = Player.getPlayerByName(winnerNickname);
+        Player loserPlayer = Player.getPlayerByName(loserNickname);
         UserModel.getUserByUsername(winnerUsername).changeUserScore(1000);
         if (Player.isOneRound) {
             GameMatView.showInput("The Duel is Over!\n" + winnerUsername + " won the game and the score is: 1000-0");
@@ -1757,8 +1757,10 @@ public class GameMatController {
                 int numberOfCard = 0;
                 int whatToDo = 0;
                 for (int j = 0; j < 2; j++) {
-                    if (Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() == 0 || Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards() == 0)
+                    if (Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() == 0 || Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards() == 0) {
                         GameMatView.showInput("Oops! " + winnerPlayer.getNickname() + " You cant exchange card!");
+                        break;
+                    }
                     do {
                         GameMatView.showInput(winnerPlayer.getNickname() + " do you want to exchange card? (yes/no)");
                         response = GameMatView.getCommand();
@@ -1790,17 +1792,15 @@ public class GameMatController {
                         }
                     }
                     whatToDo = 0;
-                    GameMatView.showInput("Main Deck:");///////
-                    winnerPlayer.showMainDeck();
-                    GameMatView.showInput("Side Deck:");
-                    winnerPlayer.showSideDeck();///////
                     winnerPlayer = loserPlayer;
                 }
+                winnerPlayer = Player.getPlayerByName(winnerNickname);
+                loserPlayer = Player.getPlayerByName(loserNickname);
                 GameMatView.showInput("Round " + round + " starts!");
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++) {
                     new HandCardZone(winnerPlayer.getNickname(), winnerPlayer.drawCard(true));
-                for (int i = 0; i < 5; i++)
                     new HandCardZone(loserPlayer.getNickname(), loserPlayer.drawCard(true));
+                }
                 if (firstPlayer.equals(winnerUsername))
                     run(winnerPlayer.getNickname(), loserPlayer.getNickname());
                 else
@@ -1811,11 +1811,7 @@ public class GameMatController {
 
     public static int exchangeCard(String playerNickname, String command) {
         if ((matcher = getMatcher(command, "exchange\\s+main\\s+card\\s+(\\d+)\\s+with\\s+side\\s+card\\s+(\\d+)")).find() || (matcher = getMatcher(command, "e\\s+mc\\s+(\\d+)\\s+with\\s+sc\\s+(\\d+)")).find()) {
-            int cardAddressInMainDeck = Integer.parseInt(matcher.group(1));
-            int cardAddressInSideDeck = Integer.parseInt(matcher.group(2));
-            cardAddressInSideDeck--;
-            cardAddressInMainDeck--;
-            if (Player.getPlayerByName(playerNickname).exchangeCard(cardAddressInMainDeck, cardAddressInSideDeck) == 0) {
+            if (Player.getPlayerByName(playerNickname).exchangeCard(Integer.parseInt(matcher.group(1)) - 1, Integer.parseInt(matcher.group(2)) - 1) == 0) {
                 GameMatView.showInput("Oops! You cant exchange this two cards!");
                 return 0;
             }
@@ -1849,9 +1845,7 @@ public class GameMatController {
             String[] split = field.split("/");
             GameMatView.showInput(rivalGameMat.getNumberOfDeadCards() + "                      " + split[1] + "\n");
         }
-
         GameMatView.showInput("--------------------------\n");
-
         if (ownGamMat.getFieldZone().isEmpty())
             GameMatView.showInput("E                      " + ownGamMat.getNumberOfDeadCards());
         else {
@@ -1859,7 +1853,6 @@ public class GameMatController {
             String[] split = field.split("/");
             GameMatView.showInput(split[1] + "                      " + ownGamMat.getNumberOfDeadCards());
         }
-
         String[] ownMonstersMode = MonsterZoneCard.getAllMonstersMode(onlineUser);
         GameMatView.showInput("   " + ownMonstersMode[5] + "   " + ownMonstersMode[3] + "   " + ownMonstersMode[1] + "   " + ownMonstersMode[2] + "   " + ownMonstersMode[4]);
         String[] ownSpellsMode = SpellTrapZoneCard.getAllSpellTrapMode(onlineUser);
@@ -1966,4 +1959,5 @@ public class GameMatController {
                 GameMatView.showInput("invalid command");
         }
     }
+
 }

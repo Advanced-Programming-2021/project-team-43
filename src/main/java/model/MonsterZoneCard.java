@@ -235,9 +235,9 @@ public class MonsterZoneCard {
     }
 
     public static void removeUselessMonster(String playerNickname) {
-//        for (int i = 1; i < 6; i++)
-//            if (allMonsterCards.get(playerNickname).get(i) != null && allMonsterCards.get(playerNickname).get(i).getIsForOneTurn())
-//                removeMonsterFromZone();
+        for (int i = 1; i < 6; i++)
+            if (allMonsterCards.get(playerNickname).get(i) != null && allMonsterCards.get(playerNickname).get(i).getIsForOneTurn())
+                allMonsterCards.get(playerNickname).get(i).removeMonsterFromZone();
     }
 
     public static MonsterZoneCard getMonsterCardByAddress(int address, String playerNickname) {
@@ -262,7 +262,6 @@ public class MonsterZoneCard {
                 allMonsters.get(i).setCanAttackToThisMonster(true);
             }
             if (allMonsters.get(i) != null) {
-                //////////////
                 int coun = 0;
                 List<Integer> allEffectedOwn = allMonsters.get(i).allEffectiveSpell.get(playerNickname);
                 String rivalName;
@@ -273,15 +272,15 @@ public class MonsterZoneCard {
                 }
                 List<Integer> allEffectedRival = allMonsters.get(i).allEffectiveSpell.get(rivalName);
                 if (allEffectedOwn != null) {
-                    for (int j = 0; j < allEffectedOwn.size(); j++) {
-                        if (SpellTrapZoneCard.getSpellCardByAddress(allEffectedOwn.get(j), rivalName) != null) {
+                    for (Integer integer : allEffectedOwn) {
+                        if (SpellTrapZoneCard.getSpellCardByAddress(integer, rivalName) != null) {
                             coun++;
                         }
                     }
                 }
                 if (allEffectedRival != null) {
-                    for (int t = 0; t < allEffectedRival.size(); t++) {
-                        if (SpellTrapZoneCard.getSpellCardByAddress(allEffectedRival.get(t), playerNickname) != null) {
+                    for (Integer integer : allEffectedRival) {
+                        if (SpellTrapZoneCard.getSpellCardByAddress(integer, playerNickname) != null) {
                             coun++;
                         }
                     }
@@ -291,7 +290,6 @@ public class MonsterZoneCard {
                     if (allMonsterCards.get(rivalName).get(i) != null)
                         allMonsterCards.get(rivalName).get(i).setCanAttack(true);
                 }
-                ///////////
                 allMonsters.get(i).setHaveChangedPositionThisTurn(false);
                 allMonsters.get(i).setHaveAttackThisTurn(false);
                 if (!allMonsters.get(i).getMonsterName().equals("Suijin"))

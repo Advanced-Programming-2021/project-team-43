@@ -7,7 +7,7 @@ import java.util.*;
 public class Player {
 
     private final String nickname;
-    private int lifePoint = 100;
+    private int lifePoint = 8000;
     private boolean isYourTurn;
     private int numberOfRound;
     private int counterOfTurn = 1;
@@ -41,11 +41,7 @@ public class Player {
         fillTheGameDecks(activeDeck);
         for (int i = 0; i < 5; i++)
             new HandCardZone(nickname, drawCard(true));
-        if (nickname.equals("forooz"))
-            new MonsterZoneCard(nickname, "Blue-Eyes white dragon", "OO", false, false);
         allPlayers.put(nickname, this);
-        showSideDeck();
-        showSideDeck();
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
@@ -56,13 +52,13 @@ public class Player {
         MonsterZoneCard.allMonsterCards.get(nickname).clear();
         SpellTrapZoneCard.allSpellTrapCards.get(nickname).clear();
         numberOfRound--;
-        this.lifePoint = 8000;
+        lifePoint = 8000;
         this.isYourTurn = isYourTurn;
-        this.canDrawCard = !isYourTurn;
+        canDrawCard = !isYourTurn;
         canBattle = !isYourTurn;
-        this.counterOfTurn = 0;
+        counterOfTurn = 0;
         canUseTrap = true;
-        this.canSetSummonMonster = true;
+        canSetSummonMonster = true;
         GameMatModel.getGameMatByNickname(nickname).setPhase(Phase.Draw_Phase);
         fillTheGameDecks(activeDeck);
     }
@@ -89,17 +85,13 @@ public class Player {
 
     public int exchangeCard(int cardAddressInMainDeck, int cardAddressInSideDeck) {
         if (cardAddressInSideDeck < playerSideDeck.size() && cardAddressInSideDeck > -1 && cardAddressInMainDeck < playerMainDeck.size() && cardAddressInMainDeck > -1) {
-            if (playerSideDeck.get(cardAddressInSideDeck) != null) {
+            if (playerMainDeck.get(cardAddressInMainDeck) != null && playerSideDeck.get(cardAddressInSideDeck) != null) {
                 String mainCard = playerMainDeck.get(cardAddressInMainDeck);
                 String sideCard = playerSideDeck.get(cardAddressInSideDeck);
-                System.out.println(mainCard + "main size");
-                System.out.println(sideCard + "side size");
                 playerSideDeck.remove(cardAddressInSideDeck);
                 playerMainDeck.remove(cardAddressInMainDeck);
                 playerMainDeck.add(sideCard);
                 playerSideDeck.add(mainCard);
-                System.out.println(playerMainDeck.size() + "main" + playerSideDeck.size());
-
                 return 1;
             } else
                 return 0;
@@ -216,8 +208,11 @@ public class Player {
     }
 
     public void showSideDeck() {
-        for (int i = 0; i < playerSideDeck.size(); i++)
-            GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
+        if (playerSideDeck.isEmpty())
+            GameMatView.showInput("Side Deck Empty!");
+        else
+            for (int i = 0; i < playerSideDeck.size(); i++)
+                GameMatView.showInput(i + 1 + ". " + playerSideDeck.get(i));
     }
 
     public int getMaxLifePoints() {
@@ -285,7 +280,6 @@ public class Player {
                 setCanUseTrap(false);
             }
         }
-
         setCanDrawCard(true);
         setCanSetSummonMonster(true);
         setCanBattle(true);

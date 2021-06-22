@@ -132,14 +132,14 @@ public class SpellTrapZoneCardTest {
     public void doesThisCardNameExist() {
         Assert.assertEquals(-1, SpellTrapZoneCard.doesThisCardNameExist("n", "Magic Cylinder"));
         new SpellTrapZoneCard("n", "Magic Cylinder", "H");
-        Assert.assertEquals(1, SpellTrapZoneCard.doesThisCardNameExist("n", "Magic Cylinder"));
+        Assert.assertEquals(3, SpellTrapZoneCard.doesThisCardNameExist("n", "Magic Cylinder"));
     }
 
     @Test
     public void getAddressOfSpellByIcon() {
         Assert.assertEquals(0, SpellTrapZoneCard.getAddressOfSpellByIcon("n", "Normal", "Magic Cylinder"));
         new SpellTrapZoneCard("n", "Magic Cylinder", "H");
-        Assert.assertEquals(1, SpellTrapZoneCard.getAddressOfSpellByIcon("n", "Normal", "Magic Cylinder"));
+        Assert.assertEquals(3, SpellTrapZoneCard.getAddressOfSpellByIcon("n", "Normal", "Magic Cylinder"));
     }
 
     @Test
@@ -147,7 +147,7 @@ public class SpellTrapZoneCardTest {
         SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Magic Jammer", "H");
         assertEquals(-1,SpellTrapZoneCard.isThisTrapActivated("n", "Magic Jammer"));
         spellTrapZoneCard.setMode("O");
-        assertEquals(1,SpellTrapZoneCard.isThisTrapActivated("n", "Magic Jammer"));
+        assertEquals(3,SpellTrapZoneCard.isThisTrapActivated("n", "Magic Jammer"));
     }
 
     @Test
@@ -155,7 +155,7 @@ public class SpellTrapZoneCardTest {
         SpellTrapZoneCard spellTrapZoneCard = new SpellTrapZoneCard("n", "Yami", "H");
         assertEquals(-1,SpellTrapZoneCard.isThisSpellActivated("n", "Yami"));
         spellTrapZoneCard.setMode("O");
-        assertEquals(1,SpellTrapZoneCard.isThisSpellActivated("n", "Yami"));
+        assertEquals(3,SpellTrapZoneCard.isThisSpellActivated("n", "Yami"));
     }
 
     @Test

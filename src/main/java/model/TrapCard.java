@@ -1,7 +1,9 @@
 package model;
 import java.util.HashMap;
 
+
 public class TrapCard extends Card {
+
     private String icon;
     private String status;
     private static HashMap<String, TrapCard> trapCards = new HashMap<>();
