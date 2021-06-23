@@ -45,7 +45,6 @@ public class Player {
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
-        allLifePoints.add(lifePoint);
         playerMainDeck.clear();
         playerSideDeck.clear();
         HandCardZone.allHandCards.get(nickname).clear();
@@ -213,6 +212,10 @@ public class Player {
         else
             for (int i = 0; i < playerSideDeck.size(); i++)
                 GameMatView.showInput(i + 1 + ". " + playerSideDeck.get(i));
+    }
+
+    public void addMaxLp() {
+        allLifePoints.add(lifePoint);
     }
 
     public int getMaxLifePoints() {

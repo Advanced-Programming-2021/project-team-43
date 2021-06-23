@@ -8,7 +8,7 @@ public class SpellCard extends Card {
     String status;
     private static HashMap<String, SpellCard> spellCards = new HashMap<>();
 
-    public SpellCard(String cardName, String cardModel,  String icon,String description,int price, String status) {
+    public SpellCard(String cardName, String cardModel, String icon, String description, int price, String status) {
         super(cardName, cardModel,description,price);
         this.cardName = cardName;
         this.icon = icon;

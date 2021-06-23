@@ -1,9 +1,9 @@
 package controller;
 
-import model.Player;
-import model.UserModel;
+import model.*;
 import view.MainMenuView;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,20 +87,60 @@ public class MainMenuController {
     public static int importExport() {
         while (true) {
             String command = MainMenuView.getCommand();
-            if ((matcher = getMatcher(command, "import \\s*card \\s*(.+?)")).find()) {
-                if (Json.exportCad() != null)
-                    UserModel.importedCards = Json.exportCad();
-                UserModel.importedCards.add(matcher.group(1));
-                Json.importCard(UserModel.importedCards);
+            if ((matcher = getMatcher(command, "export\\s+card\\s+(.+?)\\s+as\\s+(Monster|Spell|Trap)")).find() || (matcher = getMatcher(command, "ex\\s+c\\s+(.+?)\\s+as\\s+(Monster|Spell|Trap)")).find()) {
+                if (Json.exportMonsterCad() != null)
+                    UserModel.importedMonsterCards = Json.exportMonsterCad();
+                if (Json.exportSpellCard() != null)
+                    UserModel.importedSpellCards = Json.exportSpellCard();
+                if (Json.exportTrapCard() != null)
+                    UserModel.importedTrapCards = Json.exportTrapCard();
+                String type = matcher.group(2);
+                String answer;
+                if (type.equals("Monster")) {
+                    do {
+                        MainMenuView.showInput("Please enter a command like this to complete the export: name (sth) attribute (sth) level (num) monsterType (sth) attack (num) defend (num) cardType (sth) description (sth) price (num)");
+                        answer = MainMenuView.getCommand();
+                    } while (!(matcher = getMatcher(answer, "name\\s+(.+?)\\s+attribute\\s+(.+?)\\s+level\\s+(\\d+)\\s+monsterType\\s+(.+?)\\s+attack\\s+(\\d+)\\s+defend\\s+(\\d+)\\s+cardType\\s+(.+?)\\s+description\\s+(.+?)\\s+price\\s+(\\d+)")).find());
+                    MonsterCard monster = new MonsterCard(matcher.group(2), matcher.group(1), Integer.parseInt(matcher.group(3)), matcher.group(4), Integer.parseInt(matcher.group(5)), Integer.parseInt(matcher.group(6)), "Monster", matcher.group(7), false, matcher.group(8), Integer.parseInt(matcher.group(9)));
+                    UserModel.importedMonsterCards.add(monster);
+                    Json.importMonsterCard(UserModel.importedMonsterCards);
+                    MainMenuView.showInput("Exported Successfully!");
+                }
+                if (type.equals("Spell")) {
+                    do {
+                        MainMenuView.showInput("Please enter a command like this to complete the export: name (sth) description (sth) icon (sth) status (sth) price (num)");
+                        answer = MainMenuView.getCommand();
+                    } while (!(matcher = getMatcher(answer, "name\\s+(.+?)\\s+description\\s+(.+?)\\s+icon\\s+(.+?)\\s+status\\s+(.+?)\\s+price\\s+(\\d+)")).find());
+                    SpellCard spell = new SpellCard(matcher.group(1), "Spell", matcher.group(3), matcher.group(2), Integer.parseInt(matcher.group(5)), matcher.group(4));
+                    UserModel.importedSpellCards.add(spell);
+                    Json.importSpellCard(UserModel.importedSpellCards);
+                    MainMenuView.showInput("Exported Successfully!");
+                }
+                if (type.equals("Trap")) {
+                    do {
+                        MainMenuView.showInput("Please enter a command like this to complete the export: name (sth) description (sth) icon (sth) status (sth) price (num)");
+                        answer = MainMenuView.getCommand();
+                    } while (!(matcher = getMatcher(answer, "name\\s+(.+?)\\s+description\\s+(.+?)\\s+icon\\s+(.+?)\\s+status\\s+(.+?)\\s+price\\s+(\\d+)")).find());
+                    TrapCard trap = new TrapCard(matcher.group(1), "Trap", matcher.group(3), matcher.group(2), Integer.parseInt(matcher.group(5)), matcher.group(4));
+                    UserModel.importedTrapCards.add(trap);
+                    Json.importTrapCard(UserModel.importedTrapCards);
+                    MainMenuView.showInput("Exported Successfully!");
+                }
                 continue;
             }
-            if ((matcher = getMatcher(command, "export \\s*card \\s*(.+?)")).find()) {
-                UserModel.importedCards = Json.exportCad();
+            if ((matcher = getMatcher(command, "import\\s+card\\s+(.+?)\\s+as\\s+(Monster|Spell|Trap)")).find() || (matcher = getMatcher(command, "im\\s+c\\s+(.+?)\\s+as\\s+(Monster|Spell|Trap)")).find()) {
+                String type = matcher.group(2);
+                if (type.equals("Monster"))
+                    UserModel.importedMonsterCards = Json.exportMonsterCad();
+                if (type.equals("Spell"))
+                    UserModel.importedSpellCards = Json.exportSpellCard();
+                if (type.equals("Trap"))
+                    UserModel.importedTrapCards = Json.exportTrapCard();
+                MainMenuView.showInput("Imported Successfully!");
                 continue;
             }
-            if (getMatcher(command, "^menu\\s* exit$").find() || getMatcher(command, "^m\\s* ex$").find()) {
+            if (getMatcher(command, "^menu\\s* exit$").find() || getMatcher(command, "^m\\s+ex$").find())
                 break;
-            }
             if (getMatcher(command, "^menu\\s* show-current$").find() || getMatcher(command, "^m\\s* s-c$").find()) {
                 MainMenuView.showInput("Import/Export");
                 continue;
@@ -213,8 +253,7 @@ public class MainMenuController {
                                 if (playerName.equals("AI")) {
                                     firstPlayer = username;
                                     secondPlayer = "AI";
-                                }
-                                else {
+                                } else {
                                     firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
                                     if (firstPlayer.equals(playerName))
                                         secondPlayer = MainMenuController.username;

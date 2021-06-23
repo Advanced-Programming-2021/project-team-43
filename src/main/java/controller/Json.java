@@ -2,6 +2,9 @@ package controller;
 import java.io.IOException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import model.MonsterCard;
+import model.SpellCard;
+import model.TrapCard;
 import model.UserModel;
 import java.io.*;
 import java.nio.file.Files;
@@ -76,9 +79,9 @@ public class Json {
         return null;
     }
 
-    public static void importCard(ArrayList<String> cardNames) {
+    public static void importMonsterCard(ArrayList<MonsterCard> cardNames) {
         try {
-            FileWriter writerInfo = new FileWriter("jsonAddedCards.txt");
+            FileWriter writerInfo = new FileWriter("jsonAddedMonsterCards.txt");
             writerInfo.write(new Gson().toJson(cardNames));
             writerInfo.close();
         } catch (IOException e) {
@@ -86,12 +89,35 @@ public class Json {
         }
     }
 
-    public static ArrayList<String> exportCad() {
+    public static ArrayList<MonsterCard> exportMonsterCad() {
         try {
-            String readCardNames = new String(Files.readAllBytes(Paths.get("jsonAddedCards.txt")));
-            ArrayList<String> cardNames;
+            String readCardNames = new String(Files.readAllBytes(Paths.get("jsonAddedMonsterCards.txt")));
+            ArrayList<MonsterCard> cardNames;
             cardNames = new Gson().fromJson(readCardNames,
-                    new TypeToken<List<String>>() {
+                    new TypeToken<List<MonsterCard>>() {
+                    }.getType());
+            return cardNames;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static void importSpellCard(ArrayList<SpellCard> cardNames) {
+        try {
+            FileWriter writerInfo = new FileWriter("jsonAddedSpellCards.txt");
+            writerInfo.write(new Gson().toJson(cardNames));
+            writerInfo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<SpellCard> exportSpellCard() {
+        try {
+            String readCardNames = new String(Files.readAllBytes(Paths.get("jsonAddedSpellCards.txt")));
+            ArrayList<SpellCard> cardNames;
+            cardNames = new Gson().fromJson(readCardNames,
+                    new TypeToken<List<SpellCard>>() {
                     }.getType());
             return cardNames;
         } catch (IOException e) {
@@ -100,4 +126,28 @@ public class Json {
         return null;
     }
 
+
+    public static void importTrapCard(ArrayList<TrapCard> cardNames) {
+        try {
+            FileWriter writerInfo = new FileWriter("jsonAddedTrapCards.txt");
+            writerInfo.write(new Gson().toJson(cardNames));
+            writerInfo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<TrapCard> exportTrapCard() {
+        try {
+            String readCardNames = new String(Files.readAllBytes(Paths.get("jsonAddedTrapCards.txt")));
+            ArrayList<TrapCard> cardNames;
+            cardNames = new Gson().fromJson(readCardNames,
+                    new TypeToken<List<TrapCard>>() {
+                    }.getType());
+            return cardNames;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

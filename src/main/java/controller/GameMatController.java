@@ -1719,6 +1719,9 @@ public class GameMatController {
         }
         Player winnerPlayer = Player.getPlayerByName(winnerNickname);
         Player loserPlayer = Player.getPlayerByName(loserNickname);
+        winnerPlayer.addMaxLp();
+        loserPlayer.addMaxLp();
+        winnerPlayer.changeNumberOfWin();
         UserModel.getUserByUsername(winnerUsername).changeUserScore(1000);
         if (Player.isOneRound) {
             GameMatView.showInput("The Duel is Over!\n" + winnerUsername + " won the game and the score is: 1000-0");
@@ -1745,7 +1748,14 @@ public class GameMatController {
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(300);
                 }
                 MainMenuController.run();
-            } else {
+            }
+            else if (winnerPlayer.getNumberOfWin() == 2) {
+                GameMatView.showInput("The Match is Over!\n" + winnerUsername  + " won the whole match with score: 3000-0");
+                UserModel.getUserByUsername(winnerUsername).changeUserCoin(3000 + 3 * winnerPlayer.getMaxLifePoints());
+                UserModel.getUserByUsername(loserUsername).changeUserCoin(300);
+                MainMenuController.run();
+            }
+            else {
                 String firstPlayer = PickFirstPlayer.chose(winnerUsername, loserUsername);
                 if (firstPlayer.equals(winnerUsername)) {
                     winnerPlayer.startNewGame(UserModel.getUserByUsername(winnerUsername).userAllDecks.get(UserModel.getUserByUsername(winnerUsername).getActiveDeck()), true);
@@ -1759,35 +1769,36 @@ public class GameMatController {
                 for (int j = 0; j < 2; j++) {
                     if (Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() == 0 || Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards() == 0) {
                         GameMatView.showInput("Oops! " + winnerPlayer.getNickname() + " You cant exchange card!");
-                        break;
                     }
-                    do {
-                        GameMatView.showInput(winnerPlayer.getNickname() + " do you want to exchange card? (yes/no)");
-                        response = GameMatView.getCommand();
-                    } while (!response.matches("yes|no"));
-                    if (response.equals("yes")) {
-                        GameMatView.showInput("Main Deck:");
-                        winnerPlayer.showMainDeck();
-                        GameMatView.showInput("Side Deck:");
-                        winnerPlayer.showSideDeck();
-                        while (true) {
-                            GameMatView.showInput("Please enter the number of card you want to exchange:");
-                            command = GameMatView.getCommand();
-                            if (command.equals("cancel")) {
-                                whatToDo = 1;
-                                break;
+                    else {
+                        do {
+                            GameMatView.showInput(winnerPlayer.getNickname() + " do you want to exchange card? (yes/no)");
+                            response = GameMatView.getCommand();
+                        } while (!response.matches("yes|no"));
+                        if (response.equals("yes")) {
+                            GameMatView.showInput("Main Deck:");
+                            winnerPlayer.showMainDeck();
+                            GameMatView.showInput("Side Deck:");
+                            winnerPlayer.showSideDeck();
+                            while (true) {
+                                GameMatView.showInput("Please enter the number of card you want to exchange:");
+                                command = GameMatView.getCommand();
+                                if (command.equals("cancel")) {
+                                    whatToDo = 1;
+                                    break;
+                                }
+                                if (!command.matches("\\d+"))
+                                    continue;
+                                numberOfCard = Integer.parseInt(command);
+                                if (numberOfCard <= Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() && numberOfCard <= Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards())
+                                    break;
                             }
-                            if (!command.matches("\\d+"))
-                                continue;
-                            numberOfCard = Integer.parseInt(command);
-                            if (numberOfCard <= Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() && numberOfCard <= Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards())
-                                break;
-                        }
-                        if (whatToDo == 0) {
-                            for (int i = 0; i < numberOfCard; i++) {
-                                do {
-                                    GameMatView.showInput("Please enter the exchange command");
-                                } while (exchangeCard(winnerPlayer.getNickname(), GameMatView.getCommand()) != 1);
+                            if (whatToDo == 0) {
+                                for (int i = 0; i < numberOfCard; i++) {
+                                    do {
+                                        GameMatView.showInput("Please enter the exchange command");
+                                    } while (exchangeCard(winnerPlayer.getNickname(), GameMatView.getCommand()) != 1);
+                                }
                             }
                         }
                     }
