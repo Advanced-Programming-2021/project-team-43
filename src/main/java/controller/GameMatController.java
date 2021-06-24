@@ -30,11 +30,10 @@ public class GameMatController {
             if (onlineUser.equals("AI")) {
                 AI();
             } else {
-                command = GameMatView.getCommand();
+                command = GameMatView.getCommand().trim();
             }
-            command = command.trim();
             int breaker = commandController(command);
-            if (breaker == 38) {
+            if (breaker == 39) {
                 break;
             }
         }
@@ -222,10 +221,18 @@ public class GameMatController {
             increaseLP(Integer.parseInt(matcher.group(1)), onlineUser);
             return 37;
         }
-        if (getMatcher(command, "^menu exit$").find())
+        if ((matcher = getMatcher(command, "select\\s+--hand\\s+(.+?)\\s+--force")).find() || (matcher = getMatcher(command, "s\\s+-h\\s+(.+?)\\s+-f")).find() || (matcher = getMatcher(command, "select\\s+--force\\s+--hand\\s+(.+?)")).find() || (matcher = getMatcher(command, "s\\s+-f\\s+-h\\s+(.+?)")).find()) {
+            if (Card.getCardsByName(matcher.group(1)) != null) {
+                HandCardZone handCard = new HandCardZone(onlineUser, matcher.group(1));
+                selectedOwnCard = "Hand/" + matcher.group(1) + "/" + handCard.getAddress();
+            }
+            showGameBoard();
             return 38;
+        }
+        if (getMatcher(command, "^menu exit$").find())
+            return 39;
         GameMatView.showInput("invalid command");
-        return 39;
+        return 40;
     }
 
     public static Matcher getMatcher(String command, String regex) {

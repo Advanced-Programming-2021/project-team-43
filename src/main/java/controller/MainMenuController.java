@@ -183,7 +183,7 @@ public class MainMenuController {
             duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--rounds\\s+(\\d+)--second-player\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-r\\s+(\\d+)-s-p\\s+(.+?)$")).find()) {
+        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--rounds\\s+(\\d+)--second-player\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-r\\s+(\\d+)\\s+-s-p\\s+(.+?)$")).find()) {
             duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
             return 1;
         }
