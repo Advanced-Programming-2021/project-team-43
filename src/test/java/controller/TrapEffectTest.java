@@ -1,6 +1,7 @@
 package controller;
 
 import model.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,14 +42,12 @@ public class TrapEffectTest {
         ownMonster = new MonsterZoneCard("me", "Battle OX", "DO", false, true);
         ownMonster2 = new MonsterZoneCard("me", "Battle OX", "DH", false, true);
         rivalMonster2 = new MonsterZoneCard("me2", "Battle OX", "DO", false, true);
-
     }
 
     @Test
     public void magicCylinder() {
         SpellTrapZoneCard trapCard = new SpellTrapZoneCard("me", "Trap Hole", "H");
         assertEquals(1, TrapEffect.magicCylinder("me", "me2", ownMonster, trapCard));
-
         assertEquals(0, TrapEffect.magicCylinder("me", "me2", null, trapCard));
     }
 
@@ -56,7 +55,6 @@ public class TrapEffectTest {
     public void mirrorForce() {
         SpellTrapZoneCard trapCard = new SpellTrapZoneCard("me", "Trap Hole", "H");
         assertEquals(1, TrapEffect.mirrorForce("me2", "me", trapCard));
-
     }
 
     @Test
@@ -68,13 +66,10 @@ public class TrapEffectTest {
         new HandCardZone("me", "Mirror Force");
         SpellTrapZoneCard trapCard = new SpellTrapZoneCard("me", "Trap Hole", "H");
         assertEquals(1, TrapEffect.mindCrush("me", "me2", trapCard));
-
-
         System.setIn(new ByteArrayInputStream("Yami".getBytes()));
         HandCardZone.allHandCards.get("me2").add(new HandCardZone("me2", "Yami"));
         SpellTrapZoneCard trapCard1 = new SpellTrapZoneCard("me", "Trap Hole", "H");
         assertEquals(1, TrapEffect.mindCrush("me", "me2", trapCard1));
-
     }
 
     @Test
@@ -90,8 +85,10 @@ public class TrapEffectTest {
 
     @Test
     public void solemnWarning() {
-//        assertEquals(1, TrapEffect.solemnWarning("me", 1, true, "me2"));
-//        assertEquals(1, TrapEffect.solemnWarning("me", 1, false, "me2"));
+        MonsterZoneCard monster = new MonsterZoneCard("me", "Mirage Dragon", "OO", false, false);
+        SpellTrapZoneCard trapCard = new SpellTrapZoneCard("me", "Solemn Warning", "O");
+        TrapEffect.solemnWarning("me", "me2", monster, trapCard);
+        Assert.assertEquals(6000, Player.getPlayerByName("me").getLifePoint());
 
     }
 
@@ -100,7 +97,6 @@ public class TrapEffectTest {
         SpellTrapZoneCard trapCard = new SpellTrapZoneCard("me", "Trap Hole", "H");
         HandCardZone.allHandCards.get("me").clear();
         assertEquals(1, TrapEffect.magicJammer("me", "me2", trapCard));
-
         new HandCardZone("me", "Mirror Force");
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         assertEquals(1, TrapEffect.magicJammer("me", "me2", trapCard));
@@ -116,13 +112,12 @@ public class TrapEffectTest {
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         assertEquals(0, TrapEffect.callOfTheHaunted("me", trapCard));
-
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         GameMatModel.getGameMatByNickname("me").graveyard.clear();
         assertEquals(0, TrapEffect.callOfTheHaunted("me", trapCard));
-
         GameMatModel.getGameMatByNickname("me").graveyard.add("The Tricky");
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(0, TrapEffect.callOfTheHaunted("me", trapCard));
     }
+
 }

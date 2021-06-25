@@ -1,425 +1,185 @@
 package model;
-
-import controller.MainMenuController;
-import controller.SetCards;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import controller.*;
+import org.junit.*;
+import java.util.*;
 import static org.junit.Assert.*;
+
+
 
 public class MonsterZoneCardTest {
 
+    MonsterZoneCard monster1;
+    MonsterZoneCard monster2;
+    Player player;
+    Player player2;
+
+    @Before
+    public void before() {
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        DeckModel deckModel = new DeckModel("deck");
+        new UserModel("me", "p", "me");
+        MainMenuController.username = "me";
+        GameMatController.onlineUser = "me";
+        GameMatController.rivalUser = "me2";
+        for (int i = 0; i < 5; i++) {
+            deckModel.addCardToMain("Yami");
+            deckModel.addCardToMain("Trap Hole");
+            deckModel.addCardToMain("Suijin");
+            deckModel.addCardToMain("Magic Jammer");
+        }
+        player = new Player("me", deckModel, true, 1);
+        new UserModel("me2", "p", "me2");
+        player2 = new Player("me2", deckModel, false, 1);
+        monster1 = new MonsterZoneCard("me2", "Battle warrior", "OO", false, false);
+        monster2 = new MonsterZoneCard("me2", "Battle warrior", "DO", false, false);
+    }
 
     @Test
     public void getMonsterName() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        String nn = ee.getMonsterName();
-        assertEquals("Suijin", nn);
+        Assert.assertEquals("Battle warrior", monster1.getMonsterName());
     }
 
     @Test
     public void getAddress() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals(1, ee.getAddress());//////////
+        assertEquals(1, monster1.getAddress());
     }
 
     @Test
     public void getMode() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals("DH", ee.getMode());
+        assertEquals("OO", monster1.getMode());
     }
 
     @Test
     public void setMode() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.setMode("DH");
-        assertEquals("DH", ee.getMode());
+        monster1.setMode("DH");
+        assertEquals("DH", monster1.getMode());
     }
 
     @Test
     public void getAttack() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals(2500, ee.getAttack());
+        assertEquals(700, monster1.getAttack());
     }
 
     @Test
     public void setAttack() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.setAttack(2333);
-        assertEquals(2333, ee.getAttack());
+        monster1.setAttack(2000);
+        assertEquals(2000, monster1.getAttack());
     }
 
     @Test
     public void changeAttack() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.changeAttack(300);
-        assertEquals(2800, ee.getAttack());
+        monster1.changeAttack(300);
+        assertEquals(1000, monster1.getAttack());
     }
 
     @Test
     public void getDefend() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals(2400, ee.getDefend());
-
+        assertEquals(1000, monster1.getDefend());
     }
 
     @Test
     public void changeDefend() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.changeDefend(-200);
-        assertEquals(2200, ee.getDefend());
+        monster1.changeDefend(-200);
+        assertEquals(800, monster1.getDefend());
     }
 
     @Test
     public void getLevel() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals(7, ee.getLevel());
+        assertEquals(3, monster1.getLevel());
     }
 
     @Test
     public void getMonsterType() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals("Aqua", ee.getMonsterType());
+        assertEquals("Warrior", monster1.getMonsterType());
     }
 
     @Test
     public void getHaveChangedPositionThisTurn() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertFalse(ee.getHaveAttackThisTurn());
+        assertFalse(monster1.getHaveAttackThisTurn());
     }
 
     @Test
     public void setHaveChangedPositionThisTurn() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.setHaveChangedPositionThisTurn(true);
-        assertTrue(ee.getHaveChangedPositionThisTurn());
+        monster1.setHaveChangedPositionThisTurn(true);
+        assertTrue(monster1.getHaveChangedPositionThisTurn());
     }
 
     @Test
     public void getHaveAttackThisTurn() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertFalse(ee.getHaveAttackThisTurn());
+        assertFalse(monster1.getHaveAttackThisTurn());
     }
 
     @Test
     public void setHaveAttackThisTurn() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.setHaveAttackThisTurn(true);
-        assertTrue(ee.getHaveAttackThisTurn());
+        monster1.setHaveAttackThisTurn(true);
+        assertTrue(monster1.getHaveAttackThisTurn());
     }
 
     @Test
     public void getCanAttack() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertTrue(ee.getCanAttack());
+        assertTrue(monster1.getCanAttack());
     }
 
     @Test
     public void setCanAttack() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.setCanAttack(false);
-        assertFalse(ee.getCanAttack());
+        monster1.setCanAttack(false);
+        assertFalse(monster1.getCanAttack());
     }
 
     @Test
     public void getCanAttackToThisMonster() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertTrue(ee.getCanAttackToThisMonster());
+        assertTrue(monster1.getCanAttackToThisMonster());
     }
 
     @Test
     public void setCanAttackToThisMonster() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.setCanAttackToThisMonster(true);
-        assertTrue(ee.getCanAttackToThisMonster());
+        monster1.setCanAttackToThisMonster(true);
+        assertTrue(monster1.getCanAttackToThisMonster());
     }
 
     @Test
     public void getIsEffectUsed() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertFalse(ee.getIsEffectUsed());
+        assertFalse(monster1.getIsEffectUsed());
     }
 
     @Test
     public void setIsEffectUsed() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        ee.setIsEffectUsed(true);
-        assertTrue(ee.getIsEffectUsed());
+        monster1.setIsEffectUsed(true);
+        assertTrue(monster1.getIsEffectUsed());
     }
 
     @Test
     public void getIsForOneTurn() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertFalse(ee.getIsForOneTurn());
+        assertFalse(monster1.getIsForOneTurn());
     }
 
     @Test
     public void getNumberOfFullHouse() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        assertEquals(4, MonsterZoneCard.getNumberOfFullHouse("roya"));/////////
-        assertEquals(0, MonsterZoneCard.getNumberOfFullHouse("roooya"));
+        Assert.assertEquals(0, MonsterZoneCard.getNumberOfFullHouse("me"));
+        new MonsterZoneCard("me", "Crawling dragon", "OO", false, false);
+        Assert.assertEquals(1, MonsterZoneCard.getNumberOfFullHouse("me"));
+        Assert.assertEquals(0, MonsterZoneCard.getNumberOfFullHouse("sth"));
     }
 
     @Test
     public void getAllEffectedMonster() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-//        List<Integer> ce ;
-        assertEquals(0, ee.getAllEffectedMonster("roya").size());
+        assertEquals(1, monster1.allEffectiveSpell.size());
     }
 
     @Test
     public void setAllEffectedMonster() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        List<Integer> ce = new ArrayList<>();
-        ce.add(2);
-        ee.setAllEffectedMonster("roya", ce);
-        assertEquals(ce, ee.getAllEffectedMonster("roya"));
+        List<Integer> allEffectiveSpell = new ArrayList<>();
+        allEffectiveSpell.add(1);
+        allEffectiveSpell.add(2);
+        monster1.setAllEffectedMonster("me", allEffectiveSpell);
+        assertEquals(allEffectiveSpell, monster1.getAllEffectedMonster("me"));
     }
-
 
     @Test
     public void removeMonsterFromZone() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Suijin");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard ee = new MonsterZoneCard("roya", "Suijin", "DH", false, false);
-        MonsterZoneCard.getMonsterCardByAddress(1,"roya").removeMonsterFromZone();
-        assertNull(MonsterZoneCard.getAllMonstersByPlayerName("roya").get(1));
+        monster1.removeMonsterFromZone();
+        assertNull(MonsterZoneCard.getAllMonstersByPlayerName("me").get(1));
     }
 
     @Test
@@ -471,64 +231,28 @@ public class MonsterZoneCardTest {
 
     @Test
     public void getAllMonstersMode() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Texchanger");
-        }
-        Assert.assertEquals(6, MonsterZoneCard.getAllMonstersMode("roya").length);
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard se = new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-        Assert.assertEquals(6, MonsterZoneCard.getAllMonstersMode("roya").length);
+        Assert.assertEquals(6, MonsterZoneCard.getAllMonstersMode("me").length);
+        Assert.assertEquals(6, MonsterZoneCard.getAllMonstersMode("sth").length);
     }
 
     @Test
     public void isThisMonsterTypeExisted() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Texchanger");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard se = new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-        assertFalse(MonsterZoneCard.isThisMonsterTypeExisted("Aqua", "roya"));
+        new MonsterZoneCard("me", "Battle warrior", "OO", true, false);
+        assertTrue(MonsterZoneCard.isThisMonsterTypeExisted("Warrior", "me"));
+        assertFalse(MonsterZoneCard.isThisMonsterTypeExisted("Spellcaster", "me"));
     }
 
     @Test
     public void removeUselessMonster() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Texchanger");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard se = new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-        MonsterZoneCard.removeUselessMonster("roya");
-        assertEquals(234, MonsterZoneCard.getAllMonstersByPlayerName("roya").get(se.getAddress()).toString().length());
+        new MonsterZoneCard("me", "Battle warrior", "OO", true, true);
+        MonsterZoneCard.removeUselessMonster("me");
+        Assert.assertEquals(0, MonsterZoneCard.allMonsterCards.get("me").size());
     }
 
     @Test
     public void getMonsterCardByAddress() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Texchanger");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard se = new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-        assertEquals(se, MonsterZoneCard.getMonsterCardByAddress(se.getAddress(), "roya"));
+        MonsterZoneCard monster = new MonsterZoneCard("me", "Scanner", "OO", true, false);
+        assertEquals(monster, MonsterZoneCard.getMonsterCardByAddress(1, "me"));
     }
 
     @Test
@@ -560,49 +284,33 @@ public class MonsterZoneCardTest {
         }
         new Player("roya", deck, true, 1);
         MonsterZoneCard se = new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-
-        assertEquals(1, MonsterZoneCard.getSumOfMonstersLevel("roya"));///////////
+        assertEquals(1, MonsterZoneCard.getSumOfMonstersLevel("roya"));
     }
 
     @Test
     public void changeTurn() {
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new UserModel("roya", "p", "roya");
-        MainMenuController.username = "roya";
-        DeckModel deck = new DeckModel("deck");
-        for (int i = 0; i < 41; i++) {
-            deck.addCardToMain("Texchanger");
-        }
-        new Player("roya", deck, true, 1);
-        MonsterZoneCard se = new MonsterZoneCard("roya", "Texchanger", "DH", false, false);
-        MonsterZoneCard.changeTurn("roya");
-        assertFalse(se.getHaveChangedPositionThisTurn());
-        assertFalse(se.getHaveAttackThisTurn());
+        MonsterZoneCard monster = new MonsterZoneCard("me", "Mirage Dragon", "OO", false, false);
+        MonsterZoneCard.changeTurn("me");
+        assertTrue(monster.getCanAttackToThisMonster());
     }
 
 
     @Test
     public void getIsScanner() {
+        new MonsterZoneCard("me", "Scanner", "OO", true, false);
+        Assert.assertEquals(true, MonsterZoneCard.getMonsterCardByAddress(1, "me").getIsScanner());
     }
-
-
-
-
-
-
-
 
     @Test
     public void changeTheMonsterFace() {
+        monster1.changeTheMonsterFace("Bitron");
+        Assert.assertEquals("Bitron", monster1.getMonsterName());
     }
 
     @Test
     public void getAddressOfScanner() {
-    }
-
-    @Test
-    public void getNewMonsterAddress() {
+        new MonsterZoneCard("me", "Scanner", "OO", true, false);
+        Assert.assertEquals(1, MonsterZoneCard.getAddressOfScanner("me"));
     }
 
 }

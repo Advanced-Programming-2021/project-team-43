@@ -1,8 +1,8 @@
 package controller;
 
-import model.Card;
-import model.ShopModel;
-import model.UserModel;
+import model.*;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -12,98 +12,39 @@ import static org.junit.Assert.*;
 
 public class ShopControllerTest {
 
-    @Test
-    public void findMatcher1() {
-        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        ByteArrayOutputStream show = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(show));
+    @Before
+    public void before() {
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
-        new ShopModel(Card.getCards());
-        String command = "shop buy Yaami";
-        ShopController.findMatcher(command);
-        assertEquals("there is no card with this name", show.toString().substring(0, show.toString().length() - 2));
+        new UserModel("me", "p", "me");
+        MainMenuController.username = "me";
     }
 
     @Test
-    public void findMatcher3() {
-        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        ByteArrayOutputStream show = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(show));
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new ShopModel(Card.getCards());
-        String command3 = "menu enter Deck";
-        ShopController.findMatcher(command3);
-        assertEquals("menu navigation is not possible", show.toString().substring(0, show.toString().length() - 2));
+    public void findMatcher() {
+        MainMenuController.username = "me";
+        Assert.assertEquals(1, ShopController.findMatcher("shop buy Mirage Dragon"));
+        Assert.assertEquals(2, ShopController.findMatcher("shop show --all"));
+        Assert.assertEquals(3, ShopController.findMatcher("menu enter Deck"));
+        Assert.assertEquals(3, ShopController.findMatcher("menu enter Dck"));
+        Assert.assertEquals(4, ShopController.findMatcher("menu show-current"));
+        Assert.assertEquals(5, ShopController.findMatcher("menu exit"));
+        Assert.assertEquals(6, ShopController.findMatcher("increase --money 1000"));
+        Assert.assertEquals(7, ShopController.findMatcher("what"));
     }
 
-    @Test
-    public void findMatcher2() {
-        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        ByteArrayOutputStream show = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(show));
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new ShopModel(Card.getCards());
-        String cammand2 = "shop show --all";
-        ShopController.findMatcher(cammand2);
-        assertEquals(1655, show.toString().length());
-    }
 
-    @Test
-    public void findMatcher4() {
-        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        ByteArrayOutputStream show = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(show));
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new ShopModel(Card.getCards());
-        String command = "menu show-current";
-        ShopController.findMatcher(command);
-        assertEquals("Shop", show.toString().substring(0, show.toString().length() - 2));
-    }
-    @Test
-    public void findMatcher5() {
-        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        ByteArrayOutputStream show = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(show));
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new ShopModel(Card.getCards());
-        String command = "eeeeee";
-        ShopController.findMatcher(command);
-        assertEquals("invalid command", show.toString().substring(0, show.toString().length() - 2));
-    }
-    @Test
-    public void findMatcher6() {
-        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        ByteArrayOutputStream show = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(show));
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new ShopModel(Card.getCards());
-        String command3 = "menu enter Deckaak";
-        ShopController.findMatcher(command3);
-        assertEquals("invalid command", show.toString().substring(0, show.toString().length() - 2));
-    }
     @Test
     public void shopShow() {
-        ByteArrayOutputStream show = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(show));
-        ShopController.shopShow();
-        assertEquals(1655, show.toString().length());///////////////////
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
-        new ShopModel(Card.getCards());
+        new ShopModel(Card.getCards()); ByteArrayOutputStream show = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(show));
         ShopController.shopShow();
         assertEquals(1655, show.toString().length());
+
+        ShopController.shopShow();
+        assertEquals(3310, show.toString().length());
     }
 
     @Test
@@ -125,11 +66,5 @@ public class ShopControllerTest {
         ShopController.shopBuy("Yami");
         assertEquals("not enough money", show.toString().substring(0, show.toString().length() - 2));
     }
-    @Test
-    public void run() {
-    }
 
-    @Test
-    public void findMatcher() {
-    }
 }

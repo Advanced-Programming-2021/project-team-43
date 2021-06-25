@@ -1,12 +1,9 @@
 package model;
-
-import controller.MainMenuController;
-import controller.SetCards;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import controller.*;
+import org.junit.*;
 import static org.junit.Assert.*;
+
+
 
 public class SpellTrapZoneCardTest {
 
@@ -35,11 +32,9 @@ public class SpellTrapZoneCardTest {
             deckModel1.addCardToMain("Trap Hole");
             deckModel1.addCardToMain("Twin Twisters");
         }
-        new Player("n1", deckModel1, false, 1);
         spell1 = new SpellTrapZoneCard("n", "Yami", "H");
         spell2 = new SpellTrapZoneCard("n", "Trap Hole", "H");;
     }
-
 
     @Test
     public void getSpellTrapName() {
@@ -107,6 +102,7 @@ public class SpellTrapZoneCardTest {
         assertEquals(2, SpellTrapZoneCard.getNumberOfFullHouse("n"));
         new SpellTrapZoneCard("n", "Yami", "H");
         assertEquals(3, SpellTrapZoneCard.getNumberOfFullHouse("n"));
+        assertEquals(0, SpellTrapZoneCard.getNumberOfFullHouse("sth"));
     }
 
     @Test
@@ -161,44 +157,36 @@ public class SpellTrapZoneCardTest {
     @Test
     public void getAllSpellTrapMode() {
         Assert.assertEquals(6,SpellTrapZoneCard.getAllSpellTrapMode("n").length);
+        Assert.assertEquals(6,SpellTrapZoneCard.getAllSpellTrapMode("sth").length);
     }
 
     @Test
     public void getSpellCardByAddress() {
-        assertNull(SpellTrapZoneCard.getSpellCardByAddress(1, "n"));
+        assertEquals("H",SpellTrapZoneCard.getSpellCardByAddress(1, "n").getMode());
         Assert.assertEquals("Yami",SpellTrapZoneCard.getSpellCardByAddress(1,"n").getSpellTrapName());
     }
-
 
     @Test
     public void getEffectStack() {
         Assert.assertEquals(0,SpellTrapZoneCard.getEffectStack().size());
     }
 
-
-
-    @Test
-    public void getNewSpellAddress() {
-    }
-
     @Test
     public void getAddressOfQuickSpellByName() {
+        new SpellTrapZoneCard("n", "Twin Twisters", "H");
+        Assert.assertEquals(3, SpellTrapZoneCard.getAddressOfQuickSpellByName("n", "Twin Twisters"));
     }
 
     @Test
     public void getAddressOfSetTrap() {
-    }
-
-    @Test
-    public void doesAddressAndTrapNameMatch() {
-    }
-
-
-    @Test
-    public void getAllSpellTrapByPlayerName() {
+        new SpellTrapZoneCard("n", "Trap Hole", "H");
+        Assert.assertEquals(2, SpellTrapZoneCard.getAddressOfSetTrap("n", "Trap Hole"));
     }
 
     @Test
     public void changeTurn() {
+        SpellTrapZoneCard.changeTurn("n");
+        assertFalse(SpellTrapZoneCard.getSpellCardByAddress(1, "n").getIsSetInThisTurn());
     }
+
 }

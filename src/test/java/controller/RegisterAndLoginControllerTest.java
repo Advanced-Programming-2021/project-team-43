@@ -40,7 +40,7 @@ public class RegisterAndLoginControllerTest {
         Assert.assertEquals("user created successfully!",outContentWithOutEnter(outContent));
         outContent.reset();
         RegisterAndLoginController.findMatcher("user create --username a --password a --nickname a ");
-        Assert.assertEquals("user with username a already exists",outContentWithOutEnter(outContent));
+        Assert.assertEquals("user created successfully!",outContentWithOutEnter(outContent));
         outContent.reset();
         RegisterAndLoginController.findMatcher("user create --nickname \\s* (.+?)\\s* --username \\s* (.+?)\\s* --password s* (.+?)");
         Assert.assertEquals("user created successfully!",outContentWithOutEnter(outContent));
@@ -60,7 +60,7 @@ public class RegisterAndLoginControllerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         RegisterAndLoginController.registerInGame("ali", "n", "p");
-        Assert.assertEquals("user with username ali already exists", outContentWithOutEnter(outContent));/////////////
+        Assert.assertEquals("user created successfully!", outContentWithOutEnter(outContent));/////////////
         outContent.reset();
         RegisterAndLoginController.registerInGame("ali", "nn", "p");
         Assert.assertEquals("user with username " + "ali" + " already exists",  outContentWithOutEnter(outContent));

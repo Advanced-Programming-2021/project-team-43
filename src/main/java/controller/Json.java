@@ -18,22 +18,19 @@ public class Json {
             FileWriter writerInfo = new FileWriter("jsonUsersInfo.txt");
             writerInfo.write(new Gson().toJson(allUsersInfo));
             writerInfo.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         try {
             FileWriter writerNames = new FileWriter("jsonUsernames.txt");
             writerNames.write(new Gson().toJson(allUsernames));
             writerNames.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         try {
             FileWriter writerNicknames = new FileWriter("jsonNicknames.txt");
             writerNicknames.write(new Gson().toJson(allUsersNicknames));
             writerNicknames.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -45,8 +42,7 @@ public class Json {
                     new TypeToken<HashMap<String, UserModel>>() {
                     }.getType());
             return userInfo;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         return null;
     }
@@ -59,8 +55,7 @@ public class Json {
                     new TypeToken<List<String>>() {
                     }.getType());
             return usernames;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         return null;
     }
@@ -73,8 +68,7 @@ public class Json {
                     new TypeToken<List<String>>() {
                     }.getType());
             return nicknames;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         return null;
     }
@@ -84,8 +78,7 @@ public class Json {
             FileWriter writerInfo = new FileWriter("jsonAddedMonsterCards.txt");
             writerInfo.write(new Gson().toJson(cardNames));
             writerInfo.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -97,8 +90,7 @@ public class Json {
                     new TypeToken<List<MonsterCard>>() {
                     }.getType());
             return cardNames;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         return null;
     }
@@ -107,8 +99,7 @@ public class Json {
             FileWriter writerInfo = new FileWriter("jsonAddedSpellCards.txt");
             writerInfo.write(new Gson().toJson(cardNames));
             writerInfo.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -120,8 +111,7 @@ public class Json {
                     new TypeToken<List<SpellCard>>() {
                     }.getType());
             return cardNames;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         return null;
     }
@@ -132,8 +122,7 @@ public class Json {
             FileWriter writerInfo = new FileWriter("jsonAddedTrapCards.txt");
             writerInfo.write(new Gson().toJson(cardNames));
             writerInfo.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -145,9 +134,9 @@ public class Json {
                     new TypeToken<List<TrapCard>>() {
                     }.getType());
             return cardNames;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         return null;
     }
+
 }

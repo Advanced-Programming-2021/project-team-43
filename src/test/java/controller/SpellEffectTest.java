@@ -259,7 +259,7 @@ public class SpellEffectTest {
     @Test
     public void monsterReborn() {
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
-        assertEquals(1, SpellEffect.monsterReborn("me", "me2", GameMatModel.getGameMatByNickname("me")));/////////
+        assertEquals(0, SpellEffect.monsterReborn("me", "me2", GameMatModel.getGameMatByNickname("me")));/////////
 
         System.setIn(new ByteArrayInputStream("own".getBytes()));
         assertEquals(0, SpellEffect.monsterReborn("me", "me2", GameMatModel.getGameMatByNickname("me")));

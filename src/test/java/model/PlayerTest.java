@@ -1,21 +1,24 @@
 package model;
 
+import controller.GameMatController;
 import controller.MainMenuController;
 import controller.SetCards;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class PlayerTest {
 
-
     UserModel user;
     DeckModel deckModel;
     Player player;
+    Player player2;
     ArrayList<String> mainDeck;
     ArrayList<String> sideDeck = new ArrayList<>();
 
@@ -26,20 +29,20 @@ public class PlayerTest {
         user = new UserModel("Guy","123","me");
         MainMenuController.username = "Guy";
         deckModel = new DeckModel("myDeck");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
             deckModel.addCardToMain("Yami");
-        }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++)
             deckModel.addCardToSide("Battle Ox");
-        }
         user.addDeck(deckModel);
         player = new Player("me", deckModel, true, 3);
+        player2 = new Player("me2", deckModel, false, 3);
+        GameMatController.onlineUser = "me";
+        GameMatController.rivalUser = "me2";
         mainDeck = new ArrayList<>(deckModel.getArrayMain());
         String[] cardName2 = deckModel.cardsInSideDeck.keySet().toArray(new String[0]);
-        for (String eachCard : cardName2) {
+        for (String eachCard : cardName2)
             for (int i = 0; i < deckModel.cardsInSideDeck.get(eachCard); i++)
                 sideDeck.add(eachCard);
-        }
     }
 
     @Test
@@ -80,11 +83,6 @@ public class PlayerTest {
         for (int i = 0; i < 5; i++)
             expectedList.add("Yami");
         Assert.assertEquals(expectedList, player.getPlayerDeck("main"));
-    }
-
-    @Test
-    public void exchangeCard() {
-        /////////////////////
     }
 
     @Test
@@ -203,7 +201,15 @@ public class PlayerTest {
 
     @Test
     public void showMainDeck() {
-        ///////////////////
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        Player.getPlayerByName("me").showMainDeck();
+        assertEquals(45,outContent.size());
+        player.playerMainDeck.clear();
+        ByteArrayOutputStream outContent2 = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent2));
+        Player.getPlayerByName("me").showMainDeck();
+        assertEquals(18,outContent2.size());
     }
 
     @Test
@@ -213,7 +219,15 @@ public class PlayerTest {
 
     @Test
     public void showSideDeck() {
-        ////////////////
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        Player.getPlayerByName("me").showSideDeck();
+        assertEquals(70,outContent.size());
+        player.playerSideDeck.clear();
+        ByteArrayOutputStream outContent2 = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent2));
+        Player.getPlayerByName("me").showSideDeck();
+        assertEquals(18,outContent2.size());
     }
 
     @Test
@@ -223,8 +237,18 @@ public class PlayerTest {
         assertTrue(player.getCanBattle());
         assertTrue(player.getCanSetSummonMonster());
         assertTrue(player.getCanUseTrap());
+        new MonsterZoneCard("me2", "Mirage Dragon", "OO", false, false);
+        player.changeTurn();
+        assertFalse(player.getCanUseTrap());
     }
 
+    @Test
+    public void exchangeCard() {
+        assertEquals(1, Player.getPlayerByName("me").exchangeCard(1, 1));
+        assertEquals(0, Player.getPlayerByName("me").exchangeCard(20, 1));
+        assertEquals(0, Player.getPlayerByName("me").exchangeCard(1, 20));
+        assertEquals(0, Player.getPlayerByName("me").exchangeCard(1, 20));
+    }
 
     @Test
     public void removeFromMainDeck() {
@@ -237,22 +261,56 @@ public class PlayerTest {
     }
 
     @Test
-    public void addToSideDeck() {
-        ////////
-    }
-    @Test
     public void getMaxLifePoints() {
-        //////////////
+        player.addMaxLp();
+        player.changeLifePoint(12);
+        player.addMaxLp();
+        assertEquals(8012, player.getMaxLifePoints());
+        player.allLifePoints.clear();
+        player.changeLifePoint(-12);
+        player.addMaxLp();
+        player.changeLifePoint(-1000);
+        player.addMaxLp();
+        assertEquals(8000, player.getMaxLifePoints());
+        player.changeLifePoint(1000);
+        player.allLifePoints.clear();
+        player.addMaxLp();
+        player.changeLifePoint(-1000);
+        player.addMaxLp();
+        player.changeLifePoint(-3000);
+        player.addMaxLp();
+        assertEquals(8000, player.getMaxLifePoints());
+        player.changeLifePoint(3000);
+        player.allLifePoints.clear();
+        player.addMaxLp();
+        player.changeLifePoint(3000);
+        player.addMaxLp();
+        player.changeLifePoint(-3000);
+        player.addMaxLp();
+        assertEquals(10000, player.getMaxLifePoints());
+        player.changeLifePoint(2000);
+        player.allLifePoints.clear();
+        player.addMaxLp();
+        player.changeLifePoint(-3000);
+        player.addMaxLp();
+        player.changeLifePoint(7000);
+        player.addMaxLp();
+        assertEquals(13000, player.getMaxLifePoints());
     }
 
     @Test
     public void doesThisModelAndTypeExist() {
         assertTrue(player.doesThisModelAndTypeExist("Spell", "Field"));
+        player.playerMainDeck.add("Battle warrior");
+        assertTrue(player.doesThisModelAndTypeExist("Monster", "Warrior"));
     }
 
     @Test
     public void doesAddressTypeMatchInMainDeck() {
         assertTrue(player.doesAddressTypeMatchInMainDeck(1, "Spell", "Field"));
+        player.playerMainDeck.add("Battle warrior");
+        assertTrue(player.doesAddressTypeMatchInMainDeck(5,"Monster", "Warrior"));
+        assertFalse(player.doesAddressTypeMatchInMainDeck(5,"oo", "Warrior"));
     }
 
     @Test
@@ -266,15 +324,15 @@ public class PlayerTest {
         Assert.assertEquals(player, Player.getPlayerByName("me"));
     }
 
-
     @Test
     public void getNickname() {
+       assertEquals( "me",Player.getPlayerByName("me").getNickname());
     }
 
     @Test
     public void setLifePoint() {
+        Player.getPlayerByName("me").setLifePoint(12222);
+        assertEquals(12222, Player.getPlayerByName("me").getLifePoint());
     }
-
-
 
 }

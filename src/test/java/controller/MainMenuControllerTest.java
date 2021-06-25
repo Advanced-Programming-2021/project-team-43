@@ -10,9 +10,32 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MainMenuControllerTest {
+
+
+    @Test
+    public void findMatcher1() {
+        UserModel userModel = new UserModel("a1321", "B", "c");
+        MainMenuController.username = "a1321";
+        System.setIn(new ByteArrayInputStream("menu exit".getBytes()));
+        assertEquals(1, MainMenuController.findMatcher("menu enter Deck"));
+        System.setIn(new ByteArrayInputStream("menu exit".getBytes()));
+        assertEquals(1, MainMenuController.findMatcher("menu enter Duel"));
+        System.setIn( new ByteArrayInputStream("menu exit".getBytes()));
+        assertEquals( 1,MainMenuController.findMatcher("menu enter Scoreboard"));
+        System.setIn( new ByteArrayInputStream("menu exit".getBytes()));
+        assertEquals( 1,MainMenuController.findMatcher("menu enter Profile"));
+        System.setIn( new ByteArrayInputStream("menu exit".getBytes()));
+        assertEquals( 1,MainMenuController.findMatcher("menu enter Shop"));
+        System.setIn( new ByteArrayInputStream("menu exit".getBytes()));
+        assertEquals( 1,MainMenuController.findMatcher("menu enter Import/Export"));
+        assertEquals( 1,MainMenuController.findMatcher("increase --money 1"));
+        assertEquals( 0,MainMenuController.findMatcher("user logout"));
+
+
+    }
 
     @Test
     public void increaseMoney() {
@@ -38,6 +61,7 @@ public class MainMenuControllerTest {
         System.setIn(in);
         assertEquals(0, MainMenuController.profileRun());
     }
+
     @Test
     public void scoreboardRun() {
         String input = "menu exit";

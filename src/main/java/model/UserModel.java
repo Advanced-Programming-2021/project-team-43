@@ -17,7 +17,6 @@ public class UserModel {
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
-    public static ArrayList <String> importedCards = new ArrayList<>();
     public static ArrayList <MonsterCard> importedMonsterCards = new ArrayList<>();
     public static ArrayList <SpellCard> importedSpellCards = new ArrayList<>();
     public static ArrayList <TrapCard> importedTrapCards = new ArrayList<>();

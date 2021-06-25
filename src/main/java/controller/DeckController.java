@@ -9,12 +9,9 @@ public class DeckController {
 
     public static int run() {
         while (true) {
-            String command = DeckView.getCommand();
-            command = command.trim();
-            int breaker = findMatcher(command);
-            if (breaker == 0) {
+            String command = DeckView.getCommand().trim();
+            if (findMatcher(command) == 0)
                 break;
-            }
         }
         return 0;
     }
@@ -45,7 +42,7 @@ public class DeckController {
             removeCardFromSideDeck(matcher.group(2), matcher.group(1));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^deck\\s* rm-card\\s* --deck \\s*(.+?)--card\\s* (.+?) \\s*--side$")).find() || (matcher = getMatcher(command, "^deck\\s* rm-card\\s* -d \\s*(.+?)-c\\s* (.+?) \\s*-s$")).find()) {
+        if ((matcher = getMatcher(command, "^deck\\s* rm-card\\s* --deck \\s*(.+?)\\s+--card\\s* (.+?) \\s*--side$")).find() || (matcher = getMatcher(command, "^deck\\s* rm-card\\s* -d \\s*(.+?)\\s+-c\\s* (.+?) \\s*-s$")).find()) {
             removeCardFromSideDeck(matcher.group(2), matcher.group(1));
             return 1;
         }
@@ -69,7 +66,7 @@ public class DeckController {
             addCardToMainDeck(matcher.group(2), matcher.group(1));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^deck \\s*add-card \\s*--deck\\s* (.+?)--card\\s* (.+?) \\s*--side$")).find() || (matcher = getMatcher(command, "^deck \\s*add-card \\s*-d\\s* (.+?)-c\\s* (.+?) \\s*-s$")).find()) {
+        if ((matcher = getMatcher(command, "^deck \\s*add-card \\s*--deck\\s* (.+?)\\s+--card\\s* (.+?) \\s*--side$")).find() || (matcher = getMatcher(command, "^deck \\s*add-card \\s*-d\\s* (.+?)\\s+-c\\s* (.+?) \\s*-s$")).find()) {
             addCardToMainDeck(matcher.group(2), matcher.group(1));
             return 1;
         }
@@ -125,7 +122,7 @@ public class DeckController {
             return 1;
         }
         if ((matcher = getMatcher(command, "^menu \\s*enter \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^m \\s*en \\s*(.+?)$")).find()) {
-            if (matcher.group(1).equals("Duel") || matcher.group(1).equals("Deck") || matcher.group(1).equals("Profile") || matcher.group(1).equals("Shop") || matcher.group(1).equals("Scoreboard")) {
+            if (matcher.group(1).equals("Duel") || matcher.group(1).equals("Deck") || matcher.group(1).equals("Profile") || matcher.group(1).equals("Shop") || matcher.group(1).equals("Scoreboard") || matcher.group(1).equals("Import/Export")) {
                 DeckView.showInput("menu navigation is not possible");
             } else {
                 MainMenuView.showInput("invalid command");

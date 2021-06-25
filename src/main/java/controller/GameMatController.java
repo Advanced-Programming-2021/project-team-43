@@ -15,9 +15,10 @@ public class GameMatController {
     private static String response;
     private static Matcher matcher;
     private static int trapAddress;
-    private static int counterOne = 0;
-    private static Phase currentPhase;
-    private static int counterTwo = 0;
+    public static Phase currentPhase;
+    public static int counterOne = 0;
+    public static int counterTwo = 0;
+
 
     public static int run(String firstPlayer, String secondPlayer) {
         onlineUser = firstPlayer;
@@ -242,11 +243,11 @@ public class GameMatController {
 
     public static void AI() {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
         if (currentPhase.equals(Phase.Draw_Phase)) {
             command = "next phase";
         }

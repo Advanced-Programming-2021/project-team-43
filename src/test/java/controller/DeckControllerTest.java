@@ -3,6 +3,7 @@ package controller;
 import model.DeckModel;
 import model.UserModel;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -15,6 +16,15 @@ import static org.junit.Assert.assertEquals;
 
 public class DeckControllerTest {
 
+    @Before
+    public void before() {
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        new UserModel("me", "p", "me");
+        MainMenuController.username = "me";
+    }
+
+
     @Test
     public void addLimitedCard() {
         SetCards.readingCSVFileTrapSpell();
@@ -23,7 +33,6 @@ public class DeckControllerTest {
         MainMenuController.username = "alie";
         DeckModel deckModel = new DeckModel("deck");
         userModel.addDeck(deckModel);
-
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         userModel.addCardToUserAllCards("Terraforming");
@@ -32,7 +41,6 @@ public class DeckControllerTest {
         outContent.reset();
         DeckController.addCardToSideDeck("Terraforming", "deck");
         assertEquals("there are already one cards with name Terraforming in deck deck", outContentWithOutEnter(outContent));
-
     }
 
     @Test
@@ -187,10 +195,7 @@ public class DeckControllerTest {
         outContent.reset();
         DeckController.findMatcher("deck show --cards");
         Assert.assertEquals("", outContent.toString());
-
-
     }
-
 
     @Test
     public void setActivate() {
@@ -198,19 +203,15 @@ public class DeckControllerTest {
         MainMenuController.username = "ali";
         DeckModel deckModel = new DeckModel("deck");
         userModel.addDeck(deckModel);
-
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         DeckController.setActivate("deck");
         String actual = outContentWithOutEnter(outContent);
         Assert.assertEquals("deck activated successfully", actual);
-
         outContent.reset();
         DeckController.setActivate("deck2");
         actual = outContentWithOutEnter(outContent);
         Assert.assertEquals("deck with name deck2 does not exist", actual);
-
-
     }
 
     @Test
@@ -223,11 +224,9 @@ public class DeckControllerTest {
         System.setOut(new PrintStream(outContent));
         DeckController.deleteDeck("deck");
         Assert.assertEquals("deck deleted successfully", outContentWithOutEnter(outContent));
-
         outContent.reset();
         DeckController.deleteDeck("deck12");
         Assert.assertEquals("deck with name deck12 does not exist", outContentWithOutEnter(outContent));
-
     }
 
     @Test
@@ -243,7 +242,6 @@ public class DeckControllerTest {
         outContent.reset();
         DeckController.createDeck("deck");
         Assert.assertEquals("deck with name deck already exists", outContentWithOutEnter(outContent));
-
     }
 
     @Test
