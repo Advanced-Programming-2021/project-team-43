@@ -244,7 +244,7 @@ public class GameMatController {
     public static void AI() {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
         try {
-            Thread.sleep(2000);
+            Thread.sleep(2);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -1775,42 +1775,43 @@ public class GameMatController {
                 int numberOfCard = 0;
                 int whatToDo = 0;
                 for (int j = 0; j < 2; j++) {
-                    if (Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() == 0 || Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards() == 0) {
-                        GameMatView.showInput("Oops! " + winnerPlayer.getNickname() + " You cant exchange card!");
-                    }
-                    else {
-                        do {
-                            GameMatView.showInput(winnerPlayer.getNickname() + " do you want to exchange card? (yes/no)");
-                            response = GameMatView.getCommand();
-                        } while (!response.matches("yes|no"));
-                        if (response.equals("yes")) {
-                            GameMatView.showInput("Main Deck:");
-                            winnerPlayer.showMainDeck();
-                            GameMatView.showInput("Side Deck:");
-                            winnerPlayer.showSideDeck();
-                            while (true) {
-                                GameMatView.showInput("Please enter the number of card you want to exchange:");
-                                command = GameMatView.getCommand();
-                                if (command.equals("cancel")) {
-                                    whatToDo = 1;
-                                    break;
+                    if (!winnerPlayer.getNickname().equals("AI")) {
+                        if (Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() == 0 || Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards() == 0) {
+                            GameMatView.showInput("Oops! " + winnerPlayer.getNickname() + " ,you cant exchange card!");
+                        } else {
+                            do {
+                                GameMatView.showInput(winnerPlayer.getNickname() + " do you want to exchange card? (yes/no)");
+                                response = GameMatView.getCommand();
+                            } while (!response.matches("yes|no"));
+                            if (response.equals("yes")) {
+                                GameMatView.showInput("Main Deck:");
+                                winnerPlayer.showMainDeck();
+                                GameMatView.showInput("Side Deck:");
+                                winnerPlayer.showSideDeck();
+                                while (true) {
+                                    GameMatView.showInput("Please enter the number of card you want to exchange:");
+                                    command = GameMatView.getCommand();
+                                    if (command.equals("cancel")) {
+                                        whatToDo = 1;
+                                        break;
+                                    }
+                                    if (!command.matches("\\d+"))
+                                        continue;
+                                    numberOfCard = Integer.parseInt(command);
+                                    if (numberOfCard <= Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() && numberOfCard <= Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards())
+                                        break;
                                 }
-                                if (!command.matches("\\d+"))
-                                    continue;
-                                numberOfCard = Integer.parseInt(command);
-                                if (numberOfCard <= Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfMainDeckCards() && numberOfCard <= Player.getPlayerByName(winnerPlayer.getNickname()).getNumberOfSideDeckCards())
-                                    break;
-                            }
-                            if (whatToDo == 0) {
-                                for (int i = 0; i < numberOfCard; i++) {
-                                    do {
-                                        GameMatView.showInput("Please enter the exchange command");
-                                    } while (exchangeCard(winnerPlayer.getNickname(), GameMatView.getCommand()) != 1);
+                                if (whatToDo == 0) {
+                                    for (int i = 0; i < numberOfCard; i++) {
+                                        do {
+                                            GameMatView.showInput("Please enter the exchange command");
+                                        } while (exchangeCard(winnerPlayer.getNickname(), GameMatView.getCommand()) != 1);
+                                    }
                                 }
                             }
                         }
+                        whatToDo = 0;
                     }
-                    whatToDo = 0;
                     winnerPlayer = loserPlayer;
                 }
                 winnerPlayer = Player.getPlayerByName(winnerNickname);

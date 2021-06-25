@@ -6,9 +6,10 @@ import java.util.Scanner;
 public class PickFirstPlayer {
 
     public static String chose(String player1, String player2) {
-        if(player2.equals("ai")){
+        if(player2.equals("AI"))
             return player1;
-        }
+        if (player1.equals("AI"))
+            return player2;
         Scanner scanner = new Scanner(System.in);
         Random rand = new Random();
         int n = rand.nextInt(2);
@@ -17,13 +18,11 @@ public class PickFirstPlayer {
             System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
             while (true) {
                 String string = scanner.nextLine().trim();
-                if (string.equals("yes")) {
+                if (string.equals("yes"))
                     return winner;
-                }
                 if (string.equals("no")) {
-                    if (winner.equals(player1)) {
+                    if (winner.equals(player1))
                         return player2;
-                    }
                     return player1;
                 }
                 System.out.println("invalid command");
@@ -33,13 +32,11 @@ public class PickFirstPlayer {
         System.out.println(UserModel.getUserByUsername(winner).getNickname() + " do you want play first ? (yes or no)");
         while (true) {
             String string = scanner.nextLine().trim();
-            if (string.equals("yes")) {
+            if (string.equals("yes"))
                 return winner;
-            }
             if (string.equals("no")) {
-                if (winner.equals(player1)) {
+                if (winner.equals(player1))
                     return player2;
-                }
                 return player1;
             }
             System.out.println("invalid command");
@@ -97,16 +94,13 @@ public class PickFirstPlayer {
                 if (t2.equals("rock")) {
                     System.out.println(UserModel.getUserByUsername(player2).getNickname() + " is win");
                     return player2;
-
                 }
                 if (t2.equals("paper")) {
                     System.out.println(UserModel.getUserByUsername(player1).getNickname() + " is win");
                     return player1;
-
                 }
-                if (t2.equals("scissors")) {
+                if (t2.equals("scissors"))
                     System.out.println("The game equalised");
-                }
             }
         }
     }
@@ -114,9 +108,8 @@ public class PickFirstPlayer {
     private static String chanceCoin(String player1, String player2) {
         Random rand = new Random();
         int n = rand.nextInt(2);
-        if (n == 0) {
+        if (n == 0)
             return player1;
-        }
         return player2;
     }
 
