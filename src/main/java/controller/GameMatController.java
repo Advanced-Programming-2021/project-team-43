@@ -244,7 +244,7 @@ public class GameMatController {
     public static void AI() {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
         try {
-            Thread.sleep(2);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
