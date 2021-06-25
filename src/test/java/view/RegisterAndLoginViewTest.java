@@ -1,17 +1,12 @@
 package view;
 
 import org.junit.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
 import static org.junit.Assert.*;
 
-public class RegisterAndLoginViewTest {
 
-    @Test
-    public void getCommand() {
-    }
+public class RegisterAndLoginViewTest {
 
     @Test
     public void showInput() {
@@ -20,4 +15,5 @@ public class RegisterAndLoginViewTest {
         RegisterAndLoginView.showInput("expected");
         assertEquals("expected",show.toString().substring(0,show.toString().length()-2));
     }
+
 }

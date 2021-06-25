@@ -1,9 +1,11 @@
 package model;
 
+import controller.SetCards;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -11,22 +13,22 @@ public class ShopModelTest {
 
     @Test
     public void getCardPriceByName() {
-        Assert.assertEquals(0, ShopModel.getCardPriceByName("Yami"));
+        SetCards.readingCSVFileTrapSpell();
         HashMap<String, Card> cards = new HashMap<>();
-        Card card= new Card("Yami","Monster","take no action",200);
+        Card card= new Card("Yami","Monster","take no action",4300);
         cards.put("Yami",card);
         new ShopModel(cards);
-        assertEquals(200,ShopModel.getCardPriceByName("Yami"));
+        assertEquals(4300,ShopModel.getCardPriceByName("Yami"));
     }
 
     @Test
     public void getCardInfo() {
-        HashMap<String,Card> cards = new HashMap<>();
-        Card card= new Card("Yami","Monster","take no action",200);
-        cards.put("Yami",card);
-        new ShopModel(cards);
-        HashMap<String,Integer> cards2 = new HashMap<>();
-        cards2.put("Yami",200);
-        assertEquals(cards2,ShopModel.getCardInfo());
+        SetCards.readingCSVFileTrapSpell();
+        HashMap<String, Integer> cards = new HashMap<>();
+        for (Map.Entry<String,Card> eachCard : Card.cards.entrySet())
+            cards.put(eachCard.getKey(), Card.getCardsByName(eachCard.getKey()).getPrice());
+        new ShopModel(Card.getCards());
+        assertEquals(cards, ShopModel.getCardInfo());
     }
+
 }

@@ -692,9 +692,11 @@ public class GameMatControllerTest {
     @Test
     public void chooseSpellEffectController() {
         GameMatController.rivalUser = "me2";
-        SpellTrapZoneCard card = new SpellTrapZoneCard("me", "Monster Reborn", "H");
+        SpellTrapZoneCard card;
+        card = new SpellTrapZoneCard("me", "Terraforming", "O");
+        assertEquals(1, GameMatController.chooseSpellEffectController("normal", card));
+        card = new SpellTrapZoneCard("me", "Ring of defense", "O");
         assertEquals(1, GameMatController.chooseSpellEffectController("Quick-play", card));
-        assertEquals(1, GameMatController.chooseSpellEffectController("Norimal", card));
     }
 
     @Test

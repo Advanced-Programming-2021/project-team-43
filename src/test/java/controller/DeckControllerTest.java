@@ -142,7 +142,7 @@ public class DeckControllerTest {
         DeckController.findMatcher("deck rm-card --deck (.+?) --side --card (.+?)");
         Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
         outContent.reset();
-        DeckController.findMatcher("deck rm-card --deck (.+?)--card (.+?) --side");
+        DeckController.findMatcher("deck rm-card --deck (.+?) --card (.+?) --side");
         Assert.assertEquals("card with name (.+?) does not exist in side deck", outContentWithOutEnter(outContent));
         outContent.reset();
         DeckController.findMatcher("deck add-card --card (.+?) --deck (.+?) --side");
@@ -160,7 +160,7 @@ public class DeckControllerTest {
         DeckController.findMatcher("deck add-card --deck (.+?) --side --card (.+?)");
         Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
         outContent.reset();
-        DeckController.findMatcher("deck add-card --deck (.+?)--card (.+?) --side");
+        DeckController.findMatcher("deck add-card --deck (.+?) --card (.+?) --side");
         Assert.assertEquals("card with name (.+?) does not exist", outContentWithOutEnter(outContent));
         outContent.reset();
         DeckController.findMatcher("deck show --side --deck-name (.+?)1");

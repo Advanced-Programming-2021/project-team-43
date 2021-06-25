@@ -55,6 +55,8 @@ public class TrapEffectTest {
     public void mirrorForce() {
         SpellTrapZoneCard trapCard = new SpellTrapZoneCard("me", "Trap Hole", "H");
         assertEquals(1, TrapEffect.mirrorForce("me2", "me", trapCard));
+        new SpellTrapZoneCard("me2", "Ring of defense", "O");
+        assertEquals(0, TrapEffect.mirrorForce("me2", "me", trapCard));
     }
 
     @Test
@@ -76,6 +78,8 @@ public class TrapEffectTest {
     public void torrentialTribute() {
         SpellTrapZoneCard trapCard = new SpellTrapZoneCard("me", "Trap Hole", "H");
         assertEquals(1, TrapEffect.torrentialTribute("me2", "me", trapCard));
+        new SpellTrapZoneCard("me2", "Ring of defense", "O");
+        assertEquals(0, TrapEffect.torrentialTribute("me2", "me", trapCard));
     }
 
     @Test
@@ -89,6 +93,8 @@ public class TrapEffectTest {
         SpellTrapZoneCard trapCard = new SpellTrapZoneCard("me", "Solemn Warning", "O");
         TrapEffect.solemnWarning("me", "me2", monster, trapCard);
         Assert.assertEquals(6000, Player.getPlayerByName("me").getLifePoint());
+        new SpellTrapZoneCard("me2", "Ring of defense", "O");
+        assertEquals(0, TrapEffect.solemnWarning("me", "me2", monster, trapCard));
 
     }
 
@@ -118,6 +124,9 @@ public class TrapEffectTest {
         GameMatModel.getGameMatByNickname("me").graveyard.add("The Tricky");
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(0, TrapEffect.callOfTheHaunted("me", trapCard));
+        GameMatModel.getGameMatByNickname("me").addToGraveyard("Mirage Dragon");
+        System.setIn(new ByteArrayInputStream("4".getBytes()));
+        assertEquals(1, TrapEffect.callOfTheHaunted("me", trapCard));
     }
 
 }

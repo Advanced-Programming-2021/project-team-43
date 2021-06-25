@@ -289,7 +289,13 @@ public class MonsterZoneCardTest {
 
     @Test
     public void changeTurn() {
+        new SpellTrapZoneCard("me2", "Umiiruka", "O");
         MonsterZoneCard monster = new MonsterZoneCard("me", "Mirage Dragon", "OO", false, false);
+        Map<String, List<Integer>> allEffective = new HashMap<>();
+        List<Integer> spell = new ArrayList<>();
+        spell.add(1);
+        allEffective.put("me2", spell);
+        monster.allEffectiveSpell = allEffective;
         MonsterZoneCard.changeTurn("me");
         assertTrue(monster.getCanAttackToThisMonster());
     }
@@ -298,7 +304,7 @@ public class MonsterZoneCardTest {
     @Test
     public void getIsScanner() {
         new MonsterZoneCard("me", "Scanner", "OO", true, false);
-        Assert.assertEquals(true, MonsterZoneCard.getMonsterCardByAddress(1, "me").getIsScanner());
+        assertTrue(MonsterZoneCard.getMonsterCardByAddress(1, "me").getIsScanner());
     }
 
     @Test

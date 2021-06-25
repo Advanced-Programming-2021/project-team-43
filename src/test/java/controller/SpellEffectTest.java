@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import static org.junit.Assert.*;
 
 public class SpellEffectTest {
+
     MonsterZoneCard ownMonster;
     MonsterZoneCard ownMonster2;
     MonsterZoneCard rivalMonster2;
@@ -71,35 +72,29 @@ public class SpellEffectTest {
     public void terraforming() {
         Player.getPlayerByName("me").playerMainDeck.clear();
         assertEquals(0, SpellEffect.terraforming("me", player));
-
         Player.getPlayerByName("me").playerMainDeck.add("Umiiruka");
         Player.getPlayerByName("me").playerMainDeck.add("Umiiruka");
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         assertEquals(1, SpellEffect.terraforming("me", player));
-
         Player.getPlayerByName("me").playerMainDeck.add("Umiiruka");
         Player.getPlayerByName("me").playerMainDeck.add("Umiiruka");
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(0, SpellEffect.terraforming("me", player));
-
     }
 
     @Test
     public void potOfGreed() {
         Player.getPlayerByName("me").playerMainDeck.clear();
         assertEquals(0, SpellEffect.potOfGreed("me", player));
-
         Player.getPlayerByName("me").playerMainDeck.add("Umiiruka");
         Player.getPlayerByName("me").playerMainDeck.add("Umiiruka");
         assertEquals(1, SpellEffect.potOfGreed("me", player));
-
     }
 
     @Test
     public void raigeki() {
         MonsterZoneCard.allMonsterCards.get("me2").clear();
         assertEquals(0, SpellEffect.raigeki("me2"));
-
         new MonsterZoneCard("me2", "The Tricky", "DO", false, true);
         assertEquals(1, SpellEffect.raigeki("me2"));
     }
@@ -113,29 +108,24 @@ public class SpellEffectTest {
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         SpellEffect.changeOfHeart("me", "me2");
-
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         MonsterZoneCard.allMonsterCards.get("me2").clear();
         SpellEffect.changeOfHeart("me", "me2");
-
         new MonsterZoneCard("me2", "The Tricky", "DO", false, true);
         new MonsterZoneCard("me2", "The Tricky", "DO", false, true);
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         assertEquals(1, SpellEffect.changeOfHeart("me", "me2"));
-
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(0, SpellEffect.changeOfHeart("me", "me2"));
-
     }
 
     @Test
     public void harpieFeatherDuster() {
         SpellTrapZoneCard.getAllSpellTrapByPlayerName("me2").clear();
         assertEquals(0, SpellEffect.harpieFeatherDuster("me2"));
-
         new SpellTrapZoneCard("me2", "Umiiruka", "H");
         assertEquals(1, SpellEffect.harpieFeatherDuster("me2"));
     }
@@ -144,7 +134,6 @@ public class SpellEffectTest {
     public void swordsOfRevealingLigh() {
         MonsterZoneCard.getAllMonstersByPlayerName("me2").clear();
         assertEquals(0, SpellEffect.swordsOfRevealingLight("me2", 1));
-
         new MonsterZoneCard("me2", "The Tricky", "DO", false, true);
         assertEquals(1, SpellEffect.swordsOfRevealingLight("me2", 1));
     }
@@ -167,33 +156,6 @@ public class SpellEffectTest {
     @Test
     public void messengerOfPeace() {
         SpellEffect.messengerOfPeace("me", "me2", 1);
-    }
-
-    //    @Test
-//    public void twinTwisters() {
-//        HandCardZone.allHandCards.get("me").clear();
-//        SpellEffect.twinTwisters("me","me2");
-//
-//        System.setIn(new ByteArrayInputStream("own".getBytes()));
-//        new HandCardZone("me","Yami");
-//        new HandCardZone("me","Yami");
-//        new HandCardZone("me","Yami");
-//        assertEquals(0,SpellEffect.twinTwisters("me","me2"));
-//
-//
-//    }
-    @Test
-    public void mysticalSpaceTyphoon() {
-//        System.setIn(new ByteArrayInputStream("cancel".getBytes()));
-//        assertEquals(0, SpellEffect.mysticalSpaceTyphoon("me", "me2"));
-//
-//        System.setIn(new ByteArrayInputStream("own".getBytes()));
-//        System.setIn(new ByteArrayInputStream("cancel".getBytes()));
-//        assertEquals(0, SpellEffect.mysticalSpaceTyphoon("me", "me2"));
-//
-//        System.setIn(new ByteArrayInputStream("rival".getBytes()));
-//        System.setIn(new ByteArrayInputStream("cancel".getBytes()));
-//        assertEquals(0, SpellEffect.mysticalSpaceTyphoon("me", "me2"));
     }
 
     @Test
@@ -222,7 +184,6 @@ public class SpellEffectTest {
         new MonsterZoneCard("me2", "The Tricky", "DO", false, true);
         ee.setRelatedMonsterAddress("rival", 1);
         SpellEffect.swordOfDarkDestruction("me", ee, "me2");
-
         new MonsterZoneCard("me", "The Tricky", "DO", false, true);
         ee.setRelatedMonsterAddress("own", 1);
         SpellEffect.swordOfDarkDestruction("me", ee, "me2");
@@ -233,7 +194,6 @@ public class SpellEffectTest {
         SpellTrapZoneCard ee = new SpellTrapZoneCard("me", "Umiiruka", "H");
         ee.setRelatedMonsterAddress("rival", 1);
         SpellEffect.blackPendant("me", ee, "me2");
-
         ee.setRelatedMonsterAddress("own", 1);
         SpellEffect.blackPendant("me", ee, "me2");
     }
@@ -244,12 +204,10 @@ public class SpellEffectTest {
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(-1, SpellEffect.getResponseForDeadCardToReborn("own", GameMatModel.getGameMatByNickname("me"),
                 GameMatModel.getGameMatByNickname("me2")));
-
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         GameMatModel.getGameMatByNickname("me").graveyard.add("The Tricky");
         assertEquals(0, SpellEffect.getResponseForDeadCardToReborn("own", GameMatModel.getGameMatByNickname("me"),
                 GameMatModel.getGameMatByNickname("me2")));
-
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         GameMatModel.getGameMatByNickname("me2").graveyard.add("The Tricky");
         assertEquals(0, SpellEffect.getResponseForDeadCardToReborn("rival", GameMatModel.getGameMatByNickname("me"),
@@ -260,10 +218,8 @@ public class SpellEffectTest {
     public void monsterReborn() {
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(0, SpellEffect.monsterReborn("me", "me2", GameMatModel.getGameMatByNickname("me")));/////////
-
         System.setIn(new ByteArrayInputStream("own".getBytes()));
         assertEquals(0, SpellEffect.monsterReborn("me", "me2", GameMatModel.getGameMatByNickname("me")));
-
         System.setIn(new ByteArrayInputStream("cancel".getBytes()));
         assertEquals(0, SpellEffect.monsterReborn("me", "me2", GameMatModel.getGameMatByNickname("me")));
     }
@@ -273,7 +229,6 @@ public class SpellEffectTest {
         SpellTrapZoneCard ee = new SpellTrapZoneCard("me", "Umiiruka", "H");
         ee.setRelatedMonsterAddress("rival", 1);
         SpellEffect.unitedWeStand("me", ee, "me2");
-
         ee.setRelatedMonsterAddress("own", 1);
         SpellEffect.unitedWeStand("me", ee, "me2");
     }
@@ -283,11 +238,8 @@ public class SpellEffectTest {
         SpellTrapZoneCard ee = new SpellTrapZoneCard("me", "Umiiruka", "H");
         ee.setRelatedMonsterAddress("rival", 1);
         SpellEffect.magnumShield("me", ee, "me2");
-
         ee.setRelatedMonsterAddress("own", 1);
         SpellEffect.magnumShield("me", ee, "me2");
-
     }
-
 
 }

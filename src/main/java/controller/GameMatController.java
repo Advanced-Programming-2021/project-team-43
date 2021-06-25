@@ -243,11 +243,11 @@ public class GameMatController {
 
     public static void AI() {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt();
-//        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         if (currentPhase.equals(Phase.Draw_Phase)) {
             command = "next phase";
         }
