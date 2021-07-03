@@ -1,6 +1,5 @@
 package main.java.model;
-import main.java.controller.JSON;
-import javafx.scene.image.ImageView;
+import main.java.controller.Json;
 
 import java.util.*;
 
@@ -32,7 +31,7 @@ public class UserModel {
         allUsernames.add(username);
         allUsersNicknames.add(nickname);
         allUsersInfo.put(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public String getUsername() {
@@ -62,7 +61,7 @@ public class UserModel {
     public void changePassword(String password) {
         this.password = password;
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void changeNickname(String nickname) {
@@ -71,32 +70,32 @@ public class UserModel {
         allUsersNicknames.add(nickname);
         this.nickname = nickname;
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
 
     }
 
     public void setUserScore(int userScore) {
         this.userScore = userScore;
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
 
     }
 
     public void changeUserScore(int userScore) {
         this.userScore = userScore + this.userScore;
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void changeUserCoin(int amount) {
         this.userCoin = this.userCoin + amount;
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        JSON.writeUserAllInfo(UserModel.allUsersInfo);
+        Json.writeUserAllInfo(UserModel.allUsersInfo);
     }
 
     public String getImageUrl() {
@@ -106,19 +105,19 @@ public class UserModel {
     public void setActiveDeck(String deckName) {
         this.activeDeck = deckName;
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void addDeck(DeckModel deckModel) {
         userAllDecks.put(deckModel.getDeckName(), deckModel);
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void deleteDeck(String deckName) {
         userAllDecks.remove(deckName);
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public static UserModel getUserByUsername(String username) {
@@ -151,7 +150,7 @@ public class UserModel {
             userAllCards.replace(cardName, cardNumbers);
         }
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromUserAllCards(String cardName) {
@@ -164,7 +163,7 @@ public class UserModel {
             }
         }
         allUsersInfo.replace(username, this);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public boolean isUserHaveCard(String cardName) {
@@ -180,10 +179,11 @@ public class UserModel {
     }
 
     public static UserModel getUserByNickname(String nickname){
-        for (Map.Entry<String, UserModel> eachUsermodel : allUsersInfo.entrySet())
-            if(eachUsermodel.getValue().getNickname().equals(nickname)){
-                return eachUsermodel.getValue();
+        for (Map.Entry<String, UserModel> eachUser : allUsersInfo.entrySet())
+            if(eachUser.getValue().getNickname().equals(nickname)){
+                return eachUser.getValue();
             }
         return null;
     }
+
 }

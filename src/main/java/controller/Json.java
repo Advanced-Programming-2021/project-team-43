@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-public class JSON {
+public class Json {
 
     public static void writeUserModelInfo(HashMap<String, UserModel> allUsersInfo, ArrayList<String> allUsernames, ArrayList<String> allUsersNicknames) {
         try {

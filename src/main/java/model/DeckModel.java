@@ -5,7 +5,7 @@ import java.util.*;
 
 public class DeckModel {
 
-    private String deckName;
+    private final String deckName;
     private int mainAllCardNumber = 0;
     private int sideAllCardNumber = 0;
     public HashMap<String, Integer> cardsInMainDeck = new HashMap<>();
@@ -28,7 +28,7 @@ public class DeckModel {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromMain(String cardName) {
@@ -50,7 +50,7 @@ public class DeckModel {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromSide(String cardName) {
@@ -61,7 +61,7 @@ public class DeckModel {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public int getNumberOfCardInMainDeck(String cardName) {
@@ -93,19 +93,17 @@ public class DeckModel {
     }
 
     public String validOrInvalid(){
-        if (getMainAllCardNumber() > 10)
-            return "valid";
+        if (getMainAllCardNumber() > 4){/////////////////////////////////////////////////////////////////////////////////
+            return "valid";}
         return "invalid";
     }
 
-    public List<String> getArrayMain(){
+    public  List<String> getArrayMain(){
         List<String>List= new ArrayList<>();
         String [] key = cardsInMainDeck.keySet().toArray(new String[0]);
-        for (String s : key) {
-            for (int j = 0; j < cardsInMainDeck.get(s); j++) {
+        for (String s : key)
+            for (int j = 0; j < cardsInMainDeck.get(s); j++)
                 List.add(s);
-            }
-        }
         return List ;
     }
 

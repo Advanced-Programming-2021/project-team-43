@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="chart" stylesheets="@exportSpell.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="exportSpell" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
     <children>
 
         <Button layoutX="40.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#exportCard2" prefHeight="33.0" prefWidth="169.0" text="Export as Spell card" textFill="#cd4747" underline="true">

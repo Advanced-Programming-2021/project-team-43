@@ -49,7 +49,6 @@ public class ImportCardView extends Application {
                 event.consume();
             }
         });
-
         target.setOnDragEntered(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 if (event.getGestureSource() != target &&

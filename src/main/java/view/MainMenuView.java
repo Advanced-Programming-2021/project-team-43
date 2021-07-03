@@ -15,7 +15,6 @@ public class MainMenuView extends Application {
     public Button shop;
     public Button profile;
     public Button duel;
-    public Button importExport;
     public Button cardCreator;
     public Button scoreboard;
     public Button deck;
@@ -63,8 +62,12 @@ public class MainMenuView extends Application {
         new ShopView().start(stage);
     }
 
-    public void ImportExport() throws Exception {
+    public void Import() throws Exception {
         new ImportCardView().start(stage);
+    }
+
+    public void Export() throws Exception {
+        new ExportCardView().start(stage);
     }
 
     public void LogOut() throws Exception {

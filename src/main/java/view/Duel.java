@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 
 public class Duel extends Application {
+
     public Button AIBtt;
     public TextField playerId;
     public Button duelBtt;
@@ -49,6 +50,10 @@ public class Duel extends Application {
                 }
             }
         }
-
     }
+
+    public void pressBackBtn() throws Exception {
+        new MainMenuView().start(duelStage);
+    }
+
 }

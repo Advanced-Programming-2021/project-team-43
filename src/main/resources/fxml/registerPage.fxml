@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/loginBackground.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginView">
+<AnchorPane prefHeight="750.0" prefWidth="1000.0" styleClass="login" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginView">
    <children>
-      <VBox alignment="CENTER" layoutX="356.0" layoutY="162.0" prefHeight="115.0" prefWidth="287.0" spacing="10.0">
+      <VBox alignment="CENTER" layoutX="142.0" layoutY="195.0" prefHeight="115.0" prefWidth="287.0" spacing="10.0">
          <children>
             <TextField fx:id="registerUsernameTxt" focusTraversable="false" maxHeight="30.0" maxWidth="200.0" prefHeight="30.0" prefWidth="200.0" promptText="username">
                <font>
@@ -24,7 +24,7 @@
                </font></PasswordField>
          </children>
       </VBox>
-      <Button fx:id="registerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="412.0" layoutY="402.0" mnemonicParsing="false" onAction="#pressRegisterBtn" prefHeight="55.0" prefWidth="176.0" style="-fx-background-color: #ec1c24;" text="Register" textFill="WHITE">
+      <Button fx:id="registerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="215.0" layoutY="464.0" mnemonicParsing="false" onAction="#pressRegisterBtn" prefHeight="49.0" prefWidth="141.0" style="-fx-background-color: #a3297a;" text="Register" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="19.0" />
          </font>
@@ -34,14 +34,14 @@
          <effect>
             <Bloom />
          </effect></Button>
-      <Label fx:id="registerMessageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="286.0" layoutY="297.0" prefHeight="90.0" prefWidth="427.0" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="registerMessageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="72.0" layoutY="356.0" prefHeight="90.0" prefWidth="427.0" textAlignment="CENTER" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
          <font>
             <Font name="Bodoni MT" size="24.0" />
          </font></Label>
-      <Label fx:id="loginLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="359.0" layoutY="480.0" onMouseClicked="#gotToLoginPage" prefHeight="42.0" prefWidth="281.0" text="Have account?" textFill="WHITE">
+      <Label fx:id="loginLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="144.0" layoutY="537.0" onMouseClicked="#gotToLoginPage" prefHeight="42.0" prefWidth="281.0" text="Have account?" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="22.0" />
          </font>
@@ -51,7 +51,7 @@
          <effect>
             <Bloom />
          </effect></Label>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="448.0" layoutY="556.0" mnemonicParsing="false" onAction="#pressBackBtn" prefHeight="42.0" prefWidth="102.0" style="-fx-background-color: #ec1c24;" text="Back" textFill="WHITE">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="243.0" layoutY="601.0" mnemonicParsing="false" onAction="#pressBackBtn" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: #a3297a;" text="Back" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="19.0" />
          </font>

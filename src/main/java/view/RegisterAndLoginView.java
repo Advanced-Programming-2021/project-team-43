@@ -28,7 +28,7 @@ public class RegisterAndLoginView extends Application {
     public PasswordField loginPassword;
     public Label loginMessageLbl;
     private static Stage registerLoginStage;
-    private static MediaPlayer note;
+    public static MediaPlayer note;
     public Button pauseBtn = new Button();
     private static boolean isMusicOn = true;
     private static boolean isFirstTime = true;
@@ -55,20 +55,19 @@ public class RegisterAndLoginView extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/welcomePage.fxml")));
         registerLoginStage.setScene(new Scene(root));
         registerLoginStage.show();
-        if (JSON.readUserInfo() != null)
-            UserModel.allUsersInfo.putAll(JSON.readUserInfo());
-        if (JSON.readUsernames() != null)
-            UserModel.allUsernames.addAll(JSON.readUsernames());
-        if (JSON.readUserNicknames() != null)
-            UserModel.allUsersNicknames.addAll(JSON.readUserNicknames());
-
+        if (Json.readUserInfo() != null)
+            UserModel.allUsersInfo.putAll(Json.readUserInfo());
+        if (Json.readUsernames() != null)
+            UserModel.allUsernames.addAll(Json.readUsernames());
+        if (Json.readUserNicknames() != null)
+            UserModel.allUsersNicknames.addAll(Json.readUserNicknames());
         new ShowCardsView().setAllCards();
     }
 
     public void playAudio() {
         pauseBtn.setText("Pause Music");
         isMusicOn = true;
-        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/18.mp3")).toExternalForm());
+        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/18.mp3")).toExternalForm());
         note = new MediaPlayer(media);
         note.setCycleCount(-1);
         note.setAutoPlay(true);
@@ -106,7 +105,6 @@ public class RegisterAndLoginView extends Application {
     }
 
     public void pressPauseMusicBtn() {
-        System.out.println(isMusicOn);
         if (isMusicOn) {
             note.stop();
             pauseBtn.setText("Resume Music");

@@ -33,18 +33,23 @@ public class Scoreboard extends Application {
     public void initialize() {
         ArrayList<Label> list = new ArrayList<>();
         ArrayList<String> users = MainMenuController.showScoreboard();
+        int k = 1;
         for (int i = 0; i < users.size(); i++) {
-            if (MainMenuController.username.equals(users.get(i))) {
-                Label label = new Label(((i + 1) + "_" + UserModel.getUserByUsername(users.get(i)).getNickname() + ": " + UserModel.getUserByUsername(users.get(i)).getUserScore()));
-                label.setTextFill(Color.rgb(0, 26, 255));
-                label.setFont(new Font(20));
-                list.add(label);
-                continue;
-            }
-            list.add(new Label(((i + 1) + "_" + UserModel.getUserByUsername(users.get(i)).getNickname() + ": " + UserModel.getUserByUsername(users.get(i)).getUserScore())));
             if (i == 19) {
                 break;
             }
+            if (MainMenuController.username.equals(users.get(i))) {
+                Label label = new Label(((i + 1) + "- " + UserModel.getUserByUsername(users.get(i)).getNickname() + ": " + UserModel.getUserByUsername(users.get(i)).getUserScore()));
+                label.setTextFill(Color.rgb(0, 26, 255));
+                label.setFont(new Font(10));
+                list.add(label);
+            } else {
+                if (i != 0 && UserModel.getUserByUsername(users.get(i)).getUserScore() == UserModel.getUserByUsername(users.get(i - 1)).getUserScore()) {
+                    k--;
+                }
+                list.add(new Label(((k) + "- " + UserModel.getUserByUsername(users.get(i)).getNickname() + ": " + UserModel.getUserByUsername(users.get(i)).getUserScore())));
+            }
+            k++;
         }
         vBox.getChildren().addAll(list);
     }

@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/loginBackground.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginView">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" styleClass="login" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginView">
    <children>
-      <VBox alignment="CENTER" layoutX="399.0" layoutY="206.0" prefHeight="87.0" prefWidth="202.0" spacing="10.0">
+      <VBox alignment="CENTER" layoutX="194.0" layoutY="236.0" prefHeight="87.0" prefWidth="202.0" spacing="10.0">
          <children>
             <TextField fx:id="loginUsernameTxt" focusTraversable="false" maxHeight="30.0" maxWidth="200.0" prefHeight="30.0" prefWidth="200.0" promptText="username">
                <cursor>
@@ -31,7 +31,7 @@
                   <Font name="Bodoni MT" size="16.0" />
                </font></PasswordField>
          </children></VBox>
-      <Button fx:id="loginBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="419.0" layoutY="414.0" mnemonicParsing="false" onAction="#pressLoginBtn" prefHeight="55.0" prefWidth="176.0" style="-fx-background-color: #ec1c24;" text="Login" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="loginBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="227.0" layoutY="442.0" mnemonicParsing="false" onAction="#pressLoginBtn" prefHeight="47.0" prefWidth="134.0" style="-fx-background-color: #a3297a;" text="Login" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="19.0" />
          </font>
@@ -41,14 +41,14 @@
          <effect>
             <Bloom />
          </effect></Button>
-      <Label fx:id="loginMessageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="273.0" layoutY="308.0" prefHeight="87.0" prefWidth="454.0" textFill="WHITE">
+      <Label fx:id="loginMessageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="341.0" prefHeight="87.0" prefWidth="454.0" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="24.0" />
          </font>
          <effect>
             <Bloom />
          </effect></Label>
-      <Label fx:id="registerLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="381.0" layoutY="488.0" onMouseClicked="#goToRegisterPage" prefHeight="55.0" prefWidth="249.0" text="Dont you have account?" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="registerLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="507.0" onMouseClicked="#goToRegisterPage" prefHeight="55.0" prefWidth="249.0" text="Dont you have account?" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="22.0" />
          </font>
@@ -59,7 +59,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="456.0" layoutY="564.0" mnemonicParsing="false" onAction="#pressBackBtn" prefHeight="47.0" prefWidth="102.0" style="-fx-background-color: #ec1c24;" text="Back" textAlignment="CENTER" textFill="WHITE">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="252.0" layoutY="580.0" mnemonicParsing="false" onAction="#pressBackBtn" prefHeight="40.0" prefWidth="86.0" style="-fx-background-color: #a3297a;" text="Back" textAlignment="CENTER" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

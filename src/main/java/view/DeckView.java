@@ -31,8 +31,8 @@ public class DeckView extends Application {
     public Label messageLbl;
     public Button newDeckBtn;
     public CheckBox isActiveCheckBox;
-    public AnchorPane mainDeckPane;
-    public AnchorPane sideDeckPane;
+    public AnchorPane mainDeckPane = new AnchorPane();
+    public AnchorPane sideDeckPane = new AnchorPane();
     public ImageView deckImgView;
     public Label deckInfoLbl;
     private final UserModel user = UserModel.getUserByUsername(MainMenuController.username);
@@ -42,22 +42,11 @@ public class DeckView extends Application {
     private static String whichDeckName;
     public static Stage deckStage;
     private final List<String> allDeckInformation = new ArrayList<>();
-    private final HashMap<String, DeckModel> allDecks = new HashMap<>();
-    private final HashMap<String, Integer> mainDeck = new HashMap<>();
-    private final HashMap<String, Integer> sideDeck = new HashMap<>();
-    private final List<ImageView> mainCardsImg = new ArrayList<>();
-    private final List<ImageView> sideCardsImg = new ArrayList<>();
+    private final Map<String, DeckModel> allDecks = new HashMap<>();
+    private final List<AnchorPane> allMainCardsPane = new ArrayList<>();
+    private final List<AnchorPane> allSideCardsPane = new ArrayList<>();
 
 
-
-    public static String getCommand() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine().trim();
-    }
-
-    public static void showInput(String input) {
-        System.out.println(input);
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -68,7 +57,7 @@ public class DeckView extends Application {
     }
 
     public void initialize() {
-        isActiveCheckBox.setOnAction(new EventHandler<ActionEvent>() {
+        isActiveCheckBox.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (isActiveCheckBox.isSelected()) {
@@ -84,16 +73,17 @@ public class DeckView extends Application {
         deckSize = user.userAllDecks.size();
         if (deckSize != 0) {
             allDecks.putAll(user.userAllDecks);
-            Object[] values = allDecks.keySet().toArray();
-            for (int i = 0; i < values.length; i++) {
-                allDeckInformation.add(values[i].toString() + "\nMain Deck Size: " + allDecks.get(values[i].toString()).getMainAllCardNumber() + "\nSide Deck Size: " + allDecks.get(values[i].toString()).getSideAllCardNumber() + "\n" + allDecks.get(values[i].toString()).validOrInvalid());
-                if (user.getActiveDeck().equals(values[i].toString())) {
+            int i = 0;
+            for (Map.Entry<String, DeckModel> eachDeck : allDecks.entrySet()) {
+                allDeckInformation.add(eachDeck.getKey() + "\nMain Deck Size: " + allDecks.get(eachDeck.getKey()).getMainAllCardNumber() + "\nSide Deck Size: " + allDecks.get(eachDeck.getKey()).getSideAllCardNumber() + "\n" + allDecks.get(eachDeck.getKey()).validOrInvalid());
+                if (user.getActiveDeck().equals(eachDeck.getKey())) {
                     activeDeck = i;
                     isActiveCheckBox.setSelected(true);
                     deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/activeBack.jpg")).toExternalForm()));
                 }
                 else
                     deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()));
+                i++;
             }
             deckInfoLbl.setText(allDeckInformation.get(0));
         }
@@ -101,9 +91,9 @@ public class DeckView extends Application {
             deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()));
             deckInfoLbl.setText("No Deck!");
         }
-
-
-        deckInfoLbl.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        fillMainCardPane(getDeckNameByNumber(deckCounter));
+        fillSideCardDeck(getDeckNameByNumber(deckCounter));
+        deckInfoLbl.setOnMouseClicked(new EventHandler<>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 whichDeckName = getDeckNameByNumber(deckCounter);
@@ -114,45 +104,48 @@ public class DeckView extends Application {
                 }
             }
         });
-        deckInfoLbl.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        deckInfoLbl.setOnMouseEntered(new EventHandler<>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                fillMainDeck(getDeckNameByNumber(deckCounter));
-                fillSideDeck(getDeckNameByNumber(deckCounter));
-                mainDeckPane.setVisible(true);
-                sideDeckPane.setVisible(true);
+                allMainCardsPane.get(deckCounter).setVisible(true);
+                allMainCardsPane.get(deckCounter).setLayoutX(340);
+                allMainCardsPane.get(deckCounter).setLayoutY(7);
+                deckPane.getChildren().add(allMainCardsPane.get(deckCounter));
+                allSideCardsPane.get(deckCounter).setVisible(true);
+                allSideCardsPane.get(deckCounter).setLayoutX(342);
+                allSideCardsPane.get(deckCounter).setLayoutY(444);
+                deckPane.getChildren().add(allSideCardsPane.get(deckCounter));
             }
         });
-        deckInfoLbl.setOnMouseExited(new EventHandler<MouseEvent>() {
+        deckInfoLbl.setOnMouseExited(new EventHandler<>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                mainDeckPane.setVisible(false);
-                sideDeckPane.setVisible(false);
-                mainDeckPane.getChildren().clear();
-                sideDeckPane.getChildren().clear();
+                System.out.println(deckCounter);
+                allMainCardsPane.get(deckCounter).setVisible(false);
+                allSideCardsPane.get(deckCounter).setVisible(false);
+                deckPane.getChildren().remove(allMainCardsPane.get(deckCounter));
+                deckPane.getChildren().remove(allSideCardsPane.get(deckCounter));
             }
         });
     }
 
-    public void fillMainDeck(String deckName) {
-        int x = 0;
-        int y = 0;
-        int counter = 0;
-        String cardName = "";
-        if (deckName != null) {
-            DeckModel pickedDeck = user.userAllDecks.get(deckName);
-            mainDeck.putAll(pickedDeck.cardsInMainDeck);
-            for (Map.Entry<String, Integer> eachCard : mainDeck.entrySet()) {
-                for (int j = 0; j < eachCard.getValue(); j++) {
-                    if (eachCard.getKey().equals("\"Terratiger, the Empowered Warrior\""))
-                        cardName = "Terratiger, the Empowered Warrior";
-                    else
-                        cardName = eachCard.getKey();
-                    mainCardsImg.add(ShowCardsView.getCardImageViewByName(cardName));
-                    mainCardsImg.get(counter).setX(x);
-                    mainCardsImg.get(counter).setY(y);
-                    mainDeckPane.getChildren().add(mainCardsImg.get(counter));
-                    x += 80;
+    public void fillSideCardDeck(String deckName) {
+        allSideCardsPane.add(new AnchorPane());
+        allSideCardsPane.get(allSideCardsPane.size() - 1).setVisible(false);
+        if (user.userAllDecks.get(deckName) != null) {
+            HashMap<String, Integer> sideCards = new HashMap<>(user.userAllDecks.get(deckName).cardsInSideDeck);
+            int x = 0;
+            int y = 0;
+            int counter = 0;
+            for (Map.Entry<String, Integer> entry : sideCards.entrySet()) {
+                for (int i = 0; i < entry.getValue(); i++) {
+                    ImageView imageView = new ImageView(ShowCardsView.getCardImageByName(entry.getKey()));
+                    imageView.setFitWidth(70);
+                    imageView.setFitHeight(80);
+                    allSideCardsPane.get(allSideCardsPane.size() - 1).getChildren().add(imageView);
+                    allSideCardsPane.get(allSideCardsPane.size() - 1).getChildren().get(counter).setLayoutY(y);
+                    allSideCardsPane.get(allSideCardsPane.size() - 1).getChildren().get(counter).setLayoutX(x);
+                    x += 55;
                     if (x >= 500) {
                         y += 80;
                         x = 0;
@@ -161,29 +154,25 @@ public class DeckView extends Application {
                 }
             }
         }
-        mainDeck.clear();
     }
 
-    public void fillSideDeck(String deckName) {
-        int x = 0;
-        int y = 0;
-        int counter = 0;
-        String cardName = "";
-        if (deckName != null) {
-            DeckModel pickedDeck = user.userAllDecks.get(deckName);
-            sideDeck.putAll(pickedDeck.cardsInSideDeck);
-            for (Map.Entry<String, Integer> eachCard : sideDeck.entrySet()) {
-                for (int j = 0; j < eachCard.getValue(); j++) {
-                    System.out.println(eachCard.getKey());///////////
-                    if (eachCard.getKey().equals("\"Terratiger, the Empowered Warrior\""))
-                        cardName = "Terratiger, the Empowered Warrior";
-                    else
-                        cardName = eachCard.getKey();
-                    sideCardsImg.add(ShowCardsView.getCardImageViewByName(cardName));
-                    sideCardsImg.get(counter).setX(x);
-                    sideCardsImg.get(counter).setY(y);
-                    sideDeckPane.getChildren().add(sideCardsImg.get(counter));
-                    x += 80;
+    public void fillMainCardPane(String deckName) {
+        allMainCardsPane.add(new AnchorPane());
+        allMainCardsPane.get(allMainCardsPane.size() - 1).setVisible(false);
+        if (user.userAllDecks.get(deckName) != null) {
+            int x = 0;
+            int y = 0;
+            int counter = 0;
+            HashMap<String, Integer> mainCards = new HashMap<>(user.userAllDecks.get(deckName).cardsInMainDeck);
+            for (Map.Entry<String, Integer> entry : mainCards.entrySet()) {
+                for (int i = 0; i < entry.getValue(); i++) {
+                    ImageView imageView = new ImageView(ShowCardsView.getCardImageByName(entry.getKey()));
+                    imageView.setFitWidth(70);
+                    imageView.setFitHeight(80);
+                    allMainCardsPane.get(allMainCardsPane.size() - 1).getChildren().add(imageView);
+                    allMainCardsPane.get(allMainCardsPane.size() - 1).getChildren().get(counter).setLayoutY(y);
+                    allMainCardsPane.get(allMainCardsPane.size() - 1).getChildren().get(counter).setLayoutX(x);
+                    x += 55;
                     if (x >= 500) {
                         y += 80;
                         x = 0;
@@ -192,7 +181,6 @@ public class DeckView extends Application {
                 }
             }
         }
-        sideDeck.clear();
     }
 
     public void nextDeck() {
@@ -211,6 +199,8 @@ public class DeckView extends Application {
             }
             deckInfoLbl.setText(allDeckInformation.get(deckCounter));
         }
+        fillMainCardPane(getDeckNameByNumber(deckCounter));
+        fillSideCardDeck(getDeckNameByNumber(deckCounter));
     }
 
     public void previousDeck() {
@@ -229,9 +219,11 @@ public class DeckView extends Application {
             }
             deckInfoLbl.setText(allDeckInformation.get(deckCounter));
         }
+        fillMainCardPane(getDeckNameByNumber(deckCounter));
+        fillSideCardDeck(getDeckNameByNumber(deckCounter));
     }
 
-    public void createNewDeck() throws Exception {
+    public void createNewDeck() {
         deckNameTxt.setVisible(true);
         newDeckBtn.setText("Create Deck");
         if (!deckNameTxt.getText().trim().isEmpty()) {
@@ -241,7 +233,6 @@ public class DeckView extends Application {
             if (messageLbl.getText().equals("Deck created successfully")) {
                 deckSize++;
                 newDeckBtn.setText("New Deck");
-                deckNameTxt.setVisible(false);
                 allDeckInformation.add(deckNameTxt.getText() + "\nMain Deck Size: 0" + "\nSide Deck Size: 0" + "\ninvalid");
             }
             deckNameTxt.clear();

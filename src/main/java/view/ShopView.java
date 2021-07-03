@@ -21,7 +21,6 @@ import java.util.*;
 
 public class ShopView extends Application {
 
-
     public AnchorPane shopPane;
     public ImageView cardImgView;
     public ImageView previousBtn;
@@ -33,11 +32,10 @@ public class ShopView extends Application {
     public Label priceLbl;
     private boolean isShowBtnPressed;
     private UserModel user;
-    private List<Image> cardImages = new ArrayList<>();
-    private List<Label> cardInfo = new ArrayList<>();
+    private final List<Image> cardImages = new ArrayList<>();
+    private final List<Label> cardInfo = new ArrayList<>();
     private static int imageCounter = 0;
     private static int cardInfoCounter = 0;
-    private static boolean isBuyBtnDisable;
     private static Stage shopStage;
 
     public static String getCommand() {
@@ -59,18 +57,17 @@ public class ShopView extends Application {
 
     public void initialize() {
         moneyLbl.setFont(new Font(20));
-        // moneyLbl.setText(String.valueOf(user.getUserCoin()));///////////////
-        buyBtn.setDisable(isBuyBtnDisable);
         user = UserModel.getUserByUsername(MainMenuController.username);
         HashMap<String, Image> allCards = new HashMap<>(ShowCardsView.getAllCardImage());
         for (Map.Entry<String, Image> eachCard : allCards.entrySet())
             cardImages.add(eachCard.getValue());
         cardImgView = new ImageView(cardImages.get(0));
-        cardImgView.setY(46);
-        cardImgView.setX(76);
-        cardImgView.setFitWidth(350);
-        cardImgView.setFitHeight(500);
+        cardImgView.setY(58);
+        cardImgView.setX(44);
+        cardImgView.setFitWidth(282);
+        cardImgView.setFitHeight(418);
         priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(0))).getPrice());
+        buyBtn.setDisable(Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(0))).getPrice() > user.getUserCoin());
         shopPane.getChildren().add(cardImgView);
     }
 
@@ -81,6 +78,8 @@ public class ShopView extends Application {
             imageCounter = cardImages.size() - 1;
         cardImgView.setImage(cardImages.get(imageCounter));
         priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(imageCounter))).getPrice());
+        buyBtn.setDisable(Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(imageCounter))).getPrice() > user.getUserCoin());
+        messageLbl.setText("");
     }
 
     public void pressNextBtn() {
@@ -90,6 +89,8 @@ public class ShopView extends Application {
             imageCounter = 0;
         cardImgView.setImage(cardImages.get(imageCounter));
         priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(imageCounter))).getPrice());
+        buyBtn.setDisable(Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(imageCounter))).getPrice() > user.getUserCoin());
+        messageLbl.setText("");
     }
 
     public void pressBuyBtn() {
@@ -98,10 +99,8 @@ public class ShopView extends Application {
         if (message.equals("Not enough money")) {
             messageLbl.setText("");
             buyBtn.setDisable(true);
-            isBuyBtnDisable = true;
         }
         else {
-            isBuyBtnDisable = false;
             messageLbl.setText(message);
             if (message.equals("Card added successfully!")) {
                 if (getCardInfoLblByCardName(cardName) != null)
@@ -144,13 +143,14 @@ public class ShopView extends Application {
     }
 
     public void pressBackBtn() throws Exception {
+        imageCounter = 0;
+        cardInfoCounter = 0;
         new MainMenuView().start(shopStage);
     }
 
     public static void resetFields() {
         cardInfoCounter = 0;
         imageCounter = 0;
-        isBuyBtnDisable = false;
     }
 
 }

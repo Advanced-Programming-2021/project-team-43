@@ -11,6 +11,7 @@ import java.util.Objects;
 
 
 public class StartClass extends Application {
+
     private static Stage stage;
 
     @Override
@@ -41,4 +42,5 @@ public class StartClass extends Application {
     public void exit(MouseEvent mouseEvent) {
         System.exit(0);
     }
+
 }

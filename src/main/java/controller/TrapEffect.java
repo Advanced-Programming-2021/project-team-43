@@ -40,18 +40,19 @@ public class TrapEffect {
             HandCardZone.removeAllTypeCard(rivalUser, response);
         else {
             Random random = new Random();
-            HandCardZone.getHandCardByAddress(random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1, rivalUser).removeFromHandCard();
+            int n = random.nextInt(HandCardZone.getNumberOfFullHouse(onlineUser)) + 1;
+            HandCardZone.getHandCardByAddress(n, onlineUser).removeFromHandCard();
         }
         trapCard.removeSpellTrapFromZone();
         return 1;
     }
 
-    private static boolean ringOfDefenseEffect(String rival, String onlineUser) {
+    public static boolean ringOfDefenseEffect(String rival, String onlineUser) {
         Map<Integer, SpellTrapZoneCard> spellTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(rival);
         Integer[] keys = spellTraps.keySet().toArray(new Integer[0]);
         int counter = 0;
         for (Integer key : keys) {
-            if (SpellTrapZoneCard.getSpellCardByAddress(key, rival).getSpellTrapName().equals("Ring of Defense") &&
+            if (SpellTrapZoneCard.getSpellCardByAddress(key, rival).getSpellTrapName().equals("Ring of defense") &&
                     SpellTrapZoneCard.getSpellCardByAddress(key, rival).getMode().equals("O")) {
                 counter++;
             }
@@ -59,7 +60,7 @@ public class TrapEffect {
         spellTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(onlineUser);
         keys = spellTraps.keySet().toArray(new Integer[0]);
         for (Integer key : keys) {
-            if (SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getSpellTrapName().equals("Ring of Defense") &&
+            if (SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getSpellTrapName().equals("Ring of defense") &&
                     SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getMode().equals("O")) {
                 counter++;
             }
@@ -90,19 +91,12 @@ public class TrapEffect {
         Player.getPlayerByName(rival).setCanDrawCard(false);
     }
 
-    public static int solemnWarning(String player1, int addressOfSummonCard, boolean summonMine, String rival) {
-        if (!ringOfDefenseEffect(rival, player1)) {
-            Player.getPlayerByName(player1).changeLifePoint(-2000);
-            if (summonMine) {
-                if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, player1);
-                }
-            }
-            if (!summonMine) {
-                if (Card.getCardsByName(MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).getMonsterName()).getCardModel().equals("Monster")) {
-                    MonsterZoneCard.getMonsterCardByAddress(addressOfSummonCard, rival).removeMonsterFromZone();
-                }
-            }
+    public static int solemnWarning(String onlineUser, String rivalUser, MonsterZoneCard monster, SpellTrapZoneCard trapCard) {
+        if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
+            Player.getPlayerByName(onlineUser).changeLifePoint(-2000);
+            if (monster != null)
+                monster.removeMonsterFromZone();
+            trapCard.removeSpellTrapFromZone();
             return 1;
         }
         return 0;
@@ -111,7 +105,7 @@ public class TrapEffect {
     public static int magicJammer(String onlineUser, String rivalUser, SpellTrapZoneCard trapCard) {
         if (!ringOfDefenseEffect(rivalUser, onlineUser)) {
             if (HandCardZone.getNumberOfFullHouse(onlineUser) == 0) {
-                GameMatView.showInput("Oops! You dont have any card in your hand to drop!");
+                GameMatView.showInput("Oops! You don't have any card in your hand to drop!");
             }
             else {
                 int address;

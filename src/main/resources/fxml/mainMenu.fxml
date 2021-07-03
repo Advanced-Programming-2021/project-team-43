@@ -6,7 +6,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/mainMenu.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenuView">
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="mainMenu" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenuView">
     <children>
         <Label layoutX="44.0" layoutY="28.0" prefHeight="96.0" prefWidth="490.0" text="main menu">
             <textFill>
@@ -61,7 +61,12 @@
                   <Font name="Bodoni MT" size="20.0" />
                </font>
             </Button>
-              <Button fx:id="importExport" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#ImportExport" prefHeight="21.0" prefWidth="167.0" text="Import/export">
+              <Button fx:id="importBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Import" prefHeight="21.0" prefWidth="167.0" text="Import Card">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="exportBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Export" prefHeight="21.0" prefWidth="167.0" text="Export Card" textAlignment="CENTER">
                <font>
                   <Font name="Bodoni MT" size="20.0" />
                </font>

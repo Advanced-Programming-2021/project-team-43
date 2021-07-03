@@ -1,4 +1,6 @@
 package main.java.model;
+import main.java.controller.GameMatController;
+
 import java.util.*;
 
 
@@ -19,7 +21,7 @@ public class MonsterZoneCard {
     private boolean canAttackToThisMonster;
     private boolean isEffectUsed;
     private boolean isForOneTurn;
-    private final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
+    public final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
     public static final Map<String, Map<Integer, MonsterZoneCard>> allMonsterCards = new HashMap<>();
 
     public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn) {
@@ -233,9 +235,9 @@ public class MonsterZoneCard {
     }
 
     public static void removeUselessMonster(String playerNickname) {
-//        for (int i = 1; i < 6; i++)
-//            if (allMonsterCards.get(playerNickname).get(i) != null && allMonsterCards.get(playerNickname).get(i).getIsForOneTurn())
-//                removeMonsterFromZone();
+        for (int i = 1; i < 6; i++)
+            if (allMonsterCards.get(playerNickname).get(i) != null && allMonsterCards.get(playerNickname).get(i).getIsForOneTurn())
+                allMonsterCards.get(playerNickname).get(i).removeMonsterFromZone();
     }
 
     public static MonsterZoneCard getMonsterCardByAddress(int address, String playerNickname) {
@@ -256,13 +258,45 @@ public class MonsterZoneCard {
     public static void changeTurn(String playerNickname) {
         Map<Integer, MonsterZoneCard> allMonsters = new HashMap<>(allMonsterCards.get(playerNickname));
         for (int i = 1; i < 6; i++) {
+            if (allMonsters.size() == 1 && allMonsters.get(i) != null) {
+                allMonsters.get(i).setCanAttackToThisMonster(true);
+            }
             if (allMonsters.get(i) != null) {
+                int coun = 0;
+                List<Integer> allEffectedOwn = allMonsters.get(i).allEffectiveSpell.get(playerNickname);
+                String rivalName;
+                if (GameMatController.rivalUser.equals(playerNickname)) {
+                    rivalName = GameMatController.onlineUser;
+                } else {
+                    rivalName = GameMatController.rivalUser;
+                }
+                List<Integer> allEffectedRival = allMonsters.get(i).allEffectiveSpell.get(rivalName);
+                if (allEffectedOwn != null) {
+                    for (Integer integer : allEffectedOwn) {
+                        if (SpellTrapZoneCard.getSpellCardByAddress(integer, rivalName) != null) {
+                            coun++;
+                        }
+                    }
+                }
+                if (allEffectedRival != null) {
+                    for (Integer integer : allEffectedRival) {
+                        if (SpellTrapZoneCard.getSpellCardByAddress(integer, playerNickname) != null) {
+                            coun++;
+                        }
+                    }
+                }
+                if (coun == 0) {
+                    allMonsters.get(i).setCanAttack(true);
+                    if (allMonsterCards.get(rivalName).get(i) != null)
+                        allMonsterCards.get(rivalName).get(i).setCanAttack(true);
+                }
                 allMonsters.get(i).setHaveChangedPositionThisTurn(false);
                 allMonsters.get(i).setHaveAttackThisTurn(false);
-                allMonsters.get(i).setIsEffectUsed(false);
-                allMonsters.get(i).setCanAttack(true);
+                if (!allMonsters.get(i).getMonsterName().equals("Suijin"))
+                    allMonsters.get(i).setIsEffectUsed(false);
             }
         }
     }
+
 
 }

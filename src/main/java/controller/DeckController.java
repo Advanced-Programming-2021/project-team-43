@@ -7,207 +7,13 @@ import java.util.regex.*;
 
 public class DeckController {
 
-    public static int run() {
-        while (true) {
-            String command = DeckView.getCommand();
-            command = command.trim();
-            int breaker = findMatcher(command);
-            if (breaker == 0) {
-                break;
-            }
-        }
-        return 0;
-    }
-
-    public static int findMatcher(String command) {
-        Pattern pattern = Pattern.compile("^deck \\s*create \\s*(.+?)$");
-        Matcher matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            createDeck(matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck \\s*rm-card \\s*--card\\s* (.+?)\\s* --deck \\s*(.+?) \\s*--side$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-
-        pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?) \\s*--side\\s* --deck\\s* (.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* rm-card\\s* --side\\s* --card \\s*(.+?) \\s*--deck \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            removeCardFromSideDeck(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* rm-card \\s*--side \\s*--deck\\s* (.+?)\\s* --card \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)\\s* --side\\s* --card\\s* (.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* rm-card\\s* --deck \\s*(.+?)--card\\s* (.+?) \\s*--side$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            removeCardFromSideDeck(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-
-
-        pattern = Pattern.compile("^deck \\s*add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?) \\s*--side$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            addCardToSideDeck(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-
-        pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --side \\s*--deck\\s* (.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            addCardToSideDeck(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* add-card\\s* --side \\s*--card \\s*(.+?) \\s*--deck\\s* (.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            addCardToSideDeck(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* add-card\\s* --side\\s* --deck\\s* (.+?)\\s* --card\\s* (.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            addCardToMainDeck(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --side \\s*--card \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            addCardToMainDeck(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)--card\\s* (.+?) \\s*--side$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            addCardToMainDeck(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck \\s*show \\s*--side\\s* --deck-name \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            showSideDeck(matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            showSideDeck(matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* delete \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            deleteDeck(matcher.group(1));
-            return 1;
-        }
-
-        pattern = Pattern.compile("^deck\\s* set-activate \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            setActivate(matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            addCardToMainDeck(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck \\s*add-card \\s*--deck\\s* (.+?)\\s* --card (.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            addCardToMainDeck(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck \\s*rm-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            removeCardFromMainDeck(matcher.group(1), matcher.group(2));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* rm-card \\s*--deck\\s* (.+?)\\s* --card\\s* (.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            removeCardFromMainDeck(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* show \\s*--all$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            showAllDeck();
-            return 1;
-        }
-        pattern = Pattern.compile("^deck \\s*show \\s*--deck-name \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            showMainDeck(matcher.group(1));
-            return 1;
-        }
-        pattern = Pattern.compile("^deck\\s* show\\s* --cards$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            showCards();
-            return 1;
-        }
-        pattern = Pattern.compile("^menu \\s*exit$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-
-            return 0;
-        }
-        pattern = Pattern.compile("^menu\\s* show-current$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            MainMenuView.showInput("Deck Menu");
-            return 1;
-        }
-
-        pattern = Pattern.compile("^menu \\s*enter \\s*(.+?)$");
-        matcher = pattern.matcher(command);
-        if (matcher.find()) {
-            if (matcher.group(1).equals("duel") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
-                DeckView.showInput("menu navigation is not possible");
-            } else {
-                MainMenuView.showInput("invalid command");
-            }
-            return 1;
-        }
-        DeckView.showInput("invalid command");
-        return 1;
-
-    }
-
     public static void setActivate(String deckName) {
         UserModel user = UserModel.getUserByUsername(MainMenuController.username);
         if (user.isUserHaveThisDeck(deckName)) {
             user.setActiveDeck(deckName);
             UserModel.allUsersInfo.replace(MainMenuController.username, user);
-            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-            DeckView.showInput("deck activated successfully");
-        } else {
-            DeckView.showInput("deck with name " + deckName + " does not exist");
+            Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
         }
-
     }
 
     public static void deleteDeck(String deckName) {
@@ -215,10 +21,7 @@ public class DeckController {
         if (user.isUserHaveThisDeck(deckName)) {
             user.deleteDeck(deckName);
             UserModel.allUsersInfo.replace(MainMenuController.username, user);
-            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-            DeckView.showInput("deck deleted successfully");
-        } else {
-            DeckView.showInput("deck with name " + deckName + " does not exist");
+            Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
         }
     }
 
@@ -229,7 +32,7 @@ public class DeckController {
             UserModel user = UserModel.getUserByUsername(MainMenuController.username);
             user.addDeck(new DeckModel(deckName));
             UserModel.allUsersInfo.replace(MainMenuController.username, user);
-            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+            Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
             return "Deck created successfully";
         }
     }
@@ -247,7 +50,7 @@ public class DeckController {
                             deckModel.addCardToMain(cardName);
                             user.userAllDecks.replace(deckName, deckModel);
                             UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                            Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                             return ("card added to deck successfully");
 
                         } else {
@@ -261,7 +64,7 @@ public class DeckController {
                                 deckModel.addCardToMain(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -274,7 +77,7 @@ public class DeckController {
                                 deckModel.addCardToMain(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -287,7 +90,7 @@ public class DeckController {
                                 deckModel.addCardToMain(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
 
@@ -304,7 +107,7 @@ public class DeckController {
                                 deckModel.addCardToMain(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -317,7 +120,7 @@ public class DeckController {
                                 deckModel.addCardToMain(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -330,7 +133,7 @@ public class DeckController {
                                 deckModel.addCardToMain(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -362,7 +165,7 @@ public class DeckController {
                             deckModel.addCardToSide(cardName);
                             user.userAllDecks.replace(deckName, deckModel);
                             UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                            JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                            Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                             return ("card added to deck successfully");
 
                         } else {
@@ -376,7 +179,7 @@ public class DeckController {
                                 deckModel.addCardToSide(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -391,7 +194,7 @@ public class DeckController {
 
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -404,7 +207,7 @@ public class DeckController {
                                 deckModel.addCardToSide(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -419,7 +222,7 @@ public class DeckController {
                                 deckModel.addCardToSide(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -432,7 +235,7 @@ public class DeckController {
                                 deckModel.addCardToSide(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
 
@@ -446,7 +249,7 @@ public class DeckController {
                                 deckModel.addCardToSide(cardName);
                                 user.userAllDecks.replace(deckName, deckModel);
                                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
                                 return ("card added to deck successfully");
 
                             } else {
@@ -474,16 +277,16 @@ public class DeckController {
                 deckModel.removeCardFromMain(cardName);
                 user.userAllDecks.replace(deckName, deckModel);
                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-                DeckView.showInput("card removed form deck successfully");
+                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                // DeckView.showInput("card removed form deck successfully");
             } else {
-                DeckView.showInput("card with name " + cardName + " does not exist in main deck");
+                // DeckView.showInput("card with name " + cardName + " does not exist in main deck");
             }
         } else {
-            DeckView.showInput("deck with name " + deckName + " does not exist");
+            //DeckView.showInput("deck with name " + deckName + " does not exist");
         }
         UserModel.allUsersInfo.replace(MainMenuController.username, user);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public static void removeCardFromSideDeck(String cardName, String deckName) {
@@ -494,17 +297,17 @@ public class DeckController {
                 deckModel.removeCardFromSide(cardName);
                 user.userAllDecks.replace(deckName, deckModel);
                 UserModel.allUsersInfo.replace(MainMenuController.username, user);
-                JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-                DeckView.showInput("card removed form deck successfully");
+                Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+                // DeckView.showInput("card removed form deck successfully");
             } else {
-                DeckView.showInput("card with name " + cardName + " does not exist in side deck");
+                //   DeckView.showInput("card with name " + cardName + " does not exist in side deck");
 
             }
         } else {
-            DeckView.showInput("deck with name " + deckName + " does not exist");
+            // DeckView.showInput("deck with name " + deckName + " does not exist");
         }
         UserModel.allUsersInfo.replace(MainMenuController.username, user);
-        JSON.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public static void showAllDeck() {
@@ -512,19 +315,19 @@ public class DeckController {
         String[] keys;
         keys = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.keySet().toArray(new String[0]);
         Arrays.sort(keys);
-        DeckView.showInput("Decks:");
-        DeckView.showInput("Active deck:");
+        //  DeckView.showInput("Decks:");
+        //DeckView.showInput("Active deck:");
         if (!user.getActiveDeck().equals("")) {
             DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(user.getActiveDeck());
-            DeckView.showInput(user.getActiveDeck() + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + " " + deck.validOrInvalid());
+            // DeckView.showInput(user.getActiveDeck() + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + " " + deck.validOrInvalid());
         }
-        DeckView.showInput("Other decks:");
+        //DeckView.showInput("Other decks:");
         for (String key : keys) {
             if (user.getActiveDeck().equals(key)) {
                 continue;
             }
             DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(key);
-            DeckView.showInput(key + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + " " + deck.validOrInvalid());
+            // DeckView.showInput(key + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + " " + deck.validOrInvalid());
         }
 
     }
@@ -532,9 +335,9 @@ public class DeckController {
     public static void showMainDeck(String deckName) {
         if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
             DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
-            DeckView.showInput("Deck: " + deckName);
-            DeckView.showInput("Main deck:");
-            DeckView.showInput("Monsters:");
+//            DeckView.showInput("Deck: " + deckName);
+//            DeckView.showInput("Main deck:");
+//            DeckView.showInput("Monsters:");
             String[] cardNames;
             cardNames = deck.cardsInMainDeck.keySet().toArray(new String[0]);
             Arrays.sort(cardNames);
@@ -542,17 +345,17 @@ public class DeckController {
                 if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
                     continue;
                 }
-                DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
+                //DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
             }
-            DeckView.showInput("Spell and Traps:");
+            // DeckView.showInput("Spell and Traps:");
             for (String cardName : cardNames) {
                 if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
                     continue;
                 }
-                DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
+                // DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
             }
         } else {
-            DeckView.showInput("deck with name " + deckName + " does not exist");
+            //  DeckView.showInput("deck with name " + deckName + " does not exist");
         }
 
     }
@@ -562,9 +365,9 @@ public class DeckController {
 
             DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
 
-            DeckView.showInput("Deck: " + deckName);
-            DeckView.showInput("Side deck:");
-            DeckView.showInput("Monsters:");
+//            DeckView.showInput("Deck: " + deckName);
+//            DeckView.showInput("Side deck:");
+//            DeckView.showInput("Monsters:");
             String[] cardNames;
             cardNames = deck.cardsInSideDeck.keySet().toArray(new String[0]);
             Arrays.sort(cardNames);
@@ -572,18 +375,18 @@ public class DeckController {
                 if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
                     continue;
                 }
-                DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
+                // DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
             }
-            DeckView.showInput("Spell and Traps:");
+            //  DeckView.showInput("Spell and Traps:");
             for (String cardName : cardNames) {
                 if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
                     continue;
                 }
-                DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
+                //   DeckView.showInput(cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
             }
 
         } else {
-            DeckView.showInput("deck with name " + deckName + " does not exist");
+            // DeckView.showInput("deck with name " + deckName + " does not exist");
         }
     }
 
@@ -592,7 +395,7 @@ public class DeckController {
         String[] keys = hashMap.keySet().toArray(new String[0]);
         Arrays.sort(keys);
         for (String key : keys) {
-            DeckView.showInput(key + ":" + Card.getCards().get(key).getDescription() + "  " + hashMap.get(key));
+            // DeckView.showInput(key + ":" + Card.getCards().get(key).getDescription() + "  " + hashMap.get(key));
         }
     }
 

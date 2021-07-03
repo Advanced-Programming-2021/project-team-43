@@ -13,3 +13,15 @@
     -fx-background-size:1000 760;
     -fx-background-image: url("21.jpg");
 }
+.pause{
+    -fx-background-size:1000 760;
+    -fx-background-image: url("pause.jpg");
+}
+.pauseBack{
+    -fx-background-size:1000 760;
+    -fx-background-image: url("pauseBack.jpg");
+}
+.showGraveYard{
+    -fx-background-size:600 400;
+    -fx-background-image: url("showGraveyard.jpg");
+}

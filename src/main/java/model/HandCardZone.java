@@ -5,7 +5,6 @@ import java.util.*;
 
 public class HandCardZone {
 
-
     private final String playerNickname;
     private final String cardName;
     private int address;
@@ -48,6 +47,7 @@ public class HandCardZone {
         for (int i = 0; i < allHandCards.get(playerNickname).size(); i++) {
             handCard = allHandCards.get(playerNickname).get(i);
             if (handCard.cardName.equals(cardName)) {
+                GameMatModel.getGameMatByNickname(playerNickname).addToGraveyard(handCard.getCardName());
                 handCard.removeFromHandCard();
             }
         }

@@ -14,6 +14,7 @@ import java.util.Objects;
 
 
 public class RockPaperView extends Application {
+
     @FXML
     private Label showTurn;
     @FXML
@@ -42,32 +43,32 @@ public class RockPaperView extends Application {
     }
 
 
-    public void stone(MouseEvent mouseEvent) {
+    public void stone() {
         firstChoice = "rock";
         result();
     }
 
-    public void paper(MouseEvent mouseEvent) {
+    public void paper() {
         firstChoice = "paper";
         result();
     }
 
-    public void sci(MouseEvent mouseEvent) {
+    public void sci() {
         firstChoice = "scissors";
         result();
     }
 
-    public void sci1(MouseEvent mouseEvent) {
+    public void sci1() {
         secondChoice = "scissors";
         result();
     }
 
-    public void paper1(MouseEvent mouseEvent) {
+    public void paper1() {
         secondChoice = "paper";
         result();
     }
 
-    public void stone1(MouseEvent mouseEvent) {
+    public void stone1() {
         secondChoice = "rock";
         result();
     }
@@ -129,7 +130,7 @@ public class RockPaperView extends Application {
         }
     }
 
-    public void no(MouseEvent mouseEvent) {
+    public void no() {
         if (winnerPlayer.equals(ply1)) {
             GameMatController.onlineUser = UserModel.getUserByUsername(ply2).getNickname();
             GameMatController.rivalUser = UserModel.getUserByUsername(ply1).getNickname();

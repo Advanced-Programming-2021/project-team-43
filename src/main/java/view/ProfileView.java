@@ -52,8 +52,10 @@ public class ProfileView extends Application {
             profileImages[i] = new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/profile/char" + i + ".jpg")).toExternalForm()));
         user = UserModel.getUserByUsername(MainMenuController.username);
         profileImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByUsername(MainMenuController.username).getImageUrl())).toExternalForm()));
-        profileImg.setX(436);
-        profileImg.setY(110);
+        profileImg.setX(500);
+        profileImg.setY(101);
+        profileImg.setFitWidth(133);
+        profileImg.setFitHeight(141);
         usernameLbl.setText(user.getUsername());
         nicknameTxt.setText(user.getNickname());
         profilePane.getChildren().add(profileImg);

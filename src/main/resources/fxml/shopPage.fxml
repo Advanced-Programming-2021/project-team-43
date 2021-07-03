@@ -6,10 +6,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="shopPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="body" stylesheets="@../images/background/shopBackground.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShopView">
+<AnchorPane fx:id="shopPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="shop" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShopView">
    <children>
-      <ImageView fx:id="cardImgView" fitHeight="500.0" fitWidth="350.0" layoutX="76.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="previousBtn" fitHeight="30.0" fitWidth="30.0" layoutX="46.0" layoutY="266.0" onMouseClicked="#pressPreviousBtn" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+      <ImageView fx:id="cardImgView" fitHeight="417.0" fitWidth="282.0" layoutX="44.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="previousBtn" fitHeight="30.0" fitWidth="30.0" layoutX="12.0" layoutY="252.0" onMouseClicked="#pressPreviousBtn" pickOnBounds="true" preserveRatio="true" rotate="180.0">
          <image>
             <Image url="@../images/nextBtn.jpg" />
          </image>
@@ -23,7 +23,7 @@
                </input>
             </DisplacementMap>
          </effect></ImageView>
-      <ImageView fx:id="nextBtn" fitHeight="30.0" fitWidth="30.0" layoutX="426.0" layoutY="266.0" onMouseClicked="#pressNextBtn" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="nextBtn" fitHeight="30.0" fitWidth="30.0" layoutX="326.0" layoutY="252.0" onMouseClicked="#pressNextBtn" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/nextBtn.jpg" />
          </image>
@@ -37,31 +37,31 @@
                </input>
             </DisplacementMap>
          </effect></ImageView>
-      <Button fx:id="buyBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="204.0" layoutY="556.0" mnemonicParsing="false" onAction="#pressBuyBtn" prefHeight="34.0" prefWidth="93.0" text="Buy">
+      <Button fx:id="buyBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="138.0" layoutY="485.0" mnemonicParsing="false" onAction="#pressBuyBtn" prefHeight="34.0" prefWidth="93.0" text="Buy">
          <font>
             <Font name="Bodoni MT" size="18.0" />
          </font></Button>
-      <Label fx:id="messageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="582.0" prefHeight="58.0" prefWidth="387.0" textFill="YELLOW">
+      <Label fx:id="messageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="533.0" prefHeight="58.0" prefWidth="336.0" textFill="YELLOW">
          <font>
             <Font name="Bodoni MT" size="18.0" />
          </font></Label>
-      <Button fx:id="myCardsBtn" focusTraversable="false" layoutX="204.0" layoutY="650.0" mnemonicParsing="false" onAction="#pressMyCardsBtn" prefHeight="34.0" prefWidth="94.0" text="My Cards">
+      <Button fx:id="myCardsBtn" focusTraversable="false" layoutX="138.0" layoutY="608.0" mnemonicParsing="false" onAction="#pressMyCardsBtn" prefHeight="34.0" prefWidth="94.0" text="My Cards">
          <font>
             <Font name="Bodoni MT" size="16.0" />
          </font>
       </Button>
-      <VBox fx:id="cardsVBox" layoutX="494.0" layoutY="17.0" prefHeight="726.0" prefWidth="387.0" visible="false" />
-      <Button fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="44.0" layoutY="684.0" mnemonicParsing="false" onAction="#pressBackBtn" text="Back">
+      <VBox fx:id="cardsVBox" layoutX="390.0" layoutY="17.0" prefHeight="726.0" prefWidth="571.0" visible="false" />
+      <Button fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="27.0" layoutY="675.0" mnemonicParsing="false" onAction="#pressBackBtn" text="Back">
          <font>
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Button>
-      <Label fx:id="moneyLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="838.0" layoutY="17.0" prefHeight="45.0" prefWidth="148.0" textFill="YELLOW">
+      <Label fx:id="moneyLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="14.0" prefHeight="45.0" prefWidth="148.0" textFill="YELLOW">
          <font>
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="priceLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="556.0" prefHeight="65.0" prefWidth="137.0" textFill="YELLOW">
+      <Label fx:id="priceLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="475.0" prefHeight="58.0" prefWidth="124.0" textFill="YELLOW">
          <font>
             <Font name="Bodoni MT" size="21.0" />
          </font>

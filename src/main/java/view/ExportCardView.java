@@ -1,8 +1,6 @@
 package main.java.view;
-import main.java.controller.JSON;
 import com.google.gson.Gson;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,18 +15,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-
+import main.java.controller.Json;
 
 
 public class ExportCardView extends Application {
 
-    private static Stage stage;
+    private static Stage exportStage;
     public Label label2;
     public Label label;
 
     @Override
     public void start(Stage stage) throws Exception {
-        this.stage = stage;
+        exportStage = stage;
         stage.setTitle("EXPORT CARD");
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/export.fxml")));
         Scene scene = new Scene(root);
@@ -54,15 +52,15 @@ public class ExportCardView extends Application {
     @FXML
     TextField description;
 
-    public void exportMonster(ActionEvent actionEvent) throws IOException {
+    public void exportMonster() throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/exportMonster.fxml")));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
-        stage.setScene(scene);
-        stage.show();
+        exportStage.setScene(scene);
+        exportStage.show();
     }
 
-    public void exportCard(MouseEvent mouseEvent) throws Exception {
+    public void exportCard() {
         if (isNumeric(level.getText()) && isNumeric(atk.getText()) && isNumeric(def.getText()) &&
                 isNotEmpty(cardName.getText()) && isNotEmpty(cardType.getText()) &&
                 isNotEmpty(attribute.getText()) && isNotEmpty(description.getText()) && isNotEmpty(monsterType.getText())
@@ -80,7 +78,6 @@ public class ExportCardView extends Application {
                 cardInfo.add(description.getText());
                 String price = String.valueOf(Integer.parseInt(level.getText()) * 100);
                 cardInfo.add(price);
-                // UserModel.getUserByUsername(MainMenuController.username).changeUserCoin(-Integer.parseInt(level.getText()) * 10);
                 cardInfo.add("Monster");
                 String id;
                 if (cardName == null) {
@@ -95,10 +92,9 @@ public class ExportCardView extends Application {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                ArrayList<String> cards = JSON.exportCad();
+                ArrayList<String> cards = Json.exportCad();
                 cards.add(id);
-                JSON.importCard(cards);
-                // new StartClass().start(stage);
+                Json.importCard(cards);
             } else {
                 label.setText("This card isn't in list!");
             }
@@ -107,12 +103,12 @@ public class ExportCardView extends Application {
         }
     }
 
-    public void exportSpellTrap(ActionEvent actionEvent) throws IOException {
+    public void exportSpellTrap() throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/exportSpellTrap.fxml")));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
-        stage.setScene(scene);
-        stage.show();
+        exportStage.setScene(scene);
+        exportStage.show();
     }
 
     @FXML
@@ -126,7 +122,7 @@ public class ExportCardView extends Application {
     @FXML
     TextField status;
 
-    public void exportCard2(MouseEvent mouseEvent) throws Exception {
+    public void exportCard2() {
         if (isNotEmpty(cardNam.getText()) && isNotEmpty(type.getText()) &&
                 isNotEmpty(Icon.getText()) && isNotEmpty(description2.getText()) && isNotEmpty(status.getText())
                 && isValidIcon()) {
@@ -144,7 +140,6 @@ public class ExportCardView extends Application {
                 }
                 String price2 = String.valueOf(count * 5);
                 cardInfo.add(price2);
-                //  UserModel.getUserByUsername(MainMenuController.username).changeUserCoin(-count / 2);
                 cardInfo.add(status.getText());
                 cardInfo.add("Spell");
                 String id;
@@ -160,9 +155,9 @@ public class ExportCardView extends Application {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                ArrayList<String> cards = JSON.exportCad();
+                ArrayList<String> cards = Json.exportCad();
                 cards.add(id);
-                JSON.importCard(cards);
+                Json.importCard(cards);
                 // new StartClass().start(stage);
             } else {
                 label2.setText("This card isn't in list!");
@@ -192,7 +187,6 @@ public class ExportCardView extends Application {
                 }
                 String price2 = String.valueOf(count * 5);
                 cardInfo.add(price2);
-                // UserModel.getUserByUsername(MainMenuController.username).changeUserCoin(-count / 2);
                 cardInfo.add(status.getText());
                 cardInfo.add("Trap");
                 String id;
@@ -208,9 +202,9 @@ public class ExportCardView extends Application {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                ArrayList<String> cards = JSON.exportCad();
+                ArrayList<String> cards = Json.exportCad();
                 cards.add(id);
-                JSON.importCard(cards);
+                Json.importCard(cards);
                 // new StartClass().start(stage);
             } else {
                 label2.setText("This card isn't in list!");
@@ -237,12 +231,12 @@ public class ExportCardView extends Application {
         }
     }
 
-    public void back(MouseEvent mouseEvent) throws Exception {
+    public void back() throws Exception {
         // new StartClass().start(stage);
     }
 
-    public void backToMenu(MouseEvent mouseEvent) throws Exception {
-        new ExportCardView().start(stage);
+    public void backToMenu() throws Exception {
+        new ExportCardView().start(exportStage);
     }
 
     public boolean isSpellTrap() {
@@ -299,5 +293,6 @@ public class ExportCardView extends Application {
                 Icon.getText().equals("Equip") ||
                 Icon.getText().equals("Ritual");
     }
+
 }
 

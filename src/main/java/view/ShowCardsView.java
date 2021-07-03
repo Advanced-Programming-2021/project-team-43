@@ -292,6 +292,12 @@ public class ShowCardsView extends Application {
         return allCardImage.get(cardName);
     }
 
+    public static ImageView getSizedCardImageViewByName(String cardName) {
+        allCards.get(cardName).setFitWidth(50);
+        allCards.get(cardName).setFitHeight(50);
+        return allCards.get(cardName);
+    }
+
     public static ImageView getRotatedImageViewByName(String cardName) {
         return allMonsterCardRotatedImage.get(cardName);
     }

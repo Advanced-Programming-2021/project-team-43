@@ -7,23 +7,23 @@
 
 <AnchorPane fx:id="mainPane" maxHeight="760.0" maxWidth="1000.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GameMatView">
    <children>
-      <AnchorPane fx:id="boardPane" layoutX="297.0" layoutY="-3.0" maxHeight="760.0" maxWidth="702.0" prefHeight="760.0" prefWidth="702.0">
+      <AnchorPane fx:id="boardPane" layoutX="297.0" layoutY="-3.0" maxHeight="760.0" maxWidth="702.0" prefHeight="760.0" prefWidth="702.0" styleClass="body">
          <children>
             <ImageView fx:id="ownSpellTrap3" fitHeight="111.0" fitWidth="87.0" layoutX="212.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
              <ImageView fx:id="ownMonster5" fitHeight="111.0" fitWidth="87.0" layoutX="125.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
-             <ImageView fx:id="ownMonster3" fitHeight="111.0" fitWidth="87.0" layoutX="212.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
-             <ImageView fx:id="ownMonster1" fitHeight="111.0" fitWidth="87.0" layoutX="308.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
+             <ImageView fx:id="ownMonster3" fitHeight="111.0" fitWidth="87.0" layoutX="229.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
+             <ImageView fx:id="ownMonster1" fitHeight="111.0" fitWidth="87.0" layoutX="327.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownSpellTrap1" fitHeight="111.0" fitWidth="87.0" layoutX="308.0" layoutY="538.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownSpellTrap5" fitHeight="111.0" fitWidth="87.0" layoutX="125.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="ownMonster2" fitHeight="111.0" fitWidth="87.0" layoutX="403.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="ownMonster2" fitHeight="111.0" fitWidth="87.0" layoutX="420.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownSpellTrap2" fitHeight="111.0" fitWidth="87.0" layoutX="403.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownSpellTrap4" fitHeight="111.0" fitWidth="87.0" layoutX="490.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="ownMonster4" fitHeight="111.0" fitWidth="87.0" layoutX="496.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="rivalMonster4" fitHeight="111.0" fitWidth="87.0" layoutX="118.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="rivalMonster2" fitHeight="111.0" fitWidth="87.0" layoutX="221.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="rivalMonster1" fitHeight="111.0" fitWidth="87.0" layoutX="308.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="rivalMonster3" fitHeight="111.0" fitWidth="87.0" layoutX="403.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="rivalMonster5" fitHeight="111.0" fitWidth="87.0" layoutX="496.0" layoutY="245.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="ownMonster4" fitHeight="111.0" fitWidth="87.0" layoutX="516.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="rivalMonster4" fitHeight="111.0" fitWidth="87.0" layoutX="141.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="rivalMonster2" fitHeight="111.0" fitWidth="87.0" layoutX="229.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="rivalMonster1" fitHeight="111.0" fitWidth="87.0" layoutX="327.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="rivalMonster3" fitHeight="111.0" fitWidth="87.0" layoutX="420.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="rivalMonster5" fitHeight="111.0" fitWidth="87.0" layoutX="516.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="rivalSpellTrap5" fitHeight="111.0" fitWidth="87.0" layoutX="496.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="rivalSpellTrap3" fitHeight="111.0" fitWidth="87.0" layoutX="403.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="rivalSpellTrap1" fitHeight="111.0" fitWidth="87.0" layoutX="308.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" />
@@ -87,12 +87,12 @@
                </children>
             </AnchorPane>
          </children></AnchorPane>
-      <AnchorPane fx:id="leftAnchorPane" maxHeight="760.0" maxWidth="314.0" prefHeight="760.0" prefWidth="314.0">
+      <AnchorPane fx:id="leftAnchorPane" maxHeight="760.0" maxWidth="314.0" prefHeight="760.0" prefWidth="314.0" style="-fx-background-color: #5f7388;">
          <children>
             <ImageView fx:id="rivalUserAvatarImg" fitHeight="60.0" fitWidth="60.0" layoutX="7.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="rivalUserNameLbl" layoutX="6.0" layoutY="66.0" prefHeight="38.0" prefWidth="132.0">
                <font>
-                  <Font name="Bodoni MT" size="13.0" />
+                  <Font name="Bodoni MT" size="15.0" />
                </font></Label>
             <Label fx:id="rivalUserLpLbl" alignment="CENTER" layoutX="83.0" layoutY="17.0" prefHeight="38.0" prefWidth="132.0" textAlignment="CENTER" textFill="LIME">
                <font>
@@ -101,44 +101,46 @@
             <ImageView fx:id="onlineUserAvatarImg" fitHeight="60.0" fitWidth="60.0" layoutX="11.0" layoutY="657.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="onlineUserNameLbl" layoutX="6.0" layoutY="717.0" prefHeight="38.0" prefWidth="132.0">
                <font>
-                  <Font name="Bodoni MT" size="13.0" />
+                  <Font name="Bodoni MT Bold Italic" size="15.0" />
                </font></Label>
             <Label fx:id="onlineUserLpLbl" alignment="CENTER" layoutX="74.0" layoutY="668.0" prefHeight="38.0" prefWidth="149.0" textAlignment="CENTER" textFill="LIME">
                <font>
                   <Font name="Bodoni MT" size="16.0" />
                </font></Label>
-            <VBox fx:id="actionVbox" alignment="CENTER" layoutX="201.0" layoutY="151.0" prefHeight="410.0" prefWidth="100.0" spacing="2.0">
+            <VBox fx:id="actionVbox" alignment="CENTER" layoutX="237.0" layoutY="141.0" prefHeight="410.0" prefWidth="100.0" spacing="2.0">
                <children>
-                  <Button fx:id="nextPhaseBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#nextPhase" prefHeight="25.0" prefWidth="136.0" text="next phase" />
-                  <Button fx:id="summonBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="18.0" layoutY="203.0" mnemonicParsing="false" onAction="#summon" prefHeight="25.0" prefWidth="161.0" text="summon" />
-                  <Button fx:id="setBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="18.0" layoutY="215.0" mnemonicParsing="false" onAction="#set" prefHeight="25.0" prefWidth="148.0" text="set" />
-                  <Button fx:id="changeToDBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="18.0" layoutY="228.0" mnemonicParsing="false" onAction="#changeToDefense" prefHeight="50.0" prefWidth="159.0" text="change to defense mode" textOverrun="CLIP" wrapText="true" />
-                  <Button fx:id="changeToABtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="228.0" mnemonicParsing="false" onAction="#changeToAttack" prefHeight="50.0" prefWidth="159.0" text="change to attack mode" textOverrun="CLIP" wrapText="true" />
-                  <Button fx:id="flipSummonBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="178.0" mnemonicParsing="false" onAction="#flipSummon" prefHeight="25.0" prefWidth="148.0" text="flip summon" />
-                  <Button fx:id="attackBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="290.0" mnemonicParsing="false" onAction="#attack" prefHeight="25.0" prefWidth="148.0" text="attack" />
-                  <Button fx:id="attackDirectBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="303.0" mnemonicParsing="false" onAction="#attackDirect" prefHeight="25.0" prefWidth="148.0" text="attack direct" />
-                  <Button fx:id="activateEffectBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="315.0" mnemonicParsing="false" onAction="#activateEffect" prefHeight="25.0" prefWidth="148.0" text="activate effect" />
-                  <Button fx:id="surrenderBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="328.0" mnemonicParsing="false" onAction="#surrender" prefHeight="25.0" prefWidth="148.0" text="surrender" />
+                  <Button fx:id="nextPhaseBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#nextPhase" prefHeight="26.0" prefWidth="77.0" text="next phase" />
+                  <Button fx:id="summonBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="18.0" layoutY="203.0" mnemonicParsing="false" onAction="#summon" prefHeight="25.0" prefWidth="77.0" text="summon" visible="false" />
+                  <Button fx:id="setBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="18.0" layoutY="215.0" mnemonicParsing="false" onAction="#set" prefHeight="25.0" prefWidth="77.0" text="set" visible="false" />
+                  <Button fx:id="changeToDBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="18.0" layoutY="228.0" mnemonicParsing="false" onAction="#changeToDefense" prefHeight="50.0" prefWidth="159.0" text="change to defense mode" textOverrun="CLIP" visible="false" wrapText="true" />
+                  <Button fx:id="changeToABtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="228.0" mnemonicParsing="false" onAction="#changeToAttack" prefHeight="50.0" prefWidth="159.0" text="change to attack mode" textOverrun="CLIP" visible="false" wrapText="true" />
+                  <Button fx:id="flipSummonBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="178.0" mnemonicParsing="false" onAction="#flipSummon" prefHeight="25.0" prefWidth="148.0" text="flip summon" visible="false" />
+                  <Button fx:id="surrenderBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="328.0" mnemonicParsing="false" onAction="#surrender" prefHeight="26.0" prefWidth="77.0" text="surrender" />
                </children></VBox>
-            <ImageView fx:id="selectedCardImage" fitHeight="254.0" fitWidth="184.0" layoutX="14.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="phaseLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="104.0" prefHeight="123.0" prefWidth="192.0" textAlignment="CENTER" textFill="#169aff" wrapText="true">
+            <ImageView fx:id="selectedCardImage" fitHeight="291.0" fitWidth="235.0" layoutX="7.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="phaseLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="89.0" prefHeight="103.0" prefWidth="303.0" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="Bodoni MT" size="16.0" />
+                  <Font name="Bodoni MT" size="19.0" />
                </font>
             </Label>
-            <ScrollPane layoutY="551.0" prefHeight="96.0" prefWidth="291.0">
+            <ScrollPane layoutX="11.0" layoutY="551.0" prefHeight="96.0" prefWidth="291.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="96.0" prefWidth="288.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="96.0" prefWidth="292.0" style="-fx-background-color: #b7c2cf;">
                      <children>
-                        <Button layoutY="55.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="51.0" text="Send">
+                        <Button focusTraversable="false" layoutY="55.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="51.0" text="Send">
                            <font>
                               <Font name="Bodoni MT" size="12.0" />
                            </font></Button>
-                        <TextField layoutX="52.0" layoutY="55.0" prefHeight="26.0" prefWidth="223.0" promptText="message" />
+                        <TextField focusTraversable="false" layoutX="52.0" layoutY="55.0" prefHeight="26.0" prefWidth="223.0" promptText="message" />
                      </children>
                   </AnchorPane>
               </content>
             </ScrollPane>
+            <ImageView fx:id="settingBtn" fitHeight="27.0" fitWidth="33.0" layoutX="273.0" layoutY="14.0" onMouseClicked="#pressPauseBtn" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/setting.jpg" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>
