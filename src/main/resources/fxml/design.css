@@ -21,3 +21,7 @@
     -fx-background-size:1500 760;
     -fx-background-image: url("pauseBack.jpg");
 }
+.showGraveYard{
+    -fx-background-size:600 400;
+    -fx-background-image: url("showGraveyard.jpg");
+}
