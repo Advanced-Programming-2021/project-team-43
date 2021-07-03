@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="coin" stylesheets="@design.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CoinChanceView">
+   <children>
+      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="274.0" layoutY="248.0" prefHeight="131.0" prefWidth="451.0" textAlignment="CENTER" textFill="#00ff59" textOverrun="WORD_ELLIPSIS" visible="false" wrapText="true">
+         <font>
+            <Font name="Bodoni MT Italic" size="32.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect>
+      </Label>
+      <Label fx:id="label1" alignment="CENTER" contentDisplay="CENTER" layoutX="308.0" layoutY="379.0" prefHeight="87.0" prefWidth="383.0" textAlignment="CENTER" textFill="AQUA" wrapText="true">
+         <font>
+            <Font name="Bodoni MT" size="21.0" />
+         </font></Label>
+      <Button fx:id="btnY" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="414.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#yes" prefHeight="37.0" prefWidth="63.0" text="Yes" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font></Button>
+      <Button fx:id="btnN" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="491.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#no" prefHeight="38.0" prefWidth="63.0" text="No" visible="false">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font></Button>
+   </children>
+</AnchorPane>

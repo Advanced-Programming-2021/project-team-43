@@ -1708,26 +1708,19 @@ public class GameMatController {
         Player loserPlayer = Player.getPlayerByName(loserNickname);
         UserModel.getUserByUsername(winnerUsername).changeUserScore(1000);
         if (Player.isOneRound) {
-            GameMatView.showInput("The Duel is Over!\n" + winnerUsername + " won the game and the score is: 1000-0");
+            message = "The Duel is Over!\n" + winnerUsername + " won the game and the score is: 1000-0";
             UserModel.getUserByUsername(winnerUsername).changeUserCoin(1000 + winnerPlayer.getLifePoint());
             UserModel.getUserByUsername(loserUsername).changeUserCoin(100);
-//            MainMenuController.run();
         } else {
             int round = winnerPlayer.getNumberOfRound();
-            if (round == 3)
-                GameMatView.showInput("Round 1 is over!");
-            else if (round == 2)
-                GameMatView.showInput("Round 2 is over!");
-            else
-                GameMatView.showInput("Round 3 is over!");
             round--;
             if (round == 0) {
                 if (winnerPlayer.getNumberOfWin() > loserPlayer.getNumberOfWin()) {
-                    GameMatView.showInput("The Match is Over!\n" + winnerUsername  + " won the whole match with score: 3000-0");
+                    message = "The Match is Over!\n" + winnerUsername  + " won the whole match with score: 3000-0";
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(3000 + 3 * winnerPlayer.getMaxLifePoints());
                     UserModel.getUserByUsername(loserUsername).changeUserCoin(300);
                 } else {
-                    GameMatView.showInput("The Match is Over!\n" + winnerUsername + " won the whole match with score: 3000-0");
+                    message = "The Match is Over!\n" + winnerUsername + " won the whole match with score: 3000-0";
                     UserModel.getUserByUsername(loserUsername).changeUserCoin(3000 + 3 * loserPlayer.getMaxLifePoints());
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(300);
                 }
@@ -1783,7 +1776,7 @@ public class GameMatController {
                 }
                 winnerPlayer = Player.getPlayerByName(winnerNickname);
                 loserPlayer = Player.getPlayerByName(loserNickname);
-                GameMatView.showInput("Round " + round + " starts!");
+                sideMsg = "Round " + round + " starts!";
                 for (int i = 0; i < 5; i++) {
                     new HandCardZone(winnerPlayer.getNickname(), winnerPlayer.drawCard(true));
                     new HandCardZone(loserPlayer.getNickname(), loserPlayer.drawCard(true));

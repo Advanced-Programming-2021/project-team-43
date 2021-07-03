@@ -3,6 +3,7 @@ package view;
 import controller.GameMatController;
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -109,6 +110,9 @@ public class GameMatView extends Application {
     private Player rivalPlayer;
     private GameMatModel ownGameMat;
     private GameMatModel rivalGameMat;
+    private boolean isGameOver;
+    ////////////////show round number
+
 
     public static String getCommand() {
         Scanner scanner = new Scanner(System.in);
@@ -759,7 +763,7 @@ public class GameMatView extends Application {
     public void activateEffect() {
         GameMatController.activateSpellEffect(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         messagePane.setVisible(true);
-        popUpMessageLbl.setText(GameMatController.error);
+        popUpMessageLbl.setText(GameMatController.message);
         GameMatController.error = "";
         isVBoxVisible = true;
         haveQuestion = false;
@@ -767,8 +771,28 @@ public class GameMatView extends Application {
         showGameBoard();
     }
 
-    public void surrender(ActionEvent actionEvent) {
+    public void surrender() throws Exception {
+        GameMatController.endGame(onlinePlayer.getNickname());
+        popUpMessageLbl.setText(GameMatController.message);
+        isVBoxVisible = true;
+        Stage endGameStage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(popUpMessageLbl);
+        endGameStage.setScene(new Scene(messagePane));
+        endGameStage.show();
+        endGameStage.setOnHidden(e -> {
+            try {
+                shutdown();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            Platform.exit();
+        });
+    }
 
+    public void shutdown() throws Exception {
+        // cleanup code here...
+        new MainMenuView().start(gameMatStage);
     }
 
     public void setErrorLbl(Label errorLbl) {

@@ -1,0 +1,4 @@
+.body{
+ -fx-background-image: url("setting.jpg");
+ -fx-background-size: 20 10;
+}

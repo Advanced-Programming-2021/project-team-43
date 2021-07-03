@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="editDeckPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EditDeckView">
+   <children>
+      <ImageView fx:id="boughtCardImgView" fitHeight="348.0" fitWidth="244.0" layoutX="27.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="nextCardBtn" fitHeight="26.0" fitWidth="26.0" layoutX="264.0" layoutY="221.0" onMouseClicked="#nextCard" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/nextBtn.jpg" />
+         </image>
+         <effect>
+            <InnerShadow radius="9.405000000000001" width="18.62">
+               <input>
+                  <Glow />
+               </input>
+            </InnerShadow>
+         </effect>
+      </ImageView>
+      <Label fx:id="cardAmountLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="408.0" prefHeight="34.0" prefWidth="195.0">
+         <font>
+            <Font name="Bodoni MT" size="13.0" />
+         </font></Label>
+      <Button fx:id="backBtn" focusTraversable="false" layoutX="27.0" layoutY="678.0" mnemonicParsing="false" onAction="#pressBackBtn" prefHeight="34.0" prefWidth="74.0" text="Back" />
+      <Label fx:id="deckNameLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="49.0" layoutY="19.0" prefHeight="34.0" prefWidth="195.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font name="Bodoni MT" size="25.0" />
+         </font></Label>
+      <Button fx:id="addToSideBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="157.0" layoutY="476.0" mnemonicParsing="false" onAction="#addToSideDeck" prefHeight="36.0" prefWidth="120.0" text="Add To Side Deck" textAlignment="CENTER" />
+      <Button fx:id="addToMainBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="15.0" layoutY="476.0" mnemonicParsing="false" onAction="#addToMainDeck" prefHeight="36.0" prefWidth="120.0" text="Add To Main Deck" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="311.0" layoutY="3.0" prefHeight="34.0" prefWidth="127.0" text="Main Deck" textFill="RED">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font></Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="321.0" layoutY="454.0" prefHeight="34.0" prefWidth="107.0" text="Side Deck" textFill="RED">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font></Label>
+      <Button fx:id="deleteCardBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="101.0" layoutY="524.0" mnemonicParsing="false" onAction="#deleteCard" prefHeight="34.0" prefWidth="90.0" text="Delete Card" />
+      <Label fx:id="messageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="573.0" prefHeight="57.0" prefWidth="280.0">
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font></Label>
+      <AnchorPane fx:id="mainDeckPane" layoutX="333.0" layoutY="40.0" prefHeight="410.0" prefWidth="657.0" />
+      <AnchorPane fx:id="sideDeckPane" layoutX="338.0" layoutY="494.0" prefHeight="258.0" prefWidth="657.0" />
+      <ImageView fx:id="previousCardBtn" fitHeight="26.0" fitWidth="26.0" layoutX="1.0" layoutY="221.0" onMouseClicked="#previousCard" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+         <image>
+            <Image url="@../images/nextBtn.jpg" />
+         </image>
+         <effect>
+            <InnerShadow radius="9.405000000000001" width="18.62">
+               <input>
+                  <Glow />
+               </input>
+            </InnerShadow>
+         </effect>
+      </ImageView>
+   </children>
+</AnchorPane>

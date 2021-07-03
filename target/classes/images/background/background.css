@@ -1,0 +1,46 @@
+.welcomeB{
+ -fx-background-image: url("welcomeb.jpg");
+ -fx-background-size: 1000 760;
+}
+.mainMenu{
+ -fx-background-image: url("mainMenu.jpg");
+ -fx-background-size: 1000 760;
+}
+.login{
+ -fx-background-image: url("loginb.jpg");
+ -fx-background-size: 1000 760;
+}
+.profile{
+ -fx-background-image: url("pb.jpg");
+ -fx-background-size: 1000 760;
+}
+.scoreboard{
+ -fx-background-image: url("scoreboard.jpg");
+ -fx-background-size: 1000 760;
+}
+.shop{
+ -fx-background-image: url("shopback2.jpg");
+ -fx-background-size: 1000 760;
+}
+.duel{
+ -fx-background-image: url("duel.jpg");
+ -fx-background-size: 1000 760;
+}
+.exportMonster{
+   -fx-padding: 10px;
+   -fx-background-size:1000 760;
+   -fx-background-image: url("19.jpg");
+}
+.exportSpell{
+   -fx-padding: 10px;
+   -fx-background-size:1000 760;
+   -fx-background-image: url("14.jpg");
+}
+.deck{
+ -fx-background-image: url("x.jpg");
+ -fx-background-size: 1000 760;
+}
+.board{
+ -fx-background-image: url("x.jpg");
+ -fx-background-size: 1000 760;
+}

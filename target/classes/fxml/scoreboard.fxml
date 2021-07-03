@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="reza" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="scoreboard" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Scoreboard">
+    <children>
+        <VBox fx:id="vBox" alignment="TOP_CENTER" layoutX="288.0" layoutY="282.0" prefHeight="432.0" prefWidth="431.0" spacing="5.0" />
+        <Button fx:id="back" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="34.0" layoutY="665.0" mnemonicParsing="false" onAction="#Back" prefHeight="36.0" prefWidth="79.0" style="-fx-background-color: #ff9900;" text="Back">
+         <font>
+            <Font name="Bodoni MT" size="17.0" />
+         </font></Button>
+    </children>
+</AnchorPane>

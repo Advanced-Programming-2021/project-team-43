@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="back" stylesheets="@design.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RockPaperView">
+    <children>
+        <Button layoutX="33.0" layoutY="136.0" mnemonicParsing="false" onMouseClicked="#stone" prefHeight="134.0" prefWidth="136.0">
+            <graphic>
+                <ImageView fitHeight="124.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/ston.jpg" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button layoutX="33.0" layoutY="294.0" mnemonicParsing="false" onMouseClicked="#paper" prefHeight="134.0" prefWidth="136.0">
+            <graphic>
+                <ImageView fitHeight="124.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/paper.jpg" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button layoutX="33.0" layoutY="454.0" mnemonicParsing="false" onMouseClicked="#sci" prefHeight="134.0" prefWidth="136.0">
+            <graphic>
+                <ImageView fitHeight="124.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/sci.jpg" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Label fx:id="showTurn" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="616.0" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT Bold" size="30.0" />
+            </font>
+            <textFill>
+                <LinearGradient endX="1.0" endY="1.0" startX="0.3380952380952381" startY="0.08095238095238096">
+                    <stops>
+                        <Stop>
+                            <color>
+                                <Color red="0.4099999964237213" green="0.09450499713420868" blue="0.0778999999165535" />
+                            </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                            <color>
+                                <Color red="0.13432016968727112" green="0.1922057718038559" blue="0.8289473652839661" />
+                            </color>
+                        </Stop>
+                    </stops>
+                </LinearGradient>
+            </textFill>
+        </Label>
+        <Button layoutX="402.0" layoutY="136.0" mnemonicParsing="false" onMouseClicked="#stone1" prefHeight="134.0" prefWidth="136.0">
+            <graphic>
+                <ImageView fitHeight="124.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/ston.jpg" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button layoutX="402.0" layoutY="294.0" mnemonicParsing="false" onMouseClicked="#paper1" prefHeight="134.0" prefWidth="136.0">
+            <graphic>
+                <ImageView fitHeight="124.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/paper.jpg" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button layoutX="402.0" layoutY="454.0" mnemonicParsing="false" onMouseClicked="#sci1" prefHeight="134.0" prefWidth="136.0">
+            <graphic>
+                <ImageView fitHeight="124.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/sci.jpg" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Label fx:id="showTurn1" alignment="CENTER" contentDisplay="CENTER" layoutX="-10.0" layoutY="71.0" prefHeight="50.0" prefWidth="684.0" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT Bold" size="30.0" />
+            </font>
+            <textFill>
+                <LinearGradient endX="1.0" endY="1.0" startX="0.3380952380952381" startY="0.08095238095238096">
+                    <stops>
+                        <Stop>
+                            <color>
+                                <Color red="0.4099999964237213" green="0.09450499713420868" blue="0.0778999999165535" />
+                            </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                            <color>
+                                <Color red="0.1325536072254181" green="0.1960688829421997" blue="0.8947368264198303" />
+                            </color>
+                        </Stop>
+                    </stops>
+                </LinearGradient>
+            </textFill>
+        </Label>
+        <Label fx:id="showResult" alignment="CENTER" contentDisplay="CENTER" layoutX="93.0" layoutY="210.0" prefHeight="96.0" prefWidth="349.0" textAlignment="CENTER" wrapText="true">
+            <font>
+                <Font name="Bodoni MT Bold" size="30.0" />
+            </font>
+            <textFill>
+                <LinearGradient endX="0.09523809523809523" endY="0.680952380952381" startX="0.3190476190476191" startY="0.9142857142857143">
+                    <stops>
+                        <Stop>
+                            <color>
+                                <Color red="0.4099999964237213" green="0.09450499713420868" blue="0.0778999999165535" />
+                            </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                            <color>
+                                <Color red="0.12652289867401123" green="0.18944424390792847" blue="0.8815789222717285" />
+                            </color>
+                        </Stop>
+                    </stops>
+                </LinearGradient>
+            </textFill>
+        </Label>
+        <Label fx:id="ask" alignment="CENTER" contentDisplay="CENTER" layoutX="80.0" layoutY="403.0" prefHeight="50.0" prefWidth="426.0" textAlignment="CENTER" textFill="#1f00e0" wrapText="true">
+            <font>
+                <Font name="Bodoni MT" size="31.0" />
+            </font>
+        </Label>
+        <Button fx:id="yes" alignment="CENTER" contentDisplay="CENTER" layoutX="223.0" layoutY="458.0" mnemonicParsing="false" onMouseClicked="#yes" text="Yes" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Bodoni MT" size="17.0" />
+         </font></Button>
+        <Button fx:id="no" alignment="CENTER" contentDisplay="CENTER" layoutX="299.0" layoutY="458.0" mnemonicParsing="false" onMouseClicked="#no" text="No" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Bodoni MT" size="17.0" />
+         </font></Button>
+    </children>
+</AnchorPane>

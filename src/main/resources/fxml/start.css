@@ -1,0 +1,5 @@
+.chart {
+   -fx-padding: 10px;
+   -fx-background-size:1000 760;
+   -fx-background-image: url("17.jpg");
+}

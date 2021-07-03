@@ -7,7 +7,7 @@ import java.util.*;
 public class Player {
 
     private final String nickname;
-    private int lifePoint = 8000;
+    private int lifePoint = 100;//////////////
     private boolean isYourTurn;
     private int numberOfRound;
     private int counterOfTurn = 1;

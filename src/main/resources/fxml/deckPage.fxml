@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="deckPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="deck" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DeckView">
+   <children>
+      <ImageView fx:id="previousBtn" fitHeight="26.0" fitWidth="30.0" layoutX="8.0" layoutY="234.0" onMouseClicked="#previousDeck" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+         <image>
+            <Image url="@../images/nextBtn.jpg" />
+         </image>
+         <effect>
+            <InnerShadow>
+               <input>
+                  <Glow />
+               </input>
+            </InnerShadow>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="nextBtn" fitHeight="26.0" fitWidth="30.0" layoutX="268.0" layoutY="234.0" onMouseClicked="#nextDeck" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/nextBtn.jpg" />
+         </image>
+         <effect>
+            <InnerShadow>
+               <input>
+                  <Glow />
+               </input>
+            </InnerShadow>
+         </effect>
+      </ImageView>
+      <Button fx:id="newDeckBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="214.0" layoutY="463.0" mnemonicParsing="false" onAction="#createNewDeck" prefHeight="30.0" prefWidth="107.0" text="New Deck">
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font></Button>
+      <TextField fx:id="deckNameTxt" focusTraversable="false" layoutX="14.0" layoutY="463.0" prefHeight="30.0" prefWidth="188.0" promptText="Deck Name" />
+      <Label fx:id="messageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="503.0" prefHeight="55.0" prefWidth="347.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font></Label>
+      <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="29.0" layoutY="662.0" mnemonicParsing="false" onAction="#pressBackBtn" prefHeight="30.0" prefWidth="70.0" text="Back">
+         <font>
+            <Font name="Bodoni MT" size="17.0" />
+         </font></Button>
+      <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="29.0" layoutY="416.0" mnemonicParsing="false" onAction="#pressDeleteDeckBtn" text="Delete Deck" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="14.0" />
+         </font></Button>
+      <CheckBox fx:id="isActiveCheckBox" layoutX="142.0" layoutY="414.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="188.0" text="Set as Active Deck" textFill="RED">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font></CheckBox>
+      <ImageView fx:id="deckImgView" fitHeight="292.0" fitWidth="231.0" layoutX="37.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="deckInfoLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="103.0" lineSpacing="10.0" prefHeight="292.0" prefWidth="231.0" textAlignment="CENTER" textFill="#3b00ff" wrapText="true">
+         <font>
+            <Font size="19.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </Label>
+      <AnchorPane fx:id="mainDeckPane" layoutX="340.0" layoutY="7.0" prefHeight="446.0" prefWidth="652.0" />
+      <AnchorPane fx:id="sideDeckPane" layoutX="342.0" layoutY="444.0" prefHeight="311.0" prefWidth="652.0" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="pane" prefHeight="400.0" prefWidth="600.0" styleClass="showGraveYard" stylesheets="@design.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShowGraveYard">
+    <children>
+        <ImageView fx:id="cardImgView" fitHeight="210.0" fitWidth="143.0" layoutX="217.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
+        <Button layoutX="182.0" layoutY="153.0" mnemonicParsing="false" onMouseClicked="#pressPreviousBtn" text="&lt;" />
+        <Button layoutX="370.0" layoutY="153.0" mnemonicParsing="false" onMouseClicked="#pressNextBtn" text="&gt;" />
+        <ImageView fx:id="profile" fitHeight="80.0" fitWidth="81.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+        <Label layoutX="-9.0" layoutY="126.0" text="Number Of Dead Cards:" textFill="#0040bf" />
+        <Label fx:id="numberOfDeadCards" layoutX="125.0" layoutY="126.0" prefHeight="10.0" prefWidth="46.0" textFill="#1c00a8" />
+        <Label fx:id="nickName" layoutX="8.0" layoutY="109.0" prefHeight="10.0" prefWidth="87.0" textFill="#1a00ae" />
+    </children>
+</AnchorPane>

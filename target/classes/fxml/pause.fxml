@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="pause" stylesheets="@design.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Pause">
+    <children>
+        <Button layoutX="436.0" layoutY="440.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="201.0" text="EXIT GAME" onMouseClicked="#exit" />
+        <Button layoutX="436.0" layoutY="258.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="201.0" text="RESUME" onMouseClicked="#resume" />
+        <Button layoutX="436.0" layoutY="316.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="201.0" text="RESTART GAME" onMouseClicked="#restart" />
+        <Button layoutX="436.0" layoutY="373.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="201.0" text="MUTE" onMouseClicked="#mute"/>
+        <Slider fx:id="volume" layoutX="180.0" layoutY="292.0" orientation="VERTICAL"  showTickLabels="true"/>
+        <Label layoutX="77.0" layoutY="333.0" prefHeight="26.0" prefWidth="87.0" text="VOLUME" textFill="WHITE">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
