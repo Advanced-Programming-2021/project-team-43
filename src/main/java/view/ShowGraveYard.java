@@ -20,7 +20,7 @@ public class ShowGraveYard extends Application {
     private static int imageCounter = 0;
     private List<Image> cardImages = new ArrayList<>();
     public ImageView cardImgView;
-    public static String userNickname ;//fill in game mat view
+    public static String userNickname;//fill in game mat view
     public ImageView profile;
     public Label numberOfDeadCards;
     public Label nickName;
@@ -49,25 +49,31 @@ public class ShowGraveYard extends Application {
             cardImages.add(ShowCardsView.getCardImageByName(deadCard));
         }
         number.setText("0");
-        cardImgView.setImage(cardImages.get(0));
+        if (!cardImages.isEmpty()) {
+            cardImgView.setImage(cardImages.get(0));
+        }
     }
 
     public void pressPreviousBtn() {
-        if (imageCounter != 0)
-            imageCounter--;
-        else
-            imageCounter = cardImages.size() - 1;
-        number.setText(String.valueOf(imageCounter));
-        cardImgView.setImage(cardImages.get(imageCounter));
+        if (!cardImages.isEmpty()) {
+            if (imageCounter != 0)
+                imageCounter--;
+            else
+                imageCounter = cardImages.size() - 1;
+            number.setText(String.valueOf(imageCounter));
+            cardImgView.setImage(cardImages.get(imageCounter));
+        }
     }
 
     public void pressNextBtn() {
-        if (imageCounter != cardImages.size() - 1)
-            imageCounter++;
-        else
-            imageCounter = 0;
-        number.setText(String.valueOf(imageCounter));
-        cardImgView.setImage(cardImages.get(imageCounter));
+        if (!cardImages.isEmpty()) {
+            if (imageCounter != cardImages.size() - 1)
+                imageCounter++;
+            else
+                imageCounter = 0;
+            number.setText(String.valueOf(imageCounter));
+            cardImgView.setImage(cardImages.get(imageCounter));
+        }
     }
 
 }
