@@ -5,7 +5,6 @@ import java.util.*;
 
 public class HandCardZone {
 
-
     private final String playerNickname;
     private final String cardName;
     private int address;

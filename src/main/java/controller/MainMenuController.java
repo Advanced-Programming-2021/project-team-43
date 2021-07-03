@@ -1,6 +1,6 @@
 package controller;
 
-import model.*;
+import model.UserModel;
 import view.MainMenuView;
 
 import java.util.ArrayList;
@@ -12,274 +12,57 @@ public class MainMenuController {
 
     public static String username;
     public static String username2;
-    private static Matcher matcher;
+    public static int roundNumber1;
 
-    public static int run() {
-        while (true) {
-            String command = MainMenuView.getCommand();
-            command = command.trim();
-            int breaker = findMatcher(command);
-            if (breaker == 0) {
-                break;
-            }
-        }
-        return 0;
-    }
 
-    public static int findMatcher(String command) {
-        if ((matcher = getMatcher(command, "^menu \\s*enter\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^m \\s*en\\s* (.+?)$")).find()) {
-            if (matcher.group(1).equals("Duel")) {
-                duelRun();
-                return 1;
-            }
-            if (matcher.group(1).equals("Deck")) {
-                DeckController.run();
-                return 1;
-            }
-            if (matcher.group(1).equals("Scoreboard")) {
-                scoreboardRun();
-                return 1;
-            }
-            if (matcher.group(1).equals("Profile")) {
-                profileRun();
-                return 1;
-            }
-            if (matcher.group(1).equals("Shop")) {
-                ShopController.run();
-                return 1;
-            }
-            if (matcher.group(1).equals("Import/Export")) {
-                importExport();
-                return 1;
-            }
-            MainMenuView.showInput("invalid command");
-            return 1;
-        }
-        if (getMatcher(command, "^menu\\s* show-current$").find() || getMatcher(command, "^m\\s* s-c$").find()) {
-            MainMenuView.showInput("Main");
-            return 1;
-        }
-        if (getMatcher(command, "^menu \\s*exit$").find() || getMatcher(command, "^m \\s*ex$").find()) {
-            return 0;
-        }
-        if (getMatcher(command, "^user \\s*logout$").find()) {
-            MainMenuView.showInput("user logged out successfully!");
-            return 0;
-        }
-        if ((matcher = getMatcher(command, "^increase\\s* --money\\s* (\\d+)$")).find() || (matcher = getMatcher(command, "^increase\\s* -m\\s* (\\d+)$")).find()) {
-            increaseMoney(Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        MainMenuView.showInput("invalid command");
-        return 1;
-    }
-
-    public static Matcher getMatcher(String command, String regex) {
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(command);
-    }
-
-    public static void increaseMoney(int money) {
-        UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
-        userModel.changeUserCoin(money);
-    }
-
-    public static int importExport() {
-        while (true) {
-            String command = MainMenuView.getCommand();
-            if ((matcher = getMatcher(command, "export\\s+card\\s+(.+?)\\s+as\\s+(Monster|Spell|Trap)")).find() || (matcher = getMatcher(command, "ex\\s+c\\s+(.+?)\\s+as\\s+(Monster|Spell|Trap)")).find()) {
-                if (Json.exportMonsterCad() != null)
-                    UserModel.importedMonsterCards = Json.exportMonsterCad();
-                if (Json.exportSpellCard() != null)
-                    UserModel.importedSpellCards = Json.exportSpellCard();
-                if (Json.exportTrapCard() != null)
-                    UserModel.importedTrapCards = Json.exportTrapCard();
-                String type = matcher.group(2);
-                String answer;
-                if (type.equals("Monster")) {
-                    do {
-                        MainMenuView.showInput("Please enter a command like this to complete the export: name (sth) attribute (sth) level (num) monsterType (sth) attack (num) defend (num) cardType (sth) description (sth) price (num)");
-                        answer = MainMenuView.getCommand();
-                    } while (!(matcher = getMatcher(answer, "name\\s+(.+?)\\s+attribute\\s+(.+?)\\s+level\\s+(\\d+)\\s+monsterType\\s+(.+?)\\s+attack\\s+(\\d+)\\s+defend\\s+(\\d+)\\s+cardType\\s+(.+?)\\s+description\\s+(.+?)\\s+price\\s+(\\d+)")).find());
-                    MonsterCard monster = new MonsterCard(matcher.group(2), matcher.group(1), Integer.parseInt(matcher.group(3)), matcher.group(4), Integer.parseInt(matcher.group(5)), Integer.parseInt(matcher.group(6)), "Monster", matcher.group(7), false, matcher.group(8), Integer.parseInt(matcher.group(9)));
-                    UserModel.importedMonsterCards.add(monster);
-                    Json.importMonsterCard(UserModel.importedMonsterCards);
-                    MainMenuView.showInput("Exported Successfully!");
-                }
-                if (type.equals("Spell")) {
-                    do {
-                        MainMenuView.showInput("Please enter a command like this to complete the export: name (sth) description (sth) icon (sth) status (sth) price (num)");
-                        answer = MainMenuView.getCommand();
-                    } while (!(matcher = getMatcher(answer, "name\\s+(.+?)\\s+description\\s+(.+?)\\s+icon\\s+(.+?)\\s+status\\s+(.+?)\\s+price\\s+(\\d+)")).find());
-                    SpellCard spell = new SpellCard(matcher.group(1), "Spell", matcher.group(3), matcher.group(2), Integer.parseInt(matcher.group(5)), matcher.group(4));
-                    UserModel.importedSpellCards.add(spell);
-                    Json.importSpellCard(UserModel.importedSpellCards);
-                    MainMenuView.showInput("Exported Successfully!");
-                }
-                if (type.equals("Trap")) {
-                    do {
-                        MainMenuView.showInput("Please enter a command like this to complete the export: name (sth) description (sth) icon (sth) status (sth) price (num)");
-                        answer = MainMenuView.getCommand();
-                    } while (!(matcher = getMatcher(answer, "name\\s+(.+?)\\s+description\\s+(.+?)\\s+icon\\s+(.+?)\\s+status\\s+(.+?)\\s+price\\s+(\\d+)")).find());
-                    TrapCard trap = new TrapCard(matcher.group(1), "Trap", matcher.group(3), matcher.group(2), Integer.parseInt(matcher.group(5)), matcher.group(4));
-                    UserModel.importedTrapCards.add(trap);
-                    Json.importTrapCard(UserModel.importedTrapCards);
-                    MainMenuView.showInput("Exported Successfully!");
-                }
-                continue;
-            }
-            if ((matcher = getMatcher(command, "import\\s+card\\s+(.+?)\\s+as\\s+(Monster|Spell|Trap)")).find() || (matcher = getMatcher(command, "im\\s+c\\s+(.+?)\\s+as\\s+(Monster|Spell|Trap)")).find()) {
-                String type = matcher.group(2);
-                if (type.equals("Monster"))
-                    UserModel.importedMonsterCards = Json.exportMonsterCad();
-                if (type.equals("Spell"))
-                    UserModel.importedSpellCards = Json.exportSpellCard();
-                if (type.equals("Trap"))
-                    UserModel.importedTrapCards = Json.exportTrapCard();
-                MainMenuView.showInput("Imported Successfully!");
-                continue;
-            }
-            if (getMatcher(command, "^menu\\s* exit$").find() || getMatcher(command, "^m\\s+ex$").find())
-                break;
-            if (getMatcher(command, "^menu\\s* show-current$").find() || getMatcher(command, "^m\\s* s-c$").find()) {
-                MainMenuView.showInput("Import/Export");
-                continue;
-            }
-            if ((matcher = getMatcher(command, "^menu\\s* enter\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^m\\s* en\\s* (.+?)$")).find()) {
-                if (matcher.group(1).equals("Duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("Deck") || matcher.group(1).equals("Profile") || matcher.group(1).equals("Shop") || matcher.group(1).equals("Scoreboard")) {
-                    MainMenuView.showInput("menu navigation is not possible");
-                } else {
-                    MainMenuView.showInput("invalid command");
-                }
-                continue;
-            }
-            MainMenuView.showInput("invalid command");
-        }
-        return 0;
-    }
-
-    public static int duelRun() {
-        while (true) {
-            String command = MainMenuView.getCommand();
-            command = command.trim();
-            int breaker = duelFindMatcher(command);
-            if (breaker == 0) {
-                break;
-            }
-        }
-        return 0;
-    }
-
-    public static int duelFindMatcher(String command) {
-        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--second-player\\s+(.+?)\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-s-p\\s+(.+?)\\s+-r\\s+(\\d+)$")).find()) {
-            duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--second-player\\s+(.+?)\\s+--new\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-s-p\\s+(.+?)\\s+-n\\s+-r\\s+(\\d+)$")).find()) {
-            duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--second-player\\s+(.+?)\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-s-p\\s+(.+?)\\s+-n\\s*$")).find()) {
-            duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--rounds\\s+(\\d+)--second-player\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-r\\s+(\\d+)\\s+-s-p\\s+(.+?)$")).find()) {
-            duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--second-player\\s+(.+?)\\s+--rounds\\s+(\\d+)\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-s-p\\s+(.+?)\\s+-r\\s+(\\d+)\\s+-n$")).find()) {
-            duelMenu(matcher.group(1), Integer.parseInt(matcher.group(2)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--new\\s+--second-player\\s+(.+?)$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-n\\s+-s-p\\s+(.+?)$")).find()) {
-            duelMenu(matcher.group(2), Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--ai\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-ai\\s+-r\\s+(\\d+)$")).find()) {
-            duelMenu("AI", Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--new\\s+--rounds\\s+(\\d+)\\s+--ai$")).find() || (matcher = getMatcher(command, "^duel\\s+-n\\s+-r\\s+(\\d+)\\s+-ai$")).find()) {
-            duelMenu("AI", Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--ai\\s+--rounds\\s+(\\d+)\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-ai\\s+-r\\s+(\\d+)\\s+-n$")).find()) {
-            duelMenu("AI", Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--ai\\s+--new$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-ai\\s+-n$")).find()) {
-            duelMenu("AI", Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--rounds\\s+(\\d+)\\s+--new\\s+--ai$")).find() || (matcher = getMatcher(command, "^duel\\s+-r\\s+(\\d+)\\s+-n\\s+-ai$")).find()) {
-            duelMenu("AI", Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^duel\\s+--ai\\s+--new\\s+--rounds\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^duel\\s+-ai\\s+-n\\s+-r\\s+(\\d+)$")).find()) {
-            duelMenu("AI", Integer.parseInt(matcher.group(1)));
-            return 1;
-        }
-        if (getMatcher(command, "^menu \\s*show-current$").find() || getMatcher(command, "^m \\s*s-c$").find()) {
-            MainMenuView.showInput("Duel Menu");
-            return 1;
-        }
-        if (getMatcher(command, "^menu \\s*exit$").find() || getMatcher(command, "^m \\s*ex$").find()) {
-            return 0;
-        }
-        if ((matcher = getMatcher(command, "^menu\\s* enter \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^m\\s* en \\s*(.+?)$")).find()) {
-            if (matcher.group(1).equals("Duel") || matcher.group(1).equals("Deck") || matcher.group(1).equals("Profile") || matcher.group(1).equals("Shop") || matcher.group(1).equals("Scoreboard") || matcher.group(1).equals("Import/Export")) {
-                MainMenuView.showInput("menu navigation is not possible");
-            } else {
-                MainMenuView.showInput("invalid command");
-            }
-            return 1;
-        }
-        MainMenuView.showInput("invalid command");
-        return 1;
-    }
-
-    public static void duelMenu(String playerName, int roundNumber) {
+    public static String duelMenu(String playerName, int roundNumber) {
         if (UserModel.isRepeatedUsername(playerName)) {
             UserModel user1 = UserModel.getUserByUsername(MainMenuController.username);
             UserModel user2 = UserModel.getUserByUsername(playerName);
+
             if (!user1.getActiveDeck().equals("")) {
+
                 if (!user2.getActiveDeck().equals("")) {
+
                     if (user1.userAllDecks.get(user1.getActiveDeck()).validOrInvalid().equals("valid")) {
+
                         if (user2.userAllDecks.get(user2.getActiveDeck()).validOrInvalid().equals("valid")) {
+
                             if (roundNumber == 1 || roundNumber == 3) {
                                 username2 = playerName;
-                                String firstPlayer;
-                                String secondPlayer;
-                                if (playerName.equals("AI")) {
-                                    firstPlayer = username;
-                                    secondPlayer = "AI";
-                                } else {
-                                    firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
-                                    if (firstPlayer.equals(playerName))
-                                        secondPlayer = MainMenuController.username;
-                                    else
-                                        secondPlayer = playerName;
-                                }
-                                new Player(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(firstPlayer).userAllDecks.get(UserModel.getUserByUsername(firstPlayer).getActiveDeck()), true, roundNumber);
-                                new Player(UserModel.getUserByUsername(secondPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).userAllDecks.get(UserModel.getUserByUsername(secondPlayer).getActiveDeck()), false, roundNumber);
-                                GameMatController.run(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).getNickname());
+                                roundNumber1 = roundNumber;
+//                                String firstPlayer = PickFirstPlayer.chose(MainMenuController.username, playerName);
+//                                String secondPlayer;
+//                                if (firstPlayer.equals(playerName)) {
+//                                    secondPlayer = MainMenuController.username;
+//                                } else {
+//                                    secondPlayer = playerName;
+//                                }
+
+//                                GameMatController.commandController(UserModel.getUserByUsername(firstPlayer).getNickname(), UserModel.getUserByUsername(secondPlayer).getNickname());
+                                return "00";
                             } else {
-                                MainMenuView.showInput("number of rounds is not supported");
+                                return ("number of rounds is not supported");
                             }
+
+
                         } else {
-                            MainMenuView.showInput(user2.getUsername() + "’s deck is invalid");
+                            return (user2.getUsername() + "’s deck is invalid");
                         }
+
                     } else {
-                        MainMenuView.showInput(user1.getUsername() + "’s deck is invalid");
+                        return (user1.getUsername() + "’s deck is invalid");
                     }
+
                 } else {
-                    MainMenuView.showInput(user2.getUsername() + " has no active deck");
+                    return (user2.getUsername() + " has no active deck");
                 }
             } else {
-                MainMenuView.showInput(user1.getUsername() + " has no active deck");
+                return (user1.getUsername() + " has no active deck");
             }
+
         } else {
-            MainMenuView.showInput("there is no player with this username");
+            return ("there is no player with this username");
         }
     }
 
@@ -296,50 +79,89 @@ public class MainMenuController {
     }
 
     public static int profile(String command) {
-        if (getMatcher(command, "^menu\\s* exit$").find() || getMatcher(command, "^m\\s* ex$").find()) {
+        Pattern pattern = Pattern.compile("^menu\\s* exit$");
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
             return 0;
         }
-        if (getMatcher(command, "^menu \\s*show-current$").find() || getMatcher(command, "^m \\s*s-c$").find()) {
+
+        pattern = Pattern.compile("^menu \\s*show-current$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
             MainMenuView.showInput("Profile Menu");
             return 1;
         }
-        if ((matcher = getMatcher(command, "^menu \\s*enter (.+?)$")).find() || (matcher = getMatcher(command, "^m \\s*en (.+?)$")).find()) {
-            if (matcher.group(1).equals("Duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("Deck") || matcher.group(1).equals("Profile") || matcher.group(1).equals("Shop") || matcher.group(1).equals("Scoreboard")) {
+
+
+        pattern = Pattern.compile("^menu \\s*enter (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
                 MainMenuView.showInput("menu navigation is not possible");
             } else {
                 MainMenuView.showInput("invalid command");
             }
             return 1;
         }
-        if ((matcher = getMatcher(command, "^profile\\s* change\\s* --nickname (.+?)$")).find() || (matcher = getMatcher(command, "^profile\\s* change\\s* -n (.+?)$")).find()) {
+
+
+        pattern = Pattern.compile("^profile\\s* change\\s* --nickname (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
             changeNickname(matcher.group(1));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^profile\\s+change\\s+--password\\s+--current\\s+(.+?)\\s+--new\\s+(.+?)$")).find() || (matcher = getMatcher(command, "^profile\\s+change\\s+-p\\s+-c\\s+(.+?)\\s+-new\\s+(.+?)$")).find()) {
+
+
+        pattern = Pattern.compile("^profile\\s* change\\s* --password \\s*--current \\s*(.+?)\\s* --new\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
             changePassword(matcher.group(1), matcher.group(2));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^profile\\s+change\\s+--new\\s+(.+?)\\s+--password\\s+--current\\s+(.+?)$")).find() || (matcher = getMatcher(command, "^profile\\s+change\\s+-new\\s+(.+?)\\s+-p\\s+-c\\s+(.+?)$")).find()) {
-            changePassword(matcher.group(2), matcher.group(1));
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^profile\\s+change\\s+--password\\s+--new\\s+(.+?)\\s+--current\\s+(.+?)$")).find() || (matcher = getMatcher(command, "^profile\\s+change\\s+-p\\s+-n\\s+(.+?)\\s+-c\\s+(.+?)$")).find()) {
+
+        pattern = Pattern.compile("^profile\\s* change\\s* --current\\s* (.+?)\\s* --password \\s*--new\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
             changePassword(matcher.group(1), matcher.group(2));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^profile\\s+change\\s+--new\\s+(.+?)\\s+--current\\s+(.+?)\\s+--password$")).find() || (matcher = getMatcher(command, "^profile\\s+change\\s+-n\\s+(.+?)\\s+-c\\s+(.+?)\\s+-p$")).find()) {
+
+
+        pattern = Pattern.compile("^profile\\s* change\\s* --current\\s* (.+?)\\s* --new\\s* (.+?) \\s*--password$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            changePassword(matcher.group(1), matcher.group(2));
+            return 1;
+        }
+
+
+        pattern = Pattern.compile("^profile\\s* change\\s* --password\\s* --new\\s* (.+?) \\s*--current\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
             changePassword(matcher.group(2), matcher.group(1));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^profile\\s+change\\s+--current\\s+(.+?)\\s+--new\\s+(.+?)\\s+--password$")).find() || (matcher = getMatcher(command, "^profile\\s+change\\s+-c\\s+(.+?)\\s+-n\\s+(.+?)\\s+-p$")).find()) {
+
+
+        pattern = Pattern.compile("^profile \\s*change\\s* --new\\s* (.+?)\\s* --password\\s* --current\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
             changePassword(matcher.group(2), matcher.group(1));
             return 1;
         }
-        if ((matcher = getMatcher(command, "^profile\\s+change\\s+--current\\s+(.+?)\\s+--password\\s+--new\\s+(.+?)$")).find() || (matcher = getMatcher(command, "^profile\\s+change\\s+-c\\s+(.+?)\\s+-p\\s+-n\\s+(.+?)$")).find()) {
+
+
+        pattern = Pattern.compile("^profile \\s*change\\s* --new\\s* (.+?) \\s*--current\\s* (.+?) \\s*--password$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
             changePassword(matcher.group(2), matcher.group(1));
             return 1;
         }
+
+
         MainMenuView.showInput("invalid command");
+
         return 1;
     }
 
@@ -354,7 +176,7 @@ public class MainMenuController {
         }
     }
 
-    public static int scoreboardRun() {
+    public static void scoreboardRun() {
         while (true) {
             String command = MainMenuView.getCommand();
             command = command.trim();
@@ -363,34 +185,45 @@ public class MainMenuController {
                 break;
             }
         }
-        return 0;
     }
 
     public static int scoreboard(String command) {
-        if (getMatcher(command, "^scoreboard \\s*show$").find() || getMatcher(command, "^s\\s+s$").find()) {
+        Pattern pattern = Pattern.compile("^scoreboard \\s*show$");
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
             showScoreboard();
             return 1;
         }
-        if (getMatcher(command, "^menu\\s* exit$").find() || getMatcher(command, "^m\\s* ex$").find()) {
+
+        pattern = Pattern.compile("^menu\\s* exit$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+
             return 0;
         }
-        if ((matcher = getMatcher(command, "^menu\\s* enter\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^m\\s* en\\s* (.+?)$")).find()) {
-            if (matcher.group(1).equals("Duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("Deck") || matcher.group(1).equals("Profile") || matcher.group(1).equals("Shop") || matcher.group(1).equals("Scoreboard")) {
+        pattern = Pattern.compile("^menu\\s* enter\\s* (.+?)$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            if (matcher.group(1).equals("duel") || matcher.group(1).equals("Import/Export") || matcher.group(1).equals("deck") || matcher.group(1).equals("profile") || matcher.group(1).equals("shop") || matcher.group(1).equals("scoreboard")) {
                 MainMenuView.showInput("menu navigation is not possible");
             } else {
                 MainMenuView.showInput("invalid command");
             }
             return 1;
         }
-        if (getMatcher(command, "^menu\\s* show-current$").find() || getMatcher(command, "^m\\s* s-c$").find()) {
+
+        pattern = Pattern.compile("^menu\\s* show-current$");
+        matcher = pattern.matcher(command);
+        if (matcher.find()) {
             MainMenuView.showInput("Score board Menu");
             return 1;
         }
+
         MainMenuView.showInput("invalid command");
         return 1;
     }
 
-    public static void showScoreboard() {
+    public static ArrayList<String> showScoreboard() {
         String[] keysUsers;
         String temp;
         keysUsers = UserModel.allUsernames.toArray(new String[0]);
@@ -401,6 +234,7 @@ public class MainMenuController {
                     keysUsers[y] = keysUsers[x];
                     keysUsers[x] = temp;
                 }
+
                 if (UserModel.getUserByUsername(keysUsers[x]).getUserScore() == UserModel.getUserByUsername(keysUsers[y]).getUserScore()) {
                     if (keysUsers[x].compareToIgnoreCase(keysUsers[y]) > 0) {
                         temp = keysUsers[x];
@@ -410,25 +244,33 @@ public class MainMenuController {
                 }
             }
         }
-        int rank = 1;
+        int k = 1;
+        ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < keysUsers.length; i++) {
-            MainMenuView.showInput((rank) + "- " + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
-            if (i < keysUsers.length - 1 && UserModel.getUserByUsername(keysUsers[i]).getUserScore() != UserModel.getUserByUsername(keysUsers[i + 1]).getUserScore())
-                rank++;
+            if (keysUsers[i].equals("AI")) continue;
+            arrayList.add(keysUsers[i]);
+            MainMenuView.showInput((k) + "_" + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
+            k++;
+
         }
+
+        return arrayList;
     }
 
     public static void changePassword(String currentPassword, String newPassword) {
-        if (!UserModel.getUserByUsername(MainMenuController.username).getPassword().equals(currentPassword))
-            MainMenuView.showInput("current password is invalid");
-        else if (currentPassword.equals(newPassword))
+        if (currentPassword.equals(newPassword)) {
             MainMenuView.showInput("please enter a new password");
-        else {
+            return;
+        }
+        if (UserModel.getUserByUsername(MainMenuController.username).getPassword().equals(currentPassword)) {
             UserModel user = UserModel.getUserByUsername(MainMenuController.username);
             user.changePassword(newPassword);
             UserModel.allUsersInfo.replace(MainMenuController.username, user);
             MainMenuView.showInput("password changed successfully!");
+        } else {
+            MainMenuView.showInput("current password is invalid");
         }
+
     }
 
 }

@@ -93,7 +93,7 @@ public class DeckModel {
     }
 
     public String validOrInvalid(){
-        if (getMainAllCardNumber() > 4){//////////////
+        if (getMainAllCardNumber() > 4){/////////////////////////////////////////////////////////////////////////////////
             return "valid";}
         return "invalid";
     }

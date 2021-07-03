@@ -19,7 +19,7 @@ public class Player {
     private boolean canBattle;
     public final List<String> playerMainDeck = new ArrayList<>();
     public final List<String> playerSideDeck = new ArrayList<>();
-    public final List<Integer> allLifePoints = new ArrayList<>();
+    private final List<Integer> allLifePoints = new ArrayList<>();
     public static final Map<String, Player> allPlayers = new HashMap<>();
     private static int randomCardNumber;
     public static boolean isOneRound;
@@ -45,6 +45,7 @@ public class Player {
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
+        allLifePoints.add(lifePoint);
         playerMainDeck.clear();
         playerSideDeck.clear();
         HandCardZone.allHandCards.get(nickname).clear();
@@ -84,13 +85,16 @@ public class Player {
 
     public int exchangeCard(int cardAddressInMainDeck, int cardAddressInSideDeck) {
         if (cardAddressInSideDeck < playerSideDeck.size() && cardAddressInSideDeck > -1 && cardAddressInMainDeck < playerMainDeck.size() && cardAddressInMainDeck > -1) {
-            String mainCard = playerMainDeck.get(cardAddressInMainDeck);
-            String sideCard = playerSideDeck.get(cardAddressInSideDeck);
-            playerSideDeck.remove(cardAddressInSideDeck);
-            playerMainDeck.remove(cardAddressInMainDeck);
-            playerMainDeck.add(sideCard);
-            playerSideDeck.add(mainCard);
-            return 1;
+            if (playerMainDeck.get(cardAddressInMainDeck) != null && playerSideDeck.get(cardAddressInSideDeck) != null) {
+                String mainCard = playerMainDeck.get(cardAddressInMainDeck);
+                String sideCard = playerSideDeck.get(cardAddressInSideDeck);
+                playerSideDeck.remove(cardAddressInSideDeck);
+                playerMainDeck.remove(cardAddressInMainDeck);
+                playerMainDeck.add(sideCard);
+                playerSideDeck.add(mainCard);
+                return 1;
+            } else
+                return 0;
         }
         return 0;
     }
@@ -209,10 +213,6 @@ public class Player {
         else
             for (int i = 0; i < playerSideDeck.size(); i++)
                 GameMatView.showInput(i + 1 + ". " + playerSideDeck.get(i));
-    }
-
-    public void addMaxLp() {
-        allLifePoints.add(lifePoint);
     }
 
     public int getMaxLifePoints() {
