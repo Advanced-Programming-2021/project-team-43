@@ -46,7 +46,8 @@ public class ShowGraveYard extends Application {
         numberOfDeadCards.setText(String.valueOf(deadCards.size()));
         new ShowCardsView().setAllCards();
         for (String deadCard : deadCards) {
-            cardImages.add(ShowCardsView.getCardImageByName(deadCard));
+            String[] split = deadCard.split("/");
+            cardImages.add(ShowCardsView.getCardImageByName(split[0]));
         }
         number = new Label("0");
         if (!cardImages.isEmpty()) {

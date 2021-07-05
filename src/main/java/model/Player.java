@@ -39,6 +39,7 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
+        new HandCardZone(nickname, "Wattaildragon");///////////////
         for (int i = 0; i < 5; i++)
             new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
@@ -52,7 +53,7 @@ public class Player {
         MonsterZoneCard.allMonsterCards.get(nickname).clear();
         SpellTrapZoneCard.allSpellTrapCards.get(nickname).clear();
         numberOfRound--;
-        lifePoint = 8000;
+        lifePoint = 100;/////////////////////////////////////////////////////////////////////////////////////////////////////////
         this.isYourTurn = isYourTurn;
         canDrawCard = !isYourTurn;
         canBattle = !isYourTurn;
@@ -194,13 +195,13 @@ public class Player {
     public int getNumberOfMainDeckCards() {
         return playerMainDeck.size();
     }
-
+    public static GameMatView gameMatView;
     public void showMainDeck() {
         if (playerMainDeck.isEmpty())
-            GameMatView.showInput("Main Deck Empty!");
+            gameMatView.showInput("Main Deck Empty!");
         else
             for (int i = 0; i < playerMainDeck.size(); i++)
-                GameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
+                gameMatView.showInput(i + 1 + ". " + playerMainDeck.get(i));
     }
 
     public int getNumberOfSideDeckCards() {
@@ -209,10 +210,10 @@ public class Player {
 
     public void showSideDeck() {
         if (playerSideDeck.isEmpty())
-            GameMatView.showInput("Side Deck Empty!");
+            gameMatView.showInput("Side Deck Empty!");
         else
             for (int i = 0; i < playerSideDeck.size(); i++)
-                GameMatView.showInput(i + 1 + ". " + playerSideDeck.get(i));
+                gameMatView.showInput(i + 1 + ". " + playerSideDeck.get(i));
     }
 
     public int getMaxLifePoints() {

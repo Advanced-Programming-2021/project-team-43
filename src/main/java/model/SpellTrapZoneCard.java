@@ -1,4 +1,8 @@
 package model;
+import controller.GameMatController;
+import view.MoveCard;
+import view.ShowCardsView;
+
 import java.util.*;
 
 
@@ -6,6 +10,7 @@ public class SpellTrapZoneCard {
 
     private final String playerNickname;
     private final String spellTrapName;
+    private final String secondName;
     private String mode;
     private final String kind;
     private final String icon;
@@ -19,6 +24,7 @@ public class SpellTrapZoneCard {
         this.playerNickname = playerNickname;
         this.spellTrapName = spellTrapName;
         this.mode = mode;
+        this.secondName = SpellCard.getSpellCardByName(spellTrapName).getSecondName();
         this.kind = Card.getCardsByName(spellTrapName).getCardModel();
         if (kind.equals("Spell"))
             this.icon = SpellCard.getSpellCardByName(spellTrapName).getIcon();
@@ -54,6 +60,10 @@ public class SpellTrapZoneCard {
 
     public int getTurnCounter() {
         return turnCounter;
+    }
+
+    public String getSecondName() {
+        return secondName;
     }
 
     public void setTurnCounter(int turnCounter) {

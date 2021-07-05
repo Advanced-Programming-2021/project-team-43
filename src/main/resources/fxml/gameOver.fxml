@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GameOverView">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="184.0" prefWidth="472.0" text="Game Over" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font name="Algerian" size="46.0" />
+         </font>
+         <effect>
+            <Bloom threshold="0.0" />
+         </effect></Label>
+      <Label fx:id="resultLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="112.0" prefHeight="126.0" prefWidth="465.0" textAlignment="CENTER" textFill="#ff143d">
+         <font>
+            <Font name="Bodoni MT" size="23.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

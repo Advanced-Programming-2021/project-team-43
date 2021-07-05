@@ -174,34 +174,24 @@ public class GameMatController {
             showGameBoard();
             return 27;
         }
-        if (getMatcher(command, "^card\\s+show\\s+--selected$").find() || getMatcher(command, "^c\\s+s\\s+-s$").find()) {
-            showSelectedCard();
-            backCommand();
-            return 28;
-        }
         if (getMatcher(command, "^show\\s+graveyard$").find() || getMatcher(command, "^s\\s+g$").find()) {
             GameMatModel.getGameMatByNickname(onlineUser).showGraveyard();
-            backCommand();
             return 29;
         }
         if (getMatcher(command, "^show\\s+graveyard\\s+--opponent$").find() || getMatcher(command, "^s\\s+g\\s+-o$").find()) {
             GameMatModel.getGameMatByNickname(rivalUser).showGraveyard();
-            backCommand();
             return 30;
         }
         if (getMatcher(command, "^show\\s+main\\s+deck$").find() || getMatcher(command, "^s\\s+m\\s+d$").find()) {
             Player.getPlayerByName(onlineUser).showMainDeck();
-            backCommand();
             return 31;
         }
         if (getMatcher(command, "^show\\s+side\\s+deck$").find() || getMatcher(command, "^s\\s+s\\s+d$").find()) {
             Player.getPlayerByName(onlineUser).showSideDeck();
-            backCommand();
             return 32;
         }
         if (getMatcher(command, "^show\\s+my\\s+hand$").find() || getMatcher(command, "^s\\s+h$").find()) {
             HandCardZone.showHandCard(onlineUser);
-            backCommand();
             return 33;
         }
         if (getMatcher(command, "^surrender$").find()) {
@@ -613,7 +603,7 @@ public class GameMatController {
         }
         int address;
         while (true) {
-           ////// message = "Please enter the address of a Ritual Monster in your hand to summon: ";
+            ////// message = "Please enter the address of a Ritual Monster in your hand to summon: ";
             String response = GameMatView.getCommand();
             if (response.equals("cancel"))
                 return -1;
@@ -963,7 +953,7 @@ public class GameMatController {
         if (result == 1)
             return 1;
         int damage;
-        String rivalMonsterName = rivalMonster.getMonsterName();
+        String rivalMonsterName = rivalMonster.getSecondName();
         if (rivalMonsterName.equals("Suijin")) {
             if (MonsterEffect.suijin(rivalMonster) == 1) {
                 selectedOwnCard = "";
@@ -1015,7 +1005,7 @@ public class GameMatController {
             }
             else {
                 Player.getPlayerByName(onlineUser).changeLifePoint(damage);
-                if (ownMonster.getMonsterName().equals("Exploder Dragon")) {
+                if (ownMonster.getSecondName().equals("Exploder Dragon")) {
                     message = "Exploder Dragon Effect is activated!";
                     rivalMonster.removeMonsterFromZone();
                     ownMonster.removeMonsterFromZone();
@@ -1042,7 +1032,7 @@ public class GameMatController {
                     MonsterEffect.marshmallon(rivalMonster, onlineUser);
                 }
                 if (rivalMonster.getMode().equals("DH")) {
-                    if (ownMonster.getMonsterName().equals("The Calculator"))
+                    if (ownMonster.getSecondName().equals("The Calculator"))
                         MonsterEffect.theCalculator(onlineUser, ownMonster);
                     rivalMonster.setMode("DO");
                     MonsterEffect.changeModeEffectController(rivalMonster, rivalUser, onlineUser);
@@ -1063,7 +1053,7 @@ public class GameMatController {
                     if (rivalMonsterName.equals("Marshmallon")) {
                         MonsterEffect.marshmallon(rivalMonster, onlineUser);
                     }
-                    if (ownMonster.getMonsterName().equals("The Calculator"))
+                    if (ownMonster.getSecondName().equals("The Calculator"))
                         MonsterEffect.theCalculator(onlineUser, ownMonster);
                     rivalMonster.setMode("DO");
                     MonsterEffect.changeModeEffectController(rivalMonster, rivalUser, onlineUser);
@@ -1078,7 +1068,7 @@ public class GameMatController {
                     if (rivalMonsterName.equals("Marshmallon")) {
                         MonsterEffect.marshmallon(rivalMonster, onlineUser);
                     }
-                    if (ownMonster.getMonsterName().equals("The Calculator"))
+                    if (ownMonster.getSecondName().equals("The Calculator"))
                         MonsterEffect.theCalculator(onlineUser, ownMonster);
                     rivalMonster.setMode("DO");
                     MonsterEffect.changeModeEffectController(rivalMonster, rivalUser, onlineUser);
@@ -1262,9 +1252,9 @@ public class GameMatController {
                 message = "I want to activate a Spell!";
                 showGameBoard();
                 int result = SpellEffect.normalEffectController(ownSpell, onlineUser, rivalUser);
-                if (!ownSpell.getSpellTrapName().equals("Swords of Revealing Light"))
+                if (!ownSpell.getSecondName().equals("Swords of Revealing Light"))
                     ownSpell.removeSpellTrapFromZone();
-                else if (ownSpell.getSpellTrapName().equals("Swords of Revealing Light") && result == 0)
+                else if (ownSpell.getSecondName().equals("Swords of Revealing Light") && result == 0)
                     ownSpell.removeSpellTrapFromZone();
                 return result;
             case "Quick-play":
@@ -1841,103 +1831,6 @@ public class GameMatController {
         for (int i = 0; i < 6; i++)
             System.out.print(HandCardZone.getNumberOfFullHouse(onlineUser) + "   ");
         GameMatView.showInput("\n" + onlineUser + " : " + onlinePlayer.getLifePoint());
-    }
-
-    public static void showSelectedCard() {
-        if (errorOfNoCardSelected("rival")) {
-            String[] split = selectedRivalCard.split("/");
-            String cardModel = Card.getCardsByName(split[1]).getCardModel();
-            if (split[0].equals("Monster")) {
-                if (MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(split[2]), rivalUser).getMode().equals("DH"))
-                    GameMatView.showInput("card is not visible");
-                else
-                    GameMatView.showInput(MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(split[2]), rivalUser).toString());
-            }
-            else if (split[0].equals("Spell")) {
-                if (SpellTrapZoneCard.getSpellCardByAddress(Integer.parseInt(split[2]), rivalUser).getMode().equals("H"))
-                    GameMatView.showInput("card is not visible");
-                else if (cardModel.equals("Spell")){
-                    SpellCard spell = SpellCard.getSpellCardByName(split[1]);
-                    GameMatView.showInput("Name: " + split[1] + "\n" +
-                            "Spell" + "\n" +
-                            "Type: " + spell.getIcon() + "\n" +
-                            "Description: " + spell.getDescription());
-                }
-                else {
-                    TrapCard trap = TrapCard.getTrapCardByName(split[1]);
-                    GameMatView.showInput("Name: " + split[1] + "\n" +
-                            "Trap" + "\n" +
-                            "Type: " + trap.getIcon() + "\n" +
-                            "Description: " + trap.getDescription());
-                }
-            }
-            else if (cardModel.equals("Monster")) {
-                MonsterCard monster = MonsterCard.getMonsterByName(split[1]);
-                GameMatView.showInput("Name: " + split[1] + "\n" +
-                        "Level: " + monster.getLevel() + "\n" +
-                        "Type: " + monster.getMonsterType() + "\n" +
-                        "ATK: " + monster.getAttack() + "\n" +
-                        "DEF: " + monster.getDefend() + "\n" +
-                        "Description: " + monster.getDescription());
-            }
-            else if (cardModel.equals("Spell")) {
-                SpellCard spell = SpellCard.getSpellCardByName(split[1]);
-                GameMatView.showInput("Name: " + split[1] + "\n" +
-                        "Spell" + "\n" +
-                        "Type: " + spell.getIcon() + "\n" +
-                        "Description: " + spell.getDescription());
-            }
-            else {
-                TrapCard trap = TrapCard.getTrapCardByName(split[1]);
-                GameMatView.showInput("Name: " + split[1] + "\n" +
-                        "Trap" + "\n" +
-                        "Type: " + trap.getIcon() + "\n" +
-                        "Description: " + trap.getDescription());
-            }
-            selectedRivalCard = "";
-        }
-        else if (errorOfNoCardSelected("own")) {
-            String[] split = selectedOwnCard.split("/");
-            String cardModel = "";
-            cardModel = Card.getCardsByName(split[1]).getCardModel();
-            if (split[0].equals("Monster"))
-                GameMatView.showInput(MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(split[2]), onlineUser).toString());
-            else if (cardModel.equals("Monster")) {
-                MonsterCard monster = MonsterCard.getMonsterByName(split[1]);
-                GameMatView.showInput("Name: " + split[1] + "\n" +
-                        "Level: " + monster.getLevel() + "\n" +
-                        "Type: " + monster.getMonsterType() + "\n" +
-                        "ATK: " + monster.getAttack() + "\n" +
-                        "DEF: " + monster.getDefend() + "\n" +
-                        "Description: " + monster.getDescription());
-            }
-            else if (cardModel.equals("Spell")) {
-                SpellCard spell = SpellCard.getSpellCardByName(split[1]);
-                GameMatView.showInput("Name: " + split[1] + "\n" +
-                        "Spell" + "\n" +
-                        "Type: " + spell.getIcon() + "\n" +
-                        "Description: " + spell.getDescription());
-            }
-            else {
-                TrapCard trap = TrapCard.getTrapCardByName(split[1]);
-                GameMatView.showInput("Name: " + split[1] + "\n" +
-                        "Trap" + "\n" +
-                        "Type: " + trap.getIcon() + "\n" +
-                        "Description: " + trap.getDescription());
-            }
-            selectedOwnCard = "";
-        }
-    }
-
-    public static void backCommand() {
-        while (true) {
-            command = GameMatView.getCommand();
-            if (command.equals("back")) {
-                showGameBoard();
-                return;
-            } else
-                GameMatView.showInput("invalid command");
-        }
     }
 
 }

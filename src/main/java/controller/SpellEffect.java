@@ -12,7 +12,7 @@ public class SpellEffect {
     private static int chosenAddress;
 
     public static int normalEffectController(SpellTrapZoneCard ownSpell, String onlineUser, String rivalUser) {
-        String spellName = ownSpell.getSpellTrapName();
+        String spellName = ownSpell.getSecondName();
         Player player = Player.getPlayerByName(onlineUser);
         GameMatModel ownGameMat = GameMatModel.getGameMatByNickname(onlineUser);
         switch (spellName) {
@@ -38,7 +38,7 @@ public class SpellEffect {
     }
 
     public static int quickPlayEffectController(SpellTrapZoneCard ownSpell, String onlineUser, String rivalUser) {
-        String spellName = ownSpell.getSpellTrapName();
+        String spellName = ownSpell.getSecondName();
         if (spellName.equals("Twin Twisters"))
             return twinTwisters(ownSpell.getAddress(), onlineUser, rivalUser);
         else if (spellName.equals("Mystical space typhoon"))
@@ -48,7 +48,7 @@ public class SpellEffect {
     }
 
     public static void equipEffectController(SpellTrapZoneCard ownSpell, String onlineUser, String rivalUser) {
-        String spellName = ownSpell.getSpellTrapName();
+        String spellName = ownSpell.getSecondName();
         switch (spellName) {
             case "Sword of dark destruction":
                 swordOfDarkDestruction(onlineUser, ownSpell, rivalUser);

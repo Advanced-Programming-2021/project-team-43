@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,9 +19,9 @@ import java.util.Objects;
 
 public class Scoreboard extends Application {
 
-    public VBox vBox;
     public Button back;
     public static Stage stage;
+    public AnchorPane scorePane;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -34,6 +35,9 @@ public class Scoreboard extends Application {
         ArrayList<Label> list = new ArrayList<>();
         ArrayList<String> users = MainMenuController.showScoreboard();
         int k = 1;
+        int labelCounter = 0;
+        int x = 10;
+        int y = 0;
         for (int i = 0; i < users.size(); i++) {
             if (i == 19) {
                 break;
@@ -49,9 +53,19 @@ public class Scoreboard extends Application {
                 }
                 list.add(new Label(((k) + "- " + UserModel.getUserByUsername(users.get(i)).getNickname() + ": " + UserModel.getUserByUsername(users.get(i)).getUserScore())));
             }
+            list.get(i).setLayoutY(y);
+            list.get(i).setLayoutX(x);
+            list.get(i).setFont(new Font("Bodoni MT",20));
+            y += 40;
+            if (i == 9) {
+                x += 210;
+                y = 0;
+            }
+            scorePane.getChildren().add(list.get(i));
             k++;
         }
-        vBox.getChildren().addAll(list);
+
+
     }
 
     public void Back() throws Exception {

@@ -1,6 +1,7 @@
 package view;
 
 import controller.GameMatController;
+import controller.MonsterEffect;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -30,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -99,6 +101,9 @@ public class GameMatView extends Application {
     public Button changeToABtn;
     public Button setBtn;
     public Button summonBtn;
+    public Label questionLabel;
+    public TextField answerTextField;
+    public Button ok;
     private boolean isVBoxVisible;
     private boolean haveQuestion;
     private int onlineUserRedOpacity = 0;
@@ -111,17 +116,8 @@ public class GameMatView extends Application {
     private GameMatModel ownGameMat;
     private GameMatModel rivalGameMat;
     private boolean isGameOver;
+
     ////////////////show round number
-
-
-    public static String getCommand() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine().trim();
-    }
-
-    public static void showInput(String input) {
-        System.out.println(input);
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -138,7 +134,8 @@ public class GameMatView extends Application {
 
     public void initialize() {
         //cheat
-        mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+        questionLabel.setText("");
+        mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_ANY);
             public void handle(KeyEvent ke) {
                 if (keyComb.match(ke)) {
@@ -174,115 +171,6 @@ public class GameMatView extends Application {
         showGameBoard();
     }
 
-    public void playAudio(String whichAction) {
-        Media media = null;
-        switch (whichAction) {
-            case "summon":
-                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/summon.wav")).toExternalForm());
-                break;
-            case "activate":
-                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/activate.wav")).toExternalForm());
-                break;
-            case "attack":
-                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/attack.wav")).toExternalForm());
-                break;
-            case "attackdirect":
-                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/attackdirect.wav")).toExternalForm());
-                break;
-        }
-        MediaPlayer note = new MediaPlayer(media);
-        note.play();
-    }
-
-    public void implementDragAndDropHand(ImageView imageView, String kind, int address) {
-        imageView.setOnDragDetected(event -> {
-            GameMatController.selectHandCard(address);
-            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putString("");
-            db.setContent(content);
-            event.consume();
-        });
-        imageView.setOnDragDone(event -> {
-            if (kind.equals("Monster")) {
-                setBtn.setVisible(true);
-                summonBtn.setVisible(true);
-            }
-            else if (kind.equals("Spell") || kind.equals("Trap")) {
-                activateEffect();
-            }
-            event.consume();
-        });
-    }
-
-    public void implementDragAndDropMonster(ImageView imageView, int address) {
-        imageView.setOnDragDetected(event -> {
-            GameMatController.selectMonsterCard(address + 1, true);
-            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putString("");
-            db.setContent(content);
-            event.consume();
-        });
-        for (int i = 0; i < allRivalMonstersZone.size(); i++) {
-            int finalI = i + 1;
-            allRivalMonstersZone.get(i).setOnDragOver(event -> {
-                if (event.getGestureSource() != allRivalMonstersZone.get(finalI) && event.getDragboard().hasString())
-                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                event.consume();
-            });
-            imageView.setOnDragEntered(Event::consume);
-            allRivalMonstersZone.get(i).setOnDragExited(Event::consume);
-            allRivalMonstersZone.get(i).setOnDragDropped(event -> {
-                Dragboard db = event.getDragboard();
-                boolean success = db.hasString();
-                event.setDropCompleted(success);
-                event.consume();
-                rivalMonsterAddress = finalI;
-                if (MonsterZoneCard.getNumberOfFullHouse(rivalPlayer.getNickname()) == 0)
-                    attackDirect();
-                else
-                    attack();
-            });
-        }
-        imageView.setOnDragDone(Event::consume);
-    }
-
-    public void setUpImagesInArray() {
-        allOwnMonstersZone.add(ownMonster1);
-        allOwnMonstersZone.add(ownMonster2);
-        allOwnMonstersZone.add(ownMonster3);
-        allOwnMonstersZone.add(ownMonster4);
-        allOwnMonstersZone.add(ownMonster5);
-        allRivalMonstersZone.add(rivalMonster1);
-        allRivalMonstersZone.add(rivalMonster2);
-        allRivalMonstersZone.add(rivalMonster3);
-        allRivalMonstersZone.add(rivalMonster4);
-        allRivalMonstersZone.add(rivalMonster5);
-        allOwnSpellTrapZone.add(ownSpellTrap1);
-        allOwnSpellTrapZone.add(ownSpellTrap2);
-        allOwnSpellTrapZone.add(ownSpellTrap3);
-        allOwnSpellTrapZone.add(ownSpellTrap4);
-        allOwnSpellTrapZone.add(ownSpellTrap5);
-        allRivalSpellTrapZone.add(rivalSpellTrap1);
-        allRivalSpellTrapZone.add(rivalSpellTrap2);
-        allRivalSpellTrapZone.add(rivalSpellTrap3);
-        allRivalSpellTrapZone.add(rivalSpellTrap4);
-        allRivalSpellTrapZone.add(rivalSpellTrap5);
-    }
-
-    public void dragAndDropHandCard() {
-        for (int i = 0; i < onlineHbox.getChildren().size(); i++) {
-            implementDragAndDropHand((ImageView) onlineHbox.getChildren().get(i), Card.getCardsByName(ShowCardsView.getNameByImage(((ImageView) onlineHbox.getChildren().get(i)).getImage())).getCardModel(), i);
-        }
-    }
-
-    public void dragAndDropMonster() {
-        for (int i = 0; i < allOwnMonstersZone.size(); i++) {
-            implementDragAndDropMonster(allOwnMonstersZone.get(i), i);
-        }
-    }
-
     public void showGameBoard() {
         onlinePlayer = Player.getPlayerByName(GameMatController.onlineUser);
         ownGameMat = GameMatModel.getGameMatByNickname(GameMatController.onlineUser);
@@ -310,29 +198,9 @@ public class GameMatView extends Application {
                     GameMatController.selectHandCard(finalI);
                     selectedCardImage.setImage(imageView.getImage());
                     selectedCardAddress = finalI;
-                    String cardModel = Card.getCardsByName(ShowCardsView.getNameByImage(imageView.getImage())).getCardModel();
-//                    if (cardModel.equals("Monster")) {
-//                        for (int j = 0; j < allOwnMonstersZone.size(); j++) {
-//                            System.out.println("pppppppppppp");
-//                            ownMonster2Lbl.setEffect(new DropShadow(20, Color.YELLOW));
-//                            //if (allOwnMonstersZone.get(j) != null) {
-//                                System.out.println(";;;;;;;;");
-//                                //allOwnMonstersZone.get(j).setEffect(new DropShadow(20, Color.YELLOW));
-//
-//                            //}
-//                        }
-//                    }
-//                    else if (cardModel.equals("Trap")) {
-//
-//                    }
-//                    else if (cardModel.equals("Spell") && SpellCard.getSpellCardByName(ShowCardsView.getNameByImage(imageView.getImage())).getIcon().equals("Field")) {
-//
-//                    }
                 }
             });
-
             onlineHbox.getChildren().add(imageView);
-
         }
         onlineHbox.setAlignment(Pos.CENTER);
         rivalHbox.getChildren().clear();
@@ -443,7 +311,6 @@ public class GameMatView extends Application {
             });
             allOwnSpellTrapZone.get(i).setImage(imageView.getImage());
         }
-
         for (int i = 0; i < SpellTrapZoneCard.allSpellTrapCards.get(rivalPlayer.getNickname()).size(); i++) {
             SpellTrapZoneCard spellTrapZoneCard = SpellTrapZoneCard.allSpellTrapCards.get(rivalPlayer.getNickname()).get(i + 1);
             ImageView imageView;
@@ -533,10 +400,6 @@ public class GameMatView extends Application {
             else
                 ownField.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
         }
-        ///////////////////////////////////
-        ownGameMat.addToGraveyard("Beast-Warrior");
-        ownGameMat.addToGraveyard("Beast-Warrior");
-        ownGameMat.addToGraveyard("Beast-Warrior");
         //graveyard
         ownGraveyardLbl.setText(String.valueOf(ownGameMat.getNumberOfDeadCards()));
         rivalGraveyardLbl.setText(String.valueOf(rivalGameMat.getNumberOfDeadCards()));
@@ -549,31 +412,6 @@ public class GameMatView extends Application {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-//                Stage stage = new Stage();
-//                stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
-//                stage.setResizable(false);
-//                stage.setWidth(1000);
-//                stage.setHeight(760);
-//                GridPane gridPane = new GridPane();
-//                if (!ownGameMat.getGraveyard().isEmpty()) {
-//                    for (int i = 0, k = 0, j = 0; i < ownGameMat.getGraveyard().size(); i++, k++) {
-//                        if (k >= 9) {
-//                            k = 0;
-//                            j++;
-//                        }
-//                        ImageView imageView = new ImageView(ShowCardsView.getCardImageByName(ownGameMat.getGraveyard().get(i)));
-//                        imageView.setFitHeight(80);
-//                        imageView.setFitWidth(80);
-//                        gridPane.add(imageView, k, j);
-//                    }
-//                }
-//                else {
-//                    gridPane.add(new Label("Graveyard Empty!"), 0, 0);
-//                }
-//                Scene scene = new Scene(gridPane, 600, 600);
-//                stage.setScene(scene);
-//                stage.setTitle("Own Graveyard");
-//                stage.show();
             }
         });
         rivalGraveYard.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -586,33 +424,131 @@ public class GameMatView extends Application {
                     e.printStackTrace();
                 }
             }
-//                Stage stage = new Stage();
-//                stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
-//                stage.setResizable(false);
-//                stage.setWidth(1000);
-//                stage.setHeight(760);
-//                GridPane gridPane = new GridPane();
-//                if (!rivalGameMat.getGraveyard().isEmpty()) {
-//                    for (int i = 0, k = 0, j = 0; i < rivalGameMat.getGraveyard().size(); i++, k++) {
-//                        if (k >= 9) {
-//                            k = 0;
-//                            j++;
-//                        }
-//                        ImageView imageView = new ImageView(ShowCardsView.getCardImageByName(rivalGameMat.getGraveyard().get(i)));
-//                        imageView.setFitHeight(80);
-//                        imageView.setFitWidth(80);
-//                        gridPane.add(imageView, k, j);
-//                    }
-//                }
-//                else {
-//                    gridPane.add(new Label("Graveyard Empty!"), 0, 0);
-//                }
-//                Scene scene = new Scene(gridPane, 600, 600);
-//                stage.setScene(scene);
-//                stage.setTitle("Rival Graveyard");
-//                stage.show();
-//            }
         });
+    }
+
+    public void playAudio(String whichAction) {
+        Media media = null;
+        switch (whichAction) {
+            case "summon":
+                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/summon.wav")).toExternalForm());
+                break;
+            case "activate":
+                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/activate.wav")).toExternalForm());
+                break;
+            case "attack":
+                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/attack.wav")).toExternalForm());
+                break;
+            case "attackdirect":
+                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/attackdirect.wav")).toExternalForm());
+                break;
+            case "gameOver":
+                media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/over.wav")).toExternalForm());
+                break;
+
+        }
+        MediaPlayer note = new MediaPlayer(media);
+        note.play();
+    }
+
+    public void implementDragAndDropHand(ImageView imageView, String kind, int address) {
+        imageView.setOnDragDetected(event -> {
+            GameMatController.selectHandCard(address);
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("");
+            db.setContent(content);
+            event.consume();
+        });
+        imageView.setOnDragDone(event -> {
+            if (kind.equals("Monster")) {
+                setBtn.setVisible(true);
+                summonBtn.setVisible(true);
+            }
+            else if (kind.equals("Spell") || kind.equals("Trap")) {
+                activateEffect();
+            }
+            event.consume();
+        });
+    }
+
+    public void dragAndDropHandCard() {
+        for (int i = 0; i < onlineHbox.getChildren().size(); i++)
+            implementDragAndDropHand((ImageView) onlineHbox.getChildren().get(i), Card.getCardsByName(ShowCardsView.getNameByImage(((ImageView) onlineHbox.getChildren().get(i)).getImage())).getCardModel(), i);
+    }
+
+    public void implementDragAndDropMonster(ImageView imageView, int address) {
+        imageView.setOnDragDetected(event -> {
+            GameMatController.selectMonsterCard(address + 1, true);
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("");
+            db.setContent(content);
+            event.consume();
+        });
+        for (int i = 0; i < allRivalMonstersZone.size(); i++) {
+            int finalI = i + 1;
+            allRivalMonstersZone.get(i).setOnDragOver(event -> {
+                if (event.getGestureSource() != allRivalMonstersZone.get(finalI) && event.getDragboard().hasString())
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                event.consume();
+            });
+            imageView.setOnDragEntered(Event::consume);
+            allRivalMonstersZone.get(i).setOnDragExited(Event::consume);
+            allRivalMonstersZone.get(i).setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                boolean success = db.hasString();
+                event.setDropCompleted(success);
+                event.consume();
+                rivalMonsterAddress = finalI;
+                if (MonsterZoneCard.getNumberOfFullHouse(rivalPlayer.getNickname()) == 0)
+                    attackDirect();
+                else
+                    attack();
+            });
+        }
+        imageView.setOnDragDone(Event::consume);
+    }
+
+    public void dragAndDropMonster() {
+        for (int i = 0; i < allOwnMonstersZone.size(); i++)
+            implementDragAndDropMonster(allOwnMonstersZone.get(i), i);
+    }
+
+    public void setUpImagesInArray() {
+        allOwnMonstersZone.add(ownMonster1);
+        allOwnMonstersZone.add(ownMonster2);
+        allOwnMonstersZone.add(ownMonster3);
+        allOwnMonstersZone.add(ownMonster4);
+        allOwnMonstersZone.add(ownMonster5);
+        allRivalMonstersZone.add(rivalMonster1);
+        allRivalMonstersZone.add(rivalMonster2);
+        allRivalMonstersZone.add(rivalMonster3);
+        allRivalMonstersZone.add(rivalMonster4);
+        allRivalMonstersZone.add(rivalMonster5);
+        allOwnSpellTrapZone.add(ownSpellTrap1);
+        allOwnSpellTrapZone.add(ownSpellTrap2);
+        allOwnSpellTrapZone.add(ownSpellTrap3);
+        allOwnSpellTrapZone.add(ownSpellTrap4);
+        allOwnSpellTrapZone.add(ownSpellTrap5);
+        allRivalSpellTrapZone.add(rivalSpellTrap1);
+        allRivalSpellTrapZone.add(rivalSpellTrap2);
+        allRivalSpellTrapZone.add(rivalSpellTrap3);
+        allRivalSpellTrapZone.add(rivalSpellTrap4);
+        allRivalSpellTrapZone.add(rivalSpellTrap5);
+    }
+
+    public void clickOnPane() {
+        if (isVBoxVisible && !haveQuestion) {
+            mainPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    messagePane.setVisible(false);
+                    popUpMessageLbl.setText("");
+                    showGameBoard();
+                }
+            });
+        }
     }
 
     public void nextPhase() throws Exception {
@@ -647,19 +583,6 @@ public class GameMatView extends Application {
         setBtn.setVisible(false);
         clickOnPane();
         showGameBoard();
-    }
-
-    public void clickOnPane() {
-        if (isVBoxVisible && !haveQuestion) {
-            mainPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    messagePane.setVisible(false);
-                    popUpMessageLbl.setText("");
-                    showGameBoard();
-                }
-            });
-        }
     }
 
     public void set() {
@@ -719,33 +642,57 @@ public class GameMatView extends Application {
 
     public void attack() {
         int result = GameMatController.attack(rivalMonsterAddress, GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
-        messagePane.setVisible(true);
-        popUpMessageLbl.setText(GameMatController.message);
-        if (!popUpMessageLbl.getText().equals("you can’t attack with this card") && !popUpMessageLbl.getText().equals("your card is not in an attack mode") && !popUpMessageLbl.getText().equals("this card already attacked")
-                && !popUpMessageLbl.getText().equals("this Monster cant attack because of a spell effect!") && !popUpMessageLbl.getText().equals("there is no card to attack here") && !popUpMessageLbl.getText().equals("you cant attack to this monster!")) {
-            playAudio("attack");
+        if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
+            System.out.println("hhhhhhhhhhhhhhhhhhh");
+            surrender();
         }
-        isVBoxVisible = true;
-        haveQuestion = false;
-        clickOnPane();
-        lifePointAnimation(result, "attack");
-        showGameBoard();
+        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
+            System.out.println("[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
+            surrender();
+        }
+        else {
+            messagePane.setVisible(true);
+            popUpMessageLbl.setText(GameMatController.message);
+            if (!popUpMessageLbl.getText().equals("you can’t attack with this card") && !popUpMessageLbl.getText().equals("your card is not in an attack mode") && !popUpMessageLbl.getText().equals("this card already attacked")
+                    && !popUpMessageLbl.getText().equals("this Monster cant attack because of a spell effect!") && !popUpMessageLbl.getText().equals("there is no card to attack here") && !popUpMessageLbl.getText().equals("you cant attack to this monster!")) {
+                playAudio("attack");
+            }
+            isVBoxVisible = true;
+            haveQuestion = false;
+            clickOnPane();
+            lifePointAnimation(result, "attack");
+            showGameBoard();
+        }
+    }
+
+    public void endGame() {
+////////////////////////////////////////////
     }
 
     public void attackDirect() {
         int result = GameMatController.attackDirect(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
-        messagePane.setVisible(true);
-        popUpMessageLbl.setText(GameMatController.message);
-        GameMatController.message = "";
-        if (!popUpMessageLbl.getText().equals("you can’t attack with this card") && !popUpMessageLbl.getText().equals("this card already attacked") && !popUpMessageLbl.getText().equals("you can’t attack the opponent directly")
-                && !popUpMessageLbl.getText().equals("this Monster cant attack because of a spell effect!")) {
-            playAudio("attackdirect");
+        System.out.println(onlinePlayer.getLifePoint());
+        System.out.println(rivalPlayer.getLifePoint());
+        if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
+            surrender();
         }
-        isVBoxVisible = true;
-        haveQuestion = false;
-        clickOnPane();
-        lifePointAnimation(result, "attackdirect");
-        showGameBoard();
+        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
+            surrender();
+        }
+        else {
+            messagePane.setVisible(true);
+            popUpMessageLbl.setText(GameMatController.message);
+            GameMatController.message = "";
+            if (!popUpMessageLbl.getText().equals("you can’t attack with this card") && !popUpMessageLbl.getText().equals("this card already attacked") && !popUpMessageLbl.getText().equals("you can’t attack the opponent directly")
+                    && !popUpMessageLbl.getText().equals("this Monster cant attack because of a spell effect!")) {
+                playAudio("attackdirect");
+            }
+            isVBoxVisible = true;
+            haveQuestion = false;
+            clickOnPane();
+            lifePointAnimation(result, "attackdirect");
+            showGameBoard();
+        }
     }
 
     public void lifePointAnimation(int result, String whichAction) {
@@ -771,28 +718,31 @@ public class GameMatView extends Application {
         showGameBoard();
     }
 
-    public void surrender() throws Exception {
+    public void surrender() {
+        playAudio("gameOver");
         GameMatController.endGame(onlinePlayer.getNickname());
-        popUpMessageLbl.setText(GameMatController.message);
-        isVBoxVisible = true;
-        Stage endGameStage = new Stage();
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(popUpMessageLbl);
-        endGameStage.setScene(new Scene(messagePane));
-        endGameStage.show();
-        endGameStage.setOnHidden(e -> {
-            try {
-                shutdown();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            Platform.exit();
-        });
-    }
+        Stage gameOverStage = new Stage();
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/gameOver.fxml")));
+            gameOverStage.setHeight(300);
+            Scene scene = new Scene(root);
+            gameOverStage.setTitle("Game Over");
+            gameOverStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
+            gameOverStage.setResizable(false);
+            gameOverStage.setScene(scene);
+            gameOverStage.show();
+            gameOverStage.setOnHidden(e -> {
+                try {
+                    new MainMenuView().start(gameMatStage);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    public void shutdown() throws Exception {
-        // cleanup code here...
-        new MainMenuView().start(gameMatStage);
+
     }
 
     public void setErrorLbl(Label errorLbl) {
@@ -830,13 +780,41 @@ public class GameMatView extends Application {
 //        }
     }
 
-    public void endGameBox() {
-        Stage endGameStage = new Stage();
-
-    }
 
     public void pressPauseBtn() throws Exception {
         new Pause().start(gameMatStage);
     }
+
+    public void pressOkButton() {
+        System.out.println();
+
+        answerTextField.clear();
+        messagePane.setVisible(false);
+    }
+
+    public static String getCommand() {
+////        while (!ok.isPressed()) {
+////            continue;
+////        }
+//        System.out.println("getcommannd");
+//     //  System.out.println(answer.getText());
+//        if (!answerTxt.getText().isEmpty())
+//            return answerTxt.getText();
+//        else {
+//            return null;
+//        }
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine().trim();
+    }
+
+    public static void showInput(String input) {
+
+//        messagePane.setVisible(true);
+//        questionLbl.setText(input);
+//        System.out.println(questionLable.getText() + " lk" + input);
+        System.out.println(input);
+    }
+
+
 
 }

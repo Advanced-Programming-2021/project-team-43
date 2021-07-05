@@ -234,7 +234,7 @@ public class ExportCardView extends Application {
     }
 
     public void back() throws Exception {
-       // new StartClass().start(stage);
+        new StartClass().start(exportStage);
     }
 
     public void backToMenu() throws Exception {

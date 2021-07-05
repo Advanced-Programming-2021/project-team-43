@@ -9,7 +9,7 @@ public class MonsterEffect {
     private static String response;
 
     public static int changeModeEffectController(MonsterZoneCard ownMonster, String onlineUser, String rivalUser) {
-        String monsterName = ownMonster.getMonsterName();
+        String monsterName = ownMonster.getSecondName();
         switch (monsterName) {
             case "Command knight":
                 return commandKnight(ownMonster, onlineUser, rivalUser);
@@ -34,7 +34,7 @@ public class MonsterEffect {
             rivalsKeys = rivalsMonsters.keySet().toArray(new Integer[0]);
             for (Integer key : keys) {
                 MonsterZoneCard.getMonsterCardByAddress(key, onlineUser).changeAttack(400);
-                if (!MonsterZoneCard.getMonsterCardByAddress(key, onlineUser).getMonsterName().equals("Command knight")) {
+                if (!MonsterZoneCard.getMonsterCardByAddress(key, onlineUser).getSecondName().equals("Command knight")) {
                     counter++;
                 }
             }
@@ -110,7 +110,7 @@ public class MonsterEffect {
         int attack = 0;
         for (int s : monster) {
             MonsterZoneCard monsterCard = MonsterZoneCard.getMonsterCardByAddress(s, onlineUser);
-            if (!monsterCard.getMode().equals("DH") && !monsterCard.getMonsterName().equals("The Calculator")) {
+            if (!monsterCard.getMode().equals("DH") && !monsterCard.getSecondName().equals("The Calculator")) {
                 attack += monsterCard.getLevel();
             }
         }

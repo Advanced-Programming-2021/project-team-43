@@ -1,5 +1,7 @@
 package model;
 import controller.GameMatController;
+import view.MoveCard;
+import view.ShowCardsView;
 
 import java.util.*;
 
@@ -8,6 +10,7 @@ public class MonsterZoneCard {
 
     private final String playerNickname;
     private String monsterName;
+    private String secondName;
     private String mode;
     private final int address;
     private int attack;
@@ -39,6 +42,7 @@ public class MonsterZoneCard {
         this.canAttack = true;
         this.canAttackToThisMonster = true;
         this.isForOneTurn = isForOneTurn;
+        this.secondName = monster.getSecondName();
         allMonsterCards.get(playerNickname).put(address, this);
         List<Integer> add=new ArrayList<>();
         allEffectiveSpell.put(playerNickname,add);
@@ -90,6 +94,10 @@ public class MonsterZoneCard {
 
     public boolean getIsScanner() {
         return isScanner;
+    }
+
+    public String getSecondName() {
+        return secondName;
     }
 
     public boolean getHaveChangedPositionThisTurn() {

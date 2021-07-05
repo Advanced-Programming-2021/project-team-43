@@ -50,7 +50,7 @@ public class TrapEffect {
         Integer[] keys = spellTraps.keySet().toArray(new Integer[0]);
         int counter = 0;
         for (Integer key : keys) {
-            if (SpellTrapZoneCard.getSpellCardByAddress(key, rival).getSpellTrapName().equals("Ring of defense") &&
+            if (SpellTrapZoneCard.getSpellCardByAddress(key, rival).getSecondName().equals("Ring of defense") &&
                     SpellTrapZoneCard.getSpellCardByAddress(key, rival).getMode().equals("O")) {
                 counter++;
             }
@@ -58,7 +58,7 @@ public class TrapEffect {
         spellTraps = SpellTrapZoneCard.getAllSpellTrapByPlayerName(onlineUser);
         keys = spellTraps.keySet().toArray(new Integer[0]);
         for (Integer key : keys) {
-            if (SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getSpellTrapName().equals("Ring of defense") &&
+            if (SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getSecondName().equals("Ring of defense") &&
                     SpellTrapZoneCard.getSpellCardByAddress(key, onlineUser).getMode().equals("O")) {
                 counter++;
             }

@@ -37,7 +37,7 @@ public class Pause extends Application {
 
     @FXML
     public void initialize() {
-        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/18.mp3")).toExternalForm());
+        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/18.mp3")).toExternalForm());
         MediaPlayer note = new MediaPlayer(media);
         note.setCycleCount(-1);
         note.setAutoPlay(true);
@@ -50,15 +50,15 @@ public class Pause extends Application {
         });
     }
 
-    public void exit(MouseEvent mouseEvent) {
+    public void exit() {
         System.exit(0);
     }
 
-    public void resume(MouseEvent mouseEvent) throws Exception {
+    public void resume() {
         pauseStage.close();
     }
 
-    public void restart(MouseEvent mouseEvent) {
+    public void restart() {
         try {
             new MainMenuView().start(GameMatView.gameMatStage);
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public class Pause extends Application {
         }
     }
 
-    public void mute(MouseEvent mouseEvent) {
+    public void mute() {
         RegisterAndLoginView.note.stop();
     }
 

@@ -85,11 +85,11 @@ public class HandCardZone {
         }
         return false;
     }
-
+    public static GameMatView gameMatView;
     public static void showHandCard(String playerNickname) {
         List<HandCardZone> handCardOwn=allHandCards.get(playerNickname);
         for (int i = 0; i < handCardOwn.size(); i++)
-            GameMatView.showInput(i + 1 + ". " + handCardOwn.get(i).getCardName());
+            gameMatView.showInput(i + 1 + ". " + handCardOwn.get(i).getCardName());
     }
 
     public static HandCardZone getHandCardByAddress(int address, String playerNickname) {
