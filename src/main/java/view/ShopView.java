@@ -1,4 +1,5 @@
 package view;
+
 import controller.MainMenuController;
 import controller.ShopController;
 import javafx.application.Application;
@@ -7,8 +8,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -32,6 +35,7 @@ public class ShopView extends Application {
     public Button buyBtn;
     public Label moneyLbl;
     public Label priceLbl;
+    public TextField cardNameTxt;
     private boolean isShowBtnPressed;
     private UserModel user;
     private final List<Image> cardImages = new ArrayList<>();
@@ -39,6 +43,8 @@ public class ShopView extends Application {
     private static int imageCounter = 0;
     private static int cardInfoCounter = 0;
     private static Stage shopStage;
+    public Button searchBtn;
+    private static int coinLblOpacity;
 
     public static String getCommand() {
         Scanner scanner = new Scanner(System.in);
@@ -58,16 +64,28 @@ public class ShopView extends Application {
     }
 
     public void initialize() {
+        if (user.getUserCoin() >= 9000)
+            coinLblOpacity = 255;
+        else if (user.getUserCoin() < 9000 && user.getUserCoin() >= 7000)
+            coinLblOpacity = 215;
+        else if (user.getUserCoin() < 7000 && user.getUserCoin() >= 5000)
+            coinLblOpacity = 180;
+        else if (user.getUserCoin() < 5000 && user.getUserCoin() >= 3000)
+            coinLblOpacity = 150;
+        else if (user.getUserCoin() < 3000 && user.getUserCoin() >= 1000)
+            coinLblOpacity = 125;
+        else if (user.getUserCoin() < 1000)
+            coinLblOpacity = 80;
         moneyLbl.setFont(new Font(20));
         user = UserModel.getUserByUsername(MainMenuController.username);
         HashMap<String, Image> allCards = new HashMap<>(ShowCardsView.getAllCardImage());
         for (Map.Entry<String, Image> eachCard : allCards.entrySet())
             cardImages.add(eachCard.getValue());
         cardImgView = new ImageView(cardImages.get(0));
-        cardImgView.setY(58);
+        cardImgView.setY(44);
         cardImgView.setX(44);
-        cardImgView.setFitWidth(282);
-        cardImgView.setFitHeight(418);
+        cardImgView.setFitWidth(278);
+        cardImgView.setFitHeight(375);
         priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(0))).getPrice());
         buyBtn.setDisable(Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(0))).getPrice() > user.getUserCoin());
         shopPane.getChildren().add(cardImgView);
@@ -101,8 +119,7 @@ public class ShopView extends Application {
         if (message.equals("Not enough money")) {
             messageLbl.setText("");
             buyBtn.setDisable(true);
-        }
-        else {
+        } else {
             messageLbl.setText(message);
             if (message.equals("Card added successfully!")) {
                 if (getCardInfoLblByCardName(cardName) != null)
@@ -117,6 +134,10 @@ public class ShopView extends Application {
             }
         }
         moneyLbl.setText("Coin: " + user.getUserCoin());
+        moneyLbl.setTextFill(Color.rgb(255, coinLblOpacity, 0));
+        coinLblOpacity -= 10;
+        if (coinLblOpacity < 0)
+            coinLblOpacity = 0;
     }
 
     public void pressMyCardsBtn() {
@@ -153,6 +174,21 @@ public class ShopView extends Application {
     public static void resetFields() {
         cardInfoCounter = 0;
         imageCounter = 0;
+    }
+
+    public void search() {
+        String nameToSearch = cardNameTxt.getText();
+        if (nameToSearch == null || nameToSearch.equals("")) {
+            messageLbl.setText("Invalid name to search");
+        } else if (Card.getCardsByName(nameToSearch) == null) {
+            messageLbl.setText("There is no card with this name");
+        }else {
+            cardImgView.setImage(ShowCardsView.getCardImageByName(nameToSearch));
+            priceLbl.setText("Price: " + Card.getCardsByName(nameToSearch).getPrice());
+            buyBtn.setDisable(Card.getCardsByName(nameToSearch).getPrice() > user.getUserCoin());
+            messageLbl.setText("");
+        }
+        cardNameTxt.clear();
     }
 
 }

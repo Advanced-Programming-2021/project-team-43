@@ -7,23 +7,24 @@
 
 <AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="chart" stylesheets="@../images/background/start.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
     <Label fx:id="label2" prefHeight="46.0" prefWidth="161.0" visible="false" />
-    <Button layoutX="276.0" layoutY="301.0" mnemonicParsing="false" onAction="#exportMonster" prefHeight="39.0" prefWidth="152.0" text="Export Monster card">
+    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="255.0" layoutY="233.0" mnemonicParsing="false" onAction="#exportSpellTrap" prefHeight="46.0" prefWidth="174.0" text="Export SpellTrap Card">
         <cursor>
             <Cursor fx:constant="HAND" />
         </cursor>
+      <font>
+         <Font name="Bodoni MT" size="15.0" />
+      </font>
     </Button>
-    <Button layoutX="275.0" layoutY="233.0" mnemonicParsing="false" onAction="#exportSpellTrap" prefHeight="39.0" prefWidth="154.0" text="Export spellTrap card">
-        <cursor>
-            <Cursor fx:constant="HAND" />
-        </cursor>
-    </Button>
-    <Button layoutX="20.0" layoutY="623.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="39.0" prefWidth="122.0" text="Back" textFill="#ae6b6b" underline="true">
-        <cursor>
-            <Cursor fx:constant="HAND" />
-        </cursor>
-        <font>
-            <Font name="System Bold Italic" size="12.0" />
-        </font>
-    </Button>
+   <Button focusTraversable="false" layoutX="255.0" layoutY="296.0" mnemonicParsing="false" onAction="#exportMonster" prefHeight="46.0" prefWidth="174.0" text="Export Monster Card">
+      <font>
+         <Font name="Bodoni MT" size="15.0" />
+      </font>
+   </Button>
+   <Button focusTraversable="false" layoutX="42.0" layoutY="647.0" mnemonicParsing="false" onAction="#back" prefHeight="34.0" prefWidth="77.0" text="Back">
+      <font>
+         <Font name="Bodoni MT" size="17.0" />
+      </font>
+   </Button>
+
 
 </AnchorPane>

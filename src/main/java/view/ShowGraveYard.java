@@ -19,7 +19,7 @@ public class ShowGraveYard extends Application {
     private static int imageCounter = 0;
     private List<Image> cardImages = new ArrayList<>();
     public ImageView cardImgView;
-    public static String userNickname;//fill in game mat view
+    public static String userNickname;
     public ImageView profile;
     public Label numberOfDeadCards;
     public Label nickName;
@@ -40,6 +40,10 @@ public class ShowGraveYard extends Application {
 
     @FXML
     public void initialize() throws Exception {
+        cardImgView.setFitWidth(166);
+        cardImgView.setFitHeight(210);
+        cardImgView.setLayoutX(207);
+        cardImgView.setLayoutY(80);
         nickName.setText(userNickname);
         profile.setImage(new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(userNickname).getImageUrl())).toExternalForm()));
         List<String> deadCards = (GameMatModel.getGameMatByNickname(userNickname).getGraveyard());

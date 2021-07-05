@@ -50,8 +50,8 @@ public class Pause extends Application {
         });
     }
 
-    public void exit() {
-        System.exit(0);
+    public void exit() throws Exception {
+        new MainMenuView().start(pauseStage);
     }
 
     public void resume() {

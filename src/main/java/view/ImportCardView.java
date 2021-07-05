@@ -162,6 +162,7 @@ public class ImportCardView extends Application {
     public boolean isMonsterExit(String description) {
         return MonsterCard.getMonsterByName(description) != null;
     }
+
     public boolean isValidAttribute(String attribute) {
         return attribute.equals("EARHT") ||
                 attribute.equals("WATER") ||

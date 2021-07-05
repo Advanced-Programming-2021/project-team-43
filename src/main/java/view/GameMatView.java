@@ -116,7 +116,7 @@ public class GameMatView extends Application {
     private GameMatModel ownGameMat;
     private GameMatModel rivalGameMat;
     private boolean isGameOver;
-
+    private Image choiceImage;
     ////////////////show round number
 
     @Override
@@ -134,7 +134,6 @@ public class GameMatView extends Application {
 
     public void initialize() {
         //cheat
-        questionLabel.setText("");
         mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_ANY);
             public void handle(KeyEvent ke) {
@@ -171,11 +170,36 @@ public class GameMatView extends Application {
         showGameBoard();
     }
 
+    public void showMyChoices() {
+        choiceImage = new Image(Objects.requireNonNull(getClass().getResource("/images/plain.jpg")).toExternalForm());
+        for (ImageView imageView : allOwnMonstersZone) {
+            if (imageView.getImage() == null) {
+                imageView.setFitWidth(87);
+                imageView.setFitHeight(111);
+                imageView.setImage(choiceImage);
+
+            }
+        }
+    }
+
+    public void clearMyChoices() {
+        for (ImageView imageView : allOwnMonstersZone) {
+            if (imageView.getImage() != null) {
+                if (imageView.getImage().equals(choiceImage)) {
+                    imageView.setImage(null);
+                }
+            }
+        }
+    }
+
     public void showGameBoard() {
         onlinePlayer = Player.getPlayerByName(GameMatController.onlineUser);
         ownGameMat = GameMatModel.getGameMatByNickname(GameMatController.onlineUser);
         rivalPlayer = Player.getPlayerByName(GameMatController.rivalUser);
         rivalGameMat = GameMatModel.getGameMatByNickname(GameMatController.rivalUser);
+        if (onlinePlayer.getNickname().equals("AI")) {
+            GameMatController.run(onlinePlayer.getNickname(), rivalPlayer.getNickname());
+        }
         rivalUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(GameMatController.rivalUser).getLifePoint());
         onlineUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(GameMatController.onlineUser).getLifePoint());
         rivalUserLpLbl.setTextFill(Color.rgb(rivalUserRedOpacity, 255 - rivalUserRedOpacity, 0));
@@ -195,9 +219,13 @@ public class GameMatView extends Application {
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
+
                     GameMatController.selectHandCard(finalI);
                     selectedCardImage.setImage(imageView.getImage());
+                    selectedCardImage.setFitHeight(280);
+                    selectedCardImage.setFitWidth(210);
                     selectedCardAddress = finalI;
+                    showMyChoices();
                 }
             });
             onlineHbox.getChildren().add(imageView);
@@ -240,6 +268,8 @@ public class GameMatView extends Application {
                     public void handle(MouseEvent mouseEvent) {
                         GameMatController.selectMonsterCard(finalI, true);
                         selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName()).getImage());
+                        selectedCardImage.setFitHeight(280);
+                        selectedCardImage.setFitWidth(210);
                         selectedCardAddress = finalI;
                         flipSummonBtn.setVisible(true);
                         changeToABtn.setVisible(true);
@@ -282,6 +312,8 @@ public class GameMatView extends Application {
                         rivalMonsterAddress = finalI;
                         selectedCardAddress = finalI;
                         selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName()).getImage());
+                        selectedCardImage.setFitHeight(280);
+                        selectedCardImage.setFitWidth(210);
                         if (monsterZoneCard.getMode().equals("DH")) {
                             selectedCardImage.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
                         }
@@ -306,6 +338,8 @@ public class GameMatView extends Application {
                 public void handle(MouseEvent mouseEvent) {
                     GameMatController.selectSpellCard(finalI, true);
                     selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName()).getImage());
+                    selectedCardImage.setFitHeight(280);
+                    selectedCardImage.setFitWidth(210);
                     selectedCardAddress = finalI;
                 }
             });
@@ -326,6 +360,8 @@ public class GameMatView extends Application {
                 public void handle(MouseEvent mouseEvent) {
                     GameMatController.selectSpellCard(finalI, false);
                     selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName()).getImage());
+                    selectedCardImage.setFitHeight(280);
+                    selectedCardImage.setFitWidth(210);
                     selectedCardAddress = finalI;
                     if (spellTrapZoneCard.getMode().equals("")) {
                         selectedCardImage.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
@@ -335,6 +371,40 @@ public class GameMatView extends Application {
             allRivalSpellTrapZone.get(i).setImage(imageView.getImage());
         }
         //Field Spell
+        fieldSpell();
+        //graveyard
+        showGraveyard();
+    }
+
+    public void showGraveyard() {
+        ownGameMat.addToGraveyard("Exploder Dragon");////////////////
+        ownGraveyardLbl.setText(String.valueOf(ownGameMat.getNumberOfDeadCards()));
+        rivalGraveyardLbl.setText(String.valueOf(rivalGameMat.getNumberOfDeadCards()));
+        ownGraveYard.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    ShowGraveYard.userNickname = onlinePlayer.getNickname();
+                    new ShowGraveYard().start(gameMatStage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        rivalGraveYard.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    ShowGraveYard.userNickname = rivalPlayer.getNickname();
+                    new ShowGraveYard().start(gameMatStage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void fieldSpell() {
         Image boardImg;
         if (rivalGameMat.getFieldZone().isEmpty()) {
             rivalField.setImage(null);
@@ -400,31 +470,6 @@ public class GameMatView extends Application {
             else
                 ownField.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
         }
-        //graveyard
-        ownGraveyardLbl.setText(String.valueOf(ownGameMat.getNumberOfDeadCards()));
-        rivalGraveyardLbl.setText(String.valueOf(rivalGameMat.getNumberOfDeadCards()));
-        ownGraveYard.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                try {
-                    ShowGraveYard.userNickname = onlinePlayer.getNickname();
-                    new ShowGraveYard().start(gameMatStage);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        rivalGraveYard.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                try {
-                    ShowGraveYard.userNickname = rivalPlayer.getNickname();
-                    new ShowGraveYard().start(gameMatStage);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     public void playAudio(String whichAction) {
@@ -451,7 +496,11 @@ public class GameMatView extends Application {
         note.play();
     }
 
-    public void implementDragAndDropHand(ImageView imageView, String kind, int address) {
+    public void implementDragAndDropHand(ImageView imageView, String cardName, int address) {
+        String kind = Card.getCardsByName(cardName).getCardModel();
+        String icon = "";
+        if (kind.equals("Spell"))
+            icon = SpellCard.getSpellCardByName(cardName).getIcon();
         imageView.setOnDragDetected(event -> {
             GameMatController.selectHandCard(address);
             Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
@@ -460,21 +509,23 @@ public class GameMatView extends Application {
             db.setContent(content);
             event.consume();
         });
+        String finalIcon = icon;
         imageView.setOnDragDone(event -> {
             if (kind.equals("Monster")) {
                 setBtn.setVisible(true);
                 summonBtn.setVisible(true);
             }
-            else if (kind.equals("Spell") || kind.equals("Trap")) {
+            else if (kind.equals("Trap") || (kind.equals("Spell") && finalIcon.equals("Quick-play")))
+                set();
+            else if (kind.equals("Spell"))
                 activateEffect();
-            }
             event.consume();
         });
     }
 
     public void dragAndDropHandCard() {
         for (int i = 0; i < onlineHbox.getChildren().size(); i++)
-            implementDragAndDropHand((ImageView) onlineHbox.getChildren().get(i), Card.getCardsByName(ShowCardsView.getNameByImage(((ImageView) onlineHbox.getChildren().get(i)).getImage())).getCardModel(), i);
+            implementDragAndDropHand((ImageView) onlineHbox.getChildren().get(i), ShowCardsView.getNameByImage(((ImageView) onlineHbox.getChildren().get(i)).getImage()), i);
     }
 
     public void implementDragAndDropMonster(ImageView imageView, int address) {
@@ -552,6 +603,7 @@ public class GameMatView extends Application {
     }
 
     public void nextPhase() throws Exception {
+        clearMyChoices();
         GameMatController.changePhase(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         phaseLbl.setText(GameMatController.sideMsg);
         GameMatController.error = "";
@@ -570,6 +622,7 @@ public class GameMatView extends Application {
     }
 
     public void summon() {
+        clearMyChoices();
         GameMatController.summon(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
@@ -586,6 +639,7 @@ public class GameMatView extends Application {
     }
 
     public void set() {
+        clearMyChoices();
         GameMatController.set(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
@@ -599,6 +653,7 @@ public class GameMatView extends Application {
     }
 
     public void changeToDefense() {
+        clearMyChoices();
         GameMatController.changeToDefensePosition(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
@@ -613,6 +668,7 @@ public class GameMatView extends Application {
     }
 
     public void changeToAttack() {
+        clearMyChoices();
         GameMatController.changeToAttackPosition(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
@@ -627,6 +683,7 @@ public class GameMatView extends Application {
     }
 
     public void flipSummon() {
+        clearMyChoices();
         GameMatController.flipSummon(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
@@ -641,6 +698,7 @@ public class GameMatView extends Application {
     }
 
     public void attack() {
+        clearMyChoices();
         int result = GameMatController.attack(rivalMonsterAddress, GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
             System.out.println("hhhhhhhhhhhhhhhhhhh");
@@ -708,6 +766,7 @@ public class GameMatView extends Application {
     }
 
     public void activateEffect() {
+        clearMyChoices();
         GameMatController.activateSpellEffect(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);

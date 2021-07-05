@@ -52,6 +52,24 @@ public class Duel extends Application {
         }
     }
 
+    public void AIDuel() throws Exception {
+        if (number.getText().isEmpty()) {
+            text.setText("pls enter round number");
+        } else {
+            Pattern pattern = Pattern.compile("(\\d+)");
+            Matcher matcher = pattern.matcher(number.getText());
+            if (matcher.find()) {
+                text.setText(MainMenuController.duelMenu("AI", Integer.parseInt(matcher.group(1))));
+                if (text.getText().equals("00")) {
+                    new PickFirstPlayerView().start(duelStage);
+                }
+            } else {
+                text.setText("invalid round number");
+            }
+        }
+    }
+
+
     public void pressBackBtn() throws Exception {
         new MainMenuView().start(duelStage);
     }

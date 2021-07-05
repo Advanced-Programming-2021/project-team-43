@@ -26,12 +26,12 @@ public class StartClass extends Application {
         stage.show();
     }
 
-    public void export(MouseEvent mouseEvent) throws Exception {
+    public void export() throws Exception {
         new ShowCardsView().start(stage);
         new ExportCardView().start(stage);
     }
 
-    public void importCard(MouseEvent mouseEvent) throws Exception {
+    public void importCard() throws Exception {
         new ImportCardView().start(null);
     }
 
@@ -39,8 +39,8 @@ public class StartClass extends Application {
         new ShowCardsView().start(null);
     }
 
-    public void exit(MouseEvent mouseEvent) {
-        System.exit(0);
+    public void exit() throws Exception {
+        new MainMenuView().start(stage);
     }
 
 }

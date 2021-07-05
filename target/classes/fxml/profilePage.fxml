@@ -29,7 +29,7 @@
          <font>
             <Font name="Bodoni MT" size="13.0" />
          </font></Button>
-      <VBox alignment="CENTER" layoutX="454.0" layoutY="550.0" prefHeight="108.0" prefWidth="223.0" spacing="10.0">
+      <VBox alignment="CENTER" layoutX="379.0" layoutY="534.0" prefHeight="189.0" prefWidth="372.0" spacing="10.0">
          <children>
             <TextField fx:id="passwordTxt" focusTraversable="false" maxWidth="200.0" prefWidth="200.0" promptText="Password" />
             <TextField fx:id="newPasswordTxt" focusTraversable="false" maxWidth="200.0" prefWidth="200.0" promptText="New Password" />
@@ -38,9 +38,9 @@
                   <Font name="Bodoni MT" size="13.0" />
                </font>
             </Button>
-            <Label fx:id="changePasswordLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="34.0" prefWidth="364.0" textFill="#b7ff00">
+            <Label fx:id="changePasswordLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="69.0" prefWidth="363.0" textFill="#fff300">
                <font>
-                  <Font size="13.0" />
+                  <Font size="15.0" />
                </font>
             </Label>
          </children>

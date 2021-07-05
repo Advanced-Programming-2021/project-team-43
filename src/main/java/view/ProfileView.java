@@ -48,7 +48,7 @@ public class ProfileView extends Application {
     }
 
     public void initialize() {
-        for (int i = 0; i < 31; i++)
+        for (int i = 1; i < 31; i++)
             profileImages[i] = new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/profile/char" + i + ".jpg")).toExternalForm()));
         user = UserModel.getUserByUsername(MainMenuController.username);
         profileImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByUsername(MainMenuController.username).getImageUrl())).toExternalForm()));

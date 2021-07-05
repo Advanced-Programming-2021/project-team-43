@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.MonsterCard;
@@ -29,7 +28,7 @@ public class ExportCardView extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         exportStage = stage;
-        stage.setTitle("EXPORT CARD");
+        stage.setTitle("Export Card");
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/export.fxml")));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
@@ -124,7 +123,7 @@ public class ExportCardView extends Application {
     @FXML
     TextField status;
 
-    public void exportCard2() {
+    public void exportCard2() throws Exception {
         if (isNotEmpty(cardNam.getText()) && isNotEmpty(type.getText()) &&
                 isNotEmpty(Icon.getText()) && isNotEmpty(description2.getText()) && isNotEmpty(status.getText())
                 && isValidIcon()) {
@@ -160,7 +159,7 @@ public class ExportCardView extends Application {
                 ArrayList<String> cards = Json.exportCad();
                 cards.add(id);
                 Json.importCard(cards);
-               // new StartClass().start(stage);
+                new StartClass().start(exportStage);
             } else {
                 label2.setText("This card isn't in list!");
             }
@@ -170,8 +169,7 @@ public class ExportCardView extends Application {
     }
 
 
-    public void exportCard3(MouseEvent mouseEvent) throws Exception {
-
+    public void exportCard3() throws Exception {
         if (isNotEmpty(cardNam.getText()) && isNotEmpty(type.getText()) &&
                 isNotEmpty(Icon.getText()) && isNotEmpty(description2.getText()) && isNotEmpty(status.getText())
                 && isValidIcon()) {
@@ -207,7 +205,7 @@ public class ExportCardView extends Application {
                 ArrayList<String> cards = Json.exportCad();
                 cards.add(id);
                 Json.importCard(cards);
-               // new StartClass().start(stage);
+                new StartClass().start(exportStage);
             } else {
                 label2.setText("This card isn't in list!");
             }

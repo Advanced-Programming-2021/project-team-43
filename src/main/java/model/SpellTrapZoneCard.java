@@ -24,12 +24,15 @@ public class SpellTrapZoneCard {
         this.playerNickname = playerNickname;
         this.spellTrapName = spellTrapName;
         this.mode = mode;
-        this.secondName = SpellCard.getSpellCardByName(spellTrapName).getSecondName();
         this.kind = Card.getCardsByName(spellTrapName).getCardModel();
-        if (kind.equals("Spell"))
+        if (kind.equals("Spell")) {
             this.icon = SpellCard.getSpellCardByName(spellTrapName).getIcon();
-        else
+            this.secondName = SpellCard.getSpellCardByName(spellTrapName).getSecondName();
+        }
+        else {
             this.icon = TrapCard.getTrapCardByName(spellTrapName).getIcon();
+            this.secondName = TrapCard.getTrapCardByName(spellTrapName).getSecondName();
+        }
         this.address = getNewSpellAddress(playerNickname);
         allSpellTrapCards.get(playerNickname).put(address, this);
     }

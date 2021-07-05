@@ -1,5 +1,6 @@
 package view;
 import controller.Json;
+import controller.MainMenuController;
 import controller.RegisterAndLoginController;
 import controller.SetCards;
 import javafx.application.Application;
@@ -13,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Card;
+import model.DeckModel;
 import model.ShopModel;
 import model.UserModel;
 import java.io.IOException;
@@ -65,6 +67,23 @@ public class RegisterAndLoginView extends Application {
             UserModel.allUsernames.addAll(Json.readUsernames());
         if (Json.readUserNicknames() != null)
             UserModel.allUsersNicknames.addAll(Json.readUserNicknames());
+        if (!UserModel.isRepeatedUsername("AI")){
+            UserModel userModel = new UserModel("AI", "p", "AI", "/images/profile/char0.jpg");
+            DeckModel deckModel = new DeckModel("AILevel1");
+            MainMenuController.username = "AI";
+            for (int i = 0; i < 6; i++) {
+                deckModel.addCardToMain("Axe Raider");
+                deckModel.addCardToMain("Horn Imp");
+                deckModel.addCardToMain("Silver Fang");
+                deckModel.addCardToMain("Fireyarou");
+                deckModel.addCardToMain("Curtain of the dark ones");
+                deckModel.addCardToMain("Dark Blade");
+                deckModel.addCardToMain("Warrior Dai Grepher");
+                deckModel.addCardToMain("Bitron");
+            }
+            userModel.addDeck(deckModel);
+            userModel.setActiveDeck("AILevel1");
+        }
         new ShowCardsView().setAllCards();
     }
 
