@@ -1,35 +1,40 @@
 package view;
-import controller.Json;
+import controller.*;
 import com.google.gson.Gson;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.MonsterCard;
-import model.SpellCard;
-import model.TrapCard;
+import model.*;
+
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
+import java.util.stream.Collectors;
 
 public class ExportCardView extends Application {
-
-    private static Stage exportStage;
-    public Label label2;
-    public Label label;
+    private static Stage stage;
+    @FXML
+    private Label Label;
+    @FXML
+    private Label label2;
 
     @Override
     public void start(Stage stage) throws Exception {
-        exportStage = stage;
-        stage.setTitle("Export Card");
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/export.fxml")));
+        this.stage = stage;
+        stage.setTitle("EXPORT CARD");
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/export.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
         stage.setScene(scene);
@@ -53,22 +58,22 @@ public class ExportCardView extends Application {
     @FXML
     TextField description;
 
-    public void exportMonster() throws IOException {
+    public void exportMonster(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/exportMonster.fxml")));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
-        exportStage.setScene(scene);
-        exportStage.show();
+        stage.setScene(scene);
+        stage.show();
     }
 
-    public void exportCard() {
+    public void exportCard(MouseEvent mouseEvent) throws Exception {
         if (isNumeric(level.getText()) && isNumeric(atk.getText()) && isNumeric(def.getText()) &&
                 isNotEmpty(cardName.getText()) && isNotEmpty(cardType.getText()) &&
                 isNotEmpty(attribute.getText()) && isNotEmpty(description.getText()) && isNotEmpty(monsterType.getText())
                 && isValidCardType() && isValidAttribute() && isValidMonsterType()) {
             if (isMonsterExit()) {
                 ArrayList<String> cardInfo = new ArrayList<>();
-                cardInfo.add(Objects.requireNonNull(getClass().getResource("/images/newCards/0.jpg")).toExternalForm());
+                cardInfo.add(getClass().getResource("/images/newCards/0.jpg").toExternalForm());
                 cardInfo.add(cardName.getText());
                 cardInfo.add(level.getText());
                 cardInfo.add(attribute.getText());
@@ -79,6 +84,7 @@ public class ExportCardView extends Application {
                 cardInfo.add(description.getText());
                 String price = String.valueOf(Integer.parseInt(level.getText()) * 100);
                 cardInfo.add(price);
+                UserModel.getUserByUsername(MainMenuController.username).changeUserCoin(-Integer.parseInt(level.getText()) * 10);
                 cardInfo.add("Monster");
                 String id;
                 if (cardName == null) {
@@ -86,6 +92,10 @@ public class ExportCardView extends Application {
                 } else {
                     id = cardName.getText();
                 }
+                FileWriter writer = new FileWriter(id+".csv");
+                String collect = cardInfo.stream().collect(Collectors.joining("\n"));
+                writer.write(collect);
+                writer.close();
                 try {
                     FileWriter writerInfo = new FileWriter(id + ".txt");
                     writerInfo.write(new Gson().toJson(cardInfo));
@@ -96,20 +106,21 @@ public class ExportCardView extends Application {
                 ArrayList<String> cards = Json.exportCad();
                 cards.add(id);
                 Json.importCard(cards);
+                new StartClass().start(stage);
             } else {
-                label.setText("This card isn't in list!");
+                Label.setText("This card isn't in list!");
             }
         } else {
-            label.setText("Input is Invalid");
+            Label.setText("Input is Invalid");
         }
     }
 
-    public void exportSpellTrap() throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/exportSpellTrap.fxml")));
+    public void exportSpellTrap(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/exportSpellTrap.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
-        exportStage.setScene(scene);
-        exportStage.show();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
@@ -123,13 +134,13 @@ public class ExportCardView extends Application {
     @FXML
     TextField status;
 
-    public void exportCard2() throws Exception {
+    public void exportCard2(MouseEvent mouseEvent) throws Exception {
         if (isNotEmpty(cardNam.getText()) && isNotEmpty(type.getText()) &&
                 isNotEmpty(Icon.getText()) && isNotEmpty(description2.getText()) && isNotEmpty(status.getText())
                 && isValidIcon()) {
             if (isSpellTrap()) {
                 ArrayList<String> cardInfo = new ArrayList<>();
-                cardInfo.add(Objects.requireNonNull(getClass().getResource("/images/newCards/3.jpg")).toExternalForm());
+                cardInfo.add(getClass().getResource("/images/newCards/3.jpg").toExternalForm());
                 cardInfo.add(cardNam.getText());
                 cardInfo.add(type.getText());
                 cardInfo.add(Icon.getText());
@@ -141,6 +152,7 @@ public class ExportCardView extends Application {
                 }
                 String price2 = String.valueOf(count * 5);
                 cardInfo.add(price2);
+                UserModel.getUserByUsername(MainMenuController.username).changeUserCoin(-count / 2);
                 cardInfo.add(status.getText());
                 cardInfo.add("Spell");
                 String id;
@@ -149,6 +161,10 @@ public class ExportCardView extends Application {
                 } else {
                     id = cardNam.getText();
                 }
+                FileWriter writer = new FileWriter(id+".csv");
+                String collect = cardInfo.stream().collect(Collectors.joining("\n"));
+                writer.write(collect);
+                writer.close();
                 try {
                     FileWriter writerInfo = new FileWriter(id + ".txt");
                     writerInfo.write(new Gson().toJson(cardInfo));
@@ -159,7 +175,7 @@ public class ExportCardView extends Application {
                 ArrayList<String> cards = Json.exportCad();
                 cards.add(id);
                 Json.importCard(cards);
-                new StartClass().start(exportStage);
+                new StartClass().start(stage);
             } else {
                 label2.setText("This card isn't in list!");
             }
@@ -169,13 +185,14 @@ public class ExportCardView extends Application {
     }
 
 
-    public void exportCard3() throws Exception {
+    public void exportCard3(MouseEvent mouseEvent) throws Exception {
+
         if (isNotEmpty(cardNam.getText()) && isNotEmpty(type.getText()) &&
                 isNotEmpty(Icon.getText()) && isNotEmpty(description2.getText()) && isNotEmpty(status.getText())
                 && isValidIcon()) {
             if (isSpellTrap()) {
                 ArrayList<String> cardInfo = new ArrayList<>();
-                cardInfo.add(Objects.requireNonNull(getClass().getResource("/images/newCards/3.jpg")).toExternalForm());
+                cardInfo.add(getClass().getResource("/images/newCards/3.jpg").toExternalForm());
                 cardInfo.add(cardNam.getText());
                 cardInfo.add(type.getText());
                 cardInfo.add(Icon.getText());
@@ -187,6 +204,7 @@ public class ExportCardView extends Application {
                 }
                 String price2 = String.valueOf(count * 5);
                 cardInfo.add(price2);
+                UserModel.getUserByUsername(MainMenuController.username).changeUserCoin(-count / 2);
                 cardInfo.add(status.getText());
                 cardInfo.add("Trap");
                 String id;
@@ -195,6 +213,12 @@ public class ExportCardView extends Application {
                 } else {
                     id = cardNam.getText();
                 }
+
+                FileWriter writer = new FileWriter(id+".csv");
+                String collect = cardInfo.stream().collect(Collectors.joining("\n"));
+                writer.write(collect);
+                writer.close();
+
                 try {
                     FileWriter writerInfo = new FileWriter(id + ".txt");
                     writerInfo.write(new Gson().toJson(cardInfo));
@@ -205,7 +229,7 @@ public class ExportCardView extends Application {
                 ArrayList<String> cards = Json.exportCad();
                 cards.add(id);
                 Json.importCard(cards);
-                new StartClass().start(exportStage);
+                new StartClass().start(stage);
             } else {
                 label2.setText("This card isn't in list!");
             }
@@ -231,16 +255,16 @@ public class ExportCardView extends Application {
         }
     }
 
-    public void back() throws Exception {
-        new StartClass().start(exportStage);
+    public void back(MouseEvent mouseEvent) throws Exception {
+        new StartClass().start(stage);
     }
 
-    public void backToMenu() throws Exception {
-        new ExportCardView().start(exportStage);
+    public void backToMenu(MouseEvent mouseEvent) throws Exception {
+        new ExportCardView().start(stage);
     }
 
     public boolean isSpellTrap() {
-        System.out.println(description2.getText() + "  nn");
+        System.out.println(    TrapCard.getTrapCardByName(description2.getText()) != null);
         return SpellCard.getSpellCardByName(description2.getText()) != null ||
                 TrapCard.getTrapCardByName(description2.getText()) != null;
 
@@ -293,6 +317,4 @@ public class ExportCardView extends Application {
                 Icon.getText().equals("Equip") ||
                 Icon.getText().equals("Ritual");
     }
-
 }
-

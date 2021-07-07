@@ -78,7 +78,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="answerTxt" layoutX="157.0" layoutY="167.0" />
-                  <Button fx:id="okBtn" layoutX="82.0" layoutY="166.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="39.0" text="Ok" />
+                  <Button fx:id="okBtn" layoutX="82.0" layoutY="166.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="39.0" text="Ok" onAction="#okBtn"/>
                   <Button fx:id="cancelBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="167.0" mnemonicParsing="false" text="Cancel" />
                   <Label fx:id="popUpMessageLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="88.0" prefWidth="418.0" textAlignment="CENTER" textFill="RED" wrapText="true">
                      <font>
@@ -173,13 +173,11 @@
                   <InnerShadow height="23.38" radius="24.2975" width="75.81" />
                </effect>
             </ImageView>
-            <Button fx:id="ok" focusTraversable="false" layoutX="247.0" layoutY="226.0" mnemonicParsing="false" onAction="#pressEffectOkButton" text="Ok" />
             <Label fx:id="questionLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="178.0" prefHeight="38.0" prefWidth="324.0" textAlignment="CENTER">
                <font>
                   <Font name="Bodoni MT" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="answerTextField" layoutX="11.0" layoutY="226.0" prefHeight="27.0" prefWidth="225.0" promptText="answer" />
             <Label fx:id="roundLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="215.0" layoutY="47.0" prefHeight="38.0" prefWidth="98.0" textAlignment="CENTER" textFill="#f2ff00">
                <font>
                   <Font name="Bodoni MT" size="21.0" />

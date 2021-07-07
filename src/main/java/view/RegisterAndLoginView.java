@@ -53,7 +53,7 @@ public class RegisterAndLoginView extends Application {
         registerLoginStage = stage;
         registerLoginStage.setWidth(1000);
         registerLoginStage.setHeight(760);
-        registerLoginStage.setTitle("Yo Gi Oh");
+        registerLoginStage.setTitle("Yu Gi Oh");
         registerLoginStage.setResizable(false);
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/welcomePage.fxml")));

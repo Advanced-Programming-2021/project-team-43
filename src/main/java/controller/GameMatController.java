@@ -39,7 +39,7 @@ public class GameMatController {
             } else {
                 return 0;
             }
-            int breaker = commandController(command);
+            int breaker = commandController(command, gameMatView);
             if (breaker == 38) {
                 break;
             }
@@ -47,16 +47,16 @@ public class GameMatController {
         return 0;
     }
 
-    public static int commandController(String command) {
+    public static int commandController(String command ,GameMatView gameMatView) {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
         if ((matcher = getMatcher(command, "^select\\s+--monster\\s+(\\d+)\\s+--opponent$")).find() || (matcher = getMatcher(command, "^s\\s+-m\\s+(\\d+)\\s+-o$")).find()) {
             selectMonsterCard(Integer.parseInt(matcher.group(1)), false);
-         //   showGameBoard();
+            //   showGameBoard();
             return 1;
         }
         if ((matcher = getMatcher(command, "^select\\s+--monster\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^s\\s+-m\\s+(\\d+)$")).find()) {
             selectMonsterCard(Integer.parseInt(matcher.group(1)), true);
-           // showGameBoard();
+            // showGameBoard();
             return 2;
         }
         if ((matcher = getMatcher(command, "^select\\s+--hand\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^s\\s+-h\\s+(\\d+)$")).find()) {
@@ -93,9 +93,31 @@ public class GameMatController {
         }
         if (getMatcher(command, "^attack\\s+direct$").find() || getMatcher(command, "^a\\s+d$").find()) {
             attackDirect(currentPhase);
-           // showGameBoard();
+            // showGameBoard();
             return 26;
         }
+        if (getMatcher(command, "duel \\s*set-winner \\s*" + onlineUser).find()) {
+            endGame( rivalUser);
+            gameMatView.endGame();
+            return 35;
+        }
+        if (getMatcher(command, "duel \\s*set-winner \\s*" + rivalUser).find()) {
+            endGame( onlineUser);
+            gameMatView.endGame();
+            return 36;
+        }
+        if ((matcher = getMatcher(command, "increase\\s+--LP\\s+(\\d+)")).find()) {
+            increaseLP(Integer.parseInt(matcher.group(1)), onlineUser);
+            return 37;
+        }
+        if ((matcher = getMatcher(command, "select\\s+--hand\\s+(.+?)\\s+--force")).find() || (matcher = getMatcher(command, "s\\s+-h\\s+(.+?)\\s+-f")).find() || (matcher = getMatcher(command, "select\\s+--force\\s+--hand\\s+(.+?)")).find() || (matcher = getMatcher(command, "s\\s+-f\\s+-h\\s+(.+?)")).find()) {
+            if (Card.getCardsByName(matcher.group(1)) != null) {
+                HandCardZone handCard = new HandCardZone(onlineUser, matcher.group(1));
+                selectedOwnCard = "Hand/" + matcher.group(1) + "/" + handCard.getAddress();
+            }
+            return 38;
+        }
+        System.out.println("aaaa");
         return 39;
     }
 
@@ -1739,16 +1761,17 @@ public class GameMatController {
         Player loserPlayer = Player.getPlayerByName(loserNickname);
         UserModel.getUserByUsername(winnerUsername).changeUserScore(1000);
         winnerPlayer.changeNumberOfWin();
-        System.out.println(winnerNickname + " kkkkkkkkkkkkkk " + loserNickname);
         if (Player.isOneRound) {
             message = "The Duel is Over!\n" + winnerUsername + " won the game and the score is: 1000-0";
             UserModel.getUserByUsername(winnerUsername).changeUserCoin(1000 + winnerPlayer.getLifePoint());
             UserModel.getUserByUsername(loserUsername).changeUserCoin(100);
         } else {
             isNewTurn = true;
+            round--;
             int round = winnerPlayer.getNumberOfRound();
             round--;
             if (round == 0) {
+                System.out.println(winnerPlayer.getNumberOfWin() + " [[[[ " + loserPlayer.getNumberOfWin());
                 if (winnerPlayer.getNumberOfWin() > loserPlayer.getNumberOfWin()) {
                     message = "The Match is Over!\n" + winnerUsername  + " won the whole match with score: 3000-0";
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(3000 + 3 * winnerPlayer.getMaxLifePoints());
@@ -1758,6 +1781,8 @@ public class GameMatController {
                     UserModel.getUserByUsername(loserUsername).changeUserCoin(3000 + 3 * loserPlayer.getMaxLifePoints());
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(300);
                 }
+                Player.allPlayers.remove(winnerPlayer.getNickname());
+                Player.allPlayers.remove(loserPlayer.getNickname());
             } else {
                 sideMsg = "Round " + round + " starts!";
             }

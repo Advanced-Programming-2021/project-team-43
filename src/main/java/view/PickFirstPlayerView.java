@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import model.Player;
 import model.UserModel;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -24,8 +25,9 @@ public class PickFirstPlayerView extends Application {
             if (Player.getPlayerByName("AI") == null) {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply1).getNickname(), UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false, MainMenuController.roundNumber1);
+
             }
-            (GameMatController.gameMatView = new GameMatView()).start(primaryStage);
+            Objects.requireNonNullElseGet(GameMatController.gameMatView, () -> GameMatController.gameMatView = new GameMatView()).start(primaryStage);
         } else if (ply2.equals("AI")) {
             GameMatController.onlineUser = UserModel.getUserByUsername(ply1).getNickname();
             GameMatController.rivalUser = UserModel.getUserByUsername(ply2).getNickname();
@@ -33,7 +35,7 @@ public class PickFirstPlayerView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply2).getNickname(), UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false, MainMenuController.roundNumber1);
             }
-            (GameMatController.gameMatView = new GameMatView()).start(primaryStage);
+            Objects.requireNonNullElseGet(GameMatController.gameMatView, () -> GameMatController.gameMatView = new GameMatView()).start(primaryStage);
         } else {
             if (chance % 2 == 0) {
                 try {

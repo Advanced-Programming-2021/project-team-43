@@ -136,10 +136,11 @@ public class RockPaperView extends Application {
             else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false);
+                GameMatController.round = Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).getNumberOfRound();
             }
         }
         try {
-            (GameMatController.gameMatView = new GameMatView()).start(rockStage);
+            Objects.requireNonNullElseGet(GameMatController.gameMatView, () -> GameMatController.gameMatView = new GameMatView()).start(rockStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -170,10 +171,11 @@ public class RockPaperView extends Application {
             else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false);
+                GameMatController.round = Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).getNumberOfRound();
             }
         }
         try {
-            (GameMatController.gameMatView = new GameMatView()).start(rockStage);
+            Objects.requireNonNullElseGet(GameMatController.gameMatView, () -> GameMatController.gameMatView = new GameMatView()).start(rockStage);
         } catch (Exception e) {
             e.printStackTrace();
         }

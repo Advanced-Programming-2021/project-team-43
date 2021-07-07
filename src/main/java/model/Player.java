@@ -7,7 +7,7 @@ import java.util.*;
 public class Player {
 
     private final String nickname;
-    private int lifePoint = 100;//////////////
+    private int lifePoint = 8000;
     private boolean isYourTurn;
     private int numberOfRound;
     private int counterOfTurn = 1;
@@ -39,7 +39,6 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-        new HandCardZone(nickname, "Yami");
         for (int i = 0; i < 5; i++)
             new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
@@ -53,8 +52,7 @@ public class Player {
         MonsterZoneCard.allMonsterCards.get(nickname).clear();
         SpellTrapZoneCard.allSpellTrapCards.get(nickname).clear();
         numberOfRound--;
-        System.out.println(numberOfRound);
-        lifePoint = 100;/////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lifePoint = 8000;
         this.isYourTurn = isYourTurn;
         canDrawCard = !isYourTurn;
         canBattle = !isYourTurn;

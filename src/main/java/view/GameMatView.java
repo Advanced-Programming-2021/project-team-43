@@ -1,5 +1,4 @@
 package view;
-
 import controller.GameMatController;
 import controller.MainMenuController;
 import controller.MonsterEffect;
@@ -37,6 +36,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class GameMatView extends Application {
 
@@ -144,7 +146,6 @@ public class GameMatView extends Application {
     }
 
     public void initialize() {
-        //cheat
         mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_ANY);
             public void handle(KeyEvent ke) {
@@ -158,7 +159,7 @@ public class GameMatView extends Application {
                     okBtn.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
-                            okBtn("cheat");
+                            okBtn();
                         }
                     });
                 }
@@ -219,11 +220,12 @@ public class GameMatView extends Application {
     public void showGameBoard() {
         if (counter == 0 && GameMatController.onlineUser.equals("AI")) {
             try {
+                counter++;
                 AI();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            counter++;
+
         } else {
             counter = 0;
         }
@@ -494,13 +496,16 @@ public class GameMatView extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 GameMatController.selectFieldCard(true);
-                String[] split = ownGameMat.getFieldZone().split("/");
-                selectedCardImage.setImage(ShowCardsView.getCardImageByName(split[0]));
+                String[] split;
+                if (ownGameMat.getFieldZone().isEmpty()) {
+                    split = ownGameMat.getFieldZone().split("/");
+                    selectedCardImage.setImage(ShowCardsView.getCardImageByName(split[0]));
+                    if (split[1].equals("H")) {
+                        activateBtn.setVisible(true);
+                    }
+                }
                 selectedCardImage.setFitHeight(280);
                 selectedCardImage.setFitWidth(210);
-                if (split[1].equals("H")) {
-                    activateBtn.setVisible(true);
-                }
             }
         });
         rivalField.setOnMouseClicked(new EventHandler<>() {
@@ -840,7 +845,6 @@ public class GameMatView extends Application {
             lifePointAnimation(result, "attack");
             if (GameMatController.isNewTurn) {
                 GameMatController.isNewTurn = false;
-                GameMatController.round--;
                 try {
                     new PickFirstPlayerView().start(gameMatStage);
                 }
@@ -854,7 +858,6 @@ public class GameMatView extends Application {
 
     public void attackDirect() {
         int result = GameMatController.attackDirect(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
-        System.out.println(onlinePlayer.getNumberOfRound() + " :::" + rivalPlayer.getNumberOfRound() );
         if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
             endGame();
         }
@@ -875,7 +878,6 @@ public class GameMatView extends Application {
             lifePointAnimation(result, "attackdirect");
             if (GameMatController.isNewTurn) {
                 GameMatController.isNewTurn = false;
-                GameMatController.round--;
                 try {
                     new PickFirstPlayerView().start(gameMatStage);
                 }
@@ -909,7 +911,6 @@ public class GameMatView extends Application {
             e.printStackTrace();
         }
     }
-
 
     public void lifePointAnimation(int result, String whichAction) {
         if ((result == 0 && whichAction.equals("attackdirect")) || (result == 1 && whichAction.equals("attack"))) {
@@ -954,18 +955,6 @@ public class GameMatView extends Application {
         showGameBoard();
     }
 
-    public void pressEffectOkButton() {
-        if (activeEffect.equals("Man-Eater Bug") && rivalMonsterAddress != -1) {
-            MonsterEffect.manEaterBug(selectedCardAddress + 1, rivalMonsterAddress + 1);
-            rivalMonsterAddress = -1;
-            activateBtn.setVisible(false);
-            activeEffect = "";
-            questionLabel.setText("");
-            answerTextField.clear();
-        }
-        showGameBoard();
-    }
-
     public void surrender() {
         playAudio("gameOver");
         GameMatController.endGame(onlinePlayer.getNickname());
@@ -990,31 +979,30 @@ public class GameMatView extends Application {
         }
     }
 
-    public void okBtn(String whichAction) {
-
+    public void okBtn() {
+        String command =answerTxt.getText().trim();
+        GameMatController.commandController(command , this);
+        messagePane.setVisible(false);
+        showGameBoard();
     }
-
 
     public void pressPauseBtn() throws Exception {
         new Pause().start(gameMatStage);
     }
-
-
 
     public void AI() throws Exception {
         GameMatController.changePhase(Phase.Draw_Phase);
         GameMatController.changePhase(Phase.Standby_Phase);
         GameMatController.selectHandCard(1);
         GameMatController.summon(Phase.Main_Phase1);
-        GameMatController.changePhase(Phase.Main_Phase1);
-        GameMatController.selectMonsterCard(1,true);
+        nextPhase();
+        GameMatController.selectMonsterCard(1, true);
         if (MonsterZoneCard.getNumberOfFullHouse(GameMatController.rivalUser) == 0) {
             GameMatController.attackDirect(Phase.Battle_Phase);
+        } else {
+            GameMatController.attack(1, Phase.Battle_Phase);
         }
-        else {
-            GameMatController.attack(1,Phase.Battle_Phase);
-        }
-        nextPhase();
+        GameMatController.changePhase(Phase.Battle_Phase);
         nextPhase();
     }
 
