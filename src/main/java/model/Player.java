@@ -53,6 +53,7 @@ public class Player {
         MonsterZoneCard.allMonsterCards.get(nickname).clear();
         SpellTrapZoneCard.allSpellTrapCards.get(nickname).clear();
         numberOfRound--;
+        System.out.println(numberOfRound);
         lifePoint = 100;/////////////////////////////////////////////////////////////////////////////////////////////////////////
         this.isYourTurn = isYourTurn;
         canDrawCard = !isYourTurn;

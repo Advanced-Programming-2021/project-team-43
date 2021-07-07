@@ -27,7 +27,6 @@ public class GameOverView extends Application {
         gameOverStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
         gameOverStage.setResizable(false);
         gameOverStage.setScene(scene);
-        gameOverStage.initModality(Modality.APPLICATION_MODAL);
         gameOverStage.show();
         gameOverStage.setOnHidden(e -> {
             try {

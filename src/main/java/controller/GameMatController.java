@@ -1725,20 +1725,21 @@ public class GameMatController {
 
     public static void endGame(String loserNickname) {
         String winnerNickname, winnerUsername, loserUsername;
-        if (loserNickname.equals(onlineUser))
+        if (loserNickname.equals(onlineUser)) {
             winnerNickname = rivalUser;
-        else
+            winnerUsername = UserModel.getUserByNickname(rivalUser).getUsername();
+            loserUsername = UserModel.getUserByNickname(onlineUser).getUsername();
+        }
+        else {
             winnerNickname = onlineUser;
-        if (UserModel.getUserByUsername(MainMenuController.username).getNickname().equals(winnerNickname)) {
-            winnerUsername = MainMenuController.username;
-            loserUsername = MainMenuController.username2;
-        } else {
-            winnerUsername = MainMenuController.username2;
-            loserUsername = MainMenuController.username;
+            winnerUsername = UserModel.getUserByNickname(onlineUser).getUsername();
+            loserUsername = UserModel.getUserByNickname(rivalUser).getUsername();
         }
         Player winnerPlayer = Player.getPlayerByName(winnerNickname);
         Player loserPlayer = Player.getPlayerByName(loserNickname);
         UserModel.getUserByUsername(winnerUsername).changeUserScore(1000);
+        winnerPlayer.changeNumberOfWin();
+        System.out.println(winnerNickname + " kkkkkkkkkkkkkk " + loserNickname);
         if (Player.isOneRound) {
             message = "The Duel is Over!\n" + winnerUsername + " won the game and the score is: 1000-0";
             UserModel.getUserByUsername(winnerUsername).changeUserCoin(1000 + winnerPlayer.getLifePoint());
@@ -1753,20 +1754,11 @@ public class GameMatController {
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(3000 + 3 * winnerPlayer.getMaxLifePoints());
                     UserModel.getUserByUsername(loserUsername).changeUserCoin(300);
                 } else {
-                    message = "The Match is Over!\n" + winnerUsername + " won the whole match with score: 3000-0";
+                    message = "The Match is Over!\n" + loserUsername + " won the whole match with score: 3000-0";
                     UserModel.getUserByUsername(loserUsername).changeUserCoin(3000 + 3 * loserPlayer.getMaxLifePoints());
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(300);
                 }
-//                MainMenuController.run();
             } else {
-                String firstPlayer = "pp"; //= PickFirstPlayer.chose(winnerUsername, loserUsername);
-                if (firstPlayer.equals(winnerUsername)) {
-                    winnerPlayer.startNewGame(UserModel.getUserByUsername(winnerUsername).userAllDecks.get(UserModel.getUserByUsername(winnerUsername).getActiveDeck()), true);
-                    loserPlayer.startNewGame(UserModel.getUserByUsername(loserUsername).userAllDecks.get(UserModel.getUserByUsername(loserUsername).getActiveDeck()), false);
-                } else {
-                    winnerPlayer.startNewGame(UserModel.getUserByUsername(winnerUsername).userAllDecks.get(UserModel.getUserByUsername(winnerUsername).getActiveDeck()), false);
-                    loserPlayer.startNewGame(UserModel.getUserByUsername(loserUsername).userAllDecks.get(UserModel.getUserByUsername(loserUsername).getActiveDeck()), true);
-                }
                 sideMsg = "Round " + round + " starts!";
             }
         }

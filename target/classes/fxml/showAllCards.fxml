@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="mainPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="show" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShowCardsView">
+   <children>
+      <ScrollPane fx:id="monsterPane" layoutX="151.0" layoutY="116.0" prefHeight="450.0" prefWidth="300.0">
+         <content>
+            <HBox fx:id="monsterHBox" prefHeight="450.0" prefWidth="300.0" />
+         </content></ScrollPane>
+      <ScrollPane fx:id="spellPane" layoutX="525.0" layoutY="116.0" prefHeight="450.0" prefWidth="300.0">
+         <content>
+            <HBox fx:id="spellHBox" prefHeight="450.0" prefWidth="300.0" />
+         </content></ScrollPane>
+      <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="35.0" layoutY="676.0" mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="77.0" text="Back">
+         <font>
+            <Font name="Bodoni MT" size="19.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

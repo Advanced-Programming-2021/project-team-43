@@ -217,24 +217,27 @@ public class GameMatView extends Application {
     }
 
     public void showGameBoard() {
-//        if (counter == 0 && GameMatController.onlineUser.equals("AI")) {
-//            try {
-//                AI();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            counter++;
-//        } else {
-//            counter = 0;
-//        }
+        if (counter == 0 && GameMatController.onlineUser.equals("AI")) {
+            try {
+                AI();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            counter++;
+        } else {
+            counter = 0;
+        }
         onlinePlayer = Player.getPlayerByName(GameMatController.onlineUser);
-        System.out.println(onlinePlayer.getNumberOfRound());
-        if (GameMatController.round == 3)
+        if (Player.isOneRound)
             roundLbl.setText("Round: 1");
-        else if (GameMatController.round == 2)
-            roundLbl.setText("Round: 2");
-        else
-            roundLbl.setText("Round: 3");
+        else {
+            if (GameMatController.round == 3)
+                roundLbl.setText("Round: 1");
+            else if (GameMatController.round == 2)
+                roundLbl.setText("Round: 2");
+            else
+                roundLbl.setText("Round: 3");
+        }
         ownGameMat = GameMatModel.getGameMatByNickname(GameMatController.onlineUser);
         rivalPlayer = Player.getPlayerByName(GameMatController.rivalUser);
         rivalGameMat = GameMatModel.getGameMatByNickname(GameMatController.rivalUser);
@@ -819,10 +822,10 @@ public class GameMatView extends Application {
         clearMyChoices();
         int result = GameMatController.attack(rivalMonsterAddress, GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
-            surrender();
+            endGame();
         }
-        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
-            surrender();
+        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound()== 1 && rivalPlayer.getLifePoint() == 0)) {
+            endGame();
         }
         else {
             messagePane.setVisible(true);
@@ -851,11 +854,12 @@ public class GameMatView extends Application {
 
     public void attackDirect() {
         int result = GameMatController.attackDirect(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        System.out.println(onlinePlayer.getNumberOfRound() + " :::" + rivalPlayer.getNumberOfRound() );
         if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
-            surrender();
+            endGame();
         }
-        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 3 && rivalPlayer.getLifePoint() == 1)) {
-            surrender();
+        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
+            endGame();
         }
         else {
             messagePane.setVisible(true);
@@ -882,6 +886,30 @@ public class GameMatView extends Application {
             showGameBoard();
         }
     }
+
+    public void endGame() {
+        playAudio("gameOver");
+        Stage gameOverStage = new Stage();
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/gameOver.fxml")));
+            gameOverStage.setHeight(300);
+            Scene scene = new Scene(root);
+            gameOverStage.setTitle("Game Over");
+            gameOverStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
+            gameOverStage.setResizable(false);
+            gameOverStage.setScene(scene);
+            gameOverStage.show();
+            gameOverStage.setOnHidden(e -> {
+                try {
+                    new MainMenuView().start(gameMatStage);
+                } catch (Exception ignored) {
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void lifePointAnimation(int result, String whichAction) {
         if ((result == 0 && whichAction.equals("attackdirect")) || (result == 1 && whichAction.equals("attack"))) {
