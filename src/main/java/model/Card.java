@@ -11,7 +11,7 @@ public class Card {
     protected String secondName;
     protected static HashMap<String, Card> cards = new HashMap<>();
 
-    public Card(String cardName, String cardModel, String description, int price,String secondName) {
+    public Card(String cardName, String cardModel, String description, int price, String secondName) {
         this.cardName = cardName;
         this.cardModel = cardModel;
         this.description = description;

@@ -26,9 +26,18 @@ public class RockPaperView extends Application {
     private Label showTurn1;
     @FXML
     private Label showResult;
+    @FXML
+    private Button yes;
+    @FXML
+    private Button no;
+    @FXML
+    private Label ask;
+    public static String winnerPlayer;
     private static Stage rockStage;
     public static String ply1 = MainMenuController.username;
     public static String ply2 = MainMenuController.username2;
+    public static String firstChoice;
+    public static String secondChoice;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -38,15 +47,11 @@ public class RockPaperView extends Application {
         rockStage.show();
     }
 
-    public static String firstChoice;
-    public static String secondChoice;
-
     @FXML
     public void initialize() {
         showTurn.setText((ply1) + " select one");
         showTurn1.setText((ply2) + " select one");
     }
-
 
     public void stone() {
         firstChoice = "rock";
@@ -106,76 +111,69 @@ public class RockPaperView extends Application {
         }
     }
 
-    @FXML
-    private Button yes;
-    @FXML
-    private Button no;
-    @FXML
-    private Label ask;
-    public static String winnerPlayer;
-
-
     public void yes() {
-        if (Player.getPlayerByName(GameMatController.onlineUser) != null) {
-//            GameMatController.firstPlayer = winnerPlayer;
-//            GameMatController.startNewGame();
-        }
-        else {
-            if (winnerPlayer.equals(ply1)) {
-                GameMatController.onlineUser = UserModel.getUserByUsername(ply1).getNickname();
-                GameMatController.rivalUser = UserModel.getUserByUsername(ply2).getNickname();
+        if (winnerPlayer.equals(ply1)) {
+            GameMatController.onlineUser = UserModel.getUserByUsername(ply1).getNickname();
+            GameMatController.rivalUser = UserModel.getUserByUsername(ply2).getNickname();
+            if (Player.getPlayerByName(GameMatController.onlineUser) == null) {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply2).getNickname(), UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false, MainMenuController.roundNumber1);
+                GameMatController.round = MainMenuController.roundNumber1;
             }
-            if (winnerPlayer.equals(ply2)) {
-                GameMatController.onlineUser = UserModel.getUserByUsername(ply2).getNickname();
-                GameMatController.rivalUser = UserModel.getUserByUsername(ply1).getNickname();
+            else {
+                Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true);
+                Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false);
+            }
+        }
+        if (winnerPlayer.equals(ply2)) {
+            GameMatController.onlineUser = UserModel.getUserByUsername(ply2).getNickname();
+            GameMatController.rivalUser = UserModel.getUserByUsername(ply1).getNickname();
+            if (Player.getPlayerByName(GameMatController.onlineUser) == null) {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply1).getNickname(), UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false, MainMenuController.roundNumber1);
+                GameMatController.round = MainMenuController.roundNumber1;
+            }
+            else {
+                Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true);
+                Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false);
             }
         }
         try {
-            GameMatController.gameMatView = new GameMatView();
-//            TrapEffect.gameMatView = GameMatController.gameMatView;
-//            Player.gameMatView = GameMatController.gameMatView;
-//            HandCardZone.gameMatView = GameMatController.gameMatView;
-//            GameMatModel.gameMatView = GameMatController.gameMatView;
-//            SpellEffect.gameMatView = GameMatController.gameMatView;
-            GameMatController.gameMatView.start(rockStage);
-
+            (GameMatController.gameMatView = new GameMatView()).start(rockStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void no() {
-        if (Player.getPlayerByName(GameMatController.onlineUser) != null) {
-//            GameMatController.firstPlayer = winnerPlayer;
-//            GameMatController.startNewGame();
-        }
-        else {
-            if (winnerPlayer.equals(ply1)) {
-                GameMatController.onlineUser = UserModel.getUserByUsername(ply2).getNickname();
-                GameMatController.rivalUser = UserModel.getUserByUsername(ply1).getNickname();
+        if (winnerPlayer.equals(ply1)) {
+            GameMatController.onlineUser = UserModel.getUserByUsername(ply2).getNickname();
+            GameMatController.rivalUser = UserModel.getUserByUsername(ply1).getNickname();
+            if (Player.getPlayerByName(GameMatController.onlineUser) == null) {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply1).getNickname(), UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false, MainMenuController.roundNumber1);
+                GameMatController.round = MainMenuController.roundNumber1;
             }
-            if (winnerPlayer.equals(ply2)) {
-                GameMatController.onlineUser = UserModel.getUserByUsername(ply1).getNickname();
-                GameMatController.rivalUser = UserModel.getUserByUsername(ply2).getNickname();
-
+            else {
+                Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true);
+                Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false);
+            }
+        }
+        if (winnerPlayer.equals(ply2)) {
+            GameMatController.onlineUser = UserModel.getUserByUsername(ply1).getNickname();
+            GameMatController.rivalUser = UserModel.getUserByUsername(ply2).getNickname();
+            if (Player.getPlayerByName(GameMatController.onlineUser) == null) {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply2).getNickname(), UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false, MainMenuController.roundNumber1);
+                GameMatController.round = MainMenuController.roundNumber1;
+            }
+            else {
+                Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true);
+                Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false);
             }
         }
         try {
-            GameMatController.gameMatView = new GameMatView();
-//            TrapEffect.gameMatView = GameMatController.gameMatView;
-//            Player.gameMatView = GameMatController.gameMatView;
-//            HandCardZone.gameMatView = GameMatController.gameMatView;
-//            GameMatModel.gameMatView = GameMatController.gameMatView;
-//            SpellEffect.gameMatView = GameMatController.gameMatView;
-            GameMatController.gameMatView.start(rockStage);
+            (GameMatController.gameMatView = new GameMatView()).start(rockStage);
         } catch (Exception e) {
             e.printStackTrace();
         }

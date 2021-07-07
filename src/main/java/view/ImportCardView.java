@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ImportCardView extends Application {
 
@@ -37,6 +38,7 @@ public class ImportCardView extends Application {
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
         stage.setTitle("IMPORT CARD");
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
         Group root = new Group();
         Scene scene = new Scene(root, 400, 200);
         scene.setFill(Color.DARKRED);

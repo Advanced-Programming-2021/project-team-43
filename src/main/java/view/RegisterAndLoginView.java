@@ -33,11 +33,12 @@ public class RegisterAndLoginView extends Application {
     public TextField loginUsernameTxt;
     public PasswordField loginPassword;
     public Label loginMessageLbl;
+    public Button pauseBtn = new Button();
     private static Stage registerLoginStage;
     public static MediaPlayer note;
-    public Button pauseBtn = new Button();
-    private static boolean isMusicOn = true;
+    public static boolean isMusicOn = true;
     private static boolean isFirstTime = true;
+    public static ShowCardsView showCardsView;
 
     public static void main(String[] args) {
         launch();
@@ -49,9 +50,6 @@ public class RegisterAndLoginView extends Application {
             playAudio();
             isFirstTime = false;
         }
-        SetCards.readingCSVFileTrapSpell();
-        SetCards.readingCSVFileMonster();
-        new ShopModel(Card.getCards());
         registerLoginStage = stage;
         registerLoginStage.setWidth(1000);
         registerLoginStage.setHeight(760);
@@ -61,6 +59,13 @@ public class RegisterAndLoginView extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/welcomePage.fxml")));
         registerLoginStage.setScene(new Scene(root));
         registerLoginStage.show();
+        setUpGame();
+    }
+
+    public void setUpGame() {
+        SetCards.readingCSVFileTrapSpell();
+        SetCards.readingCSVFileMonster();
+        new ShopModel(Card.getCards());
         if (Json.readUserInfo() != null)
             UserModel.allUsersInfo.putAll(Json.readUserInfo());
         if (Json.readUsernames() != null)
@@ -84,7 +89,7 @@ public class RegisterAndLoginView extends Application {
             userModel.addDeck(deckModel);
             userModel.setActiveDeck("AILevel1");
         }
-        new ShowCardsView().setAllCards();
+        (showCardsView = new ShowCardsView()).setAllCards();
     }
 
     public void playAudio() {

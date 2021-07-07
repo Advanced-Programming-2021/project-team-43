@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -26,6 +27,7 @@ public class GameOverView extends Application {
         gameOverStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
         gameOverStage.setResizable(false);
         gameOverStage.setScene(scene);
+        gameOverStage.initModality(Modality.APPLICATION_MODAL);
         gameOverStage.show();
         gameOverStage.setOnHidden(e -> {
             try {
@@ -37,6 +39,7 @@ public class GameOverView extends Application {
     }
 
     public void initialize() {
+        System.out.println(GameMatController.message);
         resultLbl.setText(GameMatController.message);
     }
 }

@@ -20,7 +20,6 @@ public class StartClass extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/startClass.fxml")));
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Import,Export,show Cards");
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
         stage.show();
@@ -36,7 +35,7 @@ public class StartClass extends Application {
     }
 
     public void showAll() throws Exception {
-        new ShowCardsView().start(null);
+        RegisterAndLoginView.showCardsView.start(stage);
     }
 
     public void exit() throws Exception {

@@ -1,5 +1,4 @@
 package view;
-
 import controller.MainMenuController;
 import controller.ShopController;
 import javafx.application.Application;
@@ -11,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -19,7 +17,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Card;
 import model.UserModel;
-
 import java.util.*;
 
 
@@ -64,6 +61,7 @@ public class ShopView extends Application {
     }
 
     public void initialize() {
+        user = UserModel.getUserByUsername(MainMenuController.username);
         if (user.getUserCoin() >= 9000)
             coinLblOpacity = 255;
         else if (user.getUserCoin() < 9000 && user.getUserCoin() >= 7000)
@@ -77,7 +75,6 @@ public class ShopView extends Application {
         else if (user.getUserCoin() < 1000)
             coinLblOpacity = 80;
         moneyLbl.setFont(new Font(20));
-        user = UserModel.getUserByUsername(MainMenuController.username);
         HashMap<String, Image> allCards = new HashMap<>(ShowCardsView.getAllCardImage());
         for (Map.Entry<String, Image> eachCard : allCards.entrySet())
             cardImages.add(eachCard.getValue());

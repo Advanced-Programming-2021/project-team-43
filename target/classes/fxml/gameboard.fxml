@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -9,14 +10,14 @@
    <children>
       <AnchorPane fx:id="boardPane" layoutX="301.0" maxHeight="760.0" maxWidth="711.0" prefHeight="760.0" prefWidth="631.0" styleClass="body">
          <children>
-            <ImageView fx:id="ownSpellTrap3" fitHeight="111.0" fitWidth="87.0" layoutX="229.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="ownSpellTrap3" fitHeight="111.0" fitWidth="87.0" layoutX="229.0" layoutY="538.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownMonster5" fitHeight="111.0" fitWidth="87.0" layoutX="125.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownMonster3" fitHeight="111.0" fitWidth="87.0" layoutX="229.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownMonster1" fitHeight="111.0" fitWidth="87.0" layoutX="327.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="ownSpellTrap1" fitHeight="111.0" fitWidth="87.0" layoutX="327.0" layoutY="538.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="ownSpellTrap5" fitHeight="111.0" fitWidth="87.0" layoutX="141.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="ownSpellTrap1" fitHeight="111.0" fitWidth="87.0" layoutX="327.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="ownSpellTrap5" fitHeight="111.0" fitWidth="87.0" layoutX="141.0" layoutY="538.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownMonster2" fitHeight="111.0" fitWidth="87.0" layoutX="420.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="ownSpellTrap2" fitHeight="111.0" fitWidth="87.0" layoutX="420.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="ownSpellTrap2" fitHeight="111.0" fitWidth="87.0" layoutX="420.0" layoutY="527.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownSpellTrap4" fitHeight="111.0" fitWidth="87.0" layoutX="516.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="ownMonster4" fitHeight="111.0" fitWidth="87.0" layoutX="516.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="rivalMonster4" fitHeight="111.0" fitWidth="87.0" layoutX="141.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
@@ -45,7 +46,7 @@
                <image>
                   <Image url="@../images/deadCard.jpg" />
                </image></ImageView>
-            <ImageView fx:id="ownField" fitHeight="111.0" fitWidth="87.0" layoutX="22.0" layoutY="538.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="ownField" fitHeight="111.0" fitWidth="87.0" layoutX="26.0" layoutY="546.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="rivalField" fitHeight="111.0" fitWidth="87.0" layoutX="594.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" />
             <HBox fx:id="onlineHbox" layoutX="5.0" layoutY="675.0" prefHeight="77.0" prefWidth="692.0" />
             <HBox fx:id="rivalHbox" layoutX="6.0" prefHeight="77.0" prefWidth="692.0" />
@@ -127,7 +128,7 @@
                      <font>
                         <Font name="Bodoni MT" size="14.0" />
                      </font></Button>
-                  <Button fx:id="activateBtn" focusTraversable="false" mnemonicParsing="false" prefHeight="24.0" prefWidth="98.0" text="activate" visible="false">
+                  <Button fx:id="activateBtn" focusTraversable="false" mnemonicParsing="false" onAction="#activateEffect" prefHeight="24.0" prefWidth="98.0" text="activate" visible="false">
                      <font>
                         <Font name="Bodoni MT" size="14.0" />
                      </font>
@@ -168,14 +169,22 @@
                <image>
                   <Image url="@../images/setting.jpg" />
                </image>
+               <effect>
+                  <InnerShadow height="23.38" radius="24.2975" width="75.81" />
+               </effect>
             </ImageView>
-            <Button fx:id="ok" layoutX="247.0" layoutY="226.0" mnemonicParsing="false" onAction="#pressOkButton" text="Ok" />
-            <Label fx:id="questionLable" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="178.0" prefHeight="38.0" prefWidth="324.0" textAlignment="CENTER">
+            <Button fx:id="ok" focusTraversable="false" layoutX="247.0" layoutY="226.0" mnemonicParsing="false" onAction="#pressEffectOkButton" text="Ok" />
+            <Label fx:id="questionLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="178.0" prefHeight="38.0" prefWidth="324.0" textAlignment="CENTER">
                <font>
                   <Font name="Bodoni MT" size="14.0" />
                </font>
             </Label>
             <TextField fx:id="answerTextField" layoutX="11.0" layoutY="226.0" prefHeight="27.0" prefWidth="225.0" promptText="answer" />
+            <Label fx:id="roundLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="215.0" layoutY="47.0" prefHeight="38.0" prefWidth="98.0" textAlignment="CENTER" textFill="#f2ff00">
+               <font>
+                  <Font name="Bodoni MT" size="21.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

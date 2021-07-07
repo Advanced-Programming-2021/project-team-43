@@ -1,7 +1,9 @@
 package view;
 import controller.DeckController;
+import controller.GameMatController;
 import controller.MainMenuController;
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.*;
@@ -71,6 +73,8 @@ public class EditDeckView extends Application {
             cardAmountLbl.setText("No Bought Card yet!");
         fillMainCardDeck();
         fillSideCardDeck();
+        implementDragAndDropToMain(boughtCardImgView);
+        implementDragAndDropToSide(boughtCardImgView);
     }
 
     public void fillMainCardDeck() {
@@ -116,20 +120,15 @@ public class EditDeckView extends Application {
     }
 
     public void deleteCard() {
-        if (!selectedCard.isEmpty()) {
-            if (selectedCard.startsWith("main")) {
-                DeckController.removeCardFromMainDeck(ShowCardsView.getNameByImage(selectedCardImage.getImage()), deckName);
-                mainDeckPane.getChildren().remove(selectedCardImage);
-            } else {
-                DeckController.removeCardFromSideDeck(ShowCardsView.getNameByImage(selectedCardImage.getImage()), deckName);
-                sideDeckPane.getChildren().remove(selectedCardImage);
-            }
-            selectedCard = "";
-            selectedCardImage = null;
+        if (selectedCard.startsWith("main")) {
+            DeckController.removeCardFromMainDeck(ShowCardsView.getNameByImage(selectedCardImage.getImage()), deckName);
+            mainDeckPane.getChildren().remove(selectedCardImage);
+        } else {
+            DeckController.removeCardFromSideDeck(ShowCardsView.getNameByImage(selectedCardImage.getImage()), deckName);
+            sideDeckPane.getChildren().remove(selectedCardImage);
         }
-        else {
-            messageLbl.setText("No Card Selected!");
-        }
+        selectedCard = "";
+        selectedCardImage = null;
     }
 
     public void nextCard() {
@@ -139,6 +138,8 @@ public class EditDeckView extends Application {
             cardCounter = 0;
         boughtCardImgView.setImage(cardImages.get(cardCounter));
         cardAmountLbl.setText("Amount: " + myBoughtCards.get(ShowCardsView.getNameByImage(cardImages.get(cardCounter))));
+        implementDragAndDropToMain(boughtCardImgView);
+        implementDragAndDropToSide(boughtCardImgView);
     }
 
     public void previousCard() {
@@ -148,6 +149,8 @@ public class EditDeckView extends Application {
             cardCounter = cardImages.size() - 1;
         boughtCardImgView.setImage(cardImages.get(cardCounter));
         cardAmountLbl.setText("Amount: " + myBoughtCards.get(ShowCardsView.getNameByImage(cardImages.get(cardCounter))));
+        implementDragAndDropToMain(boughtCardImgView);
+        implementDragAndDropToSide(boughtCardImgView);
     }
 
     public void addToMainDeck() {
@@ -165,7 +168,6 @@ public class EditDeckView extends Application {
             mainCardY += 80;
             mainCardX = 0;
         }
-        clickOnCards();
     }
 
     public void addToSideDeck() {
@@ -183,7 +185,6 @@ public class EditDeckView extends Application {
             sideCardX = 0;
         }
         sideCardCounter++;
-        clickOnCards();
     }
 
     public void clickOnCards() {
@@ -194,6 +195,7 @@ public class EditDeckView extends Application {
                     ImageView imageView = (ImageView) child;
                     selectedCard = "main " + ShowCardsView.getNameByImage(imageView.getImage());
                     selectedCardImage = imageView;
+                    deleteCard();
                 }
             });
         }
@@ -204,10 +206,64 @@ public class EditDeckView extends Application {
                     ImageView imageView = (ImageView) child;
                     selectedCard = "side " + ShowCardsView.getNameByImage(imageView.getImage());
                     selectedCardImage = imageView;
+                    deleteCard();
                 }
             });
         }
 
+    }
+
+    public void implementDragAndDropToMain(ImageView imageView) {
+        imageView.setOnDragDetected(event -> {
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("");
+            db.setContent(content);
+            event.consume();
+        });
+        mainDeckPane.setOnDragOver(Event::consume);
+        imageView.setOnDragEntered(Event::consume);
+        mainDeckPane.setOnDragExited(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                addToMainDeck();
+                dragEvent.consume();
+            }
+        });
+        mainDeckPane.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = db.hasString();
+            event.setDropCompleted(success);
+            event.consume();
+        });
+        imageView.setOnDragDone(Event::consume);
+    }
+
+    public void implementDragAndDropToSide(ImageView imageView) {
+        imageView.setOnDragDetected(event -> {
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("");
+            db.setContent(content);
+            event.consume();
+        });
+        sideDeckPane.setOnDragOver(Event::consume);
+        imageView.setOnDragEntered(Event::consume);
+        sideDeckPane.setOnDragExited(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                addToSideDeck();
+                dragEvent.consume();
+            }
+        });
+        sideDeckPane.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = db.hasString();
+            addToSideDeck();
+            event.setDropCompleted(success);
+            event.consume();
+        });
+        imageView.setOnDragDone(Event::consume);
     }
 
     public void pressBackBtn() throws Exception {

@@ -44,3 +44,11 @@
  -fx-background-image: url("x.jpg");
  -fx-background-size: 1000 760;
 }
+.editDeck{
+ -fx-background-image: url("e1.jpg");
+ -fx-background-size: 1000 760;
+}
+.show{
+ -fx-background-image: url("show.jpg");
+ -fx-background-size: 1000 760;
+}

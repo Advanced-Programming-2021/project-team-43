@@ -39,7 +39,7 @@ public class Player {
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
         fillTheGameDecks(activeDeck);
-        new HandCardZone(nickname, "Wattaildragon");///////////////
+        new HandCardZone(nickname, "Yami");
         for (int i = 0; i < 5; i++)
             new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
@@ -62,6 +62,8 @@ public class Player {
         canSetSummonMonster = true;
         GameMatModel.getGameMatByNickname(nickname).setPhase(Phase.Draw_Phase);
         fillTheGameDecks(activeDeck);
+        for (int i = 0; i < 5; i++)
+            new HandCardZone(nickname, drawCard(true));
     }
 
     public void fillTheGameDecks(DeckModel activeDeck) {

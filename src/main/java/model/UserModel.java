@@ -61,42 +61,29 @@ public class UserModel {
 
     public void changePassword(String password) {
         this.password = password;
-        allUsersInfo.replace(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public void changeNickname(String nickname) {
-
         allUsersNicknames.remove(this.nickname);
         allUsersNicknames.add(nickname);
         this.nickname = nickname;
-        allUsersInfo.replace(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
-
-    }
-
-    public void setUserScore(int userScore) {
-        this.userScore = userScore;
-        allUsersInfo.replace(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
-
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public void changeUserScore(int userScore) {
-        this.userScore = userScore + this.userScore;
-        allUsersInfo.replace(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        this.userScore += userScore;
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public void changeUserCoin(int amount) {
-        this.userCoin = this.userCoin + amount;
-        allUsersInfo.replace(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        this.userCoin += amount;
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        Json.writeUserAllInfo(UserModel.allUsersInfo);
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public String getImageUrl() {
@@ -105,42 +92,17 @@ public class UserModel {
 
     public void setActiveDeck(String deckName) {
         this.activeDeck = deckName;
-        allUsersInfo.replace(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public void addDeck(DeckModel deckModel) {
         userAllDecks.put(deckModel.getDeckName(), deckModel);
-        allUsersInfo.replace(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public void deleteDeck(String deckName) {
         userAllDecks.remove(deckName);
-        allUsersInfo.replace(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
-    }
-
-    public static UserModel getUserByUsername(String username) {
-        return allUsersInfo.get(username);
-    }
-
-    public static boolean isRepeatedUsername(String username) {
-        if (allUsernames != null) {
-            for (String allUsername : allUsernames)
-                if (allUsername.equals(username))
-                    return true;
-        }
-        return false;
-    }
-
-    public static boolean isRepeatedNickname(String nickname) {
-        if (allUsersNicknames != null) {
-            for (String allUsersNickname : allUsersNicknames)
-                if (allUsersNickname.equals(nickname))
-                    return true;
-        }
-        return false;
+        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
     public void addCardToUserAllCards(String cardName) {
@@ -150,7 +112,6 @@ public class UserModel {
             int cardNumbers = userAllCards.get(cardName) + 1;
             userAllCards.replace(cardName, cardNumbers);
         }
-        allUsersInfo.replace(username, this);
         Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
@@ -163,7 +124,6 @@ public class UserModel {
                 userAllCards.replace(cardName, i);
             }
         }
-        allUsersInfo.replace(username, this);
         Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
@@ -179,11 +139,28 @@ public class UserModel {
         return userAllDecks.containsKey(deckName);
     }
 
+    public static UserModel getUserByUsername(String username) {
+        return allUsersInfo.get(username);
+    }
+
+    public static boolean isRepeatedUsername(String username) {
+        for (Map.Entry<String, UserModel> eachUser : allUsersInfo.entrySet())
+            if (eachUser.getKey().equals(username))
+                return true;
+        return false;
+    }
+
+    public static boolean isRepeatedNickname(String nickname) {
+        for (Map.Entry<String, UserModel> eachUser : allUsersInfo.entrySet())
+            if (eachUser.getValue().getNickname().equals(nickname))
+                return true;
+        return false;
+    }
+
     public static UserModel getUserByNickname(String nickname){
         for (Map.Entry<String, UserModel> eachUser : allUsersInfo.entrySet())
-            if(eachUser.getValue().getNickname().equals(nickname)){
+            if(eachUser.getValue().getNickname().equals(nickname))
                 return eachUser.getValue();
-            }
         return null;
     }
 

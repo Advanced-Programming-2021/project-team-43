@@ -7,10 +7,13 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="pane1" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="exportMonster" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
-    <Button layoutX="55.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#exportCard" prefHeight="48.0" prefWidth="117.0" text="Export" textFill="#b92b2b" underline="true">
+    <Button focusTraversable="false" layoutX="55.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#exportCard" prefHeight="41.0" prefWidth="103.0" text="Export" textFill="#b92b2b">
         <cursor>
             <Cursor fx:constant="HAND" />
         </cursor>
+      <font>
+         <Font name="Bodoni MT" size="19.0" />
+      </font>
     </Button>
     <Text layoutX="189.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card Builder:" wrappingWidth="72.0" />
     <ImageView fx:id="imageView11" fitHeight="546.0" fitWidth="382.0" layoutX="341.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
@@ -32,12 +35,12 @@
     <TextField id="def" fx:id="def" layoutX="618.0" layoutY="550.0" prefHeight="17.0" prefWidth="56.0" promptText="Def" />
     <TextField id="description" fx:id="description" layoutX="376.0" layoutY="486.0" prefHeight="59.0" prefWidth="306.0" promptText="Name of card's effect" />
     <Label id="label" fx:id="Label" layoutX="43.0" layoutY="293.0" prefHeight="73.0" prefWidth="185.0" textAlignment="CENTER" textFill="WHITE" />
-    <Button layoutX="18.0" layoutY="601.0" mnemonicParsing="false" onMouseClicked="#backToMenu" prefHeight="48.0" prefWidth="117.0" text="Back" textFill="#d31f1f" underline="true">
+    <Button focusTraversable="false" layoutX="18.0" layoutY="601.0" mnemonicParsing="false" onMouseClicked="#backToMenu" prefHeight="34.0" prefWidth="77.0" text="Back" textFill="#d31f1f">
         <cursor>
             <Cursor fx:constant="HAND" />
         </cursor>
         <font>
-            <Font name="System Bold Italic" size="12.0" />
+            <Font name="Bodoni MT" size="19.0" />
         </font>
     </Button>
 </AnchorPane>

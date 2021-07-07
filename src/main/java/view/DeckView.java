@@ -58,16 +58,20 @@ public class DeckView extends Application {
     }
 
     public void initialize() {
+        deckImgView.setFitWidth(231);
+        deckImgView.setFitHeight(292);
         isActiveCheckBox.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (isActiveCheckBox.isSelected()) {
                     activeDeck = deckCounter;
                     user.setActiveDeck(getDeckNameByNumber(deckCounter));
+                    deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/activeBack.jpg")).toExternalForm()));
                 }
                 else {
                     activeDeck = -1;
                     user.setActiveDeck("");
+                    deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()));
                 }
             }
         });
@@ -82,8 +86,9 @@ public class DeckView extends Application {
                     isActiveCheckBox.setSelected(true);
                     deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/activeBack.jpg")).toExternalForm()));
                 }
-                else
+                else {
                     deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()));
+                }
                 i++;
             }
             deckInfoLbl.setText(allDeckInformation.get(0));
@@ -121,13 +126,15 @@ public class DeckView extends Application {
         deckInfoLbl.setOnMouseExited(new EventHandler<>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println(deckCounter);
                 allMainCardsPane.get(deckCounter).setVisible(false);
                 allSideCardsPane.get(deckCounter).setVisible(false);
                 deckPane.getChildren().remove(allMainCardsPane.get(deckCounter));
                 deckPane.getChildren().remove(allSideCardsPane.get(deckCounter));
             }
         });
+        if (user.getActiveDeck().equals(getDeckNameByNumber(deckCounter))) {
+            deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/activeBack.jpg")).toExternalForm()));
+        }
     }
 
     public void fillSideCardDeck(String deckName) {

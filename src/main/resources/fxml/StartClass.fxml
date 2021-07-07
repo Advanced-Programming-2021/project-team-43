@@ -3,28 +3,41 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="chart" stylesheets="@design.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.StartClass">
    <children>
-      <Button layoutX="276.0" layoutY="92.0" mnemonicParsing="false" onMouseClicked="#showAll" prefHeight="35.0" prefWidth="113.0" text="Show all cards" textFill="#a43535">
+      <Button focusTraversable="false" layoutX="276.0" layoutY="92.0" mnemonicParsing="false" onMouseClicked="#showAll" prefHeight="35.0" prefWidth="113.0" text="Show all cards">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font>
       </Button>
-      <Button layoutX="412.0" layoutY="197.0" mnemonicParsing="false" onMouseClicked="#export" prefHeight="34.0" prefWidth="113.0" text="Export card" textFill="#a14b4b">
+      <Button focusTraversable="false" layoutX="412.0" layoutY="197.0" mnemonicParsing="false" onMouseClicked="#export" prefHeight="34.0" prefWidth="113.0" text="Export card">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font>
       </Button>
-      <Button layoutX="355.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#importCard" prefHeight="35.0" prefWidth="113.0" text="Import card" textFill="#9a3d3d">
+      <Button focusTraversable="false" layoutX="355.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#importCard" prefHeight="35.0" prefWidth="113.0" text="Import card">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font>
       </Button>
-      <Button layoutX="469.0" layoutY="251.0" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="36.0" prefWidth="113.0" text="Back" textFill="#9a3d3d">
+      <Button focusTraversable="false" layoutX="469.0" layoutY="251.0" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="36.0" prefWidth="113.0" text="Back">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font>
       </Button>
    </children>
 </AnchorPane>

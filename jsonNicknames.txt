@@ -1,1 +1,1 @@
-["roya","forooz","amirali","roya","forooz","amirali","roya","forooz","amirali","roya","forooz","amirali","roya","forooz","amirali","roya","forooz","amirali","roya","forooz","amirali","roya","forooz","amirali","AI"]
+["forooz","amirali","AI","roya"]
