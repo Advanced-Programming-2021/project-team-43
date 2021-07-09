@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="chart" stylesheets="@../images/background/start.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
+    <Label fx:id="label2" prefHeight="46.0" prefWidth="161.0" visible="false" />
+    <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="255.0" layoutY="233.0" mnemonicParsing="false" onAction="#exportSpellTrap" prefHeight="46.0" prefWidth="174.0" text="Export SpellTrap Card">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+      <font>
+         <Font name="Bodoni MT" size="15.0" />
+      </font>
+    </Button>
+   <Button focusTraversable="false" layoutX="255.0" layoutY="296.0" mnemonicParsing="false" onAction="#exportMonster" prefHeight="46.0" prefWidth="174.0" text="Export Monster Card">
+      <font>
+         <Font name="Bodoni MT" size="15.0" />
+      </font>
+   </Button>
+   <Button focusTraversable="false" layoutX="42.0" layoutY="647.0" mnemonicParsing="false" onAction="#back" prefHeight="34.0" prefWidth="77.0" text="Back">
+      <font>
+         <Font name="Bodoni MT" size="17.0" />
+      </font>
+   </Button>
+
+
+</AnchorPane>

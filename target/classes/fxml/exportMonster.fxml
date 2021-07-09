@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pane1" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="exportMonster" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
+    <Button focusTraversable="false" layoutX="234.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#exportCard" prefHeight="31.0" prefWidth="114.0" text="Export" textFill="#b92b2b">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+      <font>
+         <Font name="Bodoni MT" size="19.0" />
+      </font>
+    </Button>
+    <Text layoutX="189.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card Builder:" wrappingWidth="72.0" />
+    <ImageView fx:id="imageView11" fitHeight="546.0" fitWidth="382.0" layoutX="107.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../images/empty.jpg" />
+        </image>
+    </ImageView>
+    <ImageView fx:id="imageView12" fitHeight="342.0" fitWidth="281.0" layoutX="152.0" layoutY="177.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../images/0.jpg" />
+        </image>
+    </ImageView>
+    <TextField id="cardName" fx:id="cardName" layoutX="136.0" layoutY="95.0" prefHeight="31.0" prefWidth="166.0" promptText="Card name" />
+    <TextField id="level" fx:id="level" layoutX="321.0" layoutY="141.0" prefHeight="25.0" prefWidth="124.0" promptText="Level" />
+    <TextField id="attribute" fx:id="attribute" layoutX="373.0" layoutY="98.0" prefHeight="16.0" prefWidth="72.0" promptText="Attribute" />
+    <TextField id="monsterType" fx:id="monsterType" layoutX="136.0" layoutY="483.0" prefHeight="25.0" prefWidth="103.0" promptText="Monster Type" />
+    <TextField id="cardType" fx:id="cardType" layoutX="355.0" layoutY="483.0" prefHeight="25.0" prefWidth="89.0" promptText="Card Type" />
+    <TextField id="atk" fx:id="atk" layoutX="139.0" layoutY="575.0" prefHeight="17.0" prefWidth="56.0" promptText="Atk" />
+    <TextField id="def" fx:id="def" layoutX="211.0" layoutY="575.0" prefHeight="17.0" prefWidth="56.0" promptText="Def" />
+    <TextField id="description" fx:id="description" layoutX="139.0" layoutY="516.0" prefHeight="59.0" prefWidth="306.0" promptText="Name of card's effect" />
+    <Label id="label" fx:id="Label" layoutX="43.0" layoutY="293.0" prefHeight="73.0" prefWidth="185.0" textAlignment="CENTER" textFill="WHITE" />
+    <Button focusTraversable="false" layoutX="43.0" layoutY="639.0" mnemonicParsing="false" onMouseClicked="#backToMenu" prefHeight="39.0" prefWidth="72.0" text="Back" textFill="#d31f1f">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <font>
+            <Font name="Bodoni MT" size="19.0" />
+        </font>
+    </Button>
+</AnchorPane>

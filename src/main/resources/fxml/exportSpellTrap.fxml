@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="exportSpell" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
+    <children>
+
+        <Button focusTraversable="false" layoutX="180.0" layoutY="522.0" mnemonicParsing="false" onMouseClicked="#exportCard2" prefHeight="33.0" prefWidth="169.0" text="Export as Spell card" textFill="#cd4747">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font>
+        </Button>
+        <Button focusTraversable="false" layoutX="180.0" layoutY="571.0" mnemonicParsing="false" onMouseClicked="#exportCard3" prefHeight="33.0" prefWidth="169.0" text="Export as Trap card" textFill="#cd4747">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font>
+        </Button>
+        <!--      <Button layoutX="310.0" layoutY="121.0" mnemonicParsing="false" onMouseClicked="#pressPreviousBt" prefHeight="17.0" prefWidth="28.0" text="&lt;" textFill="#cd4747">-->
+        <!--         <cursor>-->
+        <!--            <Cursor fx:constant="HAND" />-->
+        <!--         </cursor>-->
+        <!--      </Button>-->
+        <!--      <Button layoutX="558.0" layoutY="121.0" mnemonicParsing="false" onMouseClicked="#pressNextBt" prefHeight="17.0" prefWidth="28.0" text="&gt;" textFill="#cd4747">-->
+        <!--         <cursor>-->
+        <!--            <Cursor fx:constant="HAND" />-->
+        <!--         </cursor>-->
+        <!--      </Button>-->
+
+        <ImageView fitHeight="441.0" fitWidth="301.0" layoutX="115.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/empty.jpg" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="239.0" fitWidth="236.0" layoutX="148.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/3.jpg" />
+            </image>
+        </ImageView>
+        <TextField id="cardNam" fx:id="cardNam" layoutX="140.0" layoutY="75.0" prefHeight="17.0" prefWidth="114.0" promptText="card name" />
+        <TextField id="type" fx:id="type" layoutX="313.0" layoutY="116.0" prefHeight="25.0" prefWidth="77.0" promptText="Type" />
+        <TextField id="Icon" fx:id="Icon" layoutX="338.0" layoutY="75.0" prefHeight="25.0" prefWidth="49.0" promptText="Icon" />
+        <TextField id="description2" fx:id="description2" layoutX="142.0" layoutY="420.0" prefHeight="47.0" prefWidth="245.0" promptText="Name of card's effect" />
+        <TextField id="status" fx:id="status" layoutX="131.0" layoutY="387.0" prefHeight="17.0" prefWidth="133.0" promptText="Status" />
+        <Label id="label" fx:id="label2" layoutX="55.0" layoutY="220.0" prefHeight="117.0" prefWidth="209.0" textAlignment="CENTER" textFill="WHITE" />
+        <Button focusTraversable="false" layoutX="37.0" layoutY="621.0" mnemonicParsing="false" onMouseClicked="#backToMenu" prefHeight="34.0" prefWidth="77.0" text="Back" textFill="#cd4747">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+        </Button>
+    </children>
+
+</AnchorPane>
