@@ -27,38 +27,8 @@ public class MainMenuController {
     }
 
     public static int findMatcher(String command) {
-        if ((matcher = getMatcher(command, "^menu \\s*enter\\s* (.+?)$")).find() || (matcher = getMatcher(command, "^m \\s*en\\s* (.+?)$")).find()) {
-            if (matcher.group(1).equals("Duel")) {
-                duelRun();
-                return 1;
-            }
-            if (matcher.group(1).equals("Deck")) {
-                DeckController.run();
-                return 1;
-            }
-            if (matcher.group(1).equals("Scoreboard")) {
-                scoreboardRun();
-                return 1;
-            }
-            if (matcher.group(1).equals("Profile")) {
-                profileRun();
-                return 1;
-            }
-            if (matcher.group(1).equals("Shop")) {
-                ShopController.run();
-                return 1;
-            }
-            if (matcher.group(1).equals("Import/Export")) {
 
-                return 1;
-            }
-            MainMenuView.showInput("invalid command");
-            return 1;
-        }
-        if (getMatcher(command, "^menu\\s* show-current$").find() || getMatcher(command, "^m\\s* s-c$").find()) {
-            MainMenuView.showInput("Main");
-            return 1;
-        }
+
         if (getMatcher(command, "^menu \\s*exit$").find() || getMatcher(command, "^m \\s*ex$").find()) {
             return 0;
         }
