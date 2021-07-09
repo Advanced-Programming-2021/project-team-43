@@ -4,7 +4,7 @@ import model.Card;
 import model.DeckModel;
 import model.ShopModel;
 import model.UserModel;
-
+import controller.*;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -57,7 +57,7 @@ public class RegisterAndLoginController {
         }
 
         if ((matcher = getMatcher(command, "^R user create --username (.+?) --nickname (.+?) --password (.+?) --imageURL (.+?)$")).find()) {
-            System.out.println("peyda shod");
+
             return registerInGame(matcher.group(1), matcher.group(2), matcher.group(3),matcher.group(4));
 
         }
@@ -89,7 +89,7 @@ public class RegisterAndLoginController {
             if (UserModel.getUserByUsername(username).getPassword().equals(password)) {
                 String token = UUID.randomUUID().toString().toUpperCase();
                 allOnlineUsers.put(token,username);
-                System.out.println("heh");
+
                 return "user logged in successfully!"+token;
             } else {
                 return "Username and password didn’t match!";

@@ -48,23 +48,23 @@ public class DeckController {
 
         }
 
-        if (getMatcher(command, "^deck\\s* show \\s*--all$").find() || getMatcher(command, "^deck\\s* show \\s*-a$").find()) {
-            showAllDeck();
-            return 1;
-        }
-        if ((matcher = getMatcher(command, "^deck \\s*show \\s*--deck-name \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^deck \\s*show \\s*-d-n \\s*(.+?)$")).find()) {
-            showMainDeck(matcher.group(1));
-            return 1;
-        }
-        if (getMatcher(command, "^deck\\s* show\\s* --cards$").find() || getMatcher(command, "^deck\\s* show\\s* -c$").find()) {
-            showCards();
-            return 1;
-        }
-
-        if ((matcher = getMatcher(command, "^D (.+?)deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$")).find() || (matcher = getMatcher(command, "^deck \\s*show \\s*-d-n\\s* (.+?) \\s*-s$")).find()) {
-            showSideDeck(matcher.group(1));
-            return 1;
-        }
+//        if (getMatcher(command, "^deck\\s* show \\s*--all$").find() || getMatcher(command, "^deck\\s* show \\s*-a$").find()) {
+//            showAllDeck();
+//            return 1;
+//        }
+//        if ((matcher = getMatcher(command, "^deck \\s*show \\s*--deck-name \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^deck \\s*show \\s*-d-n \\s*(.+?)$")).find()) {
+//            showMainDeck(matcher.group(1));
+//            return 1;
+//        }
+//        if (getMatcher(command, "^deck\\s* show\\s* --cards$").find() || getMatcher(command, "^deck\\s* show\\s* -c$").find()) {
+//            showCards();
+//            return 1;
+//        }
+//
+//        if ((matcher = getMatcher(command, "^D (.+?)deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$")).find() || (matcher = getMatcher(command, "^deck \\s*show \\s*-d-n\\s* (.+?) \\s*-s$")).find()) {
+//            showSideDeck(matcher.group(1));
+//            return 1;
+//        }
         return null;
     }
 
@@ -341,91 +341,91 @@ public class DeckController {
 
     }
 
-    public static void showAllDeck() {
-        UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-        String[] keys;
-        keys = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.keySet().toArray(new String[0]);
-        Arrays.sort(keys);
-        return ("Decks:");
-        return ("Active deck:");
-        if (!user.getActiveDeck().equals("")) {
-            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(user.getActiveDeck());
-            return (user.getActiveDeck() + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + ", " + deck.validOrInvalid());
-        }
-        return ("Other decks:");
-        for (String key : keys) {
-            if (user.getActiveDeck().equals(key)) {
-                continue;
-            }
-            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(key);
-            return (key + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + ", " + deck.validOrInvalid());
-        }
-
-    }
-
-    public static void showMainDeck(String deckName) {
-        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
-            return ("Deck: " + deckName);
-            return ("Main deck:");
-            return ("Monsters:");
-            String[] cardNames;
-            cardNames = deck.cardsInMainDeck.keySet().toArray(new String[0]);
-            Arrays.sort(cardNames);
-            for (String cardName : cardNames) {
-                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
-                    continue;
-                }
-                return (cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
-            }
-            return ("Spell and Traps:");
-            for (String cardName : cardNames) {
-                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
-                    continue;
-                }
-                return (cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
-            }
-        } else {
-            return ("deck with name " + deckName + " does not exist");
-        }
-
-    }
-
-    public static void showSideDeck(String deckName) {
-        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
-            return ("Deck: " + deckName);
-            return ("Side deck:");
-            return ("Monsters:");
-            String[] cardNames;
-            cardNames = deck.cardsInSideDeck.keySet().toArray(new String[0]);
-            Arrays.sort(cardNames);
-            for (String cardName : cardNames) {
-                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
-                    continue;
-                }
-                return (cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
-            }
-            return ("Spell and Traps:");
-            for (String cardName : cardNames) {
-                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
-                    continue;
-                }
-                return (cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
-            }
-
-        } else {
-            return ("deck with name " + deckName + " does not exist");
-        }
-    }
-
-    public static void showCards() {
-        HashMap<String, Integer> hashMap = UserModel.getUserByUsername(MainMenuController.username).userAllCards;
-        String[] keys = hashMap.keySet().toArray(new String[0]);
-        Arrays.sort(keys);
-        for (String key : keys) {
-            return (key + ": " + Card.getCards().get(key).getDescription() + " (" + hashMap.get(key) + ")");
-        }
-    }
+//    public static void showAllDeck() {
+//        UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+//        String[] keys;
+//        keys = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.keySet().toArray(new String[0]);
+//        Arrays.sort(keys);
+//        return ("Decks:");
+//        return ("Active deck:");
+//        if (!user.getActiveDeck().equals("")) {
+//            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(user.getActiveDeck());
+//            return (user.getActiveDeck() + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + ", " + deck.validOrInvalid());
+//        }
+//        return ("Other decks:");
+//        for (String key : keys) {
+//            if (user.getActiveDeck().equals(key)) {
+//                continue;
+//            }
+//            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(key);
+//            return (key + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + ", " + deck.validOrInvalid());
+//        }
+//
+//    }
+//
+//    public static void showMainDeck(String deckName) {
+//        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
+//            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
+//            return ("Deck: " + deckName);
+//            return ("Main deck:");
+//            return ("Monsters:");
+//            String[] cardNames;
+//            cardNames = deck.cardsInMainDeck.keySet().toArray(new String[0]);
+//            Arrays.sort(cardNames);
+//            for (String cardName : cardNames) {
+//                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+//                    continue;
+//                }
+//                return (cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
+//            }
+//            return ("Spell and Traps:");
+//            for (String cardName : cardNames) {
+//                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+//                    continue;
+//                }
+//                return (cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInMainDeck.get(cardName) + ")");
+//            }
+//        } else {
+//            return ("deck with name " + deckName + " does not exist");
+//        }
+//
+//    }
+//
+//    public static void showSideDeck(String deckName) {
+//        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
+//            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName);
+//            return ("Deck: " + deckName);
+//            return ("Side deck:");
+//            return ("Monsters:");
+//            String[] cardNames;
+//            cardNames = deck.cardsInSideDeck.keySet().toArray(new String[0]);
+//            Arrays.sort(cardNames);
+//            for (String cardName : cardNames) {
+//                if (!Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+//                    continue;
+//                }
+//                return (cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
+//            }
+//            return ("Spell and Traps:");
+//            for (String cardName : cardNames) {
+//                if (Card.getCardsByName(cardName).getCardModel().equals("Monster")) {
+//                    continue;
+//                }
+//                return (cardName + ": " + Card.getCardsByName(cardName).getDescription() + " (" + deck.cardsInSideDeck.get(cardName) + ")");
+//            }
+//
+//        } else {
+//            return ("deck with name " + deckName + " does not exist");
+//        }
+//    }
+//
+//    public static void showCards() {
+//        HashMap<String, Integer> hashMap = UserModel.getUserByUsername(MainMenuController.username).userAllCards;
+//        String[] keys = hashMap.keySet().toArray(new String[0]);
+//        Arrays.sort(keys);
+//        for (String key : keys) {
+//            return (key + ": " + Card.getCards().get(key).getDescription() + " (" + hashMap.get(key) + ")");
+//        }
+//    }
 
 }
