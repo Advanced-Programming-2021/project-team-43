@@ -8,8 +8,8 @@ public class TrapCard extends Card {
     private String status;
     private static HashMap<String, TrapCard> trapCards = new HashMap<>();
 
-    public TrapCard(String cardName, String cardModel, String icon, String description, int price, String status,String secondName) {
-        super(cardName, cardModel, description, price,secondName);
+    public TrapCard(String cardName, String cardModel, String icon, String description, int price, String status) {
+        super(cardName, cardModel, description, price);
         this.cardName = cardName;
         this.icon = icon;
         this.status = status;
@@ -35,5 +35,4 @@ public class TrapCard extends Card {
     public static TrapCard getTrapCardByName(String cardName) {
         return trapCards.get(cardName);
     }
-
 }

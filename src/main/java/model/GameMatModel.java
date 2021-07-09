@@ -6,7 +6,7 @@ import java.util.*;
 public class GameMatModel {
 
     private Phase phase;
-    public String fieldZone = "";
+    private String fieldZone = "";
     private int numberOfDeadMonsterThisTurn = 0;
     public final List<String> graveyard = new ArrayList<>();
     public static final Map<String, GameMatModel> playerGameMat = new HashMap<>();
@@ -121,15 +121,15 @@ public class GameMatModel {
         }
         return false;
     }
-    public static GameMatView gameMatView;
+
     public void showGraveyard() {
         if (graveyard.isEmpty())
-            gameMatView.showInput("Graveyard Empty");
+            GameMatView.showInput("Graveyard Empty");
         else {
             int counter = 1;
             for (String eachDeadCard : graveyard) {
                 String[] split = eachDeadCard.split("/");
-                gameMatView.showInput(counter + ". " + split[0] + " : " + Card.getCardsByName(split[0]).getDescription());
+                GameMatView.showInput(counter + ". " + split[0] + " : " + Card.getCardsByName(split[0]).getDescription());
                 counter++;
             }
         }

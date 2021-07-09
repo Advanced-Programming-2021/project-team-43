@@ -28,7 +28,7 @@ public class SetCards {
                         isScanner = true;
                     }
                     counter++;
-                    new MonsterCard(data[2], data[0], level, data[3], attack, defend, "Monster", data[4], isScanner, data[7], price,data[0]);
+                    new MonsterCard(data[2], data[0], level, data[3], attack, defend, "Monster", data[4], isScanner, data[7], price);
                     r = 0;
                     continue;
                 }
@@ -52,10 +52,10 @@ public class SetCards {
                 if (t == 5) {
                     int price = Integer.parseInt(data[5]);
                     if (data[1].equals("Trap")) {
-                        new TrapCard(data[0], data[1], data[2], data[3], price, data[4],data[0]);
+                        new TrapCard(data[0], data[1], data[2], data[3], price, data[4]);
                     }
                     if (data[1].equals("Spell")) {
-                        new SpellCard(data[0], data[1], data[2], data[3], price, data[4],data[0]);
+                        new SpellCard(data[0], data[1], data[2], data[3], price, data[4]);
                     }
                     t = 0;
                     continue;

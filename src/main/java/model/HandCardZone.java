@@ -5,6 +5,7 @@ import java.util.*;
 
 public class HandCardZone {
 
+
     private final String playerNickname;
     private final String cardName;
     private int address;
@@ -85,11 +86,11 @@ public class HandCardZone {
         }
         return false;
     }
-    public static GameMatView gameMatView;
+
     public static void showHandCard(String playerNickname) {
         List<HandCardZone> handCardOwn=allHandCards.get(playerNickname);
         for (int i = 0; i < handCardOwn.size(); i++)
-            gameMatView.showInput(i + 1 + ". " + handCardOwn.get(i).getCardName());
+            GameMatView.showInput(i + 1 + ". " + handCardOwn.get(i).getCardName());
     }
 
     public static HandCardZone getHandCardByAddress(int address, String playerNickname) {

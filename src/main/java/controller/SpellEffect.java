@@ -10,24 +10,22 @@ public class SpellEffect {
     private static String response;
     private static String responseTwo;
     private static int chosenAddress;
-    public static String spellMessage = "";
-
 
     public static int normalEffectController(SpellTrapZoneCard ownSpell, String onlineUser, String rivalUser) {
-        String spellName = ownSpell.getSecondName();
+        String spellName = ownSpell.getSpellTrapName();
         Player player = Player.getPlayerByName(onlineUser);
         GameMatModel ownGameMat = GameMatModel.getGameMatByNickname(onlineUser);
         switch (spellName) {
-//            case "Monster Reborn":
-//                return monsterReborn(onlineUser, rivalUser, ownGameMat);
-//            case "Terraforming":
-//                return terraforming(onlineUser, player);
+            case "Monster Reborn":
+                return monsterReborn(onlineUser, rivalUser, ownGameMat);
+            case "Terraforming":
+                return terraforming(onlineUser, player);
             case "Pot of Greed":
                 return potOfGreed(onlineUser, player);
             case "Raigeki":
                 return raigeki(rivalUser);
-//            case "Change of Heart":
-//                return changeOfHeart(onlineUser, rivalUser);
+            case "Change of Heart":
+                return changeOfHeart(onlineUser, rivalUser);
             case "Harpie's Feather Duster":
                 return harpieFeatherDuster(rivalUser);
             case "Swords of Revealing Light":
@@ -40,32 +38,31 @@ public class SpellEffect {
     }
 
     public static int quickPlayEffectController(SpellTrapZoneCard ownSpell, String onlineUser, String rivalUser) {
-//        String spellName = ownSpell.getSecondName();
-//        if (spellName.equals("Twin Twisters"))
-//            return twinTwisters(ownSpell.getAddress(), onlineUser, rivalUser);
-//        else if (spellName.equals("Mystical space typhoon"))
-//            return mysticalSpaceTyphoon(ownSpell.getAddress(), onlineUser, rivalUser);
-//        else
-//            return 0;
-        return 0;
+        String spellName = ownSpell.getSpellTrapName();
+        if (spellName.equals("Twin Twisters"))
+            return twinTwisters(ownSpell.getAddress(), onlineUser, rivalUser);
+        else if (spellName.equals("Mystical space typhoon"))
+            return mysticalSpaceTyphoon(ownSpell.getAddress(), onlineUser, rivalUser);
+        else
+            return 0;
     }
 
     public static void equipEffectController(SpellTrapZoneCard ownSpell, String onlineUser, String rivalUser) {
-//        String spellName = ownSpell.getSecondName();
-//        switch (spellName) {
-//            case "Sword of dark destruction":
-//                swordOfDarkDestruction(onlineUser, ownSpell, rivalUser);
-//                break;
-//            case "Black Pendant":
-//                blackPendant(onlineUser, ownSpell, rivalUser);
-//                break;
-//            case "United We Stand":
-//                unitedWeStand(onlineUser, ownSpell, rivalUser);
-//                break;
-//            case "Magnum Shield":
-//                magnumShield(onlineUser, ownSpell, rivalUser);
-//                break;
-//        }
+        String spellName = ownSpell.getSpellTrapName();
+        switch (spellName) {
+            case "Sword of dark destruction":
+                swordOfDarkDestruction(onlineUser, ownSpell, rivalUser);
+                break;
+            case "Black Pendant":
+                blackPendant(onlineUser, ownSpell, rivalUser);
+                break;
+            case "United We Stand":
+                unitedWeStand(onlineUser, ownSpell, rivalUser);
+                break;
+            case "Magnum Shield":
+                magnumShield(onlineUser, ownSpell, rivalUser);
+                break;
+        }
     }
 
     public static void fieldEffectController(String spellName, String onlineUser, String rivalUser) {
@@ -86,22 +83,31 @@ public class SpellEffect {
     }
 
     public static int monsterReborn(String onlineUser, String rivalUser, GameMatModel ownGameMat) {
-        GameMatModel rivalGameMat = GameMatModel.getGameMatByNickname(rivalUser);
-
-        if ((response.equals("own") && ownGameMat.getNumberOfDeadCards() == 0) || (response.equals("rival") && rivalGameMat.getNumberOfDeadCards() == 0)) {
-            GameMatView.showInput("Oops! You cant use this Spell effect because of no dead Card in your " + response + " graveyard!");
-            return 0;
-        }
-        chosenAddress = getResponseForDeadCardToReborn(response, ownGameMat, rivalGameMat);
-        if (chosenAddress != -1) {
-            if (response.equals("own")) {
-                GameMatController.addToMonsterZoneCard(ownGameMat.getDeadCardNameByAddress(chosenAddress), "OO");
-                ownGameMat.removeFromGraveyardByAddress(chosenAddress);
-            } else {
-                GameMatController.addToMonsterZoneCard(rivalGameMat.getDeadCardNameByAddress(chosenAddress), "OO");
-                rivalGameMat.removeFromGraveyardByAddress(chosenAddress);
+        if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) == 5)
+            GameMatView.showInput("Oops! You cant use this Spell Effect Because of no free space in Your Monster Zone!");
+        else {
+            GameMatModel rivalGameMat = GameMatModel.getGameMatByNickname(rivalUser);
+            do {
+                GameMatView.showInput("Please choose from which graveyard you want to pick a Monster? (own/rival)");
+                response = GameMatView.getCommand();
+                if (response.equals("cancel"))
+                    return 0;
+            } while (!response.matches("own|rival"));
+            if ((response.equals("own") && ownGameMat.getNumberOfDeadCards() == 0) || (response.equals("rival") && rivalGameMat.getNumberOfDeadCards() == 0)) {
+                GameMatView.showInput("Oops! You cant use this Spell effect because of no dead Card in your " + response + " graveyard!");
+                return 0;
             }
-            GameMatView.showInput("Dead Monster reborn successfully!");
+            chosenAddress = getResponseForDeadCardToReborn(response, ownGameMat, rivalGameMat);
+            if (chosenAddress != -1) {
+                if (response.equals("own")) {
+                    GameMatController.addToMonsterZoneCard(ownGameMat.getDeadCardNameByAddress(chosenAddress), "OO");
+                    ownGameMat.removeFromGraveyardByAddress(chosenAddress);
+                } else {
+                    GameMatController.addToMonsterZoneCard(rivalGameMat.getDeadCardNameByAddress(chosenAddress), "OO");
+                    rivalGameMat.removeFromGraveyardByAddress(chosenAddress);
+                }
+                GameMatView.showInput("Dead Monster reborn successfully!");
+            }
         }
         return 1;
     }
