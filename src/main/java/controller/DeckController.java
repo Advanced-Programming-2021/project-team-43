@@ -1,6 +1,8 @@
 package controller;
 import view.*;
 import model.*;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.*;
 
@@ -18,24 +20,33 @@ public class DeckController {
     }
 
     public static void deleteDeck(String deckName) {
-        UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-        if (user.isUserHaveThisDeck(deckName)) {
-            user.deleteDeck(deckName);
-            UserModel.allUsersInfo.replace(MainMenuController.username, user);
-            Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("D "+MainMenuController.token+"deck delete "+deckName);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public static String createDeck(String deckName) {
-        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
-            return "deck with name " + deckName + " already exists";
-        } else {
-            UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-            user.addDeck(new DeckModel(deckName));
-            UserModel.allUsersInfo.replace(MainMenuController.username, user);
-            Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
-            return "Deck created successfully";
+//        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {
+//            return "deck with name " + deckName + " already exists";
+//        } else {
+//            UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+//            user.addDeck(new DeckModel(deckName));
+//            UserModel.allUsersInfo.replace(MainMenuController.username, user);
+//            Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+//            return "Deck created successfully";
+//        }
+
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("D "+MainMenuController.token+"deck create "+deckName);
+
+            return RegisterAndLoginView.dataInputStream.readUTF();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public static String addCardToMainDeck(String cardName, String deckName) {
