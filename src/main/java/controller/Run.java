@@ -24,17 +24,12 @@ public class Run {
                         dataOutputStream = new DataOutputStream(socket.getOutputStream());
                         while (true) {
                             String input = dataInputStream.readUTF();
-                            String output = null;
-                            if (input.startsWith("R")) {
-                                output = RegisterAndLoginController.run(input);
-
+                            String output;
+                            output = process(input);
+                            if (output.equals("==")) {
+                                break;
                             }
-                            if (input.startsWith("D")) {
-                                output = DeckController.run(input);
-                            }
-
                             dataOutputStream.writeUTF(output);
-
                             dataOutputStream.flush();
                         }
 
@@ -46,5 +41,15 @@ public class Run {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static String process(String input) {
+        if (input.startsWith("R")) {
+            return RegisterAndLoginController.run(input);
+        }
+        if (input.startsWith("D")) {
+            return DeckController.run(input);
+        }
+        return "==";
     }
 }
