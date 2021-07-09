@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class Run {
     public static DataInputStream dataInputStream;
@@ -49,6 +50,12 @@ public class Run {
         }
         if (input.startsWith("D")) {
             return DeckController.run(input);
+        }
+        if (input.startsWith("GameMat")) {
+            String[] in=input.split(":");
+            HashMap<String,String> getByToken=RegisterAndLoginController.allOnlineUsers;
+            MainMenuController.username=getByToken.get(in[1]);
+           return GameMatController.commandController(in[2]);
         }
         return "==";
     }
