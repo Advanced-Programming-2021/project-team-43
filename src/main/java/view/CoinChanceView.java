@@ -1,4 +1,5 @@
 package view;
+
 import controller.*;
 import javafx.animation.*;
 import javafx.application.Application;
@@ -19,6 +20,7 @@ import javafx.util.Duration;
 import model.*;
 
 
+import java.io.IOException;
 import java.util.Objects;
 
 
@@ -49,7 +51,13 @@ public class CoinChanceView extends Application {
 
     @FXML
     public void initialize() {
-        winnerUsername = PickFirstPlayer.chanceCoin(ply1, ply2);
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("CoinChance:" + MainMenuController.token);
+            RegisterAndLoginView.dataOutputStream.flush();
+            winnerUsername = RegisterAndLoginView.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         KeyFrame flashEnd = new KeyFrame(new Duration(2000), new KeyValue(btnN.opacityProperty(), 0.0));
         KeyFrame flashStart = new KeyFrame(new Duration(4000), new KeyValue(btnN.opacityProperty(), 1.0));
         new Timeline(flashEnd, flashStart).play();
@@ -88,8 +96,7 @@ public class CoinChanceView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply2).getNickname(), UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false, MainMenuController.roundNumber1);
                 GameMatController.round = MainMenuController.roundNumber1;
-            }
-            else {
+            } else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false);
             }
@@ -101,8 +108,7 @@ public class CoinChanceView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply1).getNickname(), UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false, MainMenuController.roundNumber1);
                 GameMatController.round = MainMenuController.roundNumber1;
-            }
-            else {
+            } else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false);
                 GameMatController.round = Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).getNumberOfRound();
@@ -114,6 +120,12 @@ public class CoinChanceView extends Application {
             e.printStackTrace();
         }
 
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("onlineUser:" + MainMenuController.token+":"+GameMatController.onlineUser+":"+GameMatController.rivalUser);
+            RegisterAndLoginView.dataOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void no() {
@@ -124,8 +136,7 @@ public class CoinChanceView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply1).getNickname(), UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false, MainMenuController.roundNumber1);
                 GameMatController.round = MainMenuController.roundNumber1;
-            }
-            else {
+            } else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false);
             }
@@ -137,8 +148,7 @@ public class CoinChanceView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply2).getNickname(), UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false, MainMenuController.roundNumber1);
                 GameMatController.round = MainMenuController.roundNumber1;
-            }
-            else {
+            } else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false);
                 GameMatController.round = Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).getNumberOfRound();
@@ -147,6 +157,12 @@ public class CoinChanceView extends Application {
         try {
             Objects.requireNonNullElseGet(GameMatController.gameMatView, () -> GameMatController.gameMatView = new GameMatView()).start(coinStage);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("onlineUser:" + MainMenuController.token+":"+GameMatController.onlineUser+":"+GameMatController.rivalUser);
+            RegisterAndLoginView.dataOutputStream.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

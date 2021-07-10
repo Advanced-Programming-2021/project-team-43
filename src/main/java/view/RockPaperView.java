@@ -15,6 +15,7 @@ import model.HandCardZone;
 import model.Player;
 import model.UserModel;
 
+import java.io.IOException;
 import java.util.Objects;
 
 
@@ -91,10 +92,17 @@ public class RockPaperView extends Application {
             showTurn.setText(ply1 + " you did not selected,select again");
         }
         if (secondChoice != null && firstChoice != null) {
-            winnerPlayer = PickFirstPlayer.rockPaperScissors(ply1, ply2, firstChoice, secondChoice);
-            showResult.setText(PickFirstPlayer.result);
-
-            if (PickFirstPlayer.result.equals("The game equalised")) {
+            String[] answer = new String[5];
+            try {
+                RegisterAndLoginView.dataOutputStream.writeUTF("rock:" + MainMenuController.token + ":" + ply1 + ":" + ply2 + ":" + firstChoice + ":" + secondChoice);
+                RegisterAndLoginView.dataOutputStream.flush();
+                answer = RegisterAndLoginView.dataInputStream.readUTF().split("@");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            winnerPlayer = answer[0];
+            showResult.setText(answer[1]);
+            if (answer[1].equals("The game equalised")) {
                 try {
                     firstChoice = null;
                     secondChoice = null;
@@ -119,8 +127,7 @@ public class RockPaperView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply2).getNickname(), UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false, MainMenuController.roundNumber1);
                 GameMatController.round = MainMenuController.roundNumber1;
-            }
-            else {
+            } else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false);
             }
@@ -132,8 +139,7 @@ public class RockPaperView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply1).getNickname(), UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false, MainMenuController.roundNumber1);
                 GameMatController.round = MainMenuController.roundNumber1;
-            }
-            else {
+            } else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false);
                 GameMatController.round = Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).getNumberOfRound();
@@ -142,6 +148,12 @@ public class RockPaperView extends Application {
         try {
             Objects.requireNonNullElseGet(GameMatController.gameMatView, () -> GameMatController.gameMatView = new GameMatView()).start(rockStage);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("onlineUser:" + MainMenuController.token+":"+GameMatController.onlineUser+":"+GameMatController.rivalUser);
+            RegisterAndLoginView.dataOutputStream.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -154,8 +166,7 @@ public class RockPaperView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply1).getNickname(), UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false, MainMenuController.roundNumber1);
                 GameMatController.round = MainMenuController.roundNumber1;
-            }
-            else {
+            } else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), false);
             }
@@ -167,8 +178,7 @@ public class RockPaperView extends Application {
                 new Player(GameMatController.onlineUser, UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true, MainMenuController.roundNumber1);
                 new Player(UserModel.getUserByUsername(ply2).getNickname(), UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false, MainMenuController.roundNumber1);
                 GameMatController.round = MainMenuController.roundNumber1;
-            }
-            else {
+            } else {
                 Player.getPlayerByName(UserModel.getUserByUsername(ply1).getNickname()).startNewGame(UserModel.getUserByUsername(ply1).userAllDecks.get(UserModel.getUserByUsername(ply1).getActiveDeck()), true);
                 Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).startNewGame(UserModel.getUserByUsername(ply2).userAllDecks.get(UserModel.getUserByUsername(ply2).getActiveDeck()), false);
                 GameMatController.round = Player.getPlayerByName(UserModel.getUserByUsername(ply2).getNickname()).getNumberOfRound();
@@ -177,6 +187,12 @@ public class RockPaperView extends Application {
         try {
             Objects.requireNonNullElseGet(GameMatController.gameMatView, () -> GameMatController.gameMatView = new GameMatView()).start(rockStage);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("onlineUser:" + MainMenuController.token+":"+GameMatController.onlineUser+":"+GameMatController.rivalUser);
+            RegisterAndLoginView.dataOutputStream.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
