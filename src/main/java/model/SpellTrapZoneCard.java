@@ -1,11 +1,17 @@
 package model;
+
+import controller.GameMatController;
+
+
 import java.util.*;
 
 
 public class SpellTrapZoneCard {
 
+
     private final String playerNickname;
     private final String spellTrapName;
+    private final String secondName;
     private String mode;
     private final String kind;
     private final String icon;
@@ -14,20 +20,28 @@ public class SpellTrapZoneCard {
     private boolean isSetInThisTurn;
     public final Map<String, Integer> relatedMonsterAddress = new HashMap<>();
     public static final Map<String, Map<Integer, SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
+    private static HashMap<String, SpellTrapZoneCard> objects = new HashMap<>();
 
     public SpellTrapZoneCard(String playerNickname, String spellTrapName, String mode) {
         this.playerNickname = playerNickname;
         this.spellTrapName = spellTrapName;
         this.mode = mode;
         this.kind = Card.getCardsByName(spellTrapName).getCardModel();
-        if (kind.equals("Spell"))
+        if (kind.equals("Spell")) {
             this.icon = SpellCard.getSpellCardByName(spellTrapName).getIcon();
-        else
+            this.secondName = SpellCard.getSpellCardByName(spellTrapName).getSecondName();
+        } else {
             this.icon = TrapCard.getTrapCardByName(spellTrapName).getIcon();
+            this.secondName = TrapCard.getTrapCardByName(spellTrapName).getSecondName();
+        }
         this.address = getNewSpellAddress(playerNickname);
         allSpellTrapCards.get(playerNickname).put(address, this);
+        objects.put(playerNickname, this);
     }
 
+    public static void setObject(String playerNickname,SpellTrapZoneCard spellTrapZoneCard){
+        objects.put(playerNickname,spellTrapZoneCard);
+    }
     public String getSpellTrapName() {
         return spellTrapName;
     }
@@ -56,6 +70,10 @@ public class SpellTrapZoneCard {
         return turnCounter;
     }
 
+    public String getSecondName() {
+        return secondName;
+    }
+
     public void setTurnCounter(int turnCounter) {
         this.turnCounter = turnCounter;
     }
@@ -80,7 +98,7 @@ public class SpellTrapZoneCard {
     }
 
     public HashMap<String, Integer> getRelatedMonsterAddress() {
-        return (HashMap<String, Integer>)relatedMonsterAddress;
+        return (HashMap<String, Integer>) relatedMonsterAddress;
     }
 
     public void setRelatedMonsterAddress(String whoseMonster, int address) {
@@ -196,4 +214,7 @@ public class SpellTrapZoneCard {
                 allSpellTrapCards.get(playerNickname).get(i).setIsSetInThisTurn(false);
     }
 
+    public static SpellTrapZoneCard getSpellTrapZoneCardByName(String playerNickname) {
+        return objects.get(playerNickname);
+    }
 }

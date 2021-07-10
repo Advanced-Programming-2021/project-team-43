@@ -64,6 +64,7 @@ public class GameMatController {
             selectHandCard(Integer.parseInt(matcher.group(1)));
             return message + "@" + selectedOwnCard;
         }
+
         if ((matcher = getMatcher(command, "^select\\s+--spell\\s+(\\d+)$")).find() || (matcher = getMatcher(command, "^s\\s+-s\\s+(\\d+)$")).find()) {
             selectSpellCard(Integer.parseInt(matcher.group(1)), true);
             return message + "@" + selectedOwnCard;
@@ -113,28 +114,23 @@ public class GameMatController {
             return message + "@" + selectedOwnCard + "@" + value;
         }
 
-
-        ////////////////////////////
         if (getMatcher(command, "^next\\s+phase$").find() || getMatcher(command, "^n\\s+p$").find()) {
             changePhase(currentPhase);
             return message + "@" + sideMsg + "@" + sideMsg2;
-//            try {
-//                if (currentPhase.name().equals("Main_Phase2")) {
-//                    System.out.println(onlineUser);
-//                    gameMatView.start(GameMatView.gameMatStage);
-//                    gameMatView.showGameBoard();
-//                }
-//            } catch (Exception ignored) {
-//            }
         }
+
+        //////////////
         if (AIAttack(command, currentPhase) == 1) {
            return "25";
        }
         //////////////
-//ta in ja
 
         return "39";
     }
+
+
+
+
 
     public static Matcher getMatcher(String command, String regex) {
         Pattern pattern = Pattern.compile(regex);
@@ -533,7 +529,7 @@ public class GameMatController {
         handCard.removeFromHandCard();
         message = "summoned successfully";
         MonsterZoneCard ownMonster = MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser);
-        GameMatView.effectCardName = ownMonster.getMonsterName();
+      //  GameMatView.effectCardName = ownMonster.getMonsterName();
         if (ownMonster.getAttack() >= 1000) {
             checkForSetTrapToActivateInRivalTurn("Trap Hole", ownMonster);
             trapAddress = SpellTrapZoneCard.isThisTrapActivated(rivalUser, "Trap Hole");

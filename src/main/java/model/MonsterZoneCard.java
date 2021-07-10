@@ -1,6 +1,7 @@
 package model;
 import controller.GameMatController;
 
+
 import java.util.*;
 
 
@@ -8,6 +9,7 @@ public class MonsterZoneCard {
 
     private final String playerNickname;
     private String monsterName;
+    private String secondName;
     private String mode;
     private final int address;
     private int attack;
@@ -21,8 +23,9 @@ public class MonsterZoneCard {
     private boolean canAttackToThisMonster;
     private boolean isEffectUsed;
     private boolean isForOneTurn;
-    public Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
+    public final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
     public static final Map<String, Map<Integer, MonsterZoneCard>> allMonsterCards = new HashMap<>();
+    private static HashMap<String,MonsterZoneCard> objects=new HashMap<>();
 
     public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn) {
         this.playerNickname = playerNickname;
@@ -39,9 +42,15 @@ public class MonsterZoneCard {
         this.canAttack = true;
         this.canAttackToThisMonster = true;
         this.isForOneTurn = isForOneTurn;
+        this.secondName = monster.getSecondName();
         allMonsterCards.get(playerNickname).put(address, this);
         List<Integer> add=new ArrayList<>();
         allEffectiveSpell.put(playerNickname,add);
+        objects.put(playerNickname,this);
+    }
+
+    public static void setObject(String playerNickname,MonsterZoneCard monsterZoneCard){
+        objects.put(playerNickname,monsterZoneCard);
     }
 
     public String getMonsterName() {
@@ -90,6 +99,10 @@ public class MonsterZoneCard {
 
     public boolean getIsScanner() {
         return isScanner;
+    }
+
+    public String getSecondName() {
+        return secondName;
     }
 
     public boolean getHaveChangedPositionThisTurn() {
@@ -297,5 +310,7 @@ public class MonsterZoneCard {
             }
         }
     }
-
+    public static MonsterZoneCard getMonsterZoneCardByName(String playerNickname){
+        return objects.get(playerNickname);
+    }
 }
