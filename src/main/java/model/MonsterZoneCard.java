@@ -1,7 +1,6 @@
 package model;
 import controller.GameMatController;
-import view.MoveCard;
-import view.ShowCardsView;
+
 
 import java.util.*;
 
@@ -26,6 +25,7 @@ public class MonsterZoneCard {
     private boolean isForOneTurn;
     public final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
     public static final Map<String, Map<Integer, MonsterZoneCard>> allMonsterCards = new HashMap<>();
+    private static HashMap<String,MonsterZoneCard> objects=new HashMap<>();
 
     public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn) {
         this.playerNickname = playerNickname;
@@ -46,8 +46,12 @@ public class MonsterZoneCard {
         allMonsterCards.get(playerNickname).put(address, this);
         List<Integer> add=new ArrayList<>();
         allEffectiveSpell.put(playerNickname,add);
+        objects.put(playerNickname,this);
     }
 
+    public static void setObject(String playerNickname,MonsterZoneCard monsterZoneCard){
+        objects.put(playerNickname,monsterZoneCard);
+    }
     public String getMonsterName() {
         return monsterName;
     }
@@ -305,5 +309,7 @@ public class MonsterZoneCard {
             }
         }
     }
-
+    public static MonsterZoneCard getMonsterZoneCardByName(String playerNickname){
+        return objects.get(playerNickname);
+    }
 }

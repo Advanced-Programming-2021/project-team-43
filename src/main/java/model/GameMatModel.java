@@ -1,9 +1,11 @@
 package model;
 import view.GameMatView;
+
+import java.io.Serializable;
 import java.util.*;
 
 
-public class GameMatModel {
+public class GameMatModel implements Serializable  {
 
     private Phase phase;
     public String fieldZone = "";
@@ -14,6 +16,9 @@ public class GameMatModel {
     public GameMatModel (String playerNickname) {
         this.phase = Phase.Draw_Phase;
         playerGameMat.put(playerNickname, this);
+    }
+    public static void setObject(String playerNickName,GameMatModel gameMatModel){
+        playerGameMat.put(playerNickName,gameMatModel);
     }
 
     public List<String> getGraveyard() {

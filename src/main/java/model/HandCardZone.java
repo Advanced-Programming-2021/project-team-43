@@ -1,5 +1,7 @@
 package model;
+
 import view.GameMatView;
+
 import java.util.*;
 
 
@@ -9,7 +11,8 @@ public class HandCardZone {
     private final String cardName;
     private int address;
     private final String kind;
-    public static  Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
+    public static Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
+    private static HashMap<String, HandCardZone> objects = new HashMap<>();
 
     public HandCardZone(String playerNickname, String cardName) {
         this.playerNickname = playerNickname;
@@ -17,6 +20,11 @@ public class HandCardZone {
         this.address = allHandCards.get(playerNickname).size();
         this.kind = Card.getCardsByName(cardName).getCardModel();
         allHandCards.get(playerNickname).add(address, this);
+        objects.put(playerNickname, this);
+    }
+
+    public static void setObject(String playerNickname, HandCardZone handCardZone) {
+        objects.put(playerNickname, handCardZone);
     }
 
     public String getCardName() {
@@ -85,9 +93,11 @@ public class HandCardZone {
         }
         return false;
     }
+
     public static GameMatView gameMatView;
+
     public static void showHandCard(String playerNickname) {
-        List<HandCardZone> handCardOwn=allHandCards.get(playerNickname);
+        List<HandCardZone> handCardOwn = allHandCards.get(playerNickname);
         for (int i = 0; i < handCardOwn.size(); i++)
             gameMatView.showInput(i + 1 + ". " + handCardOwn.get(i).getCardName());
     }
@@ -105,4 +115,7 @@ public class HandCardZone {
         return -1;
     }
 
+    public static HandCardZone getHandCardZoneByName(String playerNickname) {
+        return objects.get(playerNickname);
+    }
 }

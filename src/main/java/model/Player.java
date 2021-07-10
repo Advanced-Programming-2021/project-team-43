@@ -43,7 +43,9 @@ public class Player {
             new HandCardZone(nickname, drawCard(true));
         allPlayers.put(nickname, this);
     }
-
+    public static void setObject(String playerNickName,Player player){
+        allPlayers.put(playerNickName,player);
+    }
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {
         allLifePoints.add(lifePoint);
         playerMainDeck.clear();

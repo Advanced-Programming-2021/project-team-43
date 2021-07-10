@@ -5,6 +5,8 @@ import model.*;
 import view.RegisterAndLoginView;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.regex.*;
 
@@ -30,6 +32,7 @@ public class GameMatController {
     private static String cardNameAnswer;
     public static GameMatView gameMatView;
     public static int round;
+    public static Object receivedObject;
 
     public static int commandController(String command, GameMatView gameMatView) {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
@@ -59,27 +62,58 @@ public class GameMatController {
         return 39;
     }
 
+    private static ArrayList<Object> getObjects() {
+        ArrayList<Object> objects = new ArrayList<>();
+        objects.add(GameMatModel.getGameMatByNickname(onlineUser));
+        objects.add(HandCardZone.getHandCardZoneByName(onlineUser));
+        objects.add(MonsterZoneCard.getMonsterZoneCardByName(onlineUser));
+        objects.add(Player.getPlayerByName(onlineUser));
+        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(onlineUser));
+        objects.add(UserModel.getUserByNickname(onlineUser));
+        return objects;
+
+    }
+
+    private static void setObjects(ArrayList<Object> objects) {
+        GameMatModel.setObject(MainMenuController.username, (GameMatModel) objects.get(0));
+        HandCardZone.setObject(MainMenuController.username, (HandCardZone) objects.get(1));
+        MonsterZoneCard.setObject(MainMenuController.username, (MonsterZoneCard) objects.get(2));
+        Player.setObject(MainMenuController.username, (Player) objects.get(3));
+        SpellTrapZoneCard.setObject(MainMenuController.username, (SpellTrapZoneCard) objects.get(4));
+        UserModel.setObject((UserModel) objects.get(5));
+    }
+
     public static void selectMonsterCard(int address, boolean isOwnMonsterCard) {//ok
         if (isOwnMonsterCard) {
             try {
+
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --monster " + address);
                 RegisterAndLoginView.dataOutputStream.flush();
+                ///
+                RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+                setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+                //
+
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
                 selectedOwnCard = response[1];
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --monster " + address + " --opponent");
                 RegisterAndLoginView.dataOutputStream.flush();
+                ///
+                RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+                setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+                //
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
                 selectedRivalCard = response[1];
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -89,11 +123,15 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --hand " + address);
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -102,7 +140,10 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":next phase");
             RegisterAndLoginView.dataOutputStream.flush();
-
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             if (currentPhase.name().equals("Main_Phase2")) {
                 System.out.println(onlineUser);
                 gameMatView.start(GameMatView.gameMatStage);
@@ -116,14 +157,6 @@ public class GameMatController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            if (currentPhase.name().equals("Main_Phase2")) {
-                System.out.println(onlineUser);
-                gameMatView.start(GameMatView.gameMatStage);
-                gameMatView.showGameBoard();
-            }
-        } catch (Exception ignored) {
-        }
     }
 
     public static int selectSpellCard(int address, boolean isOwnSpellCard) {//ok
@@ -131,22 +164,30 @@ public class GameMatController {
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --spell " + address);
                 RegisterAndLoginView.dataOutputStream.flush();
+                ///
+                RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+                setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+                //
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
                 selectedOwnCard = response[1];
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --spell " + address + " --opponent");
                 RegisterAndLoginView.dataOutputStream.flush();
+                ///
+                RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+                setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+                //
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
                 selectedRivalCard = response[1];
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -158,11 +199,15 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":summon");
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -172,22 +217,30 @@ public class GameMatController {
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --field");
                 RegisterAndLoginView.dataOutputStream.flush();
+                ///
+                RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+                setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+                //
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
                 selectedOwnCard = response[1];
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --monster --opponent");
                 RegisterAndLoginView.dataOutputStream.flush();
+                ///
+                RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+                setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+                //
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
                 selectedRivalCard = response[1];
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -197,11 +250,15 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":flip summon");
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -210,11 +267,15 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":change to attack position");
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -223,12 +284,16 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":change to defend position");
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
             error = response[2];
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -239,10 +304,14 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":set");
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -252,12 +321,16 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":attack " + rivalMonsterAddress);
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
             return Integer.parseInt(response[2]);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
@@ -267,12 +340,16 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":attack direct");
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
             return Integer.parseInt(response[2]);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
@@ -283,22 +360,30 @@ public class GameMatController {
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":duel set-winner" + rivalUser);
                 RegisterAndLoginView.dataOutputStream.flush();
+                ///
+                RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+                setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+                //
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
                 sideMsg = response[1];
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":duel set-winner" + onlineUser);
                 RegisterAndLoginView.dataOutputStream.flush();
+                ///
+                RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+                setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+                //
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
                 sideMsg = response[1];
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -309,12 +394,16 @@ public class GameMatController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":activate Spell Effect");
             RegisterAndLoginView.dataOutputStream.flush();
+            ///
+            RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
+            setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
+            //
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
             return Integer.parseInt(response[2]);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }

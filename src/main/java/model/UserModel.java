@@ -1,11 +1,13 @@
 package model;
 import controller.Json;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class UserModel {
+public class UserModel implements Serializable {
 
     private final String username;
     private String password;
@@ -34,7 +36,9 @@ public class UserModel {
         allUsersInfo.put(username, this);
         Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
-
+    public static void setObject(UserModel userModel){
+        allUsersInfo.put(userModel.getUsername(),userModel);
+    }
     public String getUsername() {
         return username;
     }
