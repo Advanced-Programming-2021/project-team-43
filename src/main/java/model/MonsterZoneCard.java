@@ -2,10 +2,11 @@ package model;
 import controller.GameMatController;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class MonsterZoneCard {
+public class MonsterZoneCard  implements Serializable {
 
     private final String playerNickname;
     private String monsterName;

@@ -1,10 +1,12 @@
 package model;
 import controller.GameMatController;
 import view.GameMatView;
+
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Player {
+public class Player  implements Serializable {
 
     private final String nickname;
     private int lifePoint = 8000;
