@@ -3,10 +3,11 @@ package model;
 import controller.GameMatController;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class SpellTrapZoneCard {
+public class SpellTrapZoneCard  implements Serializable {
 
 
     private final String playerNickname;

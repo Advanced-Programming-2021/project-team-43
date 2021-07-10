@@ -2,10 +2,11 @@ package model;
 
 import view.GameMatView;
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class HandCardZone {
+public class HandCardZone  implements Serializable {
 
     private final String playerNickname;
     private final String cardName;
