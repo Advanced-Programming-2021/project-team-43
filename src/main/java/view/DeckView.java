@@ -65,7 +65,8 @@ public class DeckView extends Application {
             public void handle(ActionEvent actionEvent) {
                 if (isActiveCheckBox.isSelected()) {
                     activeDeck = deckCounter;
-                    user.setActiveDeck(getDeckNameByNumber(deckCounter));
+                    DeckController.setActivate(getDeckNameByNumber(deckCounter));
+
                     deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/activeBack.jpg")).toExternalForm()));
                 }
                 else {
@@ -279,4 +280,3 @@ public class DeckView extends Application {
     }
 
 }
-

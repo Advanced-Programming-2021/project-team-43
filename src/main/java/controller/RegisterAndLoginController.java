@@ -1,5 +1,6 @@
 package controller;
 
+import model.UserModel;
 import view.RegisterAndLoginView;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class RegisterAndLoginController {
             if (matcher.find()) {
                 MainMenuController.token = matcher.group(1);
                 MainMenuController.username = username;
-                System.out.println("128");
+                updateUser(matcher.group(1));
                 return "User logged in successfully!";
             }
             return output;
@@ -49,6 +50,21 @@ public class RegisterAndLoginController {
             e.printStackTrace();
         }
         return null;
+    }
+    public static void updateUser(String token){
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF(token);
+            RegisterAndLoginView.dataOutputStream.flush();
+            UserModel userModel= (UserModel) RegisterAndLoginView.objectInputStream.readObject();
+            if (UserModel.allUsersInfo.containsKey(userModel.getUsername())){
+                UserModel.allUsersInfo.replace(userModel.getUsername(),userModel);
+            }
+            else {
+                UserModel.allUsersInfo.put(userModel.getUsername(),userModel);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

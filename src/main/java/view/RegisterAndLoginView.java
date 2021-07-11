@@ -21,9 +21,7 @@ import model.DeckModel;
 import model.ShopModel;
 import model.UserModel;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.Random;
@@ -47,12 +45,16 @@ public class RegisterAndLoginView extends Application {
     public static Socket socket;
     public static DataOutputStream dataOutputStream;
     public  static DataInputStream dataInputStream;
+    public static ObjectOutputStream objectOutputStream;
+    public static ObjectInputStream objectInputStream;
 
     public static void main(String[] args) {
         try {
             socket = new Socket("localhost", 1277);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
+            objectInputStream=new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
