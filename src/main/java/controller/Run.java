@@ -1,17 +1,17 @@
 package controller;
 
-import controller.DeckController;
-import controller.RegisterAndLoginController;
+import model.UserModel;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 
 public class Run {
     public static DataInputStream dataInputStream;
     public static DataOutputStream dataOutputStream;
+    public static ObjectOutputStream objectOutputStream;
+    public static ObjectInputStream objectInputStream;
 
     public static void run() {
         try {
@@ -22,9 +22,15 @@ public class Run {
                     try {
                         dataInputStream = new DataInputStream(socket.getInputStream());
                         dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                        objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
+                        objectInputStream=new ObjectInputStream(socket.getInputStream());
                         while (true) {
                             String input = dataInputStream.readUTF();
                             String output = null;
+                            if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
+                                getUserByToken(input);
+                                continue;
+                            }
                             if (input.startsWith("R")) {
                                 output = RegisterAndLoginController.run(input);
 
@@ -32,7 +38,6 @@ public class Run {
                             if (input.startsWith("D")) {
                                 output = DeckController.run(input);
                             }
-
                             dataOutputStream.writeUTF(output);
 
                             dataOutputStream.flush();
@@ -47,4 +52,17 @@ public class Run {
             e.printStackTrace();
         }
     }
+
+    public static void getUserByToken(String token) {
+        try {
+            UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
+
+            objectOutputStream.writeObject(userModel);
+
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

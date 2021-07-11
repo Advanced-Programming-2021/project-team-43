@@ -2,8 +2,6 @@ package controller;
 
 import model.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,16 +22,16 @@ public class DeckController {
 
         }
 
-        if ((matcher = getMatcher(command, "^D (.+?)deck \\s*add-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?) \\s*--side$")).find() || (matcher = getMatcher(command, "^deck \\s*add-card \\s*-c \\s*(.+?)\\s* -d \\s*(.+?) \\s*-s$")).find()) {
+        if ((matcher = getMatcher(command, "^D (.+?)deck add-card --card (.+?) --deck (.+?) --side$")).find() || (matcher = getMatcher(command, "^deck \\s*add-card \\s*-c \\s*(.+?)\\s* -d \\s*(.+?) \\s*-s$")).find()) {
             return addCardToSideDeck(matcher.group(2), matcher.group(3), matcher.group(1));
 
         }
 
-        if ((matcher = getMatcher(command, "^D (.+?)deck\\s* delete \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^deck\\s* d \\s*(.+?)$")).find()) {
+        if ((matcher = getMatcher(command, "^D (.+?)deck delete (.+?)$")).find() || (matcher = getMatcher(command, "^deck\\s* d \\s*(.+?)$")).find()) {
             return deleteDeck(matcher.group(2), matcher.group(1));
 
         }
-        if ((matcher = getMatcher(command, "^D (.+?)deck\\s* set-activate \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^deck\\s* s-a \\s*(.+?)$")).find()) {
+        if ((matcher = getMatcher(command, "^D (.+?)deck set-activate (.+?)$")).find() || (matcher = getMatcher(command, "^deck\\s* s-a \\s*(.+?)$")).find()) {
             return setActivate(matcher.group(2), matcher.group(1));
 
         }
@@ -44,27 +42,10 @@ public class DeckController {
         }
 
         if ((matcher = getMatcher(command, "^D (.?)deck \\s*rm-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^deck \\s*rm-card \\s*-c \\s*(.+?)\\s* -d \\s*(.+?)$")).find()) {
-            return removeCardFromMainDeck(matcher.group(2), matcher.group(3),matcher.group(1));
+            return removeCardFromMainDeck(matcher.group(2), matcher.group(3), matcher.group(1));
 
         }
-
-//        if (getMatcher(command, "^deck\\s* show \\s*--all$").find() || getMatcher(command, "^deck\\s* show \\s*-a$").find()) {
-//            showAllDeck();
-//            return 1;
-//        }
-//        if ((matcher = getMatcher(command, "^deck \\s*show \\s*--deck-name \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^deck \\s*show \\s*-d-n \\s*(.+?)$")).find()) {
-//            showMainDeck(matcher.group(1));
-//            return 1;
-//        }
-//        if (getMatcher(command, "^deck\\s* show\\s* --cards$").find() || getMatcher(command, "^deck\\s* show\\s* -c$").find()) {
-//            showCards();
-//            return 1;
-//        }
-//
-//        if ((matcher = getMatcher(command, "^D (.+?)deck \\s*show \\s*--deck-name\\s* (.+?) \\s*--side$")).find() || (matcher = getMatcher(command, "^deck \\s*show \\s*-d-n\\s* (.+?) \\s*-s$")).find()) {
-//            showSideDeck(matcher.group(1));
-//            return 1;
-//        }
+        System.out.println("deck sooti dare");
         return null;
     }
 
@@ -301,7 +282,7 @@ public class DeckController {
         return null;
     }
 
-    public static String  removeCardFromMainDeck(String cardName, String deckName,String token) {
+    public static String removeCardFromMainDeck(String cardName, String deckName, String token) {
         UserModel user = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
         if (user.isUserHaveThisDeck(deckName)) {
             if (user.userAllDecks.get(deckName).isMainDeckHaveThisCard(cardName)) {
@@ -341,7 +322,7 @@ public class DeckController {
 
     }
 
-//    public static void showAllDeck() {
+    public static void showAllDeck() {
 //        UserModel user = UserModel.getUserByUsername(MainMenuController.username);
 //        String[] keys;
 //        keys = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.keySet().toArray(new String[0]);
@@ -360,8 +341,7 @@ public class DeckController {
 //            DeckModel deck = UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(key);
 //            return (key + ": main deck " + deck.getMainAllCardNumber() + ", side deck " + deck.getSideAllCardNumber() + ", " + deck.validOrInvalid());
 //        }
-//
-//    }
+    }
 //
 //    public static void showMainDeck(String deckName) {
 //        if (UserModel.getUserByUsername(MainMenuController.username).isUserHaveThisDeck(deckName)) {

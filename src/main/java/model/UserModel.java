@@ -1,11 +1,13 @@
 package model;
 import controller.Json;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class UserModel {
+public class UserModel implements Serializable {
 
     private final String username;
     private String password;
