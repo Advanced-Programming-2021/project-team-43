@@ -1,11 +1,9 @@
 package model;
-import controller.Json;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class UserModel implements Serializable {
 
@@ -34,7 +32,7 @@ public class UserModel implements Serializable {
         allUsernames.add(username);
         allUsersNicknames.add(nickname);
         allUsersInfo.put(username, this);
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
     public static void setObject(UserModel userModel){
         allUsersInfo.put(userModel.getUsername(),userModel);
@@ -65,29 +63,29 @@ public class UserModel implements Serializable {
 
     public void changePassword(String password) {
         this.password = password;
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
 
     public void changeNickname(String nickname) {
         allUsersNicknames.remove(this.nickname);
         allUsersNicknames.add(nickname);
         this.nickname = nickname;
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
 
     public void changeUserScore(int userScore) {
         this.userScore += userScore;
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
 
     public void changeUserCoin(int amount) {
         this.userCoin += amount;
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
 
     public String getImageUrl() {
@@ -96,17 +94,17 @@ public class UserModel implements Serializable {
 
     public void setActiveDeck(String deckName) {
         this.activeDeck = deckName;
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
 
     public void addDeck(DeckModel deckModel) {
         userAllDecks.put(deckModel.getDeckName(), deckModel);
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
 
     public void deleteDeck(String deckName) {
         userAllDecks.remove(deckName);
-        Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
+
     }
 
     public void addCardToUserAllCards(String cardName) {
@@ -116,7 +114,7 @@ public class UserModel implements Serializable {
             int cardNumbers = userAllCards.get(cardName) + 1;
             userAllCards.replace(cardName, cardNumbers);
         }
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+
     }
 
     public void removeCardFromUserAllCards(String cardName) {
@@ -128,7 +126,7 @@ public class UserModel implements Serializable {
                 userAllCards.replace(cardName, i);
             }
         }
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+
     }
 
     public boolean isUserHaveCard(String cardName) {

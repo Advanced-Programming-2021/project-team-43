@@ -1,24 +1,18 @@
 package view;
 import controller.GameMatController;
-import controller.MainMenuController;
-import controller.MonsterEffect;
 import javafx.animation.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -26,7 +20,6 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
@@ -36,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class GameMatView extends Application {
@@ -728,7 +719,7 @@ public class GameMatView extends Application {
         GameMatController.error = "";
         selectedCardImage.setImage(null);
         if (phaseLbl.getText().equals("phase: " + Phase.End_Phase + "\nI end my turn!\n")) {
-            start(gameMatStage);
+          //  start(gameMatStage); not rotate the mat
             phaseLbl.setText(GameMatController.sideMsg2);
         }
         setBtn.setVisible(false);
@@ -927,7 +918,7 @@ public class GameMatView extends Application {
     public void activateEffect() {
         clearMyChoices();
         if (activeEffect.equals("Man-Eater Bug") && !rivalMonsterAddressResponse.isEmpty()) {
-            MonsterEffect.manEaterBug(selectedCardAddress, rivalMonsterAddressResponse.get(0));
+           // MonsterEffect.manEaterBug(selectedCardAddress, rivalMonsterAddressResponse.get(0));
             rivalMonsterAddressResponse.clear();
             ownMonsterAddressResponse.clear();
             activateBtn.setVisible(false);

@@ -59,6 +59,8 @@ public class GameMatController {
             }
             return 38;
         }
+
+
         return 39;
     }
 
@@ -70,6 +72,13 @@ public class GameMatController {
         objects.add(Player.getPlayerByName(onlineUser));
         objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(onlineUser));
         objects.add(UserModel.getUserByNickname(onlineUser));
+
+        objects.add(GameMatModel.getGameMatByNickname(rivalUser));
+        objects.add(HandCardZone.getHandCardZoneByName(rivalUser));
+        objects.add(MonsterZoneCard.getMonsterZoneCardByName(rivalUser));
+        objects.add(Player.getPlayerByName(rivalUser));
+        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(rivalUser));
+        objects.add(UserModel.getUserByNickname(rivalUser));
         return objects;
 
     }
@@ -81,7 +90,15 @@ public class GameMatController {
         Player.setObject(MainMenuController.username, (Player) objects.get(3));
         SpellTrapZoneCard.setObject(MainMenuController.username, (SpellTrapZoneCard) objects.get(4));
         UserModel.setObject((UserModel) objects.get(5));
+
+        GameMatModel.setObject(MainMenuController.username2, (GameMatModel) objects.get(6));
+        HandCardZone.setObject(MainMenuController.username2, (HandCardZone) objects.get(7));
+        MonsterZoneCard.setObject(MainMenuController.username2, (MonsterZoneCard) objects.get(8));
+        Player.setObject(MainMenuController.username2, (Player) objects.get(9));
+        SpellTrapZoneCard.setObject(MainMenuController.username2, (SpellTrapZoneCard) objects.get(10));
+        UserModel.setObject((UserModel) objects.get(11));
     }
+
 
     public static void selectMonsterCard(int address, boolean isOwnMonsterCard) {//ok
         if (isOwnMonsterCard) {
@@ -207,6 +224,9 @@ public class GameMatController {
             String[] response = answer.split("@");
             message = response[0];
             selectedOwnCard = response[1];
+            if(response[2]!=null){
+                GameMatView.effectCardName = response[2];
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

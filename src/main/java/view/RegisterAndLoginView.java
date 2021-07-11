@@ -44,26 +44,20 @@ public class RegisterAndLoginView extends Application {
     public static ShowCardsView showCardsView;
     public static Socket socket;
     public static DataOutputStream dataOutputStream;
-    public static DataInputStream dataInputStream;
-    public static OutputStream outputStream;
+    public  static DataInputStream dataInputStream;
     public static ObjectOutputStream objectOutputStream;
     public static ObjectInputStream objectInputStream;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         try {
-            socket = new Socket("localhost", 1277);
+            socket = new Socket("localhost", 7777);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        ////
-            outputStream = socket.getOutputStream();
-            objectOutputStream = new ObjectOutputStream(outputStream);
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
-////
-
+            objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
+            objectInputStream=new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         launch();
     }
 
