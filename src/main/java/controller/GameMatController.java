@@ -30,6 +30,7 @@ public class GameMatController {
     public static int round;
 
     private static String summon;
+    private static String effectName;
 
     public static int run(String firstPlayer, String secondPlayer) {
         onlineUser = firstPlayer;
@@ -75,7 +76,7 @@ public class GameMatController {
         }
         if (getMatcher(command, "^summon$").find() || getMatcher(command, "^sn$").find()) {
             summon(currentPhase);
-            return summon + "@" + selectedOwnCard;
+            return summon + "@" + selectedOwnCard+"@"+effectName;
         }//ok
         if (getMatcher(command, "^select \\s*Field \\s*Card").find() || getMatcher(command, "^s\\s+-f$").find()) {
             selectFieldCard(true);
@@ -121,15 +122,11 @@ public class GameMatController {
 
         //////////////
         if (AIAttack(command, currentPhase) == 1) {
-           return "25";
-       }
+            return "25";
+        }
         //////////////
-
         return "39";
     }
-
-
-
 
 
     public static Matcher getMatcher(String command, String regex) {
@@ -139,11 +136,6 @@ public class GameMatController {
 
     public static void AI() {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt();
-//        }
         if (currentPhase.equals(Phase.Draw_Phase)) {
             command = "next phase";
         }
@@ -361,10 +353,10 @@ public class GameMatController {
         return 0;
     }
 
-    public static void increaseLP(int lifePoint, String onlineUser) {
-        Player player = Player.getPlayerByName(onlineUser);
-        player.changeLifePoint(lifePoint);
-    }
+//    public static void increaseLP(int lifePoint, String onlineUser) {
+//        Player player = Player.getPlayerByName(onlineUser);
+//        player.changeLifePoint(lifePoint);
+//    }
 
     public static void selectMonsterCard(int address, boolean isOwnMonsterCard) {
         if (isOwnMonsterCard) {
@@ -522,7 +514,7 @@ public class GameMatController {
         return 5;
     }
 
-    public static void summonInHandSuccessfully(Player player, HandCardZone handCard) {
+    public static void summonInHandSuccessfully(Player player, HandCardZone handCard) {//ok
         if (addToMonsterZoneCard(handCard.getCardName(), "OO") == 0)
             return;
         player.setCanSetSummonMonster(false);
@@ -530,6 +522,7 @@ public class GameMatController {
         message = "summoned successfully";
         MonsterZoneCard ownMonster = MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser);
       //  GameMatView.effectCardName = ownMonster.getMonsterName();
+        effectName=ownMonster.getMonsterName();//
         if (ownMonster.getAttack() >= 1000) {
             checkForSetTrapToActivateInRivalTurn("Trap Hole", ownMonster);
             trapAddress = SpellTrapZoneCard.isThisTrapActivated(rivalUser, "Trap Hole");
@@ -679,7 +672,7 @@ public class GameMatController {
         return 1;
     }
 
-    public static int ritualSummon() {
+    public static int ritualSummon() {//moshkel
         int ritualMonsterAddress = HandCardZone.doIHaveAnyRitualMonster(onlineUser);
         if (ritualMonsterAddress == -1) {
             message = "there is no way you could ritual summon a monster";
@@ -690,25 +683,25 @@ public class GameMatController {
             return -1;
         }
         int address;
-        while (true) {
+   //     while (true) {
             ////// message = "Please enter the address of a Ritual Monster in your hand to summon: ";
             String response = GameMatView.getCommand();
             if (response.equals("cancel"))
                 return -1;
             if (!response.matches("\\d+")) {
                 message = "you should ritual summon right now";
-                continue;
+              //  continue;
             }
             address = Integer.parseInt(response);
             address--;
             if (HandCardZone.getHandCardByAddress(address, onlineUser) == null) {
                 message = "you should ritual summon right now";
-                continue;
+               // continue;
             }
             HandCardZone card = HandCardZone.getHandCardByAddress(address, onlineUser);
-            if (card.getKind().equals("Monster") && MonsterCard.getMonsterByName(card.getCardName()).getCardType().equals("Ritual"))
-                break;
-        }
+          //  if (card.getKind().equals("Monster") && MonsterCard.getMonsterByName(card.getCardName()).getCardType().equals("Ritual"))
+               // break;
+      //  }
         HandCardZone handCardRitualMonster = HandCardZone.getHandCardByAddress(address, onlineUser);
         String ritualMonsterName = handCardRitualMonster.getCardName();
         int numberOfTribute;
@@ -1534,7 +1527,7 @@ public class GameMatController {
         return result;
     }
 
-    public static int getAddressOfRelatedMonster(SpellTrapZoneCard ownSpell) {
+    public static int getAddressOfRelatedMonster(SpellTrapZoneCard ownSpell) {//moshkel
         String spellName = ownSpell.getSpellTrapName();
         do {
             GameMatView.showInput("Whose Monster do you want to equip? (own/rival)");
@@ -1559,7 +1552,7 @@ public class GameMatController {
         return 1;
     }
 
-    public static int getResponseForEquipSpell(String whoseResponse, String spellName) {
+    public static int getResponseForEquipSpell(String whoseResponse, String spellName) {//moshekl
         MonsterZoneCard monsterCard;
         while (true) {
             GameMatView.showInput("Please enter the address of one of your " + whoseResponse + " Monster to equip:");
@@ -1598,7 +1591,7 @@ public class GameMatController {
         return 1;
     }
 
-    public static int checkForMessengerOfPeace() {
+    public static int checkForMessengerOfPeace() {//moshekl
         int address = SpellTrapZoneCard.isThisSpellActivated(onlineUser, "Messenger of peace");
         if (address != -1) {
             SpellEffect.messengerOfPeace(onlineUser, rivalUser, address);
@@ -1625,7 +1618,7 @@ public class GameMatController {
         return 1;
     }
 
-    public static void changePhase(Phase currentPhase) {
+    public static void changePhase(Phase currentPhase) {//moshkel
         GameMatModel playerGameMat = GameMatModel.getGameMatByNickname(onlineUser);
         Player player = Player.getPlayerByName(onlineUser);
         int address;
