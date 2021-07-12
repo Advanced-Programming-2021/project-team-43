@@ -32,7 +32,8 @@ public class GameMatController {
     private static String cardNameAnswer;
     public static GameMatView gameMatView;
     public static int round;
-    public static Object receivedObject;
+    public static String rivalToken;
+    public static String onlineToken;
 
     public static int commandController(String command, GameMatView gameMatView) {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
@@ -104,7 +105,7 @@ public class GameMatController {
         if (isOwnMonsterCard) {
             try {
 
-                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --monster " + address);
+                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":select --monster " + address+":"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -120,7 +121,7 @@ public class GameMatController {
             }
         } else {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --monster " + address + " --opponent");
+                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":select --monster " + address + " --opponent:"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -138,7 +139,7 @@ public class GameMatController {
 
     public static void selectHandCard(int address) {//ok
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --hand " + address);
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":select --hand " + address+":"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -155,7 +156,7 @@ public class GameMatController {
 
     public static void changePhase(Phase currentPhase) {//shak
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":next phase");
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" +onlineToken + ":next phase:"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -163,7 +164,7 @@ public class GameMatController {
             //
             if (currentPhase.name().equals("Main_Phase2")) {
                 System.out.println(onlineUser);
-                gameMatView.start(GameMatView.gameMatStage);
+              //  gameMatView.start(GameMatView.gameMatStage);//not rotate
                 gameMatView.showGameBoard();
             }
             String answer = RegisterAndLoginView.dataInputStream.readUTF();
@@ -179,7 +180,7 @@ public class GameMatController {
     public static int selectSpellCard(int address, boolean isOwnSpellCard) {//ok
         if (isOwnSpellCard) {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --spell " + address);
+                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":select --spell " + address+":"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -194,7 +195,7 @@ public class GameMatController {
             }
         } else {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --spell " + address + " --opponent");
+                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":select --spell " + address + " --opponent:"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -214,7 +215,7 @@ public class GameMatController {
 
     public static void summon(Phase currentPhase) {//ok
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":summon");
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":summon:"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -235,7 +236,7 @@ public class GameMatController {
     public static void selectFieldCard(boolean isOwnField) {//ok
         if (isOwnField) {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --field");
+                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":select --field:"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -250,7 +251,7 @@ public class GameMatController {
             }
         } else {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":select --monster --opponent");
+                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":select --monster --opponent:"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -268,7 +269,7 @@ public class GameMatController {
 
     public static void flipSummon(Phase currentPhase) {//ok
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":flip summon");
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":flip summon:"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -285,7 +286,7 @@ public class GameMatController {
 
     public static void changeToAttackPosition(Phase currentPhase) {
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":change to attack position");
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":change to attack position:"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -302,7 +303,7 @@ public class GameMatController {
 
     public static int changeToDefensePosition(Phase currentPhase) {
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":change to defend position");
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":change to defend position:"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -322,7 +323,7 @@ public class GameMatController {
 
     public static void set(Phase currentPhase) {
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":set");
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":set:"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -339,7 +340,7 @@ public class GameMatController {
 
     public static int attack(int rivalMonsterAddress, Phase currentPhase) {
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":attack " + rivalMonsterAddress);
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" +onlineToken + ":attack " + rivalMonsterAddress+":"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -358,7 +359,7 @@ public class GameMatController {
 
     public static int attackDirect(Phase currentPhase) {
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":attack direct");
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" +onlineToken + ":attack direct:"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -378,7 +379,7 @@ public class GameMatController {
     public static void endGame(String loserNickname) {
         if (loserNickname.equals(onlineUser)) {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":duel set-winner" + rivalUser);
+                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":duel set-winner" + rivalUser+":"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -393,7 +394,7 @@ public class GameMatController {
             }
         } else {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":duel set-winner" + onlineUser);
+                RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":duel set-winner" + onlineUser+":"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
@@ -412,7 +413,7 @@ public class GameMatController {
 
     public static int activateSpellEffect(Phase currentPhase) {
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + MainMenuController.token + ":activate Spell Effect");
+            RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":activate Spell Effect:"+rivalToken);
             RegisterAndLoginView.dataOutputStream.flush();
             ///
             RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
