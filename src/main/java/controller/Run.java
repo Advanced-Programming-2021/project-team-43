@@ -20,7 +20,7 @@ public class Run {
 
     public static void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(7777);
+            ServerSocket serverSocket = new ServerSocket(7700);
             while (true) {
                 Socket socket = serverSocket.accept();
                 new Thread(() -> {
@@ -42,11 +42,9 @@ public class Run {
                             if (output.equals("==")) {
                                 break;
                             }
-                            objectOutputStream.writeObject(objectSend);
                             dataOutputStream.writeUTF(output);
                             dataOutputStream.flush();
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -57,6 +55,8 @@ public class Run {
         }
     }
 
+    public static String onlineToken;
+    public static String rivalToken;
 
     private static String process(String input) throws IOException, ClassNotFoundException {
 
@@ -68,37 +68,21 @@ public class Run {
         }
         if (input.startsWith("GameMat")) {
             String[] in = input.split(":");
-
-        RegisterAndLoginController.allOnlineUsers.get(in[1]);//online
-
+            onlineToken = in[1];
+            rivalToken = in[3];
 
             ArrayList<Object> objects = (ArrayList<Object>) objectInputStream.readObject();
             setObject(objects);
-
+            GameMatController.onlineUser = userByToken(onlineToken);
+            GameMatController.rivalUser = userByToken(rivalToken);
             String returnValue = GameMatController.commandController(in[2]);
+
             objectSend = getObjects();
+            objectOutputStream.writeObject(objectSend);
+            dataOutputStream.flush();
             return returnValue;
-
         }
 
-
-        if (input.startsWith("PickFirstPlayer")) {
-            return PickFirstPlayer.chose(null, null);
-        }
-        if (input.startsWith("CoinChance")) {
-            return PickFirstPlayer.chanceCoin(PickFirstPlayer.ply1, PickFirstPlayer.ply2);
-        }
-        if (input.startsWith("onlineUser")) {
-            String[] in = input.split(":");
-            GameMatController.onlineUser = in[2];
-            GameMatController.rivalUser = in[3];
-            return "success";
-        }
-        if (input.startsWith("rock")) {
-            String[] in = input.split(":");
-            return PickFirstPlayer.rockPaperScissors(in[2], in[3], in[4], in[5]);
-
-        }
         return "==";
     }
 
@@ -111,37 +95,42 @@ public class Run {
             e.printStackTrace();
         }
     }
+
+    public static String userByToken(String token) {
+        return RegisterAndLoginController.allOnlineUsers.get(token);//onlineUser/rivalUser
+    }
+
     private static void setObject(ArrayList<Object> objects) {
-        GameMatModel.setObject(MainMenuController.username, (GameMatModel) objects.get(0));
-        HandCardZone.setObject(MainMenuController.username, (HandCardZone) objects.get(1));
-        MonsterZoneCard.setObject(MainMenuController.username, (MonsterZoneCard) objects.get(2));
-        Player.setObject(MainMenuController.username, (Player) objects.get(3));
-        SpellTrapZoneCard.setObject(MainMenuController.username, (SpellTrapZoneCard) objects.get(4));
+        GameMatModel.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (GameMatModel) objects.get(0));
+        HandCardZone.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (HandCardZone) objects.get(1));
+        MonsterZoneCard.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (MonsterZoneCard) objects.get(2));
+        Player.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (Player) objects.get(3));
+        SpellTrapZoneCard.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (SpellTrapZoneCard) objects.get(4));
         UserModel.setObject((UserModel) objects.get(5));
 
-        GameMatModel.setObject(MainMenuController.username2, (GameMatModel) objects.get(6));
-        HandCardZone.setObject(MainMenuController.username2, (HandCardZone) objects.get(7));
-        MonsterZoneCard.setObject(MainMenuController.username2, (MonsterZoneCard) objects.get(8));
-        Player.setObject(MainMenuController.username2, (Player) objects.get(9));
-        SpellTrapZoneCard.setObject(MainMenuController.username2, (SpellTrapZoneCard) objects.get(10));
+        GameMatModel.setObject(userByToken(rivalToken), (GameMatModel) objects.get(6));
+        HandCardZone.setObject(userByToken(rivalToken), (HandCardZone) objects.get(7));
+        MonsterZoneCard.setObject(userByToken(rivalToken), (MonsterZoneCard) objects.get(8));
+        Player.setObject(userByToken(rivalToken), (Player) objects.get(9));
+        SpellTrapZoneCard.setObject(userByToken(rivalToken), (SpellTrapZoneCard) objects.get(10));
         UserModel.setObject((UserModel) objects.get(11));
     }
 
     private static ArrayList<Object> getObjects() {
         ArrayList<Object> objects = new ArrayList<>();
-        objects.add(GameMatModel.getGameMatByNickname(MainMenuController.username));
-        objects.add(HandCardZone.getHandCardZoneByName(MainMenuController.username));
-        objects.add(MonsterZoneCard.getMonsterZoneCardByName(MainMenuController.username));
-        objects.add(Player.getPlayerByName(MainMenuController.username));
-        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(MainMenuController.username));
-        objects.add(UserModel.getUserByNickname(MainMenuController.username));
+        objects.add(GameMatModel.getGameMatByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
+        objects.add(HandCardZone.getHandCardZoneByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
+        objects.add(MonsterZoneCard.getMonsterZoneCardByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
+        objects.add(Player.getPlayerByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
+        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
+        objects.add(UserModel.getUserByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
 
-        objects.add(GameMatModel.getGameMatByNickname(MainMenuController.username2));
-        objects.add(HandCardZone.getHandCardZoneByName(MainMenuController.username2));
-        objects.add(MonsterZoneCard.getMonsterZoneCardByName(MainMenuController.username2));
-        objects.add(Player.getPlayerByName(MainMenuController.username2));
-        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(MainMenuController.username2));
-        objects.add(UserModel.getUserByNickname(MainMenuController.username2));
+        objects.add(GameMatModel.getGameMatByNickname(userByToken(rivalToken)));
+        objects.add(HandCardZone.getHandCardZoneByName(userByToken(rivalToken)));
+        objects.add(MonsterZoneCard.getMonsterZoneCardByName(userByToken(rivalToken)));
+        objects.add(Player.getPlayerByName(userByToken(rivalToken)));
+        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(userByToken(rivalToken)));
+        objects.add(UserModel.getUserByNickname(userByToken(rivalToken)));
         return objects;
 
     }

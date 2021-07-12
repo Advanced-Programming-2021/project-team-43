@@ -28,13 +28,13 @@ public class GameMatController {
     private static String cardNameAnswer;
     public static GameMatView gameMatView;
     public static int round;
-
     private static String summon;
     private static String effectName;
 
     public static int run(String firstPlayer, String secondPlayer) {
-        onlineUser = firstPlayer;
-        rivalUser = secondPlayer;
+     //  onlineUser = firstPlayer;
+       // rivalUser = secondPlayer;
+
         message = "The game starts!\nits " + onlineUser + "’s turn";
         sideMsg = "phase: " + Phase.Draw_Phase;
         while (true) {
@@ -673,65 +673,65 @@ public class GameMatController {
     }
 
     public static int ritualSummon() {//moshkel
-        int ritualMonsterAddress = HandCardZone.doIHaveAnyRitualMonster(onlineUser);
-        if (ritualMonsterAddress == -1) {
-            message = "there is no way you could ritual summon a monster";
-            return -1;
-        }
-        if (MonsterZoneCard.getSumOfMonstersLevel(onlineUser) < 7) {
-            message = "there is no way you could ritual summon a monster";
-            return -1;
-        }
-        int address;
-   //     while (true) {
-            ////// message = "Please enter the address of a Ritual Monster in your hand to summon: ";
-            String response = GameMatView.getCommand();
-            if (response.equals("cancel"))
-                return -1;
-            if (!response.matches("\\d+")) {
-                message = "you should ritual summon right now";
-              //  continue;
-            }
-            address = Integer.parseInt(response);
-            address--;
-            if (HandCardZone.getHandCardByAddress(address, onlineUser) == null) {
-                message = "you should ritual summon right now";
-               // continue;
-            }
-            HandCardZone card = HandCardZone.getHandCardByAddress(address, onlineUser);
-          //  if (card.getKind().equals("Monster") && MonsterCard.getMonsterByName(card.getCardName()).getCardType().equals("Ritual"))
-               // break;
-      //  }
-        HandCardZone handCardRitualMonster = HandCardZone.getHandCardByAddress(address, onlineUser);
-        String ritualMonsterName = handCardRitualMonster.getCardName();
-        int numberOfTribute;
-        while (true) {
-            GameMatView.showInput("Please enter the number of Monsters you want to tribute (Maximum 3 Monsters):");
-            response = GameMatView.getCommand();
-            if (response.equals("cancel"))
-                return -1;
-            if (!response.matches("[1-3]"))
-                continue;
-            numberOfTribute = Integer.parseInt(response);
-            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < numberOfTribute)
-                message = "You dont have this much monster in your zone!";
-            else
-                break;
-        }
-        if (tributeMonster(numberOfTribute, "Ritual") == 1) {
-            GameMatView.showInput("Please enter Ritual Monster mode: (defensive/attacking)");
-            command = GameMatView.getCommand();
-            while (!command.matches("defensive") && !command.matches("attacking")) {
-                GameMatView.showInput("Please enter the answer correctly: (defensive/attacking)");
-                command = GameMatView.getCommand();
-            }
-            if (command.equals("defensive"))
-                new MonsterZoneCard(onlineUser, ritualMonsterName, "DO", false, false);
-            else
-                new MonsterZoneCard(onlineUser, ritualMonsterName, "OO", false, false);
-            message = "summoned successfully";
-            handCardRitualMonster.removeFromHandCard();
-        }
+//        int ritualMonsterAddress = HandCardZone.doIHaveAnyRitualMonster(onlineUser);
+//        if (ritualMonsterAddress == -1) {
+//            message = "there is no way you could ritual summon a monster";
+//            return -1;
+//        }
+//        if (MonsterZoneCard.getSumOfMonstersLevel(onlineUser) < 7) {
+//            message = "there is no way you could ritual summon a monster";
+//            return -1;
+//        }
+//        int address;
+//   //     while (true) {
+//            ////// message = "Please enter the address of a Ritual Monster in your hand to summon: ";
+//            String response = GameMatView.getCommand();
+//            if (response.equals("cancel"))
+//                return -1;
+//            if (!response.matches("\\d+")) {
+//                message = "you should ritual summon right now";
+//              //  continue;
+//            }
+//            address = Integer.parseInt(response);
+//            address--;
+//            if (HandCardZone.getHandCardByAddress(address, onlineUser) == null) {
+//                message = "you should ritual summon right now";
+//               // continue;
+//            }
+//            HandCardZone card = HandCardZone.getHandCardByAddress(address, onlineUser);
+//          //  if (card.getKind().equals("Monster") && MonsterCard.getMonsterByName(card.getCardName()).getCardType().equals("Ritual"))
+//               // break;
+//      //  }
+//        HandCardZone handCardRitualMonster = HandCardZone.getHandCardByAddress(address, onlineUser);
+//        String ritualMonsterName = handCardRitualMonster.getCardName();
+//        int numberOfTribute;
+//        while (true) {
+//            GameMatView.showInput("Please enter the number of Monsters you want to tribute (Maximum 3 Monsters):");
+//            response = GameMatView.getCommand();
+//            if (response.equals("cancel"))
+//                return -1;
+//            if (!response.matches("[1-3]"))
+//                continue;
+//            numberOfTribute = Integer.parseInt(response);
+//            if (MonsterZoneCard.getNumberOfFullHouse(onlineUser) < numberOfTribute)
+//                message = "You dont have this much monster in your zone!";
+//            else
+//                break;
+//        }
+//        if (tributeMonster(numberOfTribute, "Ritual") == 1) {
+//            GameMatView.showInput("Please enter Ritual Monster mode: (defensive/attacking)");
+//            command = GameMatView.getCommand();
+//            while (!command.matches("defensive") && !command.matches("attacking")) {
+//                GameMatView.showInput("Please enter the answer correctly: (defensive/attacking)");
+//                command = GameMatView.getCommand();
+//            }
+//            if (command.equals("defensive"))
+//                new MonsterZoneCard(onlineUser, ritualMonsterName, "DO", false, false);
+//            else
+//                new MonsterZoneCard(onlineUser, ritualMonsterName, "OO", false, false);
+//            message = "summoned successfully";
+//            handCardRitualMonster.removeFromHandCard();
+//        }
         return 0;
     }
 
@@ -1528,57 +1528,57 @@ public class GameMatController {
     }
 
     public static int getAddressOfRelatedMonster(SpellTrapZoneCard ownSpell) {//moshkel
-        String spellName = ownSpell.getSpellTrapName();
-        do {
-            GameMatView.showInput("Whose Monster do you want to equip? (own/rival)");
-            response = GameMatView.getCommand();
-            if (response.equals("cancel"))
-                return 0;
-        } while (!response.matches("own|rival"));
-        int address;
-        if (response.equals("own")) {
-            address = getResponseForEquipSpell("own", spellName);
-            if (address != 0) {
-                ownSpell.setRelatedMonsterAddress("own", address);
-            } else
-                return 0;
-        } else {
-            address = getResponseForEquipSpell("rival", spellName);
-            if (address != 0)
-                ownSpell.setRelatedMonsterAddress("rival", address);
-            else
-                return 0;
-        }
+//        String spellName = ownSpell.getSpellTrapName();
+//        do {
+//            GameMatView.showInput("Whose Monster do you want to equip? (own/rival)");
+//            response = GameMatView.getCommand();
+//            if (response.equals("cancel"))
+//                return 0;
+//        } while (!response.matches("own|rival"));
+//        int address;
+//        if (response.equals("own")) {
+//            address = getResponseForEquipSpell("own", spellName);
+//            if (address != 0) {
+//                ownSpell.setRelatedMonsterAddress("own", address);
+//            } else
+//                return 0;
+//        } else {
+//            address = getResponseForEquipSpell("rival", spellName);
+//            if (address != 0)
+//                ownSpell.setRelatedMonsterAddress("rival", address);
+//            else
+//                return 0;
+//        }
         return 1;
     }
 
     public static int getResponseForEquipSpell(String whoseResponse, String spellName) {//moshekl
-        MonsterZoneCard monsterCard;
-        while (true) {
-            GameMatView.showInput("Please enter the address of one of your " + whoseResponse + " Monster to equip:");
-            response = GameMatView.getCommand();
-            if (response.equals("cancel"))
-                return 0;
-            if (!response.matches("[1-5]"))
-                continue;
-            if (whoseResponse.equals("own"))
-                monsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
-            else
-                monsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser);
-            if (monsterCard == null || monsterCard.getMode().equals("DH"))
-                continue;
-            String monsterType = monsterCard.getMonsterType();
-            if (spellName.equals("Sword of dark destruction")) {
-                if (monsterType.equals("Fiend") || monsterType.equals("Spellcaster")) {
-                    break;
-                }
-            }
-            if (spellName.equals("Magnum Shield") && monsterType.equals("Warrior"))
-                break;
-            if (spellName.equals("Black Pendant") || spellName.equals("United We Stand"))
-                break;
-        }
-        return Integer.parseInt(response);
+//        MonsterZoneCard monsterCard;
+//        while (true) {
+//            GameMatView.showInput("Please enter the address of one of your " + whoseResponse + " Monster to equip:");
+//            response = GameMatView.getCommand();
+//            if (response.equals("cancel"))
+//                return 0;
+//            if (!response.matches("[1-5]"))
+//                continue;
+//            if (whoseResponse.equals("own"))
+//                monsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), onlineUser);
+//            else
+//                monsterCard = MonsterZoneCard.getMonsterCardByAddress(Integer.parseInt(response), rivalUser);
+//            if (monsterCard == null || monsterCard.getMode().equals("DH"))
+//                continue;
+//            String monsterType = monsterCard.getMonsterType();
+//            if (spellName.equals("Sword of dark destruction")) {
+//                if (monsterType.equals("Fiend") || monsterType.equals("Spellcaster")) {
+//                    break;
+//                }
+//            }
+//            if (spellName.equals("Magnum Shield") && monsterType.equals("Warrior"))
+//                break;
+//            if (spellName.equals("Black Pendant") || spellName.equals("United We Stand"))
+//                break;
+//        }
+      return Integer.parseInt(response);
     }
 
     public static int checkForSpellAbsorption() {
@@ -1592,20 +1592,20 @@ public class GameMatController {
     }
 
     public static int checkForMessengerOfPeace() {//moshekl
-        int address = SpellTrapZoneCard.isThisSpellActivated(onlineUser, "Messenger of peace");
-        if (address != -1) {
-            SpellEffect.messengerOfPeace(onlineUser, rivalUser, address);
-            do {
-                GameMatView.showInput("Do you want to destroy Messenger of peace? (yes/no)");
-                response = GameMatView.getCommand();
-            } while (!response.matches("yes|no"));
-            if (response.equals("yes")) {
-                SpellTrapZoneCard.getSpellCardByAddress(address, onlineUser).removeSpellTrapFromZone();
-            } else {
-                Player.getPlayerByName(onlineUser).changeLifePoint(-100);
-            }
-        }
-        return 1;
+//        int address = SpellTrapZoneCard.isThisSpellActivated(onlineUser, "Messenger of peace");
+//        if (address != -1) {
+//            SpellEffect.messengerOfPeace(onlineUser, rivalUser, address);
+//            do {
+//                GameMatView.showInput("Do you want to destroy Messenger of peace? (yes/no)");
+//                response = GameMatView.getCommand();
+//            } while (!response.matches("yes|no"));
+//            if (response.equals("yes")) {
+//                SpellTrapZoneCard.getSpellCardByAddress(address, onlineUser).removeSpellTrapFromZone();
+//            } else {
+//                Player.getPlayerByName(onlineUser).changeLifePoint(-100);
+//            }
+//        }
+      return 1;
     }
 
     public static int checkForSupplySquad() {
@@ -1710,9 +1710,10 @@ public class GameMatController {
         onlinePlayer.changeTurn();
         GameMatModel.getGameMatByNickname(onlineUser).resetNumberOfDeadMonsterThisTurn();
         GameMatModel.getGameMatByNickname(rivalUser).resetNumberOfDeadMonsterThisTurn();
-        String temp = onlineUser;
-        onlineUser = rivalUser;
+        String temp = Run.userByToken(Run.onlineToken);
+        onlineUser = Run.userByToken(Run.rivalToken);
         rivalUser = temp;
+
         Player.getPlayerByName(onlineUser).setIsYourTurn(true);
         Player.getPlayerByName(rivalUser).setIsYourTurn(false);
     }
