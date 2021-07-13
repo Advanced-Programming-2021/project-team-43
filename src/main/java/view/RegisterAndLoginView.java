@@ -50,7 +50,7 @@ public class RegisterAndLoginView extends Application {
 
     public static void main(String[] args) {
         try {
-            socket = new Socket("localhost", 7777);
+            socket = new Socket("localhost", 7700);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
@@ -131,7 +131,6 @@ public class RegisterAndLoginView extends Application {
         loginMessageLbl.setText(RegisterAndLoginController.loginInGame(loginUsernameTxt.getText(), loginPassword.getText()));
         loginUsernameTxt.clear();
         loginPassword.clear();
-        System.out.println("12121212121212");
         if (loginMessageLbl.getText().equals("User logged in successfully!"))
             new MainMenuView().start(registerLoginStage);
     }

@@ -36,7 +36,6 @@ public class RegisterAndLoginController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("R user login --username " + username + " --password " + password);
             String output = RegisterAndLoginView.dataInputStream.readUTF();
-            System.out.println("Output:" + output);
             Pattern pattern = Pattern.compile("user logged in successfully!(.+)");
             Matcher matcher = pattern.matcher(output);
             if (matcher.find()) {

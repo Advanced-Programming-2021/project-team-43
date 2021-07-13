@@ -24,6 +24,7 @@ public class MainMenuView extends Application {
     public Button scoreboardBtn;
     public Button cardBtn;
     public Button logoutBtn;
+    public Button lobbyBtn;
 
 
     @Override
@@ -35,28 +36,22 @@ public class MainMenuView extends Application {
     }
 
     public void initialize() {
-        KeyFrame duelEnd = new KeyFrame(new Duration(2000), new KeyValue(duelBtn.opacityProperty(), 0.0));
-        KeyFrame duelStart = new KeyFrame(new Duration(4000), new KeyValue(duelBtn.opacityProperty(), 1.0));
-        new Timeline(duelEnd, duelStart).play();
-        KeyFrame proEnd = new KeyFrame(new Duration(2000), new KeyValue(profileBtn.opacityProperty(), 0.0));
-        KeyFrame proStart = new KeyFrame(new Duration(4000), new KeyValue(profileBtn.opacityProperty(), 1.0));
-        new Timeline(proEnd, proStart).play();
-        KeyFrame shopEnd = new KeyFrame(new Duration(2000), new KeyValue(shopBtn.opacityProperty(), 0.0));
-        KeyFrame shopStart = new KeyFrame(new Duration(4000), new KeyValue(shopBtn.opacityProperty(), 1.0));
-        new Timeline(shopEnd, shopStart).play();
-        KeyFrame deckEnd = new KeyFrame(new Duration(2000), new KeyValue(deckBtn.opacityProperty(), 0.0));
-        KeyFrame deckStart = new KeyFrame(new Duration(4000), new KeyValue(deckBtn.opacityProperty(), 1.0));
-        new Timeline(deckEnd, deckStart).play();
-        KeyFrame scoreEnd = new KeyFrame(new Duration(2000), new KeyValue(scoreboardBtn.opacityProperty(), 0.0));
-        KeyFrame scoreStart = new KeyFrame(new Duration(4000), new KeyValue(scoreboardBtn.opacityProperty(), 1.0));
-        new Timeline(scoreEnd, scoreStart).play();
-        KeyFrame cardEnd = new KeyFrame(new Duration(2000), new KeyValue(cardBtn.opacityProperty(), 0.0));
-        KeyFrame cardStart = new KeyFrame(new Duration(4000), new KeyValue(cardBtn.opacityProperty(), 1.0));
-        new Timeline(cardEnd, cardStart).play();
-        KeyFrame logEnd = new KeyFrame(new Duration(2000), new KeyValue(logoutBtn.opacityProperty(), 0.0));
-        KeyFrame logStart = new KeyFrame(new Duration(4000), new KeyValue(logoutBtn.opacityProperty(), 1.0));
-        new Timeline(logEnd, logStart).play();
+        setFrame(duelBtn);
+        setFrame(profileBtn);
+        setFrame(shopBtn);
+        setFrame(deckBtn);
+        setFrame(scoreboardBtn);
+        setFrame(cardBtn);
+        setFrame(lobbyBtn);
+        setFrame(logoutBtn);
     }
+
+    public void setFrame(Button button) {
+        KeyFrame duelEnd = new KeyFrame(new Duration(2000), new KeyValue(button.opacityProperty(), 0.0));
+        KeyFrame duelStart = new KeyFrame(new Duration(4000), new KeyValue(button.opacityProperty(), 1.0));
+        new Timeline(duelEnd, duelStart).play();
+    }
+
 
     public void Profile() throws Exception {
         new ProfileView().start(stage);
@@ -82,8 +77,11 @@ public class MainMenuView extends Application {
         new StartClass().start(stage);
     }
 
+    public void lobby() throws Exception {
+        (LobbyView.lobbyView = new LobbyView()).start(stage);
+    }
+
     public void LogOut() throws Exception {
         new RegisterAndLoginView().start(stage);
     }
-
 }
