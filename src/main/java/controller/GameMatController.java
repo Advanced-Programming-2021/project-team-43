@@ -1735,7 +1735,7 @@ public class GameMatController {
             GameMatView.showInput("The Duel is Over!\n" + winnerUsername + " won the game and the score is: 1000-0");
             UserModel.getUserByUsername(winnerUsername).changeUserCoin(1000 + winnerPlayer.getLifePoint());
             UserModel.getUserByUsername(loserUsername).changeUserCoin(100);
-            MainMenuController.run();
+//            MainMenuController.run();
         } else {
             int round = winnerPlayer.getNumberOfRound();
             if (round == 3)
@@ -1755,13 +1755,13 @@ public class GameMatController {
                     UserModel.getUserByUsername(loserUsername).changeUserCoin(3000 + 3 * loserPlayer.getMaxLifePoints());
                     UserModel.getUserByUsername(winnerUsername).changeUserCoin(300);
                 }
-                MainMenuController.run();
+
             }
             else if (winnerPlayer.getNumberOfWin() == 2) {
                 GameMatView.showInput("The Match is Over!\n" + winnerUsername  + " won the whole match with score: 3000-0");
                 UserModel.getUserByUsername(winnerUsername).changeUserCoin(3000 + 3 * winnerPlayer.getMaxLifePoints());
                 UserModel.getUserByUsername(loserUsername).changeUserCoin(300);
-                MainMenuController.run();
+
             }
             else {
                 String firstPlayer = PickFirstPlayer.chose(winnerUsername, loserUsername);

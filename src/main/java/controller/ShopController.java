@@ -37,10 +37,10 @@ public class ShopController {
         }
         if (getMatcher(command, "^menu\\s+exit$").find() || getMatcher(command, "^m\\s+ex$").find())
             return 5;
-        if ((matcher = getMatcher(command, "^increase\\s* --money\\s* (\\d+)$")).find() || (matcher = getMatcher(command, "^increase\\s* -m\\s* (\\d+)$")).find()) {
-            MainMenuController.increaseMoney(Integer.parseInt(matcher.group(1)));
-            return 6;
-        }
+//        if ((matcher = getMatcher(command, "^increase\\s* --money\\s* (\\d+)$")).find() || (matcher = getMatcher(command, "^increase\\s* -m\\s* (\\d+)$")).find()) {
+//            MainMenuController.increaseMoney(Integer.parseInt(matcher.group(1)));
+//            return 6;
+//        }
         ShopView.showInput("invalid command");
         return 7;
     }

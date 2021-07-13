@@ -165,5 +165,8 @@ public class UserModel implements Serializable {
                 return eachUser.getValue();
         return null;
     }
+    public String toString(){
+        return "username:"+username+" decksize"+userAllDecks.size() +"  number "+allUsersInfo.size();
+    }
 
 }

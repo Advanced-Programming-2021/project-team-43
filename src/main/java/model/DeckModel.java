@@ -1,9 +1,11 @@
 package model;
 import controller.*;
+
+import java.io.Serializable;
 import java.util.*;
 
 
-public class DeckModel {
+public class DeckModel implements Serializable {
 
     private final String deckName;
     private int mainAllCardNumber = 0;
