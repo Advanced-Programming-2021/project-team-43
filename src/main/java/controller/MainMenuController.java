@@ -4,6 +4,7 @@ import model.*;
 import view.MainMenuView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -288,7 +289,7 @@ public class MainMenuController {
         return 1;
     }
 
-    public static void showScoreboard() {
+    public static HashMap<String, Integer> showScoreboard() {
         String[] keysUsers;
         String temp;
         keysUsers = UserModel.allUsernames.toArray(new String[0]);
@@ -308,12 +309,16 @@ public class MainMenuController {
                 }
             }
         }
-        int rank = 1;
-        for (int i = 0; i < keysUsers.length; i++) {
-            MainMenuView.showInput((rank) + "- " + UserModel.getUserByUsername(keysUsers[i]).getNickname() + ": " + UserModel.getUserByUsername(keysUsers[i]).getUserScore());
-            if (i < keysUsers.length - 1 && UserModel.getUserByUsername(keysUsers[i]).getUserScore() != UserModel.getUserByUsername(keysUsers[i + 1]).getUserScore())
-                rank++;
+        HashMap<String, Integer> scoreBoard = new HashMap<>();
+        for (String keysUser : keysUsers) {
+            if (keysUser.equals("AI"))
+                continue;
+            if (RegisterAndLoginController.allOnlineUsers.containsValue(keysUser))
+                scoreBoard.put(keysUser + "=" + UserModel.getUserByUsername(keysUser).getImageUrl() + "=online", UserModel.getUserByUsername(keysUser).getUserScore());
+            else
+                scoreBoard.put(keysUser + "=" + UserModel.getUserByUsername(keysUser).getImageUrl() + "=offline", UserModel.getUserByUsername(keysUser).getUserScore());
         }
+        return scoreBoard;
     }
 
     public static void changePassword(String currentPassword, String newPassword) {

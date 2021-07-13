@@ -5,9 +5,7 @@ import model.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Run {
     public static DataInputStream dataInputStream;
@@ -16,6 +14,9 @@ public class Run {
     public static ObjectOutputStream objectOutputStream;
     public static Object objectSend;
     public static Object receivedObject;
+    public static ArrayList<String> waitingPlayer = new ArrayList<>();
+
+
 
 
     public static void run() {
@@ -82,9 +83,104 @@ public class Run {
             dataOutputStream.flush();
             return returnValue;
         }
+        if (input.equals("Scoreboard")) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        objectOutputStream.writeObject(MainMenuController.showScoreboard());
+                        objectOutputStream.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, 1000);
+        }
+        if (input.startsWith("findADuelist")) {
+            String[] split = input.split("/");
+            FindADuelist.addWaitingPlayer(split[1], Integer.parseInt(split[2]));
+            FindADuelist.run(split[1], Integer.parseInt(split[2]));
+            System.out.println(FindADuelist.matchedPlayer.get(split[1]) + "rovalalalalalla");
+            return FindADuelist.matchedPlayer.get(split[1]);
+        }
+        if (input.equals("PlayWithAI")) {
+
+        }
+        if (input.startsWith("cancelGame")) {
+            String[] split = input.split("/");
+            FindADuelist.removeWaitingPlayer(split[1]);
+        }
+        if (input.startsWith("chat")) {
+            String[] split = input.split("/");
+            UserModel userModel = null;
+            for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet()) {
+                if (eachUser.getKey().equals(split[1]))
+                    userModel = UserModel.getUserByUsername(eachUser.getValue());
+            }
+          //  new ChatRoom(userModel, split[2]);
+        }
+        if (input.equals("lobby")) {
+            updateMessenger();
+        }
 
         return "==";
     }
+
+
+    public static UserModel getUserModelByToken(String token) {
+        return UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
+    }
+
+//    public static String findADuelist(String onlineToken, int roundNumber) {
+//        if (waitingPlayerToken.isEmpty() || (waitingPlayerToken.size() == 1 && waitingPlayerToken.containsKey(onlineToken))) {
+//            return null;
+//        }
+//        else {
+//            int size = waitingPlayerToken.size();
+//            Random random = new Random();
+//            String result;
+//            while (true) {
+//                int counter = 0;
+//                int randNum = random.nextInt(size);
+//                for (Map.Entry<String, Integer> eachPlayer : waitingPlayerToken.entrySet()) {
+//                    if (counter == randNum) {
+//                        if (!eachPlayer.getKey().equals(onlineToken) && roundNumber == eachPlayer.getValue()) {
+//                            result = eachPlayer.getKey();
+//                            System.out.println(result);
+//                            waitingPlayerToken.remove(result);
+//                            waitingPlayerToken.remove(onlineToken);
+//                            return result;
+//                        }
+//                    }
+//                    counter++;
+//                }
+//            }
+//        }
+//    }
+
+    public static void updateMessenger() {
+        new Thread(() -> {
+
+
+
+
+
+
+
+        }).start();
+    }
+
+
+
+
+
+
+
+
+
+
 
     public static void getUserByToken(String token) {
         try {
