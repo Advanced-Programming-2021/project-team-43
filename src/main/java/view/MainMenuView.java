@@ -1,4 +1,6 @@
 package view;
+import controller.MainMenuController;
+import controller.RegisterAndLoginController;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -67,6 +69,7 @@ public class MainMenuView extends Application {
     }
 
     public void Deck() throws Exception {
+        RegisterAndLoginController.updateUser(MainMenuController.token);
         new DeckView().start(stage);
     }
 

@@ -1,6 +1,7 @@
 package view;
 import controller.DeckController;
 import controller.MainMenuController;
+import controller.RegisterAndLoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -58,6 +59,7 @@ public class DeckView extends Application {
     }
 
     public void initialize() {
+
         deckImgView.setFitWidth(231);
         deckImgView.setFitHeight(292);
         isActiveCheckBox.setOnAction(new EventHandler<>() {
@@ -240,6 +242,7 @@ public class DeckView extends Application {
                 deckInfoLbl.setText("");
             messageLbl.setText(DeckController.createDeck(deckNameTxt.getText().trim()));
             if (messageLbl.getText().equals("Deck created successfully")) {
+                RegisterAndLoginController.updateUser(MainMenuController.token);
                 deckSize++;
                 newDeckBtn.setText("New Deck");
                 allDeckInformation.add(deckNameTxt.getText() + "\nMain Deck Size: 0" + "\nSide Deck Size: 0" + "\ninvalid");

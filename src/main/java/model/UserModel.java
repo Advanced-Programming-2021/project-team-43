@@ -1,5 +1,6 @@
 package model;
-import controller.Json;
+import controller.MainMenuController;
+import controller.RegisterAndLoginController;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -142,6 +143,7 @@ public class UserModel implements Serializable {
     }
 
     public static UserModel getUserByUsername(String username) {
+        RegisterAndLoginController.updateUser(MainMenuController.token);
         return allUsersInfo.get(username);
     }
 
@@ -165,5 +167,8 @@ public class UserModel implements Serializable {
                 return eachUser.getValue();
         return null;
     }
+   public String toString(){
+        return "username:"+username+" decksize"+userAllDecks.size() +"  number "+allUsersInfo.size();
+   }
 
 }

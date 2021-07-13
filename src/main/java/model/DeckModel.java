@@ -1,9 +1,11 @@
 package model;
 import controller.*;
+
+import java.io.Serializable;
 import java.util.*;
 
 
-public class DeckModel {
+public class DeckModel implements Serializable {
 
     private final String deckName;
     private int mainAllCardNumber = 0;
@@ -28,8 +30,7 @@ public class DeckModel {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
-    }
+     }
 
     public void removeCardFromMain(String cardName) {
         cardsInMainDeck.replace(cardName, cardsInMainDeck.get(cardName) - 1);
@@ -50,8 +51,7 @@ public class DeckModel {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
-    }
+     }
 
     public void removeCardFromSide(String cardName) {
         cardsInSideDeck.replace(cardName, cardsInSideDeck.get(cardName) - 1);
@@ -61,8 +61,7 @@ public class DeckModel {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
-    }
+   }
 
     public int getNumberOfCardInMainDeck(String cardName) {
         if (cardsInMainDeck.get(cardName) == null)

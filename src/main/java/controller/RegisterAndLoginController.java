@@ -1,14 +1,18 @@
 package controller;
 
-import model.UserModel;
+import model.*;
+
 import view.RegisterAndLoginView;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class RegisterAndLoginController {
+
+
 
     public static String registerInGame(String username, String nickname, String password, String imageUrl) {
         if (username.isEmpty())
@@ -51,20 +55,38 @@ public class RegisterAndLoginController {
         }
         return null;
     }
-    public static void updateUser(String token){
+
+    public static void updateUser(String token) {
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF(token);
+            RegisterAndLoginView.dataOutputStream.writeUTF(MainMenuController.token);
             RegisterAndLoginView.dataOutputStream.flush();
-            UserModel userModel= (UserModel) RegisterAndLoginView.objectInputStream.readObject();
-            if (UserModel.allUsersInfo.containsKey(userModel.getUsername())){
-                UserModel.allUsersInfo.replace(userModel.getUsername(),userModel);
-            }
-            else {
-                UserModel.allUsersInfo.put(userModel.getUsername(),userModel);
+            Object object = RegisterAndLoginView.objectInputStream.readObject();
+            System.out.println((UserModel)object);
+            UserModel userModel = (UserModel) object;
+
+            if (UserModel.allUsersInfo.containsKey(userModel.getUsername())) {
+                UserModel.allUsersInfo.replace(userModel.getUsername(), userModel);
+            } else {
+                UserModel.allUsersInfo.put(userModel.getUsername(), userModel);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public static void updateUserDecks(){
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("1010"+MainMenuController.token);
+            RegisterAndLoginView.dataOutputStream.flush();
+            Object object = RegisterAndLoginView.objectInputStream.readObject();
+           HashMap  <String, DeckModel> hashMap = (HashMap<String, DeckModel>) object;
+            System.out.println(hashMap.size());
+
+            UserModel.getUserByUsername(MainMenuController.username).userAllDecks= (HashMap<String, DeckModel>) object;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

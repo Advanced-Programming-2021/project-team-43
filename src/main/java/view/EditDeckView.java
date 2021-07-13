@@ -2,6 +2,7 @@ package view;
 import controller.DeckController;
 import controller.GameMatController;
 import controller.MainMenuController;
+import controller.RegisterAndLoginController;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -78,6 +79,7 @@ public class EditDeckView extends Application {
     }
 
     public void fillMainCardDeck() {
+        RegisterAndLoginController.updateUser(MainMenuController.token);
         HashMap<String, Integer> mainDeckCards = new HashMap<>(user.userAllDecks.get(deckName).cardsInMainDeck);
         for (Map.Entry<String, Integer> entry : mainDeckCards.entrySet()) {
             for (int j = 0; j < entry.getValue(); j++) {
