@@ -6,6 +6,8 @@ public class ShopModel {
 
     private static final Map<String,Integer> cardInfo= new HashMap<>();
 
+
+
     public ShopModel(HashMap<String, Card> allCards) {
         for (Map.Entry<String,Card> eachCard : allCards.entrySet()) {
             cardInfo.put(eachCard.getKey(), Card.getCardsByName(eachCard.getKey()).getPrice());

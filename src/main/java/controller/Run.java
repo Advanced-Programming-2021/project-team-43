@@ -17,7 +17,7 @@ public class Run {
 
     public static void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(127);
+            ServerSocket serverSocket = new ServerSocket(1227);
             while (true) {
                 Socket socket = serverSocket.accept();
                 new Thread(() -> {
@@ -49,6 +49,9 @@ public class Run {
                             }
                             if (input.startsWith("M")){
                                 output = MainMenuController.findMatcher(input);
+                            }
+                            if (input.startsWith("F")){
+                                output = ShopController.run(input);
                             }
                             if (input.startsWith("profile")){
                                 output=MainMenuController.profile(input);
