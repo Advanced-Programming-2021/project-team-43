@@ -156,8 +156,8 @@ public class EditDeckView extends Application {
     }
 
     public void addToMainDeck() {
-        user.userAllDecks.get(deckName).addCardToMain(ShowCardsView.getNameByImage(cardImages.get(cardCounter)));
-        DeckController.addCardToMainDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
+       String s= DeckController.addCardToMainDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
+        if(MainMenuController.isSuccessful(s)){
         ImageView imageView = new ImageView(cardImages.get(cardCounter));
         imageView.setFitWidth(70);
         imageView.setFitHeight(80);
@@ -169,12 +169,12 @@ public class EditDeckView extends Application {
         if (mainCardX >= 600) {
             mainCardY += 80;
             mainCardX = 0;
-        }
+        }}
     }
 
     public void addToSideDeck() {
-        user.userAllDecks.get(deckName).addCardToSide(ShowCardsView.getNameByImage(cardImages.get(cardCounter)));
-        DeckController.addCardToSideDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
+         String s =DeckController.addCardToSideDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
+        if(MainMenuController.isSuccessful(s)){
         ImageView imageView = new ImageView(cardImages.get(cardCounter));
         imageView.setFitWidth(70);
         imageView.setFitHeight(80);
@@ -187,7 +187,7 @@ public class EditDeckView extends Application {
             sideCardX = 0;
         }
         sideCardCounter++;
-    }
+    }}
 
     public void clickOnCards() {
         for (Node child : mainDeckPane.getChildren()) {

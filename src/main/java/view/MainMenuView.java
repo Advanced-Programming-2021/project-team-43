@@ -86,6 +86,7 @@ public class MainMenuView extends Application {
     }
 
     public void LogOut() throws Exception {
+
         new RegisterAndLoginView().start(stage);
     }
 

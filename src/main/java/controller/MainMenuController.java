@@ -105,7 +105,10 @@ public class MainMenuController {
         return arrayList;
     }
     public static boolean isSuccessful(String string){
+
         Pattern pattern=Pattern.compile("success");
+        System.out.println(string);
+
         Matcher matcher=pattern.matcher(string);
         return matcher.find();
     }

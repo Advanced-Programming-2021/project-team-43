@@ -50,7 +50,7 @@ public class RegisterAndLoginView extends Application {
 
     public static void main(String[] args) {
         try {
-            socket = new Socket("localhost", 127);
+            socket = new Socket("localhost", 1227);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
