@@ -6,6 +6,7 @@ import model.ShopModel;
 import model.UserModel;
 import controller.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,8 +89,9 @@ public class RegisterAndLoginController {
         if (UserModel.isRepeatedUsername(username)) {
             if (UserModel.getUserByUsername(username).getPassword().equals(password)) {
                 String token = UUID.randomUUID().toString().toUpperCase();
+                UserModel.getUserByUsername(username).setIsOnline(true);
+                UserModel.getUserByUsername(username).setOwnToken(token);
                 allOnlineUsers.put(token,username);
-
                 return "user logged in successfully!"+token;
             } else {
                 return "Username and password didn’t match!";
@@ -97,6 +99,18 @@ public class RegisterAndLoginController {
         } else {
             return "Username and password didn’t match!";
         }
+    }
+
+    public static UserModel getUserByToken(String token) {
+        for (Map.Entry<String, String> eachUser : allOnlineUsers.entrySet()) {
+            System.out.println(token);
+            System.out.println(eachUser.getKey());
+            if (eachUser.getKey().equals(token)) {
+                System.out.println(eachUser.getValue());
+                return UserModel.getUserByUsername(eachUser.getValue());
+            }
+        }
+        return null;
     }
 
 }

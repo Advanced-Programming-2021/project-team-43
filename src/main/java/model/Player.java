@@ -9,6 +9,7 @@ import java.util.*;
 
 public class Player  implements Serializable {
 
+    private static final long serialVersionUID = -6327797571258604486L;
     private final String nickname;
     private int lifePoint = 8000;
     private boolean isYourTurn;

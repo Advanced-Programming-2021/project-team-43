@@ -8,6 +8,7 @@ import java.util.*;
 
 public class HandCardZone  implements Serializable {
 
+    private static final long serialVersionUID = -3055268570262552120L;
     private final String playerNickname;
     private final String cardName;
     private int address;

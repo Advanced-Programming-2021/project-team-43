@@ -1,22 +1,21 @@
 package controller;
 
 import model.*;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 
+
 public class Run {
-    public static DataInputStream dataInputStream;
-    public static DataOutputStream dataOutputStream;
-    public static ObjectInputStream objectInputStream;
-    public static ObjectOutputStream objectOutputStream;
+
+//    public static DataInputStream dataInputStream;
+//    public static DataOutputStream dataOutputStream;
+//    public static ObjectInputStream objectInputStream;
+//    public static ObjectOutputStream objectOutputStream;
     public static Object objectSend;
-    public static Object receivedObject;
-    public static ArrayList<String> waitingPlayer = new ArrayList<>();
-
-
+    public static String onlineToken;
+    public static String rivalToken;
 
 
     public static void run() {
@@ -24,43 +23,49 @@ public class Run {
             ServerSocket serverSocket = new ServerSocket(7700);
             while (true) {
                 Socket socket = serverSocket.accept();
-                new Thread(() -> {
-                    try {
-                        dataInputStream = new DataInputStream(socket.getInputStream());
-                        dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
-                        objectInputStream = new ObjectInputStream(socket.getInputStream());
-                        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-
-                        while (true) {
-                            String input = dataInputStream.readUTF();
-                            String output;
-                            output = process(input);
-                            if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
-                                getUserByToken(input);
-                                continue;
-                            }
-                            if (output.equals("==")) {
-                                break;
-                            }
-                            dataOutputStream.writeUTF(output);
-                            dataOutputStream.flush();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }).start();
+                startNewThread(serverSocket, socket);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static String onlineToken;
-    public static String rivalToken;
+    private static void startNewThread(ServerSocket serverSocket, Socket socket) {
+        new Thread(() -> {
+            try {
+                DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                getInputAndProcess(dataInputStream, dataOutputStream, objectInputStream, objectOutputStream);
+                dataInputStream.close();
+                objectInputStream.close();
+                socket.close();
+                serverSocket.close();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
-    private static String process(String input) throws IOException, ClassNotFoundException {
+    private static void getInputAndProcess(DataInputStream dataInputStream, DataOutputStream dataOutputStream, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+        while (true) {
+            String input = dataInputStream.readUTF();
+            String result = process(input, objectInputStream, objectOutputStream);
+            if (result.equals("==")) break;
+            dataOutputStream.writeUTF(result);
+            dataOutputStream.flush();
+        }
+    }
 
+    private static String process(String input, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+        if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
+            getUserByToken(input, objectOutputStream);
+            return "success";
+        }
+        if (input.startsWith("profile")){
+            return MainMenuController.profile(input);
+        }
         if (input.startsWith("R")) {
             return RegisterAndLoginController.run(input);
         }
@@ -80,109 +85,112 @@ public class Run {
 
             objectSend = getObjects();
             objectOutputStream.writeObject(objectSend);
-            dataOutputStream.flush();
+           // dataOutputStream.flush();
             return returnValue;
         }
         if (input.equals("Scoreboard")) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    try {
-                        objectOutputStream.writeObject(MainMenuController.showScoreboard());
-                        objectOutputStream.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }, 1000);
+            objectOutputStream.writeObject(MainMenuController.showScoreboard());
+            objectOutputStream.flush();
+            return "success";
         }
         if (input.startsWith("findADuelist")) {
             String[] split = input.split("/");
-            FindADuelist.addWaitingPlayer(split[1], Integer.parseInt(split[2]));
-            FindADuelist.run(split[1], Integer.parseInt(split[2]));
-            System.out.println(FindADuelist.matchedPlayer.get(split[1]) + "rovalalalalalla");
-            return FindADuelist.matchedPlayer.get(split[1]);
+            ArrayList<Object> result;
+            if (split[2].equals("1")) {
+                FindADuelist.oneRoundPlayer.add(split[1]);
+                FindADuelist.oneRoundPlayerTwo.add(split[1]);
+                System.out.println(FindADuelist.oneRoundPlayer.size() + "first");
+                System.out.println(FindADuelist.oneRoundPlayerTwo.size() + "sec");
+//                FindADuelist.addToList(split[1]);
+//                FindADuelist.searchForOneRound(split[1]);
+            }
+            else {
+                FindADuelist.threeRoundPlayer.add(split[1]);
+                result = FindADuelist.searchForThreeRound(split[1]);
+            }
+
+            return "success";
+        }
+        if (input.startsWith("match")) {
+            String[] split = input.split("/");
+            UserModel rivalUser = UserModel.getUserByUsername(split[2]);
+            System.out.println(rivalUser.getNickname());
+            System.out.println(FindADuelist.oneRoundPlayerTwo.size());
+            System.out.println(FindADuelist.oneRoundPlayer.size());
+            if (FindADuelist.oneRoundPlayer.contains(rivalUser.getOwnToken())) {
+                System.out.println(rivalUser.getNickname() + "first");
+                rivalUser.setRivalToken(split[1]);
+                objectOutputStream.writeObject(rivalUser);
+                objectOutputStream.flush();
+                FindADuelist.oneRoundPlayer.remove(rivalUser.getOwnToken());
+                FindADuelist.oneRoundPlayer.remove(split[1]);
+                return "success";
+            }
+            else if (FindADuelist.oneRoundPlayerTwo.contains(rivalUser.getOwnToken())) {
+                System.out.println(rivalUser.getNickname() + "sec");
+                rivalUser.setRivalToken(split[1]);
+                objectOutputStream.writeObject(rivalUser);
+                objectOutputStream.flush();
+                FindADuelist.oneRoundPlayerTwo.remove(rivalUser.getRivalToken());
+                FindADuelist.oneRoundPlayerTwo.remove(split[1]);
+                return "success";
+            }
+            else {
+                return "fail";
+            }
         }
         if (input.equals("PlayWithAI")) {
 
         }
         if (input.startsWith("cancelGame")) {
             String[] split = input.split("/");
-            FindADuelist.removeWaitingPlayer(split[1]);
+        //    FindADuelist.waitingPlayerToken.remove(split[1]);
         }
         if (input.startsWith("chat")) {
             String[] split = input.split("/");
-            UserModel userModel = null;
-            for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet()) {
-                if (eachUser.getKey().equals(split[1]))
-                    userModel = UserModel.getUserByUsername(eachUser.getValue());
+            new ChatRoom(UserModel.getUserByUsername(split[1]), split[2]);
+            List<ChatRoom> allChats = ChatRoom.getAllChats();
+            objectOutputStream.writeUnshared(allChats);
+            objectOutputStream.flush();
+            return "success";
+        }
+        if (input.startsWith("pinMessage")) {
+            String[] split = input.split("/");
+
+        }
+        if (input.startsWith("edit")) {
+
+        }
+        if (input.startsWith("duel")) {
+            String[] split = input.split("/");
+            System.out.println(split[1]);
+            if (split[1].equals("q")) {
+                return getTokenByUsername("w");
             }
-          //  new ChatRoom(userModel, split[2]);
+            else {
+                return getTokenByUsername("q");
+            }
         }
-        if (input.equals("lobby")) {
-            updateMessenger();
-        }
+//        if (input.equals("lobby")) {
+//           // updateMessenger();
+//        }
 
         return "==";
     }
 
-
-    public static UserModel getUserModelByToken(String token) {
-        return UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
-    }
-
-//    public static String findADuelist(String onlineToken, int roundNumber) {
-//        if (waitingPlayerToken.isEmpty() || (waitingPlayerToken.size() == 1 && waitingPlayerToken.containsKey(onlineToken))) {
-//            return null;
-//        }
-//        else {
-//            int size = waitingPlayerToken.size();
-//            Random random = new Random();
-//            String result;
-//            while (true) {
-//                int counter = 0;
-//                int randNum = random.nextInt(size);
-//                for (Map.Entry<String, Integer> eachPlayer : waitingPlayerToken.entrySet()) {
-//                    if (counter == randNum) {
-//                        if (!eachPlayer.getKey().equals(onlineToken) && roundNumber == eachPlayer.getValue()) {
-//                            result = eachPlayer.getKey();
-//                            System.out.println(result);
-//                            waitingPlayerToken.remove(result);
-//                            waitingPlayerToken.remove(onlineToken);
-//                            return result;
-//                        }
-//                    }
-//                    counter++;
-//                }
-//            }
-//        }
-//    }
-
-    public static void updateMessenger() {
-        new Thread(() -> {
-
-
-
-
-
-
-
-        }).start();
+    public static String getTokenByUsername(String username) {
+        for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet()) {
+            if (eachUser.getValue().equals(username)) {
+                System.out.println(eachUser.getKey() + "   " + eachUser.getValue());
+                return eachUser.getKey();
+            }
+        }
+        return null;
     }
 
 
 
-
-
-
-
-
-
-
-
-    public static void getUserByToken(String token) {
+    public static void getUserByToken(String token, ObjectOutputStream objectOutputStream) {
         try {
             UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
             objectOutputStream.writeObject(userModel);
