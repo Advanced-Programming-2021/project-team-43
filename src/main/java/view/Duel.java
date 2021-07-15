@@ -1,4 +1,5 @@
 package view;
+import controller.GameMatController;
 import controller.MainMenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -32,24 +33,13 @@ public class Duel extends Application {
     }
 
     public void duel() throws Exception {
-        if (playerId.getText().isEmpty()) {
-            text.setText("pls enter player username");
-        } else {
-            if (number.getText().isEmpty()) {
-                text.setText("pls enter round number");
-            } else {
-                Pattern pattern = Pattern.compile("(\\d+)");
-                Matcher matcher = pattern.matcher(number.getText());
-                if (matcher.find()) {
-                    text.setText(MainMenuController.duelMenu(playerId.getText(), Integer.parseInt(matcher.group(1))));
-                    if (text.getText().equals("00")) {
-                        new PickFirstPlayerView().start(duelStage);
-                    }
-                } else {
-                    text.setText("invalid round number");
-                }
-            }
-        }
+        RegisterAndLoginView.dataOutputStream.writeUTF("duel/" + MainMenuController.username + "/" + MainMenuController.token);
+        RegisterAndLoginView.dataOutputStream.flush();
+        RegisterAndLoginView.dataInputStream.readUTF();
+        GameMatController.rivalToken = RegisterAndLoginView.dataInputStream.readUTF();
+        GameMatController.onlineToken = MainMenuController.token;
+        System.out.println(GameMatController.rivalToken + "rivaltoken");
+        System.out.println(GameMatController.onlineToken + "onlinetoken");
     }
 
     public void AIDuel() throws Exception {

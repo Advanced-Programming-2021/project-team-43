@@ -1,7 +1,9 @@
 package controller;
 import model.UserModel;
-import java.util.ArrayList;
+import view.RegisterAndLoginView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MainMenuController {
@@ -64,32 +66,15 @@ public class MainMenuController {
         }
     }
 
-    public static ArrayList<String> showScoreboard() {
-        String[] keysUsers;
-        String temp;
-        keysUsers = UserModel.allUsernames.toArray(new String[0]);
-        for (int x = 0; x < keysUsers.length; x++) {
-            for (int y = x + 1; y < keysUsers.length; y++) {
-                if (UserModel.getUserByUsername(keysUsers[x]).getUserScore() < UserModel.getUserByUsername(keysUsers[y]).getUserScore()) {
-                    temp = keysUsers[y];
-                    keysUsers[y] = keysUsers[x];
-                    keysUsers[x] = temp;
-                }
-                if (UserModel.getUserByUsername(keysUsers[x]).getUserScore() == UserModel.getUserByUsername(keysUsers[y]).getUserScore()) {
-                    if (keysUsers[x].compareToIgnoreCase(keysUsers[y]) > 0) {
-                        temp = keysUsers[x];
-                        keysUsers[x] = keysUsers[y];
-                        keysUsers[y] = temp;
-                    }
-                }
-            }
+    public static ArrayList<UserModel> showScoreboard() {
+        ArrayList<UserModel> scoreboard = new ArrayList<>();
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("Scoreboard");
+            scoreboard = (ArrayList<UserModel>) RegisterAndLoginView.objectInputStream.readObject();
+        } catch (Exception ignored) {
         }
-        ArrayList<String> arrayList = new ArrayList<>();
-        for (String keysUser : keysUsers) {
-            if (keysUser.equals("AI")) continue;
-            arrayList.add(keysUser);
-        }
-        return arrayList;
+        return scoreboard;
     }
+
 
 }

@@ -1,4 +1,5 @@
 package view;
+import controller.MainMenuController;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -29,6 +30,7 @@ public class MainMenuView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+     //   RegisterAndLoginView.dataOutputStream.writeUTF("cancelGame/" + MainMenuController.token);
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/mainMenu.fxml")));
         stage = primaryStage;
         stage.setScene(new Scene(root));

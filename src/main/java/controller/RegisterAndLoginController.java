@@ -54,7 +54,7 @@ public class RegisterAndLoginController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF(token);
             RegisterAndLoginView.dataOutputStream.flush();
-            UserModel userModel= (UserModel) RegisterAndLoginView.objectInputStream.readObject();
+            UserModel userModel = (UserModel) RegisterAndLoginView.objectInputStream.readObject();
             if (UserModel.allUsersInfo.containsKey(userModel.getUsername())){
                 UserModel.allUsersInfo.replace(userModel.getUsername(),userModel);
             }

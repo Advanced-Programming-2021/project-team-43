@@ -8,6 +8,7 @@ import java.util.*;
 
 public class MonsterZoneCard  implements Serializable {
 
+    private static final long serialVersionUID = -4740146705572184950L;
     private final String playerNickname;
     private String monsterName;
     private String secondName;

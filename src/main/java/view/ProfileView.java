@@ -11,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.UserModel;
+
+import java.io.IOException;
 import java.util.Objects;
 
 
@@ -26,6 +28,7 @@ public class ProfileView extends Application {
     public TextField newPasswordTxt;
     public ImageView nextBtn;
     public ImageView previousBtn;
+    public AnchorPane achievementPane;
     private UserModel user;
     private final Image[] profileImages = new Image[32];
     private static int imageCounter = 0;
@@ -64,6 +67,11 @@ public class ProfileView extends Application {
     }
 
     public void pressChangeImage() {
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("profile"+MainMenuController.token+" change image "+imageCounter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         user.setImageUrl("/images/profile/char" + imageCounter + ".jpg");
     }
 

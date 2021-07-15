@@ -7,6 +7,7 @@ import java.util.*;
 
 public class GameMatModel implements Serializable  {
 
+    private static final long serialVersionUID = 4332241639684751838L;
     private Phase phase;
     public String fieldZone = "";
     private int numberOfDeadMonsterThisTurn = 0;

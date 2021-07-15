@@ -53,8 +53,8 @@ public class RegisterAndLoginView extends Application {
             socket = new Socket("localhost", 7700);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
-            objectInputStream=new ObjectInputStream(socket.getInputStream());
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

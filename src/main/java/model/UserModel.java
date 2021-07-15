@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class UserModel implements Serializable {
 
+    private static final long serialVersionUID = 4778925288210528972L;
     private final String username;
     private String password;
     private String nickname;
@@ -14,12 +15,16 @@ public class UserModel implements Serializable {
     private int userCoin;
     private String imageUrl;
     private String activeDeck;
+    private String rivalToken;
+    private boolean isOnline;
     public HashMap<String, Integer> userAllCards = new HashMap<>();
     public HashMap<String, DeckModel> userAllDecks = new HashMap<>();
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
     public static ArrayList <String> importedCards;
+
+
 
     public UserModel(String username, String password, String nickname, String imageUrl) {
         this.username = username;
@@ -29,14 +34,17 @@ public class UserModel implements Serializable {
         this.userCoin = 100000;
         this.imageUrl = imageUrl;
         this.activeDeck="";
+        this.rivalToken = "";
         allUsernames.add(username);
         allUsersNicknames.add(nickname);
         allUsersInfo.put(username, this);
 
     }
+
     public static void setObject(UserModel userModel){
         allUsersInfo.put(userModel.getUsername(),userModel);
     }
+
     public String getUsername() {
         return username;
     }
@@ -56,6 +64,24 @@ public class UserModel implements Serializable {
     public int getUserCoin() {
         return userCoin;
     }
+
+    public void setRivalToken(String rivalToken) {
+        this.rivalToken = rivalToken;
+    }
+
+    public String getRivalToken() {
+        return rivalToken;
+    }
+
+
+    public boolean getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(boolean isOnline) {
+        this.isOnline = isOnline;
+    }
+
 
     public HashMap<String, Integer> getUserAllCards() {
         return userAllCards;
