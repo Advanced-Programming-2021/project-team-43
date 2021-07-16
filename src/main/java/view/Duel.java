@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.UserModel;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,8 +40,11 @@ public class Duel extends Application {
         RegisterAndLoginView.dataInputStream.readUTF();
         GameMatController.rivalToken = RegisterAndLoginView.dataInputStream.readUTF();
         GameMatController.onlineToken = MainMenuController.token;
+        Object obj = RegisterAndLoginView.objectInputStream.readObject();
+        UserModel.setObject((UserModel) obj);
         System.out.println(GameMatController.rivalToken + "rivaltoken");
         System.out.println(GameMatController.onlineToken + "onlinetoken");
+        new GameMatView().start(duelStage);
     }
 
     public void AIDuel() throws Exception {

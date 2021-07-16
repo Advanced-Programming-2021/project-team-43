@@ -1,6 +1,7 @@
 package view;
 import controller.DeckController;
 import controller.MainMenuController;
+import controller.RegisterAndLoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -58,6 +59,7 @@ public class DeckView extends Application {
     }
 
     public void initialize() {
+
         deckImgView.setFitWidth(231);
         deckImgView.setFitHeight(292);
         isActiveCheckBox.setOnAction(new EventHandler<>() {
@@ -65,7 +67,8 @@ public class DeckView extends Application {
             public void handle(ActionEvent actionEvent) {
                 if (isActiveCheckBox.isSelected()) {
                     activeDeck = deckCounter;
-                    user.setActiveDeck(getDeckNameByNumber(deckCounter));
+                    DeckController.setActivate(getDeckNameByNumber(deckCounter));
+
                     deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/activeBack.jpg")).toExternalForm()));
                 }
                 else {
@@ -239,6 +242,7 @@ public class DeckView extends Application {
                 deckInfoLbl.setText("");
             messageLbl.setText(DeckController.createDeck(deckNameTxt.getText().trim()));
             if (messageLbl.getText().equals("Deck created successfully")) {
+                RegisterAndLoginController.updateUser(MainMenuController.token);
                 deckSize++;
                 newDeckBtn.setText("New Deck");
                 allDeckInformation.add(deckNameTxt.getText() + "\nMain Deck Size: 0" + "\nSide Deck Size: 0" + "\ninvalid");
@@ -277,6 +281,7 @@ public class DeckView extends Application {
     public static String getWhichDeckName() {
         return whichDeckName;
     }
+
 
 }
 

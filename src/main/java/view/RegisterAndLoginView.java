@@ -44,7 +44,7 @@ public class RegisterAndLoginView extends Application {
     public static ShowCardsView showCardsView;
     public static Socket socket;
     public static DataOutputStream dataOutputStream;
-    public  static DataInputStream dataInputStream;
+    public static DataInputStream dataInputStream;
     public static ObjectOutputStream objectOutputStream;
     public static ObjectInputStream objectInputStream;
 

@@ -17,13 +17,15 @@ public class UserModel implements Serializable {
     private String activeDeck;
     private String rivalToken;
     private boolean isOnline;
+    private int sequentialWin = 0;
+    private int sequentialLost = 0;
+    private HashMap<String, Integer> myAchievements = new HashMap<>();
     public HashMap<String, Integer> userAllCards = new HashMap<>();
     public HashMap<String, DeckModel> userAllDecks = new HashMap<>();
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
     public static ArrayList <String> importedCards;
-
 
 
     public UserModel(String username, String password, String nickname, String imageUrl) {
@@ -35,6 +37,9 @@ public class UserModel implements Serializable {
         this.imageUrl = imageUrl;
         this.activeDeck="";
         this.rivalToken = "";
+        myAchievements.put("chatCup", 0);
+        myAchievements.put("sequentialWin", 0);
+        myAchievements.put("sequentialLost", 0);
         allUsernames.add(username);
         allUsersNicknames.add(nickname);
         allUsersInfo.put(username, this);
@@ -42,7 +47,7 @@ public class UserModel implements Serializable {
     }
 
     public static void setObject(UserModel userModel){
-        allUsersInfo.put(userModel.getUsername(),userModel);
+        allUsersInfo.put(userModel.getUsername(), userModel);
     }
 
     public String getUsername() {
@@ -96,22 +101,18 @@ public class UserModel implements Serializable {
         allUsersNicknames.remove(this.nickname);
         allUsersNicknames.add(nickname);
         this.nickname = nickname;
-
     }
 
     public void changeUserScore(int userScore) {
         this.userScore += userScore;
-
     }
 
     public void changeUserCoin(int amount) {
         this.userCoin += amount;
-
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-
     }
 
     public String getImageUrl() {
@@ -120,17 +121,14 @@ public class UserModel implements Serializable {
 
     public void setActiveDeck(String deckName) {
         this.activeDeck = deckName;
-
     }
 
     public void addDeck(DeckModel deckModel) {
         userAllDecks.put(deckModel.getDeckName(), deckModel);
-
     }
 
     public void deleteDeck(String deckName) {
         userAllDecks.remove(deckName);
-
     }
 
     public void addCardToUserAllCards(String cardName) {
@@ -140,7 +138,6 @@ public class UserModel implements Serializable {
             int cardNumbers = userAllCards.get(cardName) + 1;
             userAllCards.replace(cardName, cardNumbers);
         }
-
     }
 
     public void removeCardFromUserAllCards(String cardName) {
@@ -152,7 +149,35 @@ public class UserModel implements Serializable {
                 userAllCards.replace(cardName, i);
             }
         }
+    }
 
+    public void addAchievement(String name) {
+        int x = myAchievements.get(name);
+        myAchievements.replace(name, x, x + 1);
+    }
+
+    public void addSequentialWin() {
+        sequentialWin++;
+    }
+
+    public void resetSequentialWin() {
+        sequentialWin = 0;
+    }
+
+    public int getSequentialWin() {
+        return sequentialWin;
+    }
+
+    public void addSequentialLost() {
+        sequentialWin++;
+    }
+
+    public void resetSequentialLost() {
+        sequentialWin = 0;
+    }
+
+    public int getSequentialLost() {
+        return sequentialWin;
     }
 
     public boolean isUserHaveCard(String cardName) {

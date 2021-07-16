@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.UserModel;
 
@@ -33,6 +34,7 @@ public class ProfileView extends Application {
     private final Image[] profileImages = new Image[32];
     private static int imageCounter = 0;
     private static Stage profileStage;
+    public static ProfileView profileView;
 
 
     @Override
@@ -93,6 +95,11 @@ public class ProfileView extends Application {
 
     public void pressBack() throws Exception {
         new MainMenuView().start(profileStage);
+    }
+
+    public void addChatCountAchievement() {
+        //achievementPane.getChildren().add(imageView);
+
     }
 
 }

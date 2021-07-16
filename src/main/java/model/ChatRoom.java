@@ -2,58 +2,49 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
 
 public class ChatRoom implements Serializable {
 
-    private static final long serialVersionUID = -8870642557353150985L;
-    private UserModel sender;
+    private final UserModel sender;
     private String message;
-    private int id;
-    private static int idCounter = 0;
+    private String replyMessage;
     private static String pinMessage;
-    private static ArrayList<ChatRoom> allChats = new ArrayList<>();
-    private static HashMap<Integer, ChatRoom> chats = new HashMap<>();
+    private static final ArrayList<ChatRoom> allChats = new ArrayList<>();
+    private static final long serialVersionUID = -8870642557353150985L;
+
 
     public ChatRoom(UserModel userModel, String message) {
         this.sender = userModel;
-        this.message = message;
-        this.id = ++idCounter;
-        chats.put(id, this);
+        this.message = "(" + userModel.getNickname() + ")\n" + message;
+        this.replyMessage = "";
+        this.replyMessage = "";
         allChats.add(this);
-    }
-
-    public static void setObject(List<ChatRoom> newChats){
-        allChats.clear();
-        allChats.addAll(newChats);
-    }
-
-    public static void fillHashMap(HashMap<Integer, ChatRoom> allChats) {
-        //chats.clear();
-        System.out.println(allChats.size());
-        chats.putAll(allChats);
-        System.out.println(allChats.size() + "[[[[[");
-    }
-
-    public static void setPinMessage(String message) {
-        pinMessage = message;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public UserModel getSender() {
         return sender;
     }
 
-    public void deleteChat() {
-        allChats.remove(this);
+    public String getMessage() {
+        return message;
     }
 
-    public void editChat(String newMessage) {
-        message = newMessage;
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getReplyMessage() {
+        return replyMessage;
+    }
+
+    public void setReplyMessage(String replyMessage) {
+        this.replyMessage = replyMessage;
+    }
+
+    public void deleteMessage() {
+        allChats.remove(this);
     }
 
     public static ChatRoom getChat(UserModel userModel, String message) {
@@ -67,13 +58,33 @@ public class ChatRoom implements Serializable {
         return allChats;
     }
 
-    public static void addNewMessage(ChatRoom chatRoom) {
-        allChats.add(chatRoom);
+    public static String getReplyMessageBySenderAndMessage(UserModel sender, String message) {
+        for (ChatRoom eachChat : allChats) {
+            if (eachChat.getSender().getNickname().equals(sender.getNickname()) && eachChat.getMessage().equals(message))
+                return eachChat.getReplyMessage();
+        }
+        return null;
     }
 
+    public static void setObject(List<ChatRoom> newChats){
+        allChats.clear();
+        allChats.addAll(newChats);
+    }
 
-    public static HashMap<Integer, ChatRoom> getChats() {
-        return chats;
+    public static void setPinMessage(String message) {
+        pinMessage = message;
+    }
+
+    public static String getPinMessage() {
+        return pinMessage;
+    }
+
+    public static int getNumberOfChatBySender(String username) {
+        int counter = 0;
+        for (ChatRoom eachChat : allChats)
+            if (eachChat.getSender().getUsername().equals(username))
+                counter++;
+        return counter;
     }
 
 }

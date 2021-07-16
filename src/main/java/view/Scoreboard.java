@@ -37,16 +37,28 @@ public class Scoreboard extends Application {
     }
 
     public void initialize() {
+        showScoreboard();
+    }
+
+    public void showScoreboard() {
         ArrayList<UserModel> scoreboard = MainMenuController.showScoreboard();
-        ArrayList<Label> allLabels = new ArrayList<>();
-        int k = 1;
+        for (UserModel userModel : scoreboard) {
+            UserModel.setObject(userModel);
+        }
+        HashMap<String, String> allOnlineUsers = null;
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("allOnlineUsers");
+            RegisterAndLoginView.dataOutputStream.flush();
+            allOnlineUsers = (HashMap<String, String>) RegisterAndLoginView.objectInputStream.readObject();
+        } catch (Exception ignored) {
+        }
         int x = 10;
         int y = 0;
         int counter = 1;
-        for (UserModel eachUser : scoreboard) {
+        for (int i = 0; i < scoreboard.size(); i++) {
             Label label;
-            label = new Label((counter + "- " + eachUser.getUsername() + ": " + eachUser.getUserScore()));
-            if (MainMenuController.username.equals(eachUser.getUsername())) {
+            label = new Label((counter + "- " + scoreboard.get(i).getUsername() + ": " + scoreboard.get(i).getUserScore()));
+            if (MainMenuController.username.equals(scoreboard.get(i).getUsername())) {
                 label.setTextFill(Color.rgb(128, 128, 0));
             }
             else {
@@ -55,7 +67,7 @@ public class Scoreboard extends Application {
             label.setLayoutY(y);
             label.setLayoutX(x);
             label.setFont(new Font("Bodoni MT", 20));
-            if (eachUser.getIsOnline()) {
+            if (allOnlineUsers.containsValue(scoreboard.get(i).getUsername())) {
                 DropShadow ds = new DropShadow();
                 ds.setOffsetY(10.0f);
                 ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
@@ -63,13 +75,13 @@ public class Scoreboard extends Application {
                 label.setFont(Font.font(("Bodoni MT"), FontWeight.BOLD, 20));
             }
             final ImageView[] imageView = new ImageView[1];
-            int finalI = counter;
             int finalX = x;
             int finalY = y;
+            int finalI = i;
             label.setOnMouseEntered(new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    imageView[0] = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(eachUser.getImageUrl())).toExternalForm()));
+                    imageView[0] = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(scoreboard.get(finalI).getImageUrl())).toExternalForm()));
                     imageView[0].setFitWidth(50);
                     imageView[0].setFitHeight(50);
                     imageView[0].setLayoutX(finalX + 140);
@@ -83,12 +95,16 @@ public class Scoreboard extends Application {
                 x += 210;
                 y = 0;
             }
-            allLabels.add(label);
             scorePane.getChildren().add(label);
             if (counter == 20)
                 break;
-            counter++;
+            if (i + 1 < scoreboard.size() && (scoreboard.get(i).getUserScore() != scoreboard.get(i + 1).getUserScore()))
+                counter++;
         }
+    }
+
+    public void refreshPage() {
+        showScoreboard();
     }
 
     public void Back() throws Exception {

@@ -8,8 +8,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.UserModel;
 
 import java.util.Objects;
 
@@ -26,7 +35,7 @@ public class MainMenuView extends Application {
     public Button cardBtn;
     public Button logoutBtn;
     public Button lobbyBtn;
-
+    public static MediaPlayer note;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -35,7 +44,66 @@ public class MainMenuView extends Application {
         stage = primaryStage;
         stage.setScene(new Scene(root));
         stage.show();
+        if (UserModel.getUserByUsername(MainMenuController.username).getSequentialWin() == 5) {
+            sequentialWinCup();
+            UserModel.getUserByUsername(MainMenuController.username).resetSequentialWin();
+        }
+        if (UserModel.getUserByUsername(MainMenuController.username).getSequentialLost() == 10) {
+            sequentialLostCup();
+            UserModel.getUserByUsername(MainMenuController.username).resetSequentialLost();
+        }
     }
+
+    public void sequentialWinCup() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setPrefWidth(480);
+        anchorPane.setPrefHeight(300);
+        anchorPane.setStyle("-fx-background-color: #2a0002");
+        ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/cup1.jpg")).toExternalForm())));
+        Label label = new Label("Congrats! You won the Sequential Win Cup!");
+        label.setFont(new Font("Bodoni MT", 20));
+        label.setTextFill(Color.rgb(255, 229, 0));
+        label.setLayoutX(110);
+        label.setLayoutY(270);
+        imageView.setLayoutX(110);
+        imageView.setLayoutY(10);
+        anchorPane.getChildren().addAll(imageView, label);
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
+        stage.setResizable(false);
+        stage.setTitle("Achievement");
+        stage.setScene(new Scene(anchorPane));
+        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/bonus.wav")).toExternalForm());
+        note = new MediaPlayer(media);
+        note.setAutoPlay(true);
+        stage.show();
+    }
+
+    public void sequentialLostCup() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setPrefWidth(480);
+        anchorPane.setPrefHeight(300);
+        anchorPane.setStyle("-fx-background-color: #2a0002");
+        ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/cup5.jpg")).toExternalForm())));
+        Label label = new Label("Congrats! You won the Sequential Lost Cup!");
+        label.setFont(new Font("Bodoni MT", 20));
+        label.setTextFill(Color.rgb(255, 229, 0));
+        label.setLayoutX(110);
+        label.setLayoutY(270);
+        imageView.setLayoutX(110);
+        imageView.setLayoutY(10);
+        anchorPane.getChildren().addAll(imageView, label);
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
+        stage.setResizable(false);
+        stage.setTitle("Achievement");
+        stage.setScene(new Scene(anchorPane));
+        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/bonus.wav")).toExternalForm());
+        note = new MediaPlayer(media);
+        note.setAutoPlay(true);
+        stage.show();
+    }
+
 
     public void initialize() {
         setFrame(duelBtn);
@@ -56,7 +124,7 @@ public class MainMenuView extends Application {
 
 
     public void Profile() throws Exception {
-        new ProfileView().start(stage);
+        (ProfileView.profileView = new ProfileView()).start(stage);
     }
 
     public void Duel() throws Exception {
