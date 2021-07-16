@@ -1,10 +1,8 @@
 package controller;
-
 import model.Card;
 import model.DeckModel;
 import model.ShopModel;
 import model.UserModel;
-import controller.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -14,8 +12,8 @@ import java.util.regex.Pattern;
 
 public class RegisterAndLoginController {
 
-    public static HashMap<String, String> allOnlineUsers=new HashMap<>();
-    //token ,username
+    public static HashMap<String, String> allOnlineUsers = new HashMap<>();
+
     public static String run(String input) {
         if (Json.readUserInfo() == null) {
             Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
@@ -42,11 +40,7 @@ public class RegisterAndLoginController {
             userModel.setActiveDeck("AILevel1");
         }
         new ShopModel(Card.getCards());
-
-
         return findMatcher(input);
-
-
     }
 
     public static String findMatcher(String command) {
@@ -73,14 +67,10 @@ public class RegisterAndLoginController {
     }
 
     public static String registerInGame(String username, String nickname, String password,String imageURL) {
-        if (UserModel.isRepeatedUsername(username)) {
+        if (UserModel.isRepeatedUsername(username))
             return ("user with username " + username + " already exists");
-
-        }
-        if (UserModel.isRepeatedNickname(nickname)) {
+        if (UserModel.isRepeatedNickname(nickname))
             return ("user with nickname " + nickname + " already exists");
-
-        }
         new UserModel(username, password, nickname ,imageURL);
         return ("user created successfully!");
     }
@@ -92,7 +82,7 @@ public class RegisterAndLoginController {
                 UserModel.getUserByUsername(username).setIsOnline(true);
                 UserModel.getUserByUsername(username).setOwnToken(token);
                 allOnlineUsers.put(token,username);
-                return "user logged in successfully!"+token;
+                return "user logged in successfully!" + token;
             } else {
                 return "Username and password didn’t match!";
             }

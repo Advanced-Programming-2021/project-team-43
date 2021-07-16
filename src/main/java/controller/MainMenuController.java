@@ -82,9 +82,10 @@ public class MainMenuController {
     }
 
     public static ArrayList<UserModel> showScoreboard() {
-        ArrayList<UserModel> scoreboard = new ArrayList<>(UserModel.allUsersInfo.values());
-        Collections.sort(scoreboard, Comparator.comparing(UserModel::getUserScore));
-        return scoreboard;
+        ArrayList<UserModel> score = new ArrayList<>(UserModel.allUsersInfo.values());
+        Collections.sort(score, Comparator.comparing(UserModel::getUserScore).reversed());
+        score.removeIf(userModel -> userModel.getUsername().equals("AI"));
+        return score;
     }
 
 

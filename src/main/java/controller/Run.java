@@ -9,14 +9,9 @@ import java.util.*;
 
 public class Run {
 
-//    public static DataInputStream dataInputStream;
-//    public static DataOutputStream dataOutputStream;
-//    public static ObjectInputStream objectInputStream;
-//    public static ObjectOutputStream objectOutputStream;
     public static Object objectSend;
     public static String onlineToken;
     public static String rivalToken;
-
 
     public static void run() {
         try {
@@ -52,7 +47,10 @@ public class Run {
         while (true) {
             String input = dataInputStream.readUTF();
             String result = process(input, objectInputStream, objectOutputStream);
-            if (result.equals("==")) break;
+            if (result.equals("=="))
+                break;
+            else if (result.equals("continue"))
+                continue;
             dataOutputStream.writeUTF(result);
             dataOutputStream.flush();
         }
@@ -61,7 +59,7 @@ public class Run {
     private static String process(String input, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
             getUserByToken(input, objectOutputStream);
-            return "success";
+            return "continue";
         }
         if (input.startsWith("profile")){
             return MainMenuController.profile(input);
@@ -76,22 +74,20 @@ public class Run {
             String[] in = input.split(":");
             onlineToken = in[1];
             rivalToken = in[3];
-
             ArrayList<Object> objects = (ArrayList<Object>) objectInputStream.readObject();
             setObject(objects);
             GameMatController.onlineUser = userByToken(onlineToken);
             GameMatController.rivalUser = userByToken(rivalToken);
             String returnValue = GameMatController.commandController(in[2]);
-
             objectSend = getObjects();
             objectOutputStream.writeObject(objectSend);
-           // dataOutputStream.flush();
+            objectOutputStream.flush();
             return returnValue;
         }
         if (input.equals("Scoreboard")) {
             objectOutputStream.writeObject(MainMenuController.showScoreboard());
             objectOutputStream.flush();
-            return "success";
+            return "continue";
         }
         if (input.startsWith("findADuelist")) {
             String[] split = input.split("/");
@@ -109,7 +105,7 @@ public class Run {
                 result = FindADuelist.searchForThreeRound(split[1]);
             }
 
-            return "success";
+            return "continue";
         }
         if (input.startsWith("match")) {
             String[] split = input.split("/");
@@ -147,48 +143,60 @@ public class Run {
         //    FindADuelist.waitingPlayerToken.remove(split[1]);
         }
         if (input.startsWith("chat")) {
-            String[] split = input.split("/");
-            new ChatRoom(UserModel.getUserByUsername(split[1]), split[2]);
-            List<ChatRoom> allChats = ChatRoom.getAllChats();
-            objectOutputStream.writeUnshared(allChats);
-            objectOutputStream.flush();
-            return "success";
+            ChatController.newChat(input, objectOutputStream);
+            return ChatRoom.getPinMessage();
         }
         if (input.startsWith("pinMessage")) {
             String[] split = input.split("/");
-
+            System.out.println(split[1]);
+            ChatRoom.setPinMessage(split[1]);
+            return "continue";
+        }
+        if (input.startsWith("delete")) {
+            ChatController.deleteChat(input);
+            return "continue";
         }
         if (input.startsWith("edit")) {
-
+            ChatController.editChat(input);
+            return "continue";
+        }
+        if (input.startsWith("allOnlineUsers")) {
+            objectOutputStream.writeUnshared(RegisterAndLoginController.allOnlineUsers);
+            objectOutputStream.flush();
+            return "continue";
         }
         if (input.startsWith("duel")) {
             String[] split = input.split("/");
             System.out.println(split[1]);
             if (split[1].equals("q")) {
+                objectOutputStream.writeObject(UserModel.getUserByUsername("w"));
+                objectOutputStream.flush();
                 return getTokenByUsername("w");
             }
             else {
+                objectOutputStream.writeObject(UserModel.getUserByUsername("q"));
+                objectOutputStream.flush();
                 return getTokenByUsername("q");
             }
         }
-//        if (input.equals("lobby")) {
-//           // updateMessenger();
-//        }
-
+        if (input.equals("numberOfOnlineUser")) {
+            System.out.println(RegisterAndLoginController.allOnlineUsers.size());
+            return String.valueOf(RegisterAndLoginController.allOnlineUsers.size());
+        }
         return "==";
     }
+
+
+
 
     public static String getTokenByUsername(String username) {
         for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet()) {
             if (eachUser.getValue().equals(username)) {
-                System.out.println(eachUser.getKey() + "   " + eachUser.getValue());
                 return eachUser.getKey();
             }
         }
         return null;
     }
-
-
 
     public static void getUserByToken(String token, ObjectOutputStream objectOutputStream) {
         try {
