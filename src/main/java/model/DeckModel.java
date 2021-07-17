@@ -96,7 +96,7 @@ public class DeckModel implements Serializable {
     }
 
     public String validOrInvalid(){
-        if (getMainAllCardNumber() > 40){
+        if (getMainAllCardNumber() > 4){//////////////
             return "valid";}
         return "invalid";
     }

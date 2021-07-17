@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class UserModel implements Serializable {
 
-    private static final long serialVersionUID = 4778925288210528972L;
     private final String username;
     private String password;
     private String nickname;
@@ -19,12 +19,18 @@ public class UserModel implements Serializable {
     private String ownToken;
     private String rivalToken;
     private boolean isOnline;
+    private int sequentialWin = 0;
+    private int sequentialLost = 0;
+    private static int invitationCounter = 0;
+    private final HashMap<String, Integer> myAchievements = new HashMap<>();
+    private final HashMap<Integer, String> myInvitations = new HashMap<>();
     public HashMap<String, Integer> userAllCards = new HashMap<>();
     public HashMap<String, DeckModel> userAllDecks = new HashMap<>();
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
     public static ArrayList <String> importedCards;
+    private static final long serialVersionUID = 4778925288210528972L;
 
 
     public UserModel(String username, String password, String nickname, String imageUrl) {
@@ -35,8 +41,10 @@ public class UserModel implements Serializable {
         this.userCoin = 100000;
         this.imageUrl = imageUrl;
         this.activeDeck="";
-        this.ownToken = "";
         this.rivalToken = "";
+        myAchievements.put("chatCup", 0);
+        myAchievements.put("sequentialWin", 0);
+        myAchievements.put("sequentialLost", 0);
         allUsernames.add(username);
         allUsersNicknames.add(nickname);
         allUsersInfo.put(username, this);
@@ -44,7 +52,7 @@ public class UserModel implements Serializable {
     }
 
     public static void setObject(UserModel userModel){
-        allUsersInfo.put(userModel.getUsername(),userModel);
+        allUsersInfo.put(userModel.getUsername(), userModel);
     }
 
     public String getUsername() {
@@ -67,28 +75,32 @@ public class UserModel implements Serializable {
         return userCoin;
     }
 
-    public boolean getIsOnline() {
-        return isOnline;
+    public void setRivalToken(String rivalToken) {
+        this.rivalToken = rivalToken;
     }
 
     public String getRivalToken() {
         return rivalToken;
     }
 
-    public String getOwnToken() {
-        return ownToken;
+    public boolean getIsOnline() {
+        return isOnline;
     }
 
     public void setOwnToken(String ownToken) {
         this.ownToken = ownToken;
     }
 
+    public String getOwnToken() {
+        return ownToken;
+    }
+
     public void setIsOnline(boolean isOnline) {
         this.isOnline = isOnline;
     }
 
-    public void setRivalToken(String rivalToken) {
-        this.rivalToken = rivalToken;
+    public HashMap<String, Integer> getMyAchievements() {
+        return myAchievements;
     }
 
     public HashMap<String, Integer> getUserAllCards() {
@@ -161,6 +173,54 @@ public class UserModel implements Serializable {
             }
         }
         Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+    }
+
+    public String toString(){
+        return "username:"+username+" decksize"+userAllDecks.size() +"  number "+allUsersInfo.size();
+    }
+
+    public void addAchievement(String name) {
+        int x = myAchievements.get(name);
+        myAchievements.replace(name, x, x + 1);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+    }
+
+    public void addInvitation(String username) {
+        myInvitations.put(++invitationCounter, username);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+    }
+
+    public void removeInvitation(int id) {
+        myInvitations.remove(id);
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
+    }
+
+    public HashMap<Integer, String> getMyInvitations() {
+        return myInvitations;
+    }
+
+    public void addSequentialWin() {
+        sequentialWin++;
+    }
+
+    public void resetSequentialWin() {
+        sequentialWin = 0;
+    }
+
+    public int getSequentialWin() {
+        return sequentialWin;
+    }
+
+    public void addSequentialLost() {
+        sequentialLost++;
+    }
+
+    public void resetSequentialLost() {
+        sequentialWin = 0;
+    }
+
+    public int getSequentialLost() {
+        return sequentialWin;
     }
 
     public boolean isUserHaveCard(String cardName) {

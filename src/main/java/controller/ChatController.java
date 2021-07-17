@@ -17,6 +17,7 @@ public class ChatController {
 
     public static void newChat(String input, ObjectOutputStream objectOutputStream) throws IOException {
         String[] split = input.split("/");
+        System.out.println(input);
         new ChatRoom(UserModel.getUserByUsername(split[1]), split[2]);
         List<ChatRoom> allChats = ChatRoom.getAllChats();
         objectOutputStream.writeUnshared(allChats);

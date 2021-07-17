@@ -15,7 +15,7 @@ public class Run {
 
     public static void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(7700);
+            ServerSocket serverSocket = new ServerSocket(1227);
             while (true) {
                 Socket socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
@@ -70,6 +70,56 @@ public class Run {
         if (input.startsWith("D")) {
             return DeckController.run(input);
         }
+        if (input.startsWith("chatCup")) {
+            String[] split = input.split("/");
+            UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(split[1]));
+            userModel.addAchievement("chatCup");
+            System.out.println(userModel.getMyAchievements().get("chatCup"));
+            return "continue";
+        }
+        if (input.startsWith("winCup")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(split[1]).addAchievement("sequentialWin");
+            UserModel.getUserByUsername(split[1]).resetSequentialWin();
+            return "continue";
+        }
+        if (input.startsWith("lostCup")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(split[1]).addAchievement("sequentialLost");
+            UserModel.getUserByUsername(split[1]).resetSequentialLost();
+            return "continue";
+        }
+        if (input.startsWith("achievement")) {
+            String[] split = input.split("/");
+            objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyAchievements());
+            objectOutputStream.flush();
+            return "continue";
+        }
+        if (input.startsWith("myInvitations")) {
+            String[] split = input.split("/");
+            objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyInvitations());
+            objectOutputStream.flush();
+            return "continue";
+        }
+        if (input.startsWith("sendInvitation")) {
+            String[] split = input.split("/");
+            if (UserModel.getUserByUsername(split[2]) == null)
+                return "Wrong Username!";
+            else {
+                UserModel.getUserByUsername(split[2]).addInvitation(split[1]);
+                return "Send Successfully!";
+            }
+        }
+        if (input.startsWith("rejectInvitation")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(split[1]).removeInvitation(Integer.parseInt(split[2]));
+            return "continue";
+        }
+        if (input.startsWith("acceptInvitation")) {
+            String[] split = input.split("/");
+           // UserModel.getUserByUsername(split[1]).removeInvitation(Integer.parseInt(split[2]));
+            return "continue";
+        }
         if (input.startsWith("GameMat")) {
             String[] in = input.split(":");
             onlineToken = in[1];
@@ -108,32 +158,32 @@ public class Run {
             return "continue";
         }
         if (input.startsWith("match")) {
-            String[] split = input.split("/");
-            UserModel rivalUser = UserModel.getUserByUsername(split[2]);
-            System.out.println(rivalUser.getNickname());
-            System.out.println(FindADuelist.oneRoundPlayerTwo.size());
-            System.out.println(FindADuelist.oneRoundPlayer.size());
-            if (FindADuelist.oneRoundPlayer.contains(rivalUser.getOwnToken())) {
-                System.out.println(rivalUser.getNickname() + "first");
-                rivalUser.setRivalToken(split[1]);
-                objectOutputStream.writeObject(rivalUser);
-                objectOutputStream.flush();
-                FindADuelist.oneRoundPlayer.remove(rivalUser.getOwnToken());
-                FindADuelist.oneRoundPlayer.remove(split[1]);
-                return "success";
-            }
-            else if (FindADuelist.oneRoundPlayerTwo.contains(rivalUser.getOwnToken())) {
-                System.out.println(rivalUser.getNickname() + "sec");
-                rivalUser.setRivalToken(split[1]);
-                objectOutputStream.writeObject(rivalUser);
-                objectOutputStream.flush();
-                FindADuelist.oneRoundPlayerTwo.remove(rivalUser.getRivalToken());
-                FindADuelist.oneRoundPlayerTwo.remove(split[1]);
-                return "success";
-            }
-            else {
-                return "fail";
-            }
+//            String[] split = input.split("/");
+//            UserModel rivalUser = UserModel.getUserByUsername(split[2]);
+//            System.out.println(rivalUser.getNickname());
+//            System.out.println(FindADuelist.oneRoundPlayerTwo.size());
+//            System.out.println(FindADuelist.oneRoundPlayer.size());
+//            if (FindADuelist.oneRoundPlayer.contains(rivalUser.getOwnToken())) {
+//                System.out.println(rivalUser.getNickname() + "first");
+//                rivalUser.setRivalToken(split[1]);
+//                objectOutputStream.writeObject(rivalUser);
+//                objectOutputStream.flush();
+//                FindADuelist.oneRoundPlayer.remove(rivalUser.getOwnToken());
+//                FindADuelist.oneRoundPlayer.remove(split[1]);
+//                return "success";
+//            }
+//            else if (FindADuelist.oneRoundPlayerTwo.contains(rivalUser.getOwnToken())) {
+//                System.out.println(rivalUser.getNickname() + "sec");
+//                rivalUser.setRivalToken(split[1]);
+//                objectOutputStream.writeObject(rivalUser);
+//                objectOutputStream.flush();
+//                FindADuelist.oneRoundPlayerTwo.remove(rivalUser.getRivalToken());
+//                FindADuelist.oneRoundPlayerTwo.remove(split[1]);
+//                return "success";
+//            }
+//            else {
+//                return "fail";
+//            }
         }
         if (input.equals("PlayWithAI")) {
 
@@ -185,9 +235,6 @@ public class Run {
         }
         return "==";
     }
-
-
-
 
     public static String getTokenByUsername(String username) {
         for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet()) {

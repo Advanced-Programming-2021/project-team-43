@@ -72,6 +72,8 @@ public class RegisterAndLoginController {
         if (UserModel.isRepeatedNickname(nickname))
             return ("user with nickname " + nickname + " already exists");
         new UserModel(username, password, nickname ,imageURL);
+        System.out.println("hhh");
+        System.out.println(UserModel.allUsersInfo.size());
         return ("user created successfully!");
     }
 
@@ -84,9 +86,11 @@ public class RegisterAndLoginController {
                 allOnlineUsers.put(token,username);
                 return "user logged in successfully!" + token;
             } else {
+                System.out.println(";;;;");
                 return "Username and password didn’t match!";
             }
         } else {
+            System.out.println("[[[[[[[");
             return "Username and password didn’t match!";
         }
     }
