@@ -41,7 +41,7 @@ public class DeckController {
 
         }
 
-        if ((matcher = getMatcher(command, "^D (.?)deck \\s*rm-card \\s*--card \\s*(.+?)\\s* --deck \\s*(.+?)$")).find() || (matcher = getMatcher(command, "^deck \\s*rm-card \\s*-c \\s*(.+?)\\s* -d \\s*(.+?)$")).find()) {
+        if ((matcher = getMatcher(command, "^D (.+?)deck rm-card --card (.+?) --deck (.+?)$")).find() || (matcher = getMatcher(command, "^deck \\s*rm-card \\s*-c \\s*(.+?)\\s* -d \\s*(.+?)$")).find()) {
             return removeCardFromMainDeck(matcher.group(2), matcher.group(3), matcher.group(1));
 
         }

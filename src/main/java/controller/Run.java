@@ -28,6 +28,7 @@ public class Run {
                         objectInputStream=new ObjectInputStream(socket.getInputStream());
                         while (true) {
                             String input = dataInputStream.readUTF();
+                            System.out.println(input);
                             String output = null;
                             if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
                                 getUserByToken(input);
@@ -50,7 +51,7 @@ public class Run {
                             if (input.startsWith("M")){
                                 output = MainMenuController.findMatcher(input);
                             }
-                            if (input.startsWith("F")){
+                            if (input.startsWith("S")){
                                 output = ShopController.run(input);
                             }
                             if (input.startsWith("profile")){
@@ -77,7 +78,6 @@ public class Run {
     public static void getUserByToken(String token) throws IOException {
 
             UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
-            System.out.println(userModel);
             objectOutputStream.writeObject(userModel);
             objectOutputStream.flush();
 
