@@ -36,11 +36,12 @@ public class MainMenuView extends Application {
     public Button cardBtn;
     public Button logoutBtn;
     public Button lobbyBtn;
+    public Button tvBtn;
     public static MediaPlayer note;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-     //   RegisterAndLoginView.dataOutputStream.writeUTF("cancelGame/" + MainMenuController.token);
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/mainMenu.fxml")));
         stage = primaryStage;
         stage.setScene(new Scene(root));
@@ -109,7 +110,6 @@ public class MainMenuView extends Application {
         stage.show();
     }
 
-
     public void initialize() {
         setFrame(duelBtn);
         setFrame(profileBtn);
@@ -118,6 +118,7 @@ public class MainMenuView extends Application {
         setFrame(scoreboardBtn);
         setFrame(cardBtn);
         setFrame(lobbyBtn);
+        setFrame(tvBtn);
         setFrame(logoutBtn);
     }
 
@@ -126,7 +127,6 @@ public class MainMenuView extends Application {
         KeyFrame duelStart = new KeyFrame(new Duration(4000), new KeyValue(button.opacityProperty(), 1.0));
         new Timeline(duelEnd, duelStart).play();
     }
-
 
     public void Profile() throws Exception {
         new ProfileView().start(stage);
@@ -157,7 +157,12 @@ public class MainMenuView extends Application {
         (LobbyView.lobbyView = new LobbyView()).start(stage);
     }
 
+    public void TV() throws Exception {
+        new TVView().start(stage);
+    }
+
     public void LogOut() throws Exception {
         new RegisterAndLoginView().start(stage);
     }
+
 }
