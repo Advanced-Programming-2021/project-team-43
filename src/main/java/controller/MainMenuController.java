@@ -1,9 +1,10 @@
 package controller;
 import model.UserModel;
 import view.RegisterAndLoginView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainMenuController {
@@ -47,23 +48,39 @@ public class MainMenuController {
     }
 
     public static String changeNickname(String nickname) {
-        if (UserModel.isRepeatedNickname(nickname))
-            return "user with nickname " + nickname + " already exists";
-        else {
-            UserModel.getUserByUsername(username).changeNickname(nickname);
-            return "nickname changed successfully!";
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("profile"+token+" change --nickname "+nickname);
+            String input=RegisterAndLoginView.dataInputStream.readUTF();
+            if(isSuccessful(input)) {
+                UserModel.getUserByUsername(username).changeNickname(nickname);
+            }
+            return input;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public static String changePassword(String currentPassword, String newPassword) {
-        if (!UserModel.getUserByUsername(username).getPassword().equals(currentPassword))
-            return "current password is invalid";
-        else if (currentPassword.equals(newPassword))
-            return "please enter a new password";
-        else {
-            UserModel.getUserByUsername(username).changePassword(newPassword);
-            return "password changed successfully!";
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("profile"+token+" change --password --new "+newPassword+" --current "+currentPassword);
+            String input=RegisterAndLoginView.dataInputStream.readUTF();
+            if(isSuccessful(input)) {
+                UserModel.getUserByUsername(username).changePassword(newPassword);
+            }
+            return input ;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
+
+    }
+
+    public static boolean isSuccessful(String string){
+        Pattern pattern=Pattern.compile("success");
+        System.out.println(string);
+        Matcher matcher=pattern.matcher(string);
+        return matcher.find();
     }
 
     public static ArrayList<UserModel> showScoreboard() {
@@ -75,6 +92,5 @@ public class MainMenuController {
         }
         return scoreboard;
     }
-
 
 }

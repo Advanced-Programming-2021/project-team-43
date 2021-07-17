@@ -1,5 +1,6 @@
 package view;
 import controller.MainMenuController;
+import controller.RegisterAndLoginController;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -44,12 +45,16 @@ public class MainMenuView extends Application {
         stage = primaryStage;
         stage.setScene(new Scene(root));
         stage.show();
-        if (UserModel.getUserByUsername(MainMenuController.username).getSequentialWin() == 5) {
+        if (UserModel.getUserByUsername(MainMenuController.username).getSequentialWin() == 8) {
             sequentialWinCup();
+            RegisterAndLoginView.dataOutputStream.writeUTF("winCup/" + MainMenuController.username);
+            RegisterAndLoginView.dataOutputStream.flush();
             UserModel.getUserByUsername(MainMenuController.username).resetSequentialWin();
         }
         if (UserModel.getUserByUsername(MainMenuController.username).getSequentialLost() == 10) {
             sequentialLostCup();
+            RegisterAndLoginView.dataOutputStream.writeUTF("lostCup/" + MainMenuController.username);
+            RegisterAndLoginView.dataOutputStream.flush();
             UserModel.getUserByUsername(MainMenuController.username).resetSequentialLost();
         }
     }
@@ -124,7 +129,7 @@ public class MainMenuView extends Application {
 
 
     public void Profile() throws Exception {
-        (ProfileView.profileView = new ProfileView()).start(stage);
+        new ProfileView().start(stage);
     }
 
     public void Duel() throws Exception {
@@ -132,6 +137,7 @@ public class MainMenuView extends Application {
     }
 
     public void Deck() throws Exception {
+        RegisterAndLoginController.updateUser(MainMenuController.token);
         new DeckView().start(stage);
     }
 

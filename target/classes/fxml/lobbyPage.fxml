@@ -100,12 +100,20 @@
             </font>
         </Button>
       <Button layoutX="511.0" layoutY="612.0" mnemonicParsing="false" onAction="#updateOnline" text="Update" />
-      <Button layoutX="692.0" layoutY="380.0" mnemonicParsing="false" onAction="#match" prefHeight="30.0" prefWidth="67.0" text="match" />
+      <Button focusTraversable="false" layoutX="692.0" layoutY="380.0" mnemonicParsing="false" onAction="#match" prefHeight="30.0" prefWidth="67.0" text="match">
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font></Button>
       <TextField fx:id="rivalUsernameTxt" layoutX="632.0" layoutY="331.0" prefHeight="30.0" prefWidth="185.0" promptText="rival username">
          <font>
             <Font name="Bodoni MT" size="15.0" />
          </font>
       </TextField>
       <Label fx:id="matchLbl" layoutX="566.0" layoutY="387.0" prefHeight="30.0" prefWidth="77.0" />
+      <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="793.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#goToInvitations" text="My Invitations" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="17.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

@@ -282,6 +282,5 @@ public class DeckView extends Application {
         return whichDeckName;
     }
 
-
 }
 

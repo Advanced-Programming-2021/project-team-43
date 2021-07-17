@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class UserModel implements Serializable {
 
-    private static final long serialVersionUID = 4778925288210528972L;
     private final String username;
     private String password;
     private String nickname;
@@ -19,13 +18,15 @@ public class UserModel implements Serializable {
     private boolean isOnline;
     private int sequentialWin = 0;
     private int sequentialLost = 0;
-    private HashMap<String, Integer> myAchievements = new HashMap<>();
+    private final HashMap<String, Integer> myAchievements = new HashMap<>();
+    private final HashMap<Integer, String> myInvitations = new HashMap<>();
     public HashMap<String, Integer> userAllCards = new HashMap<>();
     public HashMap<String, DeckModel> userAllDecks = new HashMap<>();
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
     public static ArrayList <String> importedCards;
+    private static final long serialVersionUID = 4778925288210528972L;
 
 
     public UserModel(String username, String password, String nickname, String imageUrl) {
@@ -43,7 +44,6 @@ public class UserModel implements Serializable {
         allUsernames.add(username);
         allUsersNicknames.add(nickname);
         allUsersInfo.put(username, this);
-
     }
 
     public static void setObject(UserModel userModel){
@@ -94,7 +94,6 @@ public class UserModel implements Serializable {
 
     public void changePassword(String password) {
         this.password = password;
-
     }
 
     public void changeNickname(String nickname) {
@@ -157,7 +156,7 @@ public class UserModel implements Serializable {
     }
 
     public void addSequentialWin() {
-        sequentialWin++;
+        sequentialLost++;
     }
 
     public void resetSequentialWin() {
@@ -190,6 +189,14 @@ public class UserModel implements Serializable {
 
     public boolean isUserHaveThisDeck(String deckName) {
         return userAllDecks.containsKey(deckName);
+    }
+
+    public void addInvitation(int id, String username) {
+        myInvitations.put(id, username);
+    }
+
+    public void removeInvitation(int id) {
+        myInvitations.remove(id);
     }
 
     public static UserModel getUserByUsername(String username) {

@@ -123,7 +123,8 @@ public class LobbyView extends Application {
         }
         if (chatRecord == nextRecord) {
             nextRecord *= 3;
-            UserModel.getUserByUsername(MainMenuController.username).addAchievement("chatCup");
+            RegisterAndLoginView.dataOutputStream.writeUTF("chatCup/" + MainMenuController.token);
+            RegisterAndLoginView.dataOutputStream.flush();
             chatCup();
         }
     }
@@ -300,6 +301,11 @@ public class LobbyView extends Application {
 
     }
 ///////////////////////
+
+    public void goToInvitations() throws Exception {
+        new InvitationView().start(lobbyStage);
+    }
+
     public void back() throws Exception {
         new MainMenuView().start(lobbyStage);
     }

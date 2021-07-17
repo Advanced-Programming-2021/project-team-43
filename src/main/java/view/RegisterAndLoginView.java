@@ -1,9 +1,5 @@
 package view;
-
-import controller.Json;
-import controller.MainMenuController;
-import controller.RegisterAndLoginController;
-import controller.SetCards;
+import controller.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,11 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import model.Card;
-import model.DeckModel;
-import model.ShopModel;
-import model.UserModel;
-
+import model.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Objects;
@@ -50,7 +42,7 @@ public class RegisterAndLoginView extends Application {
 
     public static void main(String[] args) {
         try {
-            socket = new Socket("localhost", 7700);
+            socket = new Socket("localhost", 1227);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -83,29 +75,7 @@ public class RegisterAndLoginView extends Application {
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
         new ShopModel(Card.getCards());
-        if (Json.readUserInfo() != null)
-            UserModel.allUsersInfo.putAll(Json.readUserInfo());
-        if (Json.readUsernames() != null)
-            UserModel.allUsernames.addAll(Json.readUsernames());
-        if (Json.readUserNicknames() != null)
-            UserModel.allUsersNicknames.addAll(Json.readUserNicknames());
-        if (!UserModel.isRepeatedUsername("AI")) {
-            UserModel userModel = new UserModel("AI", "p", "AI", "/images/profile/char0.jpg");
-            DeckModel deckModel = new DeckModel("AILevel1");
-            MainMenuController.username = "AI";
-            for (int i = 0; i < 6; i++) {
-                deckModel.addCardToMain("Axe Raider");
-                deckModel.addCardToMain("Horn Imp");
-                deckModel.addCardToMain("Silver Fang");
-                deckModel.addCardToMain("Fireyarou");
-                deckModel.addCardToMain("Curtain of the dark ones");
-                deckModel.addCardToMain("Dark Blade");
-                deckModel.addCardToMain("Warrior Dai Grepher");
-                deckModel.addCardToMain("Bitron");
-            }
-            userModel.addDeck(deckModel);
-            userModel.setActiveDeck("AILevel1");
-        }
+
         (showCardsView = new ShowCardsView()).setAllCards();
     }
 

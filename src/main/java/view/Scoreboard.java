@@ -1,6 +1,10 @@
 package view;
 import controller.MainMenuController;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,9 +21,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.UserModel;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class Scoreboard extends Application {
@@ -38,6 +46,7 @@ public class Scoreboard extends Application {
 
     public void initialize() {
         showScoreboard();
+        refreshAutomatically();
     }
 
     public void showScoreboard() {
@@ -68,11 +77,7 @@ public class Scoreboard extends Application {
             label.setLayoutX(x);
             label.setFont(new Font("Bodoni MT", 20));
             if (allOnlineUsers.containsValue(scoreboard.get(i).getUsername())) {
-                DropShadow ds = new DropShadow();
-                ds.setOffsetY(10.0f);
-                ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
-                label.setEffect(ds);
-                label.setFont(Font.font(("Bodoni MT"), FontWeight.BOLD, 20));
+                label.setUnderline(true);
             }
             final ImageView[] imageView = new ImageView[1];
             int finalX = x;
@@ -107,7 +112,17 @@ public class Scoreboard extends Application {
         showScoreboard();
     }
 
-    public void Back() throws Exception {
+    public void refreshAutomatically() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> showScoreboard());
+            }
+        }, 0, 2000);
+    }
+
+    public void back() throws Exception {
         new MainMenuView().start(stage);
     }
 

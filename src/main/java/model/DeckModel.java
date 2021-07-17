@@ -1,12 +1,10 @@
 package model;
 import controller.*;
-
 import java.io.Serializable;
 import java.util.*;
 
 
 public class DeckModel implements Serializable {
-
 
     private final String deckName;
     private int mainAllCardNumber = 0;
@@ -14,7 +12,6 @@ public class DeckModel implements Serializable {
     public HashMap<String, Integer> cardsInMainDeck = new HashMap<>();
     public HashMap<String, Integer> cardsInSideDeck = new HashMap<>();
     private static final long serialVersionUID = -5970003736951981446L;
-
 
     public DeckModel(String deckName) {
         this.deckName = deckName;
@@ -33,7 +30,6 @@ public class DeckModel implements Serializable {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromMain(String cardName) {
@@ -55,7 +51,6 @@ public class DeckModel implements Serializable {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void removeCardFromSide(String cardName) {
@@ -66,7 +61,6 @@ public class DeckModel implements Serializable {
         UserModel userModel = UserModel.getUserByUsername(MainMenuController.username);
         userModel.userAllDecks.replace(deckName, this);
         UserModel.allUsersInfo.replace(MainMenuController.username,userModel);
-        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public int getNumberOfCardInMainDeck(String cardName) {
