@@ -20,14 +20,14 @@ public class Run {
             ////
             tokensInLine = new HashMap<>();
             pairTokens = new HashMap<>();
+            pickPlayer = new HashMap<>();
             ////
             while (true) {
                 Socket socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        }
+e.printStackTrace();        }
     }
 
     private static void startNewThread(ServerSocket serverSocket, Socket socket) {
@@ -62,6 +62,14 @@ public class Run {
     }
 
     private static String process(String input, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+
+        if (input.startsWith("M")){
+           return MainMenuController.findMatcher(input);
+        }
+        if (input.startsWith("S")){
+            return ShopController.run(input);
+        }
+
         if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
             getUserByToken(input, objectOutputStream);
             return "continue";
@@ -149,18 +157,100 @@ public class Run {
             ArrayList<Object> result;
             if (split[2].equals("1")) {
                 return find(split[1]);
-//                FindADuelist.oneRoundPlayer.add(split[1]);
-//                FindADuelist.oneRoundPlayerTwo.add(split[1]);
-//                System.out.println(FindADuelist.oneRoundPlayer.size() + "first");
-//                System.out.println(FindADuelist.oneRoundPlayerTwo.size() + "sec");
-////                FindADuelist.addToList(split[1]);
-////                FindADuelist.searchForOneRound(split[1]);
             } else {
-                FindADuelist.threeRoundPlayer.add(split[1]);
-                result = FindADuelist.searchForThreeRound(split[1]);
+                return find(split[1]);
             }
 
-            return "continue";
+        }
+        if (input.startsWith("pickPlayer")) {
+            String[] give = input.split(":");
+            ArrayList<Object> players = new ArrayList<>();
+
+            if (!pickPlayer.get(give[1]) && !pickPlayer.get(give[2])) {
+                Random rand = new Random();
+                int n = rand.nextInt(2);
+
+                if (n == 0) {
+                    pickPlayer.put(give[1], true);//first
+                    pickPlayer.put(give[2], false);//second
+                    System.out.println(UserModel.getUserByUsername(userByToken(give[1])).getNickname()+" 1");
+                    System.out.println(UserModel.getUserByUsername(userByToken(give[2])).getNickname()+" 2");
+                    Player player1 = new Player(UserModel.getUserByUsername(userByToken(give[1])).getNickname(), UserModel.getUserByUsername(userByToken(give[1])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[1])).getActiveDeck()), true, Integer.parseInt(give[3]));
+                    Player player2 = new Player(UserModel.getUserByUsername(userByToken(give[2])).getNickname(), UserModel.getUserByUsername(userByToken(give[2])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[2])).getActiveDeck()), false, Integer.parseInt(give[3]));
+                    players.add(give[1]);
+                    players.add(give[2]);
+                    players.add(UserModel.getUserByUsername(userByToken(give[1])));
+                    players.add(UserModel.getUserByUsername(userByToken(give[2])));
+                    players.add(player1);
+                    players.add(player2);
+                    players.addAll(getObjects());
+                    objectOutputStream.writeObject(players);
+                    objectOutputStream.flush();
+
+                    return "continue";
+                } else {
+                    pickPlayer.put(give[1], false);//second rivalUser
+                    pickPlayer.put(give[2], true);//first onlineUser
+                    System.out.println(UserModel.getUserByUsername(userByToken(give[1])).getNickname()+" 3");
+                    System.out.println(UserModel.getUserByUsername(userByToken(give[2])).getNickname()+" 4");
+                    Player player1 = new Player(UserModel.getUserByUsername(userByToken(give[1])).getNickname(), UserModel.getUserByUsername(userByToken(give[1])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[1])).getActiveDeck()), true, Integer.parseInt(give[3]));
+                    Player player2 = new Player(UserModel.getUserByUsername(userByToken(give[2])).getNickname(),  UserModel.getUserByUsername(userByToken(give[2])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[2])).getActiveDeck()), false, Integer.parseInt(give[3]));
+                    players.add(give[2]);
+                    players.add(give[1]);
+                    players.add(UserModel.getUserByUsername(userByToken(give[2])));
+                    players.add(UserModel.getUserByUsername(userByToken(give[1])));
+                    players.add(player1);
+                    players.add(player2);
+                    players.addAll(getObjects());
+                    objectOutputStream.writeObject(players);
+                    objectOutputStream.flush();
+
+                    return "continue";
+                }
+
+
+            } else {
+                if (pickPlayer.get(give[1])) {
+                    pickPlayer.put(give[1], true);//first
+                    pickPlayer.put(give[2], false);//second
+                    System.out.println(UserModel.getUserByUsername(userByToken(give[1])).getNickname()+" 5");
+                    System.out.println(UserModel.getUserByUsername(userByToken(give[2])).getNickname()+" 6");
+                    Player player1 = new Player(UserModel.getUserByUsername(userByToken(give[1])).getNickname(), UserModel.getUserByUsername(userByToken(give[1])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[1])).getActiveDeck()), true, Integer.parseInt(give[3]));
+                    Player player2 = new Player(UserModel.getUserByUsername(userByToken(give[2])).getNickname(), UserModel.getUserByUsername(userByToken(give[2])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[2])).getActiveDeck()), false, Integer.parseInt(give[3]));
+                    players.add(give[1]);
+                    players.add(give[2]);
+                    players.add(UserModel.getUserByUsername(userByToken(give[1])));
+                    players.add(UserModel.getUserByUsername(userByToken(give[2])));
+                    players.add(player1);
+                    players.add(player2);
+                    players.addAll(getObjects());
+                    objectOutputStream.writeObject(players);
+                    objectOutputStream.flush();
+
+
+                } else if (pickPlayer.get(give[2])) {
+                    pickPlayer.put(give[1], false);//second rivalUser
+                    pickPlayer.put(give[2], true);//first onlineUser
+                    System.out.println(UserModel.getUserByUsername(userByToken(give[1])).getNickname()+" 7");
+                    System.out.println(UserModel.getUserByUsername(userByToken(give[2])).getNickname()+"  8");
+
+                    Player player1 = new Player(UserModel.getUserByUsername(userByToken(give[2])).getNickname(), UserModel.getUserByUsername(userByToken(give[2])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[2])).getActiveDeck()), true, Integer.parseInt(give[3]));
+                    Player player2 = new Player(UserModel.getUserByUsername(userByToken(give[1])).getNickname(), UserModel.getUserByUsername(userByToken(give[1])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[1])).getActiveDeck()), false, Integer.parseInt(give[3]));
+                    players.add(give[2]);
+                    players.add(give[1]);
+                    players.add(UserModel.getUserByUsername(userByToken(give[2])));
+                    players.add(UserModel.getUserByUsername(userByToken(give[1])));
+                    players.add(player1);
+                    players.add(player2);
+                    players.addAll(getObjects());
+                    objectOutputStream.writeObject(players);
+                    objectOutputStream.flush();
+
+
+                }
+                return "continue";
+
+            }
         }
         if (input.startsWith("match")) {
 //            String[] split = input.split("/");
@@ -196,13 +286,15 @@ public class Run {
         if (input.startsWith("isFind")) {
             String[] split = input.split(":");
             if (tokensInLine.get(split[1])) {
-                if(pairTokens.get(split[1])!=null){
-                    return "true:"+pairTokens.get(split[1]);
-                }else {
-                    String[] keys=pairTokens.keySet().toArray(new String[0]);
+                if (pairTokens.get(split[1]) != null) {
+                    System.out.println("rivalToken:  " + pairTokens.get(split[1]));
+                    return "true:" + pairTokens.get(split[1]);
+                } else {
+                    String[] keys = pairTokens.keySet().toArray(new String[0]);
                     for (int i = 0; i < keys.length; i++) {
-                        if(pairTokens.get(Arrays.toString(keys).substring(1,Arrays.toString(keys).length()-1)).equals(split[1])){
-                            return "true:"+ Arrays.toString(keys).substring(1,Arrays.toString(keys).length()-1);
+                        if (pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)).equals(split[1])) {
+                            System.out.println("rivalToken:  " + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1));
+                            return "true:" + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1);
                         }
                     }
                 }
@@ -260,6 +352,7 @@ public class Run {
     }
 
     private static HashMap<String, Boolean> tokensInLine;
+    private static HashMap<String, Boolean> pickPlayer;
     private static HashMap<String, String> pairTokens;
 
     private static String find(String myToken) {
@@ -270,6 +363,9 @@ public class Run {
                 tokensInLine.put(token, true);
                 tokensInLine.put(myToken, true);
                 pairTokens.put(myToken, token);
+                pickPlayer.put(myToken, false);
+                pickPlayer.put(token, false);
+                System.out.println("rivalToken:  " + token);///
                 return token;
             }
         }
@@ -317,6 +413,7 @@ public class Run {
 
     private static ArrayList<Object> getObjects() {
         ArrayList<Object> objects = new ArrayList<>();
+        System.out.println(GameMatModel.getGameMatByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken))+" ===");
         objects.add(GameMatModel.getGameMatByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
         objects.add(HandCardZone.getHandCardZoneByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
         objects.add(MonsterZoneCard.getMonsterZoneCardByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
