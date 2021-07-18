@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.ChatRoom;
+import model.Player;
 import model.UserModel;
 
 import java.io.IOException;
@@ -239,32 +240,105 @@ public class LobbyView extends Application {
                 RegisterAndLoginView.dataOutputStream.flush();
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 if (answer.equals("failed")) {
+                    System.out.println("failed  ss");
                     while (true) {
                         RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token);
                         RegisterAndLoginView.dataOutputStream.flush();
                         String[] answer2 = RegisterAndLoginView.dataInputStream.readUTF().split(":");
                         if (answer2[0].equals("true")) {
-                            GameMatController.rivalToken = answer2[1];
-                            GameMatController.onlineToken = MainMenuController.token;
+                            RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer2[1] + ":" + 1);
+                            RegisterAndLoginView.dataOutputStream.flush();
+                            ArrayList<Object> answer3 = (ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject();
 
-//                            RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token+":"+an);
-//                            RegisterAndLoginView.dataOutputStream.flush();
-//                            String answer2 = RegisterAndLoginView.dataInputStream.readUTF();
+                            Player.setObject(((UserModel) answer3.get(2)).getNickname(), (Player) answer3.get(4));
+                            Player.setObject(((UserModel) answer3.get(3)).getNickname(), (Player) answer3.get(5));
+                            GameMatController.onlineToken = (String) answer3.get(0);
+                            GameMatController.rivalToken = (String) answer3.get(1);
+                            UserModel.setObject((UserModel) answer3.get(2));
+                            GameMatController.onlineUser =((UserModel) answer3.get(2)).getNickname() ;
+                            UserModel.setObject((UserModel) answer3.get(3));
+                            GameMatController.rivalUser = ((UserModel) answer3.get(3)).getNickname() ;
+
+                            ArrayList<Object> newArray=new ArrayList<>();
+                            for (int i = 6; i < 18; i++) {
+                                System.out.println(answer3.get(i)+" ccccccccc");
+                                newArray.add(answer3.get(i));
+                            }
+                            GameMatController.setObjects(newArray);
                             new GameMatView().start(lobbyStage);
                             break;
+
                         }
+
                     }
                 } else {
-                    GameMatController.rivalToken = answer;
-                    GameMatController.onlineToken = MainMenuController.token;
+                    System.out.println("success");
+
+                    RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer + ":" + 1);
+                    RegisterAndLoginView.dataOutputStream.flush();
+                    System.out.println(RegisterAndLoginView.objectInputStream.readObject()==null);
+                    ArrayList<Object> answer3 = (ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject();
+                    Player.setObject(((UserModel) answer3.get(2)).getNickname(), (Player) answer3.get(4));
+                    Player.setObject(((UserModel) answer3.get(3)).getNickname(), (Player) answer3.get(5));
+                    GameMatController.onlineToken = (String) answer3.get(0);
+                    GameMatController.rivalToken = (String) answer3.get(1);
+
+                    UserModel.setObject((UserModel) answer3.get(2));
+                    GameMatController.onlineUser =((UserModel) answer3.get(2)).getNickname() ;
+                    UserModel.setObject((UserModel) answer3.get(3));
+                    GameMatController.rivalUser = ((UserModel) answer3.get(3)).getNickname() ;
+
+                    ArrayList<Object> newArray=new ArrayList<>();
+                    for (int i = 6; i < 18; i++) {
+                        System.out.println(answer3.get(i)+" xxxxxxxxxx");
+                        newArray.add(answer3.get(i));
+                    }
+                    GameMatController.setObjects(newArray);
                     new GameMatView().start(lobbyStage);
                 }
             } catch (Exception ignored) {
                 ignored.printStackTrace();
             }
 
-        } else if (threeRoundBtn.isSelected()) {
 
+        } else if (threeRoundBtn.isSelected()) {
+/////\
+            messageLbl.setText("waiting...");
+            cancelBtn.setVisible(true);
+            //  messageLbl.setCursor(Cursor.WAIT);
+            try {
+                RegisterAndLoginView.dataOutputStream.writeUTF("findADuelist/" + MainMenuController.token + "/" + 3);
+                RegisterAndLoginView.dataOutputStream.flush();
+                String answer = RegisterAndLoginView.dataInputStream.readUTF();
+                System.out.println(answer + "   answer");
+                if (answer.equals("failed")) {
+                    System.out.println("failed  ss");
+                    while (true) {
+                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token);
+                        RegisterAndLoginView.dataOutputStream.flush();
+                        String[] answer2 = RegisterAndLoginView.dataInputStream.readUTF().split(":");
+                        if (answer2[0].equals("true")) {
+                            System.out.println("rivalToken:  " + answer2[1]);
+                            RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer2[1] + ":" + 3);
+                            RegisterAndLoginView.dataOutputStream.flush();
+                            String answer3 = RegisterAndLoginView.dataInputStream.readUTF();
+                            //   new GameMatView().start(lobbyStage);
+                            break;
+                        }
+                    }
+                } else {
+                    System.out.println("success");
+                    System.out.println("rivalToken:  " + answer);
+                    RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer + ":" + 3);
+                    RegisterAndLoginView.dataOutputStream.flush();
+                    String answer3 = RegisterAndLoginView.dataInputStream.readUTF();
+                    // new GameMatView().start(lobbyStage);
+                }
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
+
+            ////
         } else {
             messageLbl.setText("Please choose a Round!");
         }

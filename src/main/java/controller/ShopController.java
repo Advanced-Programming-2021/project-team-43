@@ -1,6 +1,9 @@
 package controller;
 import model.*;
+import view.RegisterAndLoginView;
 import view.ShopView;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.*;
 
@@ -11,12 +14,22 @@ public class ShopController {
         int cardPrice = ShopModel.getCardPriceByName(cardName);
         if (cardPrice == -1)
             return "There is no card with this name";
-        UserModel user = UserModel.getUserByUsername(MainMenuController.username);
-        if (user.getUserCoin() < cardPrice)
-            return "Not enough money";
-        user.changeUserCoin(-1 * cardPrice);
-        user.addCardToUserAllCards(cardName);
-        return "Card added successfully!";
+        try {
+            UserModel user = UserModel.getUserByUsername(MainMenuController.username);
+            RegisterAndLoginView.dataOutputStream.writeUTF("S " + MainMenuController.token + "shop buy " + cardName);
+            RegisterAndLoginView.dataOutputStream.flush();
+            String string = RegisterAndLoginView.dataInputStream.readUTF();
+            if (MainMenuController.isSuccessful(string)){
+                user.changeUserCoin(-1 * cardPrice);
+                user.addCardToUserAllCards(cardName);
+            }
+
+            return string;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
