@@ -5,88 +5,287 @@ import model.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+
 
 public class Run {
-    public static DataInputStream dataInputStream;
-    public static DataOutputStream dataOutputStream;
-    public static ObjectInputStream objectInputStream;
-    public static ObjectOutputStream objectOutputStream;
-    public static Object objectSend;
-    public static Object receivedObject;
 
+    public static Object objectSend;
+    public static String onlineToken;
+    public static String rivalToken;
 
     public static void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(7700);
+            ServerSocket serverSocket = new ServerSocket(7732);
+            ////
+            tokensInLine = new HashMap<>();
+            pairTokens = new HashMap<>();
+            ////
             while (true) {
                 Socket socket = serverSocket.accept();
-                new Thread(() -> {
-                    try {
-                        dataInputStream = new DataInputStream(socket.getInputStream());
-                        dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
-                        objectInputStream = new ObjectInputStream(socket.getInputStream());
-                        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-
-                        while (true) {
-                            String input = dataInputStream.readUTF();
-                            String output;
-                            output = process(input);
-                            if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
-                                getUserByToken(input);
-                                continue;
-                            }
-                            if (output.equals("==")) {
-                                break;
-                            }
-                            dataOutputStream.writeUTF(output);
-                            dataOutputStream.flush();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }).start();
+                startNewThread(serverSocket, socket);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static String onlineToken;
-    public static String rivalToken;
+    private static void startNewThread(ServerSocket serverSocket, Socket socket) {
+        new Thread(() -> {
+            try {
+                DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                getInputAndProcess(dataInputStream, dataOutputStream, objectInputStream, objectOutputStream);
+                dataInputStream.close();
+                objectInputStream.close();
+                socket.close();
+                serverSocket.close();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
-    private static String process(String input) throws IOException, ClassNotFoundException {
+    private static void getInputAndProcess(DataInputStream dataInputStream, DataOutputStream dataOutputStream, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+        while (true) {
+            String input = dataInputStream.readUTF();
+            String result = process(input, objectInputStream, objectOutputStream);
+            if (result.equals("=="))
+                break;
+            else if (result.equals("continue"))
+                continue;
+            dataOutputStream.writeUTF(result);
+            dataOutputStream.flush();
+        }
+    }
 
+    private static String process(String input, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+        if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
+            getUserByToken(input, objectOutputStream);
+            return "continue";
+        }
+        if (input.startsWith("profile")) {
+            return MainMenuController.profile(input);
+        }
         if (input.startsWith("R")) {
             return RegisterAndLoginController.run(input);
         }
         if (input.startsWith("D")) {
             return DeckController.run(input);
         }
+        if (input.startsWith("chatCup")) {
+            String[] split = input.split("/");
+            UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(split[1]));
+            userModel.addAchievement("chatCup");
+            System.out.println(userModel.getMyAchievements().get("chatCup"));
+            return "continue";
+        }
+        if (input.startsWith("winCup")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(split[1]).addAchievement("sequentialWin");
+            UserModel.getUserByUsername(split[1]).resetSequentialWin();
+            return "continue";
+        }
+        if (input.startsWith("lostCup")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(split[1]).addAchievement("sequentialLost");
+            UserModel.getUserByUsername(split[1]).resetSequentialLost();
+            return "continue";
+        }
+        if (input.startsWith("achievement")) {
+            String[] split = input.split("/");
+            objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyAchievements());
+            objectOutputStream.flush();
+            return "continue";
+        }
+        if (input.startsWith("myInvitations")) {
+            String[] split = input.split("/");
+            objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyInvitations());
+            objectOutputStream.flush();
+            return "continue";
+        }
+        if (input.startsWith("sendInvitation")) {
+            String[] split = input.split("/");
+            if (UserModel.getUserByUsername(split[2]) == null)
+                return "Wrong Username!";
+            else {
+                UserModel.getUserByUsername(split[2]).addInvitation(split[1]);
+                return "Send Successfully!";
+            }
+        }
+        if (input.startsWith("rejectInvitation")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(split[1]).removeInvitation(Integer.parseInt(split[2]));
+            return "continue";
+        }
+        if (input.startsWith("acceptInvitation")) {
+            String[] split = input.split("/");
+            // UserModel.getUserByUsername(split[1]).removeInvitation(Integer.parseInt(split[2]));
+            return "continue";
+        }
         if (input.startsWith("GameMat")) {
             String[] in = input.split(":");
             onlineToken = in[1];
             rivalToken = in[3];
-
             ArrayList<Object> objects = (ArrayList<Object>) objectInputStream.readObject();
             setObject(objects);
             GameMatController.onlineUser = userByToken(onlineToken);
             GameMatController.rivalUser = userByToken(rivalToken);
             String returnValue = GameMatController.commandController(in[2]);
-
             objectSend = getObjects();
             objectOutputStream.writeObject(objectSend);
-            dataOutputStream.flush();
+            objectOutputStream.flush();
             return returnValue;
         }
+        if (input.equals("Scoreboard")) {
+            objectOutputStream.writeObject(MainMenuController.showScoreboard());
+            objectOutputStream.flush();
+            return "continue";
+        }
+        if (input.startsWith("findADuelist")) {
+            String[] split = input.split("/");
+            ArrayList<Object> result;
+            if (split[2].equals("1")) {
+                return find(split[1]);
+//                FindADuelist.oneRoundPlayer.add(split[1]);
+//                FindADuelist.oneRoundPlayerTwo.add(split[1]);
+//                System.out.println(FindADuelist.oneRoundPlayer.size() + "first");
+//                System.out.println(FindADuelist.oneRoundPlayerTwo.size() + "sec");
+////                FindADuelist.addToList(split[1]);
+////                FindADuelist.searchForOneRound(split[1]);
+            } else {
+                FindADuelist.threeRoundPlayer.add(split[1]);
+                result = FindADuelist.searchForThreeRound(split[1]);
+            }
 
+            return "continue";
+        }
+        if (input.startsWith("match")) {
+//            String[] split = input.split("/");
+//            UserModel rivalUser = UserModel.getUserByUsername(split[2]);
+//            System.out.println(rivalUser.getNickname());
+//            System.out.println(FindADuelist.oneRoundPlayerTwo.size());
+//            System.out.println(FindADuelist.oneRoundPlayer.size());
+//            if (FindADuelist.oneRoundPlayer.contains(rivalUser.getOwnToken())) {
+//                System.out.println(rivalUser.getNickname() + "first");
+//                rivalUser.setRivalToken(split[1]);
+//                objectOutputStream.writeObject(rivalUser);
+//                objectOutputStream.flush();
+//                FindADuelist.oneRoundPlayer.remove(rivalUser.getOwnToken());
+//                FindADuelist.oneRoundPlayer.remove(split[1]);
+//                return "success";
+//            }
+//            else if (FindADuelist.oneRoundPlayerTwo.contains(rivalUser.getOwnToken())) {
+//                System.out.println(rivalUser.getNickname() + "sec");
+//                rivalUser.setRivalToken(split[1]);
+//                objectOutputStream.writeObject(rivalUser);
+//                objectOutputStream.flush();
+//                FindADuelist.oneRoundPlayerTwo.remove(rivalUser.getRivalToken());
+//                FindADuelist.oneRoundPlayerTwo.remove(split[1]);
+//                return "success";
+//            }
+//            else {
+//                return "fail";
+//            }
+        }
+        if (input.equals("PlayWithAI")) {
+
+        }
+        if (input.startsWith("isFind")) {
+            String[] split = input.split(":");
+            if (tokensInLine.get(split[1])) {
+                if(pairTokens.get(split[1])!=null){
+                    return "true:"+pairTokens.get(split[1]);
+                }else {
+                    String[] keys=pairTokens.keySet().toArray(new String[0]);
+                    for (int i = 0; i < keys.length; i++) {
+                        if(pairTokens.get(Arrays.toString(keys).substring(1,Arrays.toString(keys).length()-1)).equals(split[1])){
+                            return "true:"+ Arrays.toString(keys).substring(1,Arrays.toString(keys).length()-1);
+                        }
+                    }
+                }
+
+            } else {
+                return "false";
+            }
+        }
+
+        if (input.startsWith("cancelGame")) {
+            String[] split = input.split("/");
+            //    FindADuelist.waitingPlayerToken.remove(split[1]);
+        }
+        if (input.startsWith("chat")) {
+            ChatController.newChat(input, objectOutputStream);
+            return ChatRoom.getPinMessage();
+        }
+        if (input.startsWith("pinMessage")) {
+            String[] split = input.split("/");
+            System.out.println(split[1]);
+            ChatRoom.setPinMessage(split[1]);
+            return "continue";
+        }
+        if (input.startsWith("delete")) {
+            ChatController.deleteChat(input);
+            return "continue";
+        }
+        if (input.startsWith("edit")) {
+            ChatController.editChat(input);
+            return "continue";
+        }
+        if (input.startsWith("allOnlineUsers")) {
+            objectOutputStream.writeUnshared(RegisterAndLoginController.allOnlineUsers);
+            objectOutputStream.flush();
+            return "continue";
+        }
+        if (input.startsWith("duel")) {
+            String[] split = input.split("/");
+            System.out.println(split[1]);
+            if (split[1].equals("q")) {
+                objectOutputStream.writeObject(UserModel.getUserByUsername("w"));
+                objectOutputStream.flush();
+                return getTokenByUsername("w");
+            } else {
+                objectOutputStream.writeObject(UserModel.getUserByUsername("q"));
+                objectOutputStream.flush();
+                return getTokenByUsername("q");
+            }
+        }
+        if (input.equals("numberOfOnlineUser")) {
+            System.out.println(RegisterAndLoginController.allOnlineUsers.size());
+            return String.valueOf(RegisterAndLoginController.allOnlineUsers.size());
+        }
         return "==";
     }
 
-    public static void getUserByToken(String token) {
+    private static HashMap<String, Boolean> tokensInLine;
+    private static HashMap<String, String> pairTokens;
+
+    private static String find(String myToken) {
+        tokensInLine.put(myToken, false);
+        String[] tokens = tokensInLine.keySet().toArray(new String[0]);
+        for (String token : tokens) {
+            if (!tokensInLine.get(token) && !token.equals(myToken)) {
+                tokensInLine.put(token, true);
+                tokensInLine.put(myToken, true);
+                pairTokens.put(myToken, token);
+                return token;
+            }
+        }
+        return "failed";
+    }
+
+    public static String getTokenByUsername(String username) {
+        for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet()) {
+            if (eachUser.getValue().equals(username)) {
+                return eachUser.getKey();
+            }
+        }
+        return null;
+    }
+
+    public static void getUserByToken(String token, ObjectOutputStream objectOutputStream) {
         try {
             UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
             objectOutputStream.writeObject(userModel);
