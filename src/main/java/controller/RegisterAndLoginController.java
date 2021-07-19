@@ -5,6 +5,8 @@ import model.*;
 import view.RegisterAndLoginView;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +49,7 @@ public class RegisterAndLoginController {
                 MainMenuController.token = matcher.group(1);
                 MainMenuController.username = username;
                 updateUser(matcher.group(1));
+
                 return "User logged in successfully!";
             }
             return output;
