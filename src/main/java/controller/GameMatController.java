@@ -20,10 +20,10 @@ public class GameMatController {
     private static int counterOne = 0;
     private static Phase currentPhase;
     private static int counterTwo = 0;
-    public static String message = "";
-    public static String sideMsg = "";
-    public static String sideMsg2 = "";
-    public static String error = "";
+    public static String message = " ";
+    public static String sideMsg = " ";
+    public static String sideMsg2 = " ";
+    public static String error = " ";
     public static boolean isNewTurn;
     private static String cardNameAnswer;
     public static GameMatView gameMatView;
@@ -32,8 +32,6 @@ public class GameMatController {
     private static String effectName;
 
     public static int run(String firstPlayer, String secondPlayer) {
-     //  onlineUser = firstPlayer;
-       // rivalUser = secondPlayer;
 
         message = "The game starts!\nits " + onlineUser + "’s turn";
         sideMsg = "phase: " + Phase.Draw_Phase;
@@ -117,6 +115,7 @@ public class GameMatController {
 
         if (getMatcher(command, "^next\\s+phase$").find() || getMatcher(command, "^n\\s+p$").find()) {
             changePhase(currentPhase);
+            System.out.println(sideMsg2+"  :sideMsg2");
             return message + "@" + sideMsg + "@" + sideMsg2;
         }
 
@@ -521,7 +520,7 @@ public class GameMatController {
         handCard.removeFromHandCard();
         message = "summoned successfully";
         MonsterZoneCard ownMonster = MonsterZoneCard.getMonsterCardByAddress(MonsterZoneCard.getNumberOfFullHouse(onlineUser), onlineUser);
-      //  GameMatView.effectCardName = ownMonster.getMonsterName();
+        //  GameMatView.effectCardName = ownMonster.getMonsterName();
         effectName=ownMonster.getMonsterName();//
         if (ownMonster.getAttack() >= 1000) {
             checkForSetTrapToActivateInRivalTurn("Trap Hole", ownMonster);
@@ -1578,7 +1577,7 @@ public class GameMatController {
 //            if (spellName.equals("Black Pendant") || spellName.equals("United We Stand"))
 //                break;
 //        }
-      return Integer.parseInt(response);
+        return Integer.parseInt(response);
     }
 
     public static int checkForSpellAbsorption() {
@@ -1605,7 +1604,7 @@ public class GameMatController {
 //                Player.getPlayerByName(onlineUser).changeLifePoint(-100);
 //            }
 //        }
-      return 1;
+        return 1;
     }
 
     public static int checkForSupplySquad() {
