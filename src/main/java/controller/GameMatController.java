@@ -92,26 +92,25 @@ public class GameMatController {
         SpellTrapZoneCard.setObject(MainMenuController.username, ( Map<Integer, SpellTrapZoneCard>) objects.get(4));
         UserModel.setObject((UserModel) objects.get(5));
 
-        GameMatModel.setObject(rivalUser, (GameMatModel) objects.get(6));
-        HandCardZone.setObject(rivalUser, (List<HandCardZone>) objects.get(7));
-        MonsterZoneCard.setObject(rivalUser, ( Map<Integer, MonsterZoneCard>) objects.get(8));
-        Player.setObject(rivalUser, (Player) objects.get(9));
-        SpellTrapZoneCard.setObject(rivalUser, ( Map<Integer, SpellTrapZoneCard>) objects.get(10));
+        GameMatModel.setObject(MainMenuController.username2, (GameMatModel) objects.get(6));
+        HandCardZone.setObject(MainMenuController.username2, (List<HandCardZone>) objects.get(7));
+        MonsterZoneCard.setObject(MainMenuController.username2, ( Map<Integer, MonsterZoneCard>) objects.get(8));
+        Player.setObject(MainMenuController.username2, (Player) objects.get(9));
+        SpellTrapZoneCard.setObject(MainMenuController.username2, ( Map<Integer, SpellTrapZoneCard>) objects.get(10));
         UserModel.setObject((UserModel) objects.get(11));
     }
+
 
 
     public static void selectMonsterCard(int address, boolean isOwnMonsterCard) {//ok
         if (isOwnMonsterCard) {
             try {
-
                 RegisterAndLoginView.dataOutputStream.writeUTF("GameMat:" + onlineToken + ":select --monster " + address+":"+rivalToken);
                 RegisterAndLoginView.dataOutputStream.flush();
                 ///
                 RegisterAndLoginView.objectOutputStream.writeObject(getObjects());
                 setObjects((ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject());
                 //
-
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 String[] response = answer.split("@");
                 message = response[0];
@@ -164,7 +163,7 @@ public class GameMatController {
             //
             if (currentPhase.name().equals("Main_Phase2")) {
                 System.out.println(onlineUser);
-                //  gameMatView.start(GameMatView.gameMatStage);//not rotate
+                gameMatView.start(GameMatView.gameMatStage);//not rotate
                 gameMatView.showGameBoard();
             }
             String answer = RegisterAndLoginView.dataInputStream.readUTF();

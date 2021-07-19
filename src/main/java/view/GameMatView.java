@@ -240,20 +240,12 @@ public class GameMatView extends Application {
         onlineUserLpLbl.setTextFill(Color.rgb(onlineUserRedOpacity, 255 - onlineUserRedOpacity, 0));
         onlineHbox.getChildren().clear();
         ArrayList<HandCardZone> onlineHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(onlineName);
-        for (HandCardZone handCardZone : onlineHand) {
-            System.out.println(handCardZone.getCardName());
-        }
+
         setOwnMonsterImageNull();
         setOwnHand(onlineHand);
         rivalHbox.getChildren().clear();
         ArrayList<HandCardZone> rivalHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(rivalName);
-        for (HandCardZone handCardZone : rivalHand) {
-            System.out.println("pppppp");
-            System.out.println(handCardZone.getCardName());
-        }
-        System.out.println(onlineName);
-        System.out.println(rivalName);
-        System.out.println( HandCardZone.allHandCards.size());
+
         setRivalHand(rivalHand);
         rivalDeckSize.setText(String.valueOf(rivalPlayer.getNumberOfMainDeckCards()));
         onlineDeckSize.setText(String.valueOf(onlinePlayer.getNumberOfMainDeckCards()));
