@@ -75,7 +75,6 @@ public class RegisterAndLoginView extends Application {
         SetCards.readingCSVFileTrapSpell();
         SetCards.readingCSVFileMonster();
         new ShopModel(Card.getCards());
-
         (showCardsView = new ShowCardsView()).setAllCards();
     }
 

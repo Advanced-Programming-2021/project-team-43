@@ -26,7 +26,7 @@ public class MonsterZoneCard  implements Serializable {
     private boolean isEffectUsed;
     private boolean isForOneTurn;
     public final Map<String, List<Integer>> allEffectiveSpell = new HashMap<>();
-    public static final Map<String, Map<Integer, MonsterZoneCard>> allMonsterCards = new HashMap<>();
+    public static Map<String, Map<Integer, MonsterZoneCard>> allMonsterCards = new HashMap<>();
     private static HashMap<String,MonsterZoneCard> objects=new HashMap<>();
 
     public MonsterZoneCard(String playerNickname, String monsterName, String mode, boolean isScanner, boolean isForOneTurn) {

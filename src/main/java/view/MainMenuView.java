@@ -20,9 +20,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.UserModel;
-
 import java.util.Objects;
-
 
 
 public class MainMenuView extends Application {

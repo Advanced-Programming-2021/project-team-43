@@ -18,6 +18,7 @@ public class DeckController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public static void deleteDeck(String deckName) {
@@ -30,6 +31,7 @@ public class DeckController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public static String createDeck(String deckName) {
@@ -40,7 +42,9 @@ public class DeckController {
             if (MainMenuController.isSuccessful(string)){
                 UserModel.getUserByUsername(MainMenuController.username).addDeck(new DeckModel(deckName));
             }
+
             return string;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,6 +65,7 @@ public class DeckController {
             e.printStackTrace();
         }
         return null;
+
     }
 
     public static String addCardToSideDeck(String cardName, String deckName) {
@@ -76,25 +81,25 @@ public class DeckController {
             e.printStackTrace();
         }
         return null;
+
     }
 
     public static void removeCardFromMainDeck(String cardName, String deckName) {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("D " + MainMenuController.token + "deck rm-card --card " + cardName + " --deck " + deckName);
-            RegisterAndLoginView.dataInputStream.readUTF();
-            String string =RegisterAndLoginView.dataInputStream.readUTF();
+            String string = RegisterAndLoginView.dataInputStream.readUTF();
             if (MainMenuController.isSuccessful(string)){
                 UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).removeCardFromMain(cardName);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public static void removeCardFromSideDeck(String cardName, String deckName) {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("D " + MainMenuController.token + "deck rm-card --card " + cardName + " --deck " + deckName + " --side");
-            RegisterAndLoginView.dataInputStream.readUTF();
             String string =RegisterAndLoginView.dataInputStream.readUTF();
             if (MainMenuController.isSuccessful(string)){
                 UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).removeCardFromSide(cardName);
@@ -102,6 +107,7 @@ public class DeckController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 }

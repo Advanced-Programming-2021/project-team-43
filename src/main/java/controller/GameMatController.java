@@ -65,7 +65,7 @@ public class GameMatController {
         return 39;
     }
 
-    private static ArrayList<Object> getObjects() {
+    public static ArrayList<Object> getObjects() {
         ArrayList<Object> objects = new ArrayList<>();
         objects.add(GameMatModel.getGameMatByNickname(onlineUser));
         objects.add(HandCardZone.getHandCardZoneByName(onlineUser));
@@ -84,7 +84,7 @@ public class GameMatController {
 
     }
 
-    private static void setObjects(ArrayList<Object> objects) {
+    public static void setObjects(ArrayList<Object> objects) {
         GameMatModel.setObject(MainMenuController.username, (GameMatModel) objects.get(0));
         HandCardZone.setObject(MainMenuController.username, (HandCardZone) objects.get(1));
         MonsterZoneCard.setObject(MainMenuController.username, (MonsterZoneCard) objects.get(2));
@@ -164,7 +164,7 @@ public class GameMatController {
             //
             if (currentPhase.name().equals("Main_Phase2")) {
                 System.out.println(onlineUser);
-              //  gameMatView.start(GameMatView.gameMatStage);//not rotate
+                //  gameMatView.start(GameMatView.gameMatStage);//not rotate
                 gameMatView.showGameBoard();
             }
             String answer = RegisterAndLoginView.dataInputStream.readUTF();

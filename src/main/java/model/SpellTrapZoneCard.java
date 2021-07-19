@@ -20,7 +20,7 @@ public class SpellTrapZoneCard implements Serializable {
     private int turnCounter = 0;
     private boolean isSetInThisTurn;
     public final Map<String, Integer> relatedMonsterAddress = new HashMap<>();
-    public static final Map<String, Map<Integer, SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
+    public static Map<String, Map<Integer, SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
     private static HashMap<String, SpellTrapZoneCard> objects = new HashMap<>();
 
     public SpellTrapZoneCard(String playerNickname, String spellTrapName, String mode) {

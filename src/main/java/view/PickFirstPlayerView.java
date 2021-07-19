@@ -1,5 +1,4 @@
 package view;
-
 import controller.GameMatController;
 import controller.MainMenuController;
 import javafx.application.Application;

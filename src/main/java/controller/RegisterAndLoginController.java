@@ -33,7 +33,6 @@ public class RegisterAndLoginController {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("R user login --username " + username + " --password " + password);
             String output = RegisterAndLoginView.dataInputStream.readUTF();
-            System.out.println("Output:" + output);
             Pattern pattern = Pattern.compile("user logged in successfully!(.+)");
             Matcher matcher = pattern.matcher(output);
             if (matcher.find()) {
@@ -54,7 +53,6 @@ public class RegisterAndLoginController {
             RegisterAndLoginView.dataOutputStream.writeUTF(MainMenuController.token);
             RegisterAndLoginView.dataOutputStream.flush();
             Object object = RegisterAndLoginView.objectInputStream.readObject();
-            System.out.println((UserModel)object);
             UserModel userModel = (UserModel) object;
             if (UserModel.allUsersInfo.containsKey(userModel.getUsername())) {
                 UserModel.allUsersInfo.replace(userModel.getUsername(), userModel);
@@ -72,7 +70,6 @@ public class RegisterAndLoginController {
             RegisterAndLoginView.dataOutputStream.flush();
             Object object = RegisterAndLoginView.objectInputStream.readObject();
             HashMap<String, DeckModel> hashMap = (HashMap<String, DeckModel>) object;
-            System.out.println(hashMap.size());
             UserModel.getUserByUsername(MainMenuController.username).userAllDecks= (HashMap<String, DeckModel>) object;
         } catch (Exception e) {
             e.printStackTrace();

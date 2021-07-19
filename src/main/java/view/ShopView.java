@@ -33,6 +33,11 @@ public class ShopView extends Application {
     public Label moneyLbl;
     public Label priceLbl;
     public TextField cardNameTxt;
+    public Button setUnAvailableBtn;
+    public Button changeBtn;
+    public Button setAvailable;
+    public TextField amountTxt;
+    public Label errorLbl;
     private boolean isShowBtnPressed;
     private UserModel user;
     private final List<Image> cardImages = new ArrayList<>();
@@ -86,6 +91,12 @@ public class ShopView extends Application {
         priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(0))).getPrice());
         buyBtn.setDisable(Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(0))).getPrice() > user.getUserCoin());
         shopPane.getChildren().add(cardImgView);
+        if (!user.getUsername().equals("Admin")) {
+            setAvailable.setVisible(false);
+            setUnAvailableBtn.setVisible(false);
+            changeBtn.setVisible(false);
+            amountTxt.setVisible(false);
+        }
     }
 
     public void pressPreviousBtn() {
@@ -186,6 +197,32 @@ public class ShopView extends Application {
             messageLbl.setText("");
         }
         cardNameTxt.clear();
+    }
+
+    public void pressAvailableBtn() {
+        errorLbl.setText(ShopController.setAvailable(ShowCardsView.getNameByImage(cardImages.get(imageCounter))));
+    }
+
+    public void pressUnavailableBtn() {
+        errorLbl.setText(ShopController.setUnavailable(ShowCardsView.getNameByImage(cardImages.get(imageCounter))));
+    }
+
+    public void pressChangeBtn() {
+        String text = amountTxt.getText();
+        if (!text.matches("\\d+"))
+            errorLbl.setText("Wrong Amount!");
+        else {
+            errorLbl.setText(ShopController.changeAmount(ShowCardsView.getNameByImage(cardImages.get(imageCounter)), Integer.parseInt(amountTxt.getText())));
+        }
+    }
+
+    public void pressSellBtn() {
+        messageLbl.setText(ShopController.sell(ShowCardsView.getNameByImage(cardImages.get(imageCounter))));
+        moneyLbl.setText("Coin: " + user.getUserCoin());
+        moneyLbl.setTextFill(Color.rgb(255, coinLblOpacity, 0));
+        coinLblOpacity += 10;
+        if (coinLblOpacity > 255)
+            coinLblOpacity = 255;
     }
 
 }

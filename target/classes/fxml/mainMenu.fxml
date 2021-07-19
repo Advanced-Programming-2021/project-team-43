@@ -66,6 +66,11 @@
                         <Font name="Bodoni MT" size="20.0" />
                     </font>
                 </Button>
+            <Button fx:id="tvBtn" focusTraversable="false" mnemonicParsing="false" onAction="#TV" prefHeight="21.0" prefWidth="167.0" text="TV">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
                 <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#LogOut" prefHeight="21.0" prefWidth="167.0" text="Log out">
                     <font>
                         <Font name="Bodoni MT" size="20.0" />

@@ -133,10 +133,13 @@ public class GameMatView extends Application {
         gameMatStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
         gameMatStage.setResizable(false);
         gameMatStage.setScene(scene);
+        System.out.println(";;;;;;;;;;;");
         gameMatStage.show();
+        System.out.println("............");
     }
 
     public void initialize() {
+        System.out.println("first initialise");
         mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_ANY);
             public void handle(KeyEvent ke) {
@@ -147,29 +150,30 @@ public class GameMatView extends Application {
                     isVBoxVisible = true;
                     haveQuestion = false;
                     clickOnPane();
-                    okBtn.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            okBtn();
-                        }
-                    });
+                    okBtn.setOnAction(actionEvent -> okBtn());
                 }
             }
         });
+        System.out.println("pppppp");
         Random random = new Random();
         int x = random.nextInt(14) + 1;
         Image boardImg = new Image(Objects.requireNonNull(getClass().getResource("/images/gameboard/g" + x + ".jpg")).toExternalForm());
         Background background = new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false)));
         boardPane.setBackground(background);
         setUpImagesInArray();
+        System.out.println(".....................................");
+        System.out.println(UserModel.getUserByNickname(GameMatController.onlineUser).getImageUrl());
+        System.out.println(UserModel.getUserByNickname(GameMatController.rivalUser).getImageUrl());
         onlineUserAvatarImg.setImage((new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(GameMatController.onlineUser).getImageUrl())).toExternalForm())));
         rivalUserAvatarImg.setImage((new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(GameMatController.rivalUser).getImageUrl())).toExternalForm())));
+        System.out.println("kkkkkkkkkkkkkkkkkkkkkkk");
         rivalUserNameLbl.setText("username: " + UserModel.getUserByNickname(GameMatController.rivalUser).getUsername() + "\nnickname: " + GameMatController.rivalUser);
         onlineUserNameLbl.setText("username: " + UserModel.getUserByNickname(GameMatController.onlineUser).getUsername() + "\nnickname: " + GameMatController.onlineUser);
         questionLbl.setVisible(false);
         okBtn.setVisible(false);
         cancelBtn.setVisible(false);
         answerTxt.setVisible(false);
+        System.out.println("mmmmmmmmmmmmmmmmm");
         showGameBoard();
     }
 
@@ -247,6 +251,7 @@ public class GameMatView extends Application {
         setRivalHand(rivalHand);
         rivalDeckSize.setText(String.valueOf(rivalPlayer.getNumberOfMainDeckCards()));
         onlineDeckSize.setText(String.valueOf(onlinePlayer.getNumberOfMainDeckCards()));
+        System.out.println("ppppppppppppppppppppppppp");
         clickOnOwnMonster();
         dragAndDropHandCard();
         setRivalMonsterImageNull();
@@ -289,19 +294,16 @@ public class GameMatView extends Application {
                     imageView.setFitHeight(111);
                 }
                 int finalI = i + 1;
-                allOwnMonstersZone.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        GameMatController.selectMonsterCard(finalI, true);
-                        selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName()).getImage());
-                        selectedCardImage.setFitHeight(280);
-                        selectedCardImage.setFitWidth(210);
-                        selectedCardAddress = finalI;
-                        flipSummonBtn.setVisible(true);
-                        changeToABtn.setVisible(true);
-                        changeToDBtn.setVisible(true);
-                        ownMonsterAddressResponse.add(finalI);
-                    }
+                allOwnMonstersZone.get(i).setOnMouseClicked(mouseEvent -> {
+                    GameMatController.selectMonsterCard(finalI, true);
+                    selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName()).getImage());
+                    selectedCardImage.setFitHeight(280);
+                    selectedCardImage.setFitWidth(210);
+                    selectedCardAddress = finalI;
+                    flipSummonBtn.setVisible(true);
+                    changeToABtn.setVisible(true);
+                    changeToDBtn.setVisible(true);
+                    ownMonsterAddressResponse.add(finalI);
                 });
                 allOwnMonstersZone.get(i).setImage(imageView.getImage());
             }
