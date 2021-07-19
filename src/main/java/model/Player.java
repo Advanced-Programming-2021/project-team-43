@@ -50,7 +50,8 @@ public class Player  implements Serializable {
 
 
     public static void setObject(String playerNickName, Player player) {
-        allPlayers.put(playerNickName, player);
+        if (!allPlayers.containsKey(playerNickName))
+            allPlayers.put(playerNickName, player);
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {

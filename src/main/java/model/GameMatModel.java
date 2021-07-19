@@ -13,14 +13,15 @@ public class GameMatModel implements Serializable  {
     public String fieldZone = "";
     private int numberOfDeadMonsterThisTurn = 0;
     public final List<String> graveyard = new ArrayList<>();
-    public static final Map<String, GameMatModel> playerGameMat = new HashMap<>();
+    public static final HashMap<String, GameMatModel> playerGameMat = new HashMap<>();
 
     public GameMatModel (String playerNickname) {
         this.phase = Phase.Draw_Phase;
         playerGameMat.put(playerNickname, this);
     }
-    public static void setObject(String playerNickName,GameMatModel gameMatModel){
-        playerGameMat.put(playerNickName,gameMatModel);
+    public static void setObject(String playerNickName, GameMatModel gameMatModel) {
+        if (!playerGameMat.containsKey(playerNickName))
+            playerGameMat.put(playerNickName, gameMatModel);
     }
 
     public List<String> getGraveyard() {

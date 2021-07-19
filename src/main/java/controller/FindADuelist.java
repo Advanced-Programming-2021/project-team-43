@@ -1,13 +1,8 @@
 package controller;
 
 import model.UserModel;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+
 
 public class FindADuelist {
 
@@ -18,6 +13,11 @@ public class FindADuelist {
     public static ArrayList<String> threeRoundPlayer = new ArrayList<>();
     public static final LinkedList<String> linkedList = new LinkedList<>();
 
+//    public ArrayList<String> requested=new ArrayList<>();
+//    public String find(String token){
+//        requested.add(Run.userByToken(token));
+//
+//    }
 
     public static synchronized ArrayList<Object> run(String onlineToken, int roundNumber) {
         if (waitingPlayerToken.size() == 1 && waitingPlayerToken.containsKey(onlineToken)) {
@@ -59,7 +59,7 @@ public class FindADuelist {
         synchronized (linkedList) {
             linkedList.addLast(token);
 
-                linkedList.notify();
+            linkedList.notify();
         }
     }
 
@@ -143,5 +143,6 @@ public class FindADuelist {
         }
         return null;
     }
+
 
 }

@@ -26,7 +26,8 @@ public class HandCardZone  implements Serializable {
     }
 
     public static void setObject(String playerNickname, HandCardZone handCardZone) {
-        objects.put(playerNickname, handCardZone);
+        if (!objects.containsKey(playerNickname))
+            objects.put(playerNickname, handCardZone);
     }
 
     public String getCardName() {

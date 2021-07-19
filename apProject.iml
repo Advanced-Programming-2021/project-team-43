@@ -25,5 +25,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-media:15.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-media:win:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.36.0.1" level="project" />
   </component>
 </module>

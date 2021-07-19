@@ -51,8 +51,9 @@ public class MonsterZoneCard  implements Serializable {
         objects.put(playerNickname,this);
     }
 
-    public static void setObject(String playerNickname,MonsterZoneCard monsterZoneCard){
-        objects.put(playerNickname,monsterZoneCard);
+    public static void setObject(String playerNickname, MonsterZoneCard monsterZoneCard) {
+        if (!objects.containsKey(playerNickname))
+            objects.put(playerNickname,monsterZoneCard);
     }
 
     public String getMonsterName() {

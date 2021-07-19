@@ -41,8 +41,9 @@ public class SpellTrapZoneCard  implements Serializable {
         objects.put(playerNickname, this);
     }
 
-    public static void setObject(String playerNickname,SpellTrapZoneCard spellTrapZoneCard){
-        objects.put(playerNickname,spellTrapZoneCard);
+    public static void setObject(String playerNickname,SpellTrapZoneCard spellTrapZoneCard) {
+        if (!objects.containsKey(playerNickname))
+            objects.put(playerNickname,spellTrapZoneCard);
     }
     public String getSpellTrapName() {
         return spellTrapName;

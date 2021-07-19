@@ -21,15 +21,15 @@ public class UserModel implements Serializable {
     private boolean isOnline;
     private int sequentialWin = 0;
     private int sequentialLost = 0;
-    private static int invitationCounter = 0;
     private final HashMap<String, Integer> myAchievements = new HashMap<>();
     private final HashMap<Integer, String> myInvitations = new HashMap<>();
     public HashMap<String, Integer> userAllCards = new HashMap<>();
     public HashMap<String, DeckModel> userAllDecks = new HashMap<>();
+    private static int invitationCounter = 0;
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
-    public static ArrayList <String> importedCards;
+    public static ArrayList<String> importedCards;
     private static final long serialVersionUID = 4778925288210528972L;
 
 
@@ -51,8 +51,9 @@ public class UserModel implements Serializable {
         Json.writeUserModelInfo(UserModel.allUsersInfo, UserModel.allUsernames, UserModel.allUsersNicknames);
     }
 
-    public static void setObject(UserModel userModel){
-        allUsersInfo.put(userModel.getUsername(), userModel);
+    public static void setObject(UserModel userModel) {
+        if (!allUsersInfo.containsKey(userModel.getUsername()))
+            allUsersInfo.put(userModel.getUsername(), userModel);
     }
 
     public String getUsername() {
@@ -216,11 +217,11 @@ public class UserModel implements Serializable {
     }
 
     public void resetSequentialLost() {
-        sequentialWin = 0;
+        sequentialLost = 0;
     }
 
     public int getSequentialLost() {
-        return sequentialWin;
+        return sequentialLost;
     }
 
     public boolean isUserHaveCard(String cardName) {
