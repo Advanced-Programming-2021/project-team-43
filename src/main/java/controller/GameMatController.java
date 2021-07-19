@@ -15,8 +15,8 @@ public class GameMatController {
 
     public static String selectedOwnCard = "";
     public static String selectedRivalCard = "";
-    public static String onlineUser = "";
-    public static String rivalUser = "";
+    public static String onlineUser = MainMenuController.username;
+    public static String rivalUser = MainMenuController.username2;
     public static String command;
     private static String response;
     private static Matcher matcher;
@@ -68,17 +68,17 @@ public class GameMatController {
     public static ArrayList<Object> getObjects() {
         ArrayList<Object> objects = new ArrayList<>();
         objects.add(GameMatModel.getGameMatByNickname(onlineUser));
-        objects.add(HandCardZone.getHandCardZoneByName(onlineUser));
-        objects.add(MonsterZoneCard.getMonsterZoneCardByName(onlineUser));
+        objects.add(HandCardZone.getAllHandCardZoneByName(onlineUser));
+        objects.add(MonsterZoneCard.getAllMonstersByPlayerName(onlineUser));
         objects.add(Player.getPlayerByName(onlineUser));
-        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(onlineUser));
+        objects.add(SpellTrapZoneCard.getAllSpellTrapByPlayerName(onlineUser));
         objects.add(UserModel.getUserByNickname(onlineUser));
 
         objects.add(GameMatModel.getGameMatByNickname(rivalUser));
-        objects.add(HandCardZone.getHandCardZoneByName(rivalUser));
-        objects.add(MonsterZoneCard.getMonsterZoneCardByName(rivalUser));
+        objects.add(HandCardZone.getAllHandCardZoneByName(rivalUser));
+        objects.add(MonsterZoneCard.getAllMonstersByPlayerName(rivalUser));
         objects.add(Player.getPlayerByName(rivalUser));
-        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(rivalUser));
+        objects.add(SpellTrapZoneCard.getAllSpellTrapByPlayerName(rivalUser));
         objects.add(UserModel.getUserByNickname(rivalUser));
         return objects;
 
@@ -86,17 +86,17 @@ public class GameMatController {
 
     public static void setObjects(ArrayList<Object> objects) {
         GameMatModel.setObject(MainMenuController.username, (GameMatModel) objects.get(0));
-        HandCardZone.setObject(MainMenuController.username, (HandCardZone) objects.get(1));
-        MonsterZoneCard.setObject(MainMenuController.username, (MonsterZoneCard) objects.get(2));
+        HandCardZone.setObject(MainMenuController.username, (List<HandCardZone>) objects.get(1));
+        MonsterZoneCard.setObject(MainMenuController.username, ( Map<Integer, MonsterZoneCard>) objects.get(2));
         Player.setObject(MainMenuController.username, (Player) objects.get(3));
-        SpellTrapZoneCard.setObject(MainMenuController.username, (SpellTrapZoneCard) objects.get(4));
+        SpellTrapZoneCard.setObject(MainMenuController.username, ( Map<Integer, SpellTrapZoneCard>) objects.get(4));
         UserModel.setObject((UserModel) objects.get(5));
 
-        GameMatModel.setObject(MainMenuController.username2, (GameMatModel) objects.get(6));
-        HandCardZone.setObject(MainMenuController.username2, (HandCardZone) objects.get(7));
-        MonsterZoneCard.setObject(MainMenuController.username2, (MonsterZoneCard) objects.get(8));
-        Player.setObject(MainMenuController.username2, (Player) objects.get(9));
-        SpellTrapZoneCard.setObject(MainMenuController.username2, (SpellTrapZoneCard) objects.get(10));
+        GameMatModel.setObject(rivalUser, (GameMatModel) objects.get(6));
+        HandCardZone.setObject(rivalUser, (List<HandCardZone>) objects.get(7));
+        MonsterZoneCard.setObject(rivalUser, ( Map<Integer, MonsterZoneCard>) objects.get(8));
+        Player.setObject(rivalUser, (Player) objects.get(9));
+        SpellTrapZoneCard.setObject(rivalUser, ( Map<Integer, SpellTrapZoneCard>) objects.get(10));
         UserModel.setObject((UserModel) objects.get(11));
     }
 
@@ -664,6 +664,5 @@ public class GameMatController {
 //        }
 //        return 0;
 //    }
-
 
 }

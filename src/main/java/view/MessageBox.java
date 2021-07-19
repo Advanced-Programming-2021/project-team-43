@@ -3,6 +3,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -34,13 +35,14 @@ public class MessageBox {
         this.chatRoom = chatRoom;
         avatar = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(sender.getImageUrl())).toExternalForm()));
         setImageSize(30, 30);
+        setUpReplyLbl(chatRoom);
         setMessageLblStyle(message);
         createLabels();
         setUpActions();
-        setUpReplyLbl();
         setUpOptionVBox();
         hBox = new HBox(avatar, messageLbl);
         hBox.setSpacing(5);
+        hBox.setPrefHeight(35);
         hBox.getChildren().add(replyMessage);
     }
 
@@ -74,7 +76,7 @@ public class MessageBox {
 
     public void deleteMessage() {
         allMassages.remove(this);
-        LobbyView.lobbyView.messageVBox.getChildren().remove(hBox);
+        ChatRoomView.chatRoomView.messageVBox.getChildren().remove(hBox);
     }
 
     public void editMessage() {
@@ -86,7 +88,7 @@ public class MessageBox {
     }
 
     public void pin() {
-        LobbyView.pinnedMessage = messageLbl.getText();
+        ChatRoomView.pinnedMessage = messageLbl.getText();
     }
 
     public void removeOptionBox() {
@@ -113,11 +115,9 @@ public class MessageBox {
         optionVBox.getChildren().addAll(deleteLbl, editLbl, replyLbl, pinLbl);
     }
 
-    public void setUpReplyLbl() {
-        if (ChatRoom.getReplyMessageBySenderAndMessage(sender, messageLbl.getText()) != null)
-            replyMessage = new Label(ChatRoom.getReplyMessageBySenderAndMessage(sender, messageLbl.getText()));
-        else
-            replyMessage = new Label("");
+    public void setUpReplyLbl(ChatRoom chatRoom) {
+        System.out.println(chatRoom.getReplyMessage());
+        replyMessage = new Label(chatRoom.getReplyMessage());
         replyMessage.setVisible(false);
         replyMessage.setPrefWidth(300);
         replyMessage.setPrefHeight(35);
@@ -139,7 +139,7 @@ public class MessageBox {
     }
 
     public void setMessageLblStyle(String message) {
-        messageLbl = new Label("(" + sender.getNickname() + ")\n" + message);
+        messageLbl = new Label("-" + sender.getNickname() + "-\n" + message);
         messageLbl.setStyle("-fx-background-color: #66ffff");
         messageLbl.setPrefWidth(500);
         messageLbl.setPrefHeight(35);
@@ -163,7 +163,7 @@ public class MessageBox {
     }
 
     public void clickOnMessage() {
-        LobbyView.focusedLbl = messageLbl;
+        ChatRoomView.focusedLbl = messageLbl;
         optionVBox.setPrefWidth(53);
         optionVBox.setPrefHeight(101);
         optionVBox.setStyle("-fx-background-color: #003333");

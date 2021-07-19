@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -8,40 +7,6 @@
 
 <AnchorPane fx:id="lobbyPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LobbyView">
     <children>
-        <ScrollPane fx:id="scrollPane" layoutX="14.0" layoutY="14.0" prefHeight="719.0" prefWidth="471.0">
-            <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="710.0" prefWidth="470.0">
-                    <children>
-                        <Button fx:id="sendBtn" focusTraversable="false" layoutX="379.0" layoutY="660.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="28.0" prefWidth="63.0" text="Send">
-                            <font>
-                                <Font name="Bodoni MT" size="15.0" />
-                            </font>
-                        </Button>
-                        <TextField fx:id="messageTxt" focusTraversable="false" layoutX="6.0" layoutY="660.0" prefHeight="27.0" prefWidth="374.0" promptText="message">
-                            <cursor>
-                                <Cursor fx:constant="TEXT" />
-                            </cursor>
-                        </TextField>
-                        <VBox fx:id="messageVBox" layoutX="1.0" layoutY="95.0" prefHeight="552.0" prefWidth="458.0" spacing="5.0" />
-                        <Label layoutY="-1.0" prefHeight="61.0" prefWidth="139.0" style="-fx-background-color: #006666;" text="Online Users: " textFill="WHITE">
-                            <font>
-                                <Font name="Bodoni MT" size="22.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="pinHeadLbl" layoutY="60.0" prefHeight="33.0" prefWidth="456.0" style="-fx-background-color: #00b3b3;" wrapText="true">
-                            <font>
-                                <Font name="Bodoni MT" size="18.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="headLbl" layoutX="139.0" layoutY="-1.0" prefHeight="61.0" prefWidth="318.0" style="-fx-background-color: #006666;" textFill="WHITE">
-                            <font>
-                                <Font name="Bodoni MT" size="22.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </AnchorPane>
-            </content>
-        </ScrollPane>
         <AnchorPane layoutX="589.0" layoutY="14.0" prefHeight="278.0" prefWidth="235.0">
             <children>
                 <Label fx:id="findDuelistLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="88.0" onMouseClicked="#findADuelist" prefHeight="39.0" prefWidth="139.0" text="Find Me A Duelist" textAlignment="CENTER">
@@ -77,34 +42,52 @@
                         <Font name="Bodoni MT" size="15.0" />
                     </font>
                 </Label>
-                <Button fx:id="cancelBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="85.0" layoutY="230.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" visible="false">
+                <Button fx:id="cancelBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="74.0" layoutY="230.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="87.0" text="Cancel">
                     <font>
                         <Font name="Bodoni MT" size="16.0" />
                     </font>
                 </Button>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="userPane" layoutX="624.0" layoutY="426.0" prefHeight="172.0" prefWidth="235.0">
+
+        <Button focusTraversable="false" layoutX="867.0" layoutY="676.0" mnemonicParsing="false" onAction="#back" prefHeight="35.0" prefWidth="80.0" text="Back">
+            <font>
+                <Font name="Bodoni MT" size="18.0" />
+            </font>
+        </Button>
+        <VBox fx:id="vBox" layoutX="14.0" prefHeight="744.0" prefWidth="468.0" spacing="15.0">
             <children>
-                <ImageView fx:id="userImage" fitHeight="101.0" fitWidth="94.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-                <Label fx:id="infoLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="108.0" layoutY="12.0" prefHeight="88.0" prefWidth="116.0" textAlignment="CENTER" wrapText="true">
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="82.0" prefWidth="469.0" text="Lets Play!" textAlignment="CENTER">
                     <font>
-                        <Font name="Bodoni MT" size="15.0" />
+                        <Font name="Bodoni MT" size="66.0" />
                     </font>
                 </Label>
             </children>
-        </AnchorPane>
-        <Button focusTraversable="false" layoutX="902.0" layoutY="656.0" mnemonicParsing="false" onAction="#back" prefHeight="30.0" prefWidth="67.0" text="Back">
+        </VBox>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="571.0" layoutY="380.0" prefHeight="52.0" prefWidth="270.0" text="Want to send an Invitation?" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT" size="22.0" />
+            </font>
+        </Label>
+        <Button fx:id="sendBtn" focusTraversable="false" layoutX="681.0" layoutY="518.0" mnemonicParsing="false" onMouseClicked="#send" text="Send">
             <font>
                 <Font name="Bodoni MT" size="15.0" />
             </font>
         </Button>
-      <Button layoutX="511.0" layoutY="612.0" mnemonicParsing="false" onAction="#updateOnline" text="Update" />
-      <Label fx:id="matchLbl" layoutX="566.0" layoutY="387.0" prefHeight="30.0" prefWidth="77.0" />
-      <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="793.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#goToInvitations" text="My Invitations" textAlignment="CENTER">
-         <font>
-            <Font name="Bodoni MT" size="17.0" />
-         </font>
-      </Button>
+        <TextField fx:id="rivalNameTxt" focusTraversable="false" layoutX="616.0" layoutY="465.0" promptText="rival username">
+            <font>
+                <Font name="Bodoni MT" size="14.0" />
+            </font>
+        </TextField>
+        <Label fx:id="errorLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="565.0" layoutY="565.0" prefHeight="61.0" prefWidth="283.0" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT" size="17.0" />
+            </font>
+        </Label>
+        <ImageView fitHeight="35.0" fitWidth="31.0" layoutX="420.0" layoutY="30.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/refresh.png" />
+            </image>
+        </ImageView>
     </children>
 </AnchorPane>

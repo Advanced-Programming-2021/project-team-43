@@ -1,7 +1,7 @@
 package view;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import controller.MainMenuController;
 import controller.SetCards;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -22,13 +22,13 @@ import javafx.stage.Stage;
 import model.MonsterCard;
 import model.SpellCard;
 import model.TrapCard;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 
 public class ImportCardView extends Application {
 
@@ -45,50 +45,42 @@ public class ImportCardView extends Application {
         final Text target = new Text(100, 100, "DROP CARD'S FILE HERE");
         target.setScaleX(2.0);
         target.setScaleY(2.0);
-        target.setOnDragOver(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-                if (event.getGestureSource() != target &&
-                        event.getDragboard().hasFiles()) {
-                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                }
-                event.consume();
+        target.setOnDragOver(event -> {
+            if (event.getGestureSource() != target &&
+                    event.getDragboard().hasFiles()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
+            event.consume();
         });
-        target.setOnDragEntered(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-                if (event.getGestureSource() != target &&
-                        event.getDragboard().hasFiles()) {
-                    target.setFill(Color.RED);
-                }
-                event.consume();
+        target.setOnDragEntered(event -> {
+            if (event.getGestureSource() != target &&
+                    event.getDragboard().hasFiles()) {
+                target.setFill(Color.RED);
             }
+            event.consume();
         });
 
-        target.setOnDragExited(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-                target.setFill(Color.BLACK);
-                event.consume();
-            }
+        target.setOnDragExited(event -> {
+            target.setFill(Color.BLACK);
+            event.consume();
         });
 
-        target.setOnDragDropped(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-                Dragboard file = event.getDragboard();
-                boolean success = false;
-                if (file.hasFiles()) {
-                    dragboard = file;
-                    try {
-                        show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    target.setText("File Imported");
-                    success = true;
-
+        target.setOnDragDropped(event -> {
+            Dragboard file = event.getDragboard();
+            boolean success = false;
+            if (file.hasFiles()) {
+                dragboard = file;
+                try {
+                    show();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                event.setDropCompleted(success);
-                event.consume();
+                target.setText("File Imported");
+                success = true;
+
             }
+            event.setDropCompleted(success);
+            event.consume();
         });
         root.getChildren().add(target);
         stage.setScene(scene);
@@ -155,6 +147,7 @@ public class ImportCardView extends Application {
         stage.sizeToScene();
         stage.show();
     }
+
     public boolean isSpellTrap(String description2) {
         return SpellCard.getSpellCardByName(description2) != null ||
                 TrapCard.getTrapCardByName(description2) != null;

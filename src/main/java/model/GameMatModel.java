@@ -21,6 +21,7 @@ public class GameMatModel implements Serializable  {
 
     public static void setObject(String playerNickName,GameMatModel gameMatModel){
         playerGameMat.put(playerNickName,gameMatModel);
+        System.out.println("csxsxsxsxsxsxsxsxsxsxsxsxsxs");
     }
 
     public List<String> getGraveyard() {

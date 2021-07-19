@@ -296,5 +296,4 @@ public class Player  implements Serializable {
     public static Player getPlayerByName(String playerNickname) {
         return allPlayers.get(playerNickname);
     }
-
 }

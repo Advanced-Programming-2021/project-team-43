@@ -29,13 +29,8 @@
                 <Font name="Bodoni MT" size="50.0" />
             </font>
         </Label>
-        <VBox alignment="CENTER" layoutX="69.0" layoutY="212.0" prefHeight="318.0" prefWidth="196.0" spacing="10.0">
+        <VBox alignment="CENTER" layoutX="69.0" layoutY="155.0" prefHeight="318.0" prefWidth="196.0" spacing="10.0">
             <children>
-                <Button fx:id="duelBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Duel" prefHeight="21.0" prefWidth="167.0" text="Duel" textAlignment="CENTER">
-                    <font>
-                        <Font name="Bodoni MT" size="20.0" />
-                    </font>
-                </Button>
                 <Button fx:id="profileBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Profile" prefHeight="21.0" prefWidth="167.0" text="Profile">
                     <font>
                         <Font name="Bodoni MT" size="20.0" />
@@ -51,26 +46,36 @@
                         <Font name="Bodoni MT" size="20.0" />
                     </font>
                 </Button>
-                <Button fx:id="scoreboardBtn" focusTraversable="false" mnemonicParsing="false" onAction="#Scoreboard" prefHeight="21.0" prefWidth="167.0" text="Scoreboard">
-                    <font>
-                        <Font name="Bodoni MT" size="20.0" />
-                    </font>
-                </Button>
-                <Button fx:id="cardBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#card" prefHeight="21.0" prefWidth="167.0" text="Card" textAlignment="CENTER">
-                    <font>
-                        <Font name="Bodoni MT" size="20.0" />
-                    </font>
-                </Button>
                 <Button fx:id="lobbyBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#lobby" prefHeight="21.0" prefWidth="167.0" text="Lobby" textAlignment="CENTER">
                     <font>
                         <Font name="Bodoni MT" size="20.0" />
                     </font>
                 </Button>
+                <Button fx:id="chatroomBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Chatroom" prefHeight="21.0" prefWidth="167.0" text="Chatroom" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+                <Button fx:id="scoreboardBtn" focusTraversable="false" mnemonicParsing="false" onAction="#Scoreboard" prefHeight="21.0" prefWidth="167.0" text="Scoreboard">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+            <Button fx:id="auctionBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="24.0" layoutY="10.0" mnemonicParsing="false" onAction="#auction" prefHeight="21.0" prefWidth="167.0" text="Auction" textAlignment="CENTER">
+               <font>
+                  <Font name="Bodoni MT" size="20.0" />
+               </font>
+            </Button>
             <Button fx:id="tvBtn" focusTraversable="false" mnemonicParsing="false" onAction="#TV" prefHeight="21.0" prefWidth="167.0" text="TV">
                <font>
                   <Font name="Bodoni MT" size="20.0" />
                </font>
             </Button>
+                <Button fx:id="cardBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#card" prefHeight="21.0" prefWidth="167.0" text="Card" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
                 <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#LogOut" prefHeight="21.0" prefWidth="167.0" text="Log out">
                     <font>
                         <Font name="Bodoni MT" size="20.0" />

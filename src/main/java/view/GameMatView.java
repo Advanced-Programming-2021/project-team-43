@@ -1,8 +1,8 @@
 package view;
 import controller.GameMatController;
+import controller.MainMenuController;
 import javafx.animation.*;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +23,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -108,8 +107,8 @@ public class GameMatView extends Application {
     private int rivalMonsterAddress = 0;
     public MenuItem menuItem = new MenuItem();
     private int selectedCardAddress;
-    private Player onlinePlayer;
-    private Player rivalPlayer;
+    private Player onlinePlayer=Player.getPlayerByName(MainMenuController.username);
+    private Player rivalPlayer=Player.getPlayerByName(MainMenuController.username2);
     private GameMatModel ownGameMat;
     private GameMatModel rivalGameMat;
     private boolean isGameOver;
@@ -121,6 +120,8 @@ public class GameMatView extends Application {
     private final ArrayList<Integer> rivalSpellAddressResponse = new ArrayList<>();
     private final ArrayList<Integer> ownMonsterAddressResponse = new ArrayList<>();
     private final ArrayList<Integer> ownSpellAddressResponse = new ArrayList<>();
+    private String onlineName;
+    private String rivalName;
 
 
     @Override
@@ -133,13 +134,15 @@ public class GameMatView extends Application {
         gameMatStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
         gameMatStage.setResizable(false);
         gameMatStage.setScene(scene);
-        System.out.println(";;;;;;;;;;;");
         gameMatStage.show();
-        System.out.println("............");
     }
 
     public void initialize() {
-        System.out.println("first initialise");
+        onlineName = UserModel.getUserByUsername(MainMenuController.username).getNickname();
+        if (onlineName.equals(GameMatController.onlineUser))
+            rivalName = GameMatController.rivalUser;
+        else
+            rivalName = GameMatController.onlineUser;
         mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_ANY);
             public void handle(KeyEvent ke) {
@@ -154,26 +157,20 @@ public class GameMatView extends Application {
                 }
             }
         });
-        System.out.println("pppppp");
         Random random = new Random();
         int x = random.nextInt(14) + 1;
         Image boardImg = new Image(Objects.requireNonNull(getClass().getResource("/images/gameboard/g" + x + ".jpg")).toExternalForm());
         Background background = new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false)));
         boardPane.setBackground(background);
         setUpImagesInArray();
-        System.out.println(".....................................");
-        System.out.println(UserModel.getUserByNickname(GameMatController.onlineUser).getImageUrl());
-        System.out.println(UserModel.getUserByNickname(GameMatController.rivalUser).getImageUrl());
-        onlineUserAvatarImg.setImage((new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(GameMatController.onlineUser).getImageUrl())).toExternalForm())));
-        rivalUserAvatarImg.setImage((new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(GameMatController.rivalUser).getImageUrl())).toExternalForm())));
-        System.out.println("kkkkkkkkkkkkkkkkkkkkkkk");
-        rivalUserNameLbl.setText("username: " + UserModel.getUserByNickname(GameMatController.rivalUser).getUsername() + "\nnickname: " + GameMatController.rivalUser);
-        onlineUserNameLbl.setText("username: " + UserModel.getUserByNickname(GameMatController.onlineUser).getUsername() + "\nnickname: " + GameMatController.onlineUser);
+        onlineUserAvatarImg.setImage((new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(onlineName).getImageUrl())).toExternalForm())));
+        rivalUserAvatarImg.setImage((new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(rivalName).getImageUrl())).toExternalForm())));
+        rivalUserNameLbl.setText("username: " + UserModel.getUserByNickname(rivalName).getUsername() + "\nnickname: " + rivalName);
+        onlineUserNameLbl.setText("username: " + UserModel.getUserByNickname(onlineName).getUsername() + "\nnickname: " + onlineName);
         questionLbl.setVisible(false);
         okBtn.setVisible(false);
         cancelBtn.setVisible(false);
         answerTxt.setVisible(false);
-        System.out.println("mmmmmmmmmmmmmmmmm");
         showGameBoard();
     }
 
@@ -184,12 +181,10 @@ public class GameMatView extends Application {
             for (ImageView imageView : allOwnMonstersZone)
                 if (imageView.getImage() == null)
                     imageView.setImage(choiceImage);
-        }
-        else if ((cardModel.equals("Spell") && SpellCard.getSpellCardByName(ShowCardsView.getNameByImage(selectedCardImage.getImage())).getIcon().equals("Field"))) {
+        } else if ((cardModel.equals("Spell") && SpellCard.getSpellCardByName(ShowCardsView.getNameByImage(selectedCardImage.getImage())).getIcon().equals("Field"))) {
             if (ownField.getImage() == null)
                 ownField.setImage(choiceImage);
-        }
-        else {
+        } else {
             for (ImageView imageView : allOwnSpellTrapZone)
                 if (imageView.getImage() == null)
                     imageView.setImage(choiceImage);
@@ -210,10 +205,11 @@ public class GameMatView extends Application {
         if (ownField.getImage() != null && ownField.getImage().equals(choiceImage)) {
             ownField.setImage(null);
         }
+
     }
 
     public void showGameBoard() {
-        if (counter == 0 && GameMatController.onlineUser.equals("AI")) {
+        if (counter == 0 && rivalName.equals("AI")) {
             try {
                 counter++;
                 AI();
@@ -224,7 +220,7 @@ public class GameMatView extends Application {
         } else {
             counter = 0;
         }
-        onlinePlayer = Player.getPlayerByName(GameMatController.onlineUser);
+        onlinePlayer = Player.getPlayerByName(onlineName);
         if (Player.isOneRound)
             roundLbl.setText("Round: 1");
         else {
@@ -235,23 +231,32 @@ public class GameMatView extends Application {
             else
                 roundLbl.setText("Round: 3");
         }
-        ownGameMat = GameMatModel.getGameMatByNickname(GameMatController.onlineUser);
-        rivalPlayer = Player.getPlayerByName(GameMatController.rivalUser);
-        rivalGameMat = GameMatModel.getGameMatByNickname(GameMatController.rivalUser);
-        rivalUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(GameMatController.rivalUser).getLifePoint());
-        onlineUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(GameMatController.onlineUser).getLifePoint());
+        ownGameMat = GameMatModel.getGameMatByNickname(onlineName);
+        rivalPlayer = Player.getPlayerByName(rivalName);
+        rivalGameMat = GameMatModel.getGameMatByNickname(rivalName);
+        rivalUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(rivalName).getLifePoint());
+        onlineUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(onlineName).getLifePoint());
         rivalUserLpLbl.setTextFill(Color.rgb(rivalUserRedOpacity, 255 - rivalUserRedOpacity, 0));
         onlineUserLpLbl.setTextFill(Color.rgb(onlineUserRedOpacity, 255 - onlineUserRedOpacity, 0));
         onlineHbox.getChildren().clear();
-        ArrayList<HandCardZone> onlineHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(GameMatController.onlineUser);
+        ArrayList<HandCardZone> onlineHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(onlineName);
+        for (HandCardZone handCardZone : onlineHand) {
+            System.out.println(handCardZone.getCardName());
+        }
         setOwnMonsterImageNull();
         setOwnHand(onlineHand);
         rivalHbox.getChildren().clear();
-        ArrayList<HandCardZone> rivalHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(GameMatController.rivalUser);
+        ArrayList<HandCardZone> rivalHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(rivalName);
+        for (HandCardZone handCardZone : rivalHand) {
+            System.out.println("pppppp");
+            System.out.println(handCardZone.getCardName());
+        }
+        System.out.println(onlineName);
+        System.out.println(rivalName);
+        System.out.println( HandCardZone.allHandCards.size());
         setRivalHand(rivalHand);
         rivalDeckSize.setText(String.valueOf(rivalPlayer.getNumberOfMainDeckCards()));
         onlineDeckSize.setText(String.valueOf(onlinePlayer.getNumberOfMainDeckCards()));
-        System.out.println("ppppppppppppppppppppppppp");
         clickOnOwnMonster();
         dragAndDropHandCard();
         setRivalMonsterImageNull();
@@ -266,13 +271,14 @@ public class GameMatView extends Application {
             GameMatController.round--;
             try {
                 new PickFirstPlayerView().start(gameMatStage);
-            }
-            catch (Exception ignored) {
+            } catch (Exception ignored) {
+
             }
         }
     }
 
     public void clickOnOwnMonster() {
+
         for (int i = 0; i < MonsterZoneCard.allMonsterCards.get(onlinePlayer.getNickname()).size(); i++) {
             MonsterZoneCard monsterZoneCard = MonsterZoneCard.allMonsterCards.get(onlinePlayer.getNickname()).get(i + 1);
             ImageView imageView;
@@ -310,7 +316,9 @@ public class GameMatView extends Application {
         }
     }
 
+
     public void clickOnRivalMonster() {
+
         for (int i = 0; i < MonsterZoneCard.allMonsterCards.get(rivalPlayer.getNickname()).size(); i++) {
             allRivalMonstersZone.get(i).setImage(null);
             MonsterZoneCard monsterZoneCard = MonsterZoneCard.allMonsterCards.get(rivalPlayer.getNickname()).get(i + 1);
@@ -351,7 +359,9 @@ public class GameMatView extends Application {
         }
     }
 
+
     public void clickOnOwnSpell() {
+
         for (int i = 0; i < SpellTrapZoneCard.allSpellTrapCards.get(onlinePlayer.getNickname()).size(); i++) {
             SpellTrapZoneCard spellTrapZoneCard = SpellTrapZoneCard.allSpellTrapCards.get(onlinePlayer.getNickname()).get(i + 1);
             ImageView imageView;
@@ -378,7 +388,9 @@ public class GameMatView extends Application {
         }
     }
 
+
     public void clickOnRivalSpell() {
+
         for (int i = 0; i < SpellTrapZoneCard.allSpellTrapCards.get(rivalPlayer.getNickname()).size(); i++) {
             SpellTrapZoneCard spellTrapZoneCard = SpellTrapZoneCard.allSpellTrapCards.get(rivalPlayer.getNickname()).get(i + 1);
             ImageView imageView;
@@ -407,7 +419,9 @@ public class GameMatView extends Application {
         }
     }
 
+
     public void setOwnHand(ArrayList<HandCardZone> onlineHand) {
+
         for (int i = 0; i < onlineHand.size(); i++) {
             ImageView imageView = new ImageView(ShowCardsView.getCardImageByName(onlineHand.get(i).getCardName()));
             imageView.setFitHeight(77);
@@ -431,6 +445,7 @@ public class GameMatView extends Application {
     }
 
     public void setRivalHand(ArrayList<HandCardZone> rivalHand) {
+
         for (int i = 0; i < rivalHand.size(); i++) {
             ImageView imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
             imageView.setFitHeight(77);
@@ -518,8 +533,7 @@ public class GameMatView extends Application {
             rivalField.setImage(null);
             boardImg = new Image(Objects.requireNonNull(getClass().getResource("/images/gameboard/g7.jpg")).toExternalForm());
             boardPane.setBackground(new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false))));
-        }
-        else {
+        } else {
             String field = rivalGameMat.getFieldZone();
             String[] split = field.split("/");
             if (split[1].equals("O")) {
@@ -542,16 +556,14 @@ public class GameMatView extends Application {
                         boardPane.setBackground(new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false))));
                         break;
                 }
-            }
-            else
+            } else
                 rivalField.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
         }
         if (ownGameMat.getFieldZone().isEmpty()) {
             ownField.setImage(null);
             boardImg = new Image(Objects.requireNonNull(getClass().getResource("/images/gameboard/g7.jpg")).toExternalForm());
             boardPane.setBackground(new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false))));
-        }
-        else {
+        } else {
             String field = ownGameMat.getFieldZone();
             String[] split = field.split("/");
             if (split[1].equals("O")) {
@@ -574,8 +586,7 @@ public class GameMatView extends Application {
                         boardPane.setBackground(new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false))));
                         break;
                 }
-            }
-            else
+            } else
                 ownField.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
         }
     }
@@ -624,8 +635,7 @@ public class GameMatView extends Application {
             if (kind.equals("Monster")) {
                 setBtn.setVisible(true);
                 summonBtn.setVisible(true);
-            }
-            else if (kind.equals("Trap") || (kind.equals("Spell") && finalIcon.equals("Quick-play")))
+            } else if (kind.equals("Trap") || (kind.equals("Spell") && finalIcon.equals("Quick-play")))
                 set();
             else if (kind.equals("Spell")) {
                 setBtn.setVisible(true);
@@ -716,12 +726,12 @@ public class GameMatView extends Application {
 
     public void nextPhase() throws Exception {
         clearMyChoices();
-        GameMatController.changePhase(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        GameMatController.changePhase(GameMatModel.getGameMatByNickname(onlineName).getPhase());
         phaseLbl.setText(GameMatController.sideMsg);
         GameMatController.error = "";
         selectedCardImage.setImage(null);
         if (phaseLbl.getText().equals("phase: " + Phase.End_Phase + "\nI end my turn!\n")) {
-          //  start(gameMatStage); not rotate the mat
+            //  start(gameMatStage); not rotate the mat
             phaseLbl.setText(GameMatController.sideMsg2);
         }
         setBtn.setVisible(false);
@@ -735,7 +745,7 @@ public class GameMatView extends Application {
 
     public void summon() {
         clearMyChoices();
-        GameMatController.summon(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        GameMatController.summon(GameMatModel.getGameMatByNickname(onlineName).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
         GameMatController.message = "";
@@ -757,7 +767,7 @@ public class GameMatView extends Application {
 
     public void set() {
         clearMyChoices();
-        GameMatController.set(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        GameMatController.set(GameMatModel.getGameMatByNickname(onlineName).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
         GameMatController.message = "";
@@ -773,7 +783,7 @@ public class GameMatView extends Application {
 
     public void changeToDefense() {
         clearMyChoices();
-        GameMatController.changeToDefensePosition(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        GameMatController.changeToDefensePosition(GameMatModel.getGameMatByNickname(onlineName).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
         GameMatController.message = "";
@@ -788,7 +798,7 @@ public class GameMatView extends Application {
 
     public void changeToAttack() {
         clearMyChoices();
-        GameMatController.changeToAttackPosition(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        GameMatController.changeToAttackPosition(GameMatModel.getGameMatByNickname(onlineName).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
         GameMatController.message = "";
@@ -803,7 +813,7 @@ public class GameMatView extends Application {
 
     public void flipSummon() {
         clearMyChoices();
-        GameMatController.flipSummon(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        GameMatController.flipSummon(GameMatModel.getGameMatByNickname(onlineName).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
         GameMatController.message = "";
@@ -818,14 +828,12 @@ public class GameMatView extends Application {
 
     public void attack() {
         clearMyChoices();
-        int result = GameMatController.attack(rivalMonsterAddress, GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        int result = GameMatController.attack(rivalMonsterAddress, GameMatModel.getGameMatByNickname(onlineName).getPhase());
         if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
             endGame();
-        }
-        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound()== 1 && rivalPlayer.getLifePoint() == 0)) {
+        } else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
             endGame();
-        }
-        else {
+        } else {
             messagePane.setVisible(true);
             popUpMessageLbl.setText(GameMatController.message);
             if (!popUpMessageLbl.getText().equals("you can’t attack with this card") && !popUpMessageLbl.getText().equals("your card is not in an attack mode") && !popUpMessageLbl.getText().equals("this card already attacked")
@@ -840,8 +848,7 @@ public class GameMatView extends Application {
                 GameMatController.isNewTurn = false;
                 try {
                     new PickFirstPlayerView().start(gameMatStage);
-                }
-                catch (Exception ignored) {
+                } catch (Exception ignored) {
                 }
                 return;
             }
@@ -850,14 +857,12 @@ public class GameMatView extends Application {
     }
 
     public void attackDirect() {
-        int result = GameMatController.attackDirect(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        int result = GameMatController.attackDirect(GameMatModel.getGameMatByNickname(onlineName).getPhase());
         if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
             endGame();
-        }
-        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
+        } else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
             endGame();
-        }
-        else {
+        } else {
             messagePane.setVisible(true);
             popUpMessageLbl.setText(GameMatController.message);
             GameMatController.message = "";
@@ -873,8 +878,7 @@ public class GameMatView extends Application {
                 GameMatController.isNewTurn = false;
                 try {
                     new PickFirstPlayerView().start(gameMatStage);
-                }
-                catch (Exception ignored) {
+                } catch (Exception ignored) {
                 }
                 return;
             }
@@ -920,7 +924,7 @@ public class GameMatView extends Application {
     public void activateEffect() {
         clearMyChoices();
         if (activeEffect.equals("Man-Eater Bug") && !rivalMonsterAddressResponse.isEmpty()) {
-           // MonsterEffect.manEaterBug(selectedCardAddress, rivalMonsterAddressResponse.get(0));
+            // MonsterEffect.manEaterBug(selectedCardAddress, rivalMonsterAddressResponse.get(0));
             rivalMonsterAddressResponse.clear();
             ownMonsterAddressResponse.clear();
             activateBtn.setVisible(false);
@@ -928,7 +932,7 @@ public class GameMatView extends Application {
             questionLabel.setText("");
             return;
         }
-        int result = GameMatController.activateSpellEffect(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
+        int result = GameMatController.activateSpellEffect(GameMatModel.getGameMatByNickname(onlineName).getPhase());
         messagePane.setVisible(true);
         popUpMessageLbl.setText(GameMatController.message);
         isVBoxVisible = true;
@@ -973,8 +977,8 @@ public class GameMatView extends Application {
     }
 
     public void okBtn() {
-        String command =answerTxt.getText().trim();
-        GameMatController.commandController(command , this);
+        String command = answerTxt.getText().trim();
+        GameMatController.commandController(command, this);
         messagePane.setVisible(false);
         showGameBoard();
     }
@@ -990,7 +994,7 @@ public class GameMatView extends Application {
         GameMatController.summon(Phase.Main_Phase1);
         nextPhase();
         GameMatController.selectMonsterCard(1, true);
-        if (MonsterZoneCard.getNumberOfFullHouse(GameMatController.rivalUser) == 0) {
+        if (MonsterZoneCard.getNumberOfFullHouse(rivalName) == 0) {
             GameMatController.attackDirect(Phase.Battle_Phase);
         } else {
             GameMatController.attack(1, Phase.Battle_Phase);

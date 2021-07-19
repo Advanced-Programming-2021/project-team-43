@@ -1,5 +1,4 @@
 package view;
-
 import controller.*;
 import javafx.application.Application;
 import javafx.fxml.FXML;

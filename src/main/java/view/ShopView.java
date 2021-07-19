@@ -48,14 +48,6 @@ public class ShopView extends Application {
     public Button searchBtn;
     private static int coinLblOpacity;
 
-    public static String getCommand() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine().trim();
-    }
-
-    public static void showInput(String input) {
-        System.out.println(input);
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -177,11 +169,6 @@ public class ShopView extends Application {
         imageCounter = 0;
         cardInfoCounter = 0;
         new MainMenuView().start(shopStage);
-    }
-
-    public static void resetFields() {
-        cardInfoCounter = 0;
-        imageCounter = 0;
     }
 
     public void search() {

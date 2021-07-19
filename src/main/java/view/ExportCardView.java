@@ -2,28 +2,24 @@ package view;
 import controller.*;
 import com.google.gson.Gson;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.*;
-
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+
 public class ExportCardView extends Application {
+
     private static Stage stage;
     @FXML
     private Label Label;
@@ -31,10 +27,10 @@ public class ExportCardView extends Application {
     private Label label2;
 
     @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
+    public void start(Stage stg) throws Exception {
+        stage = stg;
         stage.setTitle("EXPORT CARD");
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/export.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/export.fxml")));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
         stage.setScene(scene);
@@ -58,7 +54,7 @@ public class ExportCardView extends Application {
     @FXML
     TextField description;
 
-    public void exportMonster(ActionEvent actionEvent) throws IOException {
+    public void exportMonster() throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/exportMonster.fxml")));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
@@ -66,14 +62,14 @@ public class ExportCardView extends Application {
         stage.show();
     }
 
-    public void exportCard(MouseEvent mouseEvent) throws Exception {
+    public void exportCard() throws Exception {
         if (isNumeric(level.getText()) && isNumeric(atk.getText()) && isNumeric(def.getText()) &&
                 isNotEmpty(cardName.getText()) && isNotEmpty(cardType.getText()) &&
                 isNotEmpty(attribute.getText()) && isNotEmpty(description.getText()) && isNotEmpty(monsterType.getText())
                 && isValidCardType() && isValidAttribute() && isValidMonsterType()) {
             if (isMonsterExit()) {
                 ArrayList<String> cardInfo = new ArrayList<>();
-                cardInfo.add(getClass().getResource("/images/newCards/0.jpg").toExternalForm());
+                cardInfo.add(Objects.requireNonNull(getClass().getResource("/images/newCards/0.jpg")).toExternalForm());
                 cardInfo.add(cardName.getText());
                 cardInfo.add(level.getText());
                 cardInfo.add(attribute.getText());
@@ -115,12 +111,13 @@ public class ExportCardView extends Application {
         }
     }
 
-    public void exportSpellTrap(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/exportSpellTrap.fxml"));
+    public void exportSpellTrap() throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/exportSpellTrap.fxml")));
         Scene scene = new Scene(root);
         scene.setFill(Color.DARKRED);
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(windowEvent -> MainMenuController.logout());
     }
 
     @FXML
@@ -134,7 +131,7 @@ public class ExportCardView extends Application {
     @FXML
     TextField status;
 
-    public void exportCard2(MouseEvent mouseEvent) throws Exception {
+    public void exportCard2() throws Exception {
         if (isNotEmpty(cardNam.getText()) && isNotEmpty(type.getText()) &&
                 isNotEmpty(Icon.getText()) && isNotEmpty(description2.getText()) && isNotEmpty(status.getText())
                 && isValidIcon()) {
@@ -184,9 +181,7 @@ public class ExportCardView extends Application {
         }
     }
 
-
-    public void exportCard3(MouseEvent mouseEvent) throws Exception {
-
+    public void exportCard3() throws Exception {
         if (isNotEmpty(cardNam.getText()) && isNotEmpty(type.getText()) &&
                 isNotEmpty(Icon.getText()) && isNotEmpty(description2.getText()) && isNotEmpty(status.getText())
                 && isValidIcon()) {
@@ -255,11 +250,11 @@ public class ExportCardView extends Application {
         }
     }
 
-    public void back(MouseEvent mouseEvent) throws Exception {
+    public void back() throws Exception {
         new StartClass().start(stage);
     }
 
-    public void backToMenu(MouseEvent mouseEvent) throws Exception {
+    public void backToMenu() throws Exception {
         new ExportCardView().start(stage);
     }
 
@@ -267,11 +262,9 @@ public class ExportCardView extends Application {
         System.out.println(    TrapCard.getTrapCardByName(description2.getText()) != null);
         return SpellCard.getSpellCardByName(description2.getText()) != null ||
                 TrapCard.getTrapCardByName(description2.getText()) != null;
-
     }
 
     public boolean isMonsterExit() {
-        System.out.println(description.getText() + "  vv");
         return MonsterCard.getMonsterByName(description.getText()) != null;
     }
 
@@ -317,4 +310,5 @@ public class ExportCardView extends Application {
                 Icon.getText().equals("Equip") ||
                 Icon.getText().equals("Ritual");
     }
+
 }

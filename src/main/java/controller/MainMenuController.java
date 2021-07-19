@@ -83,6 +83,15 @@ public class MainMenuController {
         return matcher.find();
     }
 
+    public static void logout() {
+        try {
+            System.out.println("[[[[[[[[[[[");
+            RegisterAndLoginView.dataOutputStream.writeUTF("logout/" + token);
+            RegisterAndLoginView.dataOutputStream.flush();
+        } catch (Exception ignored) {
+        }
+    }
+
     public static ArrayList<UserModel> showScoreboard() {
         ArrayList<UserModel> scoreboard = new ArrayList<>();
         try {

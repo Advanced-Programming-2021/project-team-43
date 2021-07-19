@@ -89,9 +89,7 @@ public class ProfileView extends Application {
             }
 
         } catch (Exception ignored) {
-
         }
-
     }
 
     public void pressChangeNickname() {

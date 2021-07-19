@@ -1,23 +1,17 @@
 package view;
-
+import controller.MainMenuController;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import model.Card;
-
 import java.util.*;
 
 
@@ -37,16 +31,6 @@ public class ShowCardsView extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/showAllCards.fxml")));
         cardStage = stg;
         cardStage.setScene(new Scene(root));
-//        monsterPane.setLayoutX(120);
-//        spellPane.setLayoutX(470);
-//        monsterPane.setLayoutY(120);
-//        spellPane.setLayoutY(120);
-//        monsterPane.setPrefWidth(300);
-//        monsterPane.setPrefHeight(450);
-//        spellPane.setPrefWidth(300);
-//        spellPane.setPrefHeight(450);
-//        monsterPane.setContent(monsterHBox);
-//        spellPane.setContent(spellHBox);
         cardStage.show();
     }
 
