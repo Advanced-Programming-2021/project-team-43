@@ -239,10 +239,12 @@ public class LobbyView extends Application {
                 if (answer.equals("failed")) {
                     System.out.println("failed  ss");
                     while (true) {
-                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token);
+                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token+":"+1);
                         RegisterAndLoginView.dataOutputStream.flush();
                         String[] answer2 = RegisterAndLoginView.dataInputStream.readUTF().split(":");
+                        System.out.println(answer2[0]+" an2");
                         if (answer2[0].equals("true")) {
+                            System.out.println("ffffffffffffffffffffffffffffffffff");
                             RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer2[1] + ":" + 1);
                             RegisterAndLoginView.dataOutputStream.flush();
                             ArrayList<Object> answer3 = (ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject();
@@ -269,7 +271,6 @@ public class LobbyView extends Application {
                             /////////
                             ArrayList<Object> newArray = new ArrayList<>();
                             for (int i = 10; i < 22; i++) {
-                                System.out.println(answer3.get(i).getClass().getSimpleName() + "  vv");
                                 newArray.add(answer3.get(i));
                             }
                             GameMatController.setObjects(newArray);
@@ -305,7 +306,6 @@ public class LobbyView extends Application {
                     /////////
                     ArrayList<Object> newArray = new ArrayList<>();
                     for (int i = 10; i < 22; i++) {
-                        System.out.println(answer3.get(i).getClass().getSimpleName() + "  vv");
                         newArray.add(answer3.get(i));
                     }
                     GameMatController.setObjects(newArray);
@@ -320,37 +320,88 @@ public class LobbyView extends Application {
 /////\
             messageLbl.setText("waiting...");
             cancelBtn.setVisible(true);
-            //  messageLbl.setCursor(Cursor.WAIT);
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("findADuelist/" + MainMenuController.token + "/" + 3);
                 RegisterAndLoginView.dataOutputStream.flush();
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
-                System.out.println(answer + "   answer");
                 if (answer.equals("failed")) {
                     System.out.println("failed  ss");
                     while (true) {
-                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token);
+                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token+":"+3);
                         RegisterAndLoginView.dataOutputStream.flush();
                         String[] answer2 = RegisterAndLoginView.dataInputStream.readUTF().split(":");
                         if (answer2[0].equals("true")) {
-                            System.out.println("rivalToken:  " + answer2[1]);
                             RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer2[1] + ":" + 3);
                             RegisterAndLoginView.dataOutputStream.flush();
-                            String answer3 = RegisterAndLoginView.dataInputStream.readUTF();
-                            //   new GameMatView().start(lobbyStage);
+                            ArrayList<Object> answer3 = (ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject();
+                            GameMatController.onlineToken = (String) answer3.get(0);
+                            GameMatController.rivalToken = (String) answer3.get(1);
+                            Player playerOne = (Player) answer3.get(2);
+                            Player playerTwo = (Player) answer3.get(3);
+                            UserModel userOne = (UserModel) answer3.get(4);
+                            UserModel userTwo = (UserModel) answer3.get(5);
+                            ///
+                            MainMenuController.username2 = userTwo.getNickname();
+                            //
+                            UserModel.setObject(userOne);
+                            UserModel.setObject(userTwo);
+                            Player.setObject(userOne.getNickname(), playerOne);
+                            Player.setObject(userTwo.getNickname(), playerTwo);
+                            GameMatController.onlineUser = userOne.getNickname();
+                            GameMatController.rivalUser = userTwo.getNickname();
+                            GameMatModel.playerGameMat = (HashMap<String, GameMatModel>) answer3.get(6);
+                            HandCardZone.allHandCards = (Map<String, List<HandCardZone>>) answer3.get(7);
+                            MonsterZoneCard.allMonsterCards = (Map<String, Map<Integer, MonsterZoneCard>>) answer3.get(8);
+                            SpellTrapZoneCard.allSpellTrapCards = (Map<String, Map<Integer, SpellTrapZoneCard>>) answer3.get(9);
+
+                            /////////
+                            ArrayList<Object> newArray = new ArrayList<>();
+                            for (int i = 10; i < 22; i++) {
+                                newArray.add(answer3.get(i));
+                            }
+                            GameMatController.setObjects(newArray);
+                            /////
+
+                            new GameMatView().start(lobbyStage);
                             break;
                         }
+
                     }
                 } else {
                     System.out.println("success");
-                    System.out.println("rivalToken:  " + answer);
+
                     RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer + ":" + 3);
                     RegisterAndLoginView.dataOutputStream.flush();
-                    String answer3 = RegisterAndLoginView.dataInputStream.readUTF();
-                    // new GameMatView().start(lobbyStage);
+                    ArrayList<Object> answer3 = (ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject();
+                    GameMatController.onlineToken = (String) answer3.get(0);
+                    GameMatController.rivalToken = (String) answer3.get(1);
+                    Player playerOne = (Player) answer3.get(2);
+                    Player playerTwo = (Player) answer3.get(3);
+                    UserModel userOne = (UserModel) answer3.get(4);
+                    UserModel userTwo = (UserModel) answer3.get(5);
+                    UserModel.setObject(userOne);
+                    UserModel.setObject(userTwo);
+                    Player.setObject(userOne.getNickname(), playerOne);
+                    Player.setObject(userTwo.getNickname(), playerTwo);
+                    GameMatController.onlineUser = userOne.getNickname();
+                    GameMatController.rivalUser = userTwo.getNickname();
+                    GameMatModel.playerGameMat = (HashMap<String, GameMatModel>) answer3.get(6);
+                    HandCardZone.allHandCards = (Map<String, List<HandCardZone>>) answer3.get(7);
+                    MonsterZoneCard.allMonsterCards = (Map<String, Map<Integer, MonsterZoneCard>>) answer3.get(8);
+                    SpellTrapZoneCard.allSpellTrapCards = (Map<String, Map<Integer, SpellTrapZoneCard>>) answer3.get(9);
+                    /////////
+                    ArrayList<Object> newArray = new ArrayList<>();
+                    for (int i = 10; i < 22; i++) {
+                        newArray.add(answer3.get(i));
+                    }
+                    GameMatController.setObjects(newArray);
+                    /////
+                    new GameMatView().start(lobbyStage);
                 }
             } catch (Exception ignored) {
             }
+
+
 
             ////
         } else {
