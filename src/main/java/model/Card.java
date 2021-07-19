@@ -8,17 +8,24 @@ public class Card {
     protected String cardModel;
     protected String description;
     protected int price;
+    protected String secondName;
     protected static HashMap<String, Card> cards = new HashMap<>();
     public boolean isAvailable;
     public int amount;
-    public Card(String cardName, String cardModel, String description, int price) {
+
+    public Card(String cardName, String cardModel, String description, int price,String secondName) {
         this.cardName = cardName;
         this.cardModel = cardModel;
         this.description = description;
         this.price = price;
-        cards.put(cardName, this);
+        this.secondName=secondName;
         isAvailable=true;
         amount =10;
+        cards.put(cardName, this);
+    }
+
+    public String getSecondName() {
+        return secondName;
     }
 
     public String getDescription() {
@@ -44,4 +51,5 @@ public class Card {
     public static Card getCardsByName(String name) {
         return cards.get(name);
     }
+
 }
