@@ -9,6 +9,7 @@ import java.util.*;
 
 public class Player  implements Serializable {
 
+    private static final long serialVersionUID = -6327797571258604486L;
     private final String nickname;
     private int lifePoint = 8000;
     private boolean isYourTurn;
@@ -38,6 +39,7 @@ public class Player  implements Serializable {
         List<HandCardZone> eachHandCard = new ArrayList<>();
         HandCardZone.allHandCards.put(nickname, eachHandCard);
         Map<Integer, MonsterZoneCard> eachMonsterCard = new HashMap<>();
+
         MonsterZoneCard.allMonsterCards.put(nickname, eachMonsterCard);
         Map<Integer, SpellTrapZoneCard> eachSpellTrapCard = new HashMap<>();
         SpellTrapZoneCard.allSpellTrapCards.put(nickname, eachSpellTrapCard);
@@ -49,7 +51,8 @@ public class Player  implements Serializable {
 
 
     public static void setObject(String playerNickName, Player player) {
-        allPlayers.put(playerNickName, player);
+        if (!allPlayers.containsKey(playerNickName))
+            allPlayers.put(playerNickName, player);
     }
 
     public void startNewGame(DeckModel activeDeck, boolean isYourTurn) {

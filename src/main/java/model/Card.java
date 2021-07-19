@@ -12,6 +12,7 @@ public class Card {
     protected static HashMap<String, Card> cards = new HashMap<>();
     public boolean isAvailable;
     public int mojoodi ;
+
     public Card(String cardName, String cardModel, String description, int price,String secondName) {
         this.cardName = cardName;
         this.cardModel = cardModel;
@@ -20,7 +21,6 @@ public class Card {
         this.secondName=secondName;
         isAvailable=true;
         mojoodi=10;
-
         cards.put(cardName, this);
     }
 

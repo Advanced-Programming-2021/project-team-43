@@ -13,21 +13,23 @@ public class Run {
     public static Object objectSend;
     public static String onlineToken;
     public static String rivalToken;
+    private static HashMap<String, Boolean> tokensInLine = new HashMap<>();
+    private static HashMap<String, String> pairTokens = new HashMap<>();
+    private static HashMap<String, Boolean> pickPlayer = new HashMap<>();
+
 
     public static void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(7732);
-            ////
+            ServerSocket serverSocket = new ServerSocket(1227);
             tokensInLine = new HashMap<>();
             pairTokens = new HashMap<>();
-            pickPlayer = new HashMap<>();
-            ////
             while (true) {
                 Socket socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
             }
         } catch (IOException e) {
-e.printStackTrace();        }
+            e.printStackTrace();
+        }
     }
 
     private static void startNewThread(ServerSocket serverSocket, Socket socket) {
@@ -62,14 +64,10 @@ e.printStackTrace();        }
     }
 
     private static String process(String input, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-
-        if (input.startsWith("M")){
-           return MainMenuController.findMatcher(input);
+        String result = "";
+        if (input.startsWith("M")) {
+            return MainMenuController.findMatcher(input);
         }
-        if (input.startsWith("S")){
-            return ShopController.run(input);
-        }
-
         if (RegisterAndLoginController.allOnlineUsers.containsKey(input)) {
             getUserByToken(input, objectOutputStream);
             return "continue";
@@ -83,31 +81,132 @@ e.printStackTrace();        }
         if (input.startsWith("D")) {
             return DeckController.run(input);
         }
-        if (input.startsWith("chatCup")) {
-            String[] split = input.split("/");
-            UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(split[1]));
-            userModel.addAchievement("chatCup");
-            System.out.println(userModel.getMyAchievements().get("chatCup"));
-            return "continue";
-        }
-        if (input.startsWith("winCup")) {
-            String[] split = input.split("/");
-            UserModel.getUserByUsername(split[1]).addAchievement("sequentialWin");
-            UserModel.getUserByUsername(split[1]).resetSequentialWin();
-            return "continue";
-        }
-        if (input.startsWith("lostCup")) {
-            String[] split = input.split("/");
-            UserModel.getUserByUsername(split[1]).addAchievement("sequentialLost");
-            UserModel.getUserByUsername(split[1]).resetSequentialLost();
-            return "continue";
-        }
-        if (input.startsWith("achievement")) {
-            String[] split = input.split("/");
-            objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyAchievements());
+        result = processAchievementsRequests(input, objectOutputStream);
+        if (!result.equals(""))
+            return result;
+        result = processInvitationsRequest(input, objectOutputStream);
+        if (!result.equals(""))
+            return result;
+        if (input.equals("Scoreboard")) {
+            objectOutputStream.writeObject(MainMenuController.showScoreboard());
             objectOutputStream.flush();
             return "continue";
         }
+        if (input.startsWith("S")) {
+            return ShopController.run(input);
+        }
+        result = processChatroomRequests(input, objectOutputStream);
+        if (!result.equals(""))
+            return result;
+        result = processFindDuelistRequests(input, objectOutputStream);
+        if (!result.equals(""))
+            return result;
+        if (input.startsWith("GameMat")) {
+            String[] in = input.split(":");
+            System.out.println(in[1]+" nn");
+            System.out.println(in[3]+" ss");
+            onlineToken = in[1];
+            rivalToken = in[3];
+            ArrayList<Object> objects = (ArrayList<Object>) objectInputStream.readObject();
+            setObject(objects);
+            GameMatController.onlineUser = userByToken(onlineToken);
+            GameMatController.rivalUser = userByToken(rivalToken);
+            String returnValue = GameMatController.commandController(in[2]);
+            objectSend = getObjects();
+            objectOutputStream.writeObject(objectSend);
+            objectOutputStream.flush();
+            return returnValue;
+        }
+        return "==";
+    }
+
+    private static String find(String myToken) {
+        tokensInLine.put(myToken, false);
+        String[] tokens = tokensInLine.keySet().toArray(new String[0]);
+        for (String token : tokens) {
+            if (!tokensInLine.get(token) && !token.equals(myToken)) {
+                tokensInLine.put(token, true);
+                tokensInLine.put(myToken, true);
+                pairTokens.put(myToken, token);
+                pickPlayer.put(myToken, false);
+                pickPlayer.put(token, false);
+                return token;
+            }
+        }
+        return "failed";
+    }
+
+    private static synchronized String processFindDuelistRequests(String input, ObjectOutputStream objectOutputStream) throws IOException {
+        if (input.startsWith("findADuelist")) {
+            String[] split = input.split("/");
+            return find(split[1]);
+        }
+        if (input.startsWith("pickPlayer")) {
+            String[] give = input.split(":");
+            //
+            onlineToken = give[1];
+            rivalToken = give[2];
+            //
+            ArrayList<Object> players = new ArrayList<>();
+            System.out.println(give[1] + "]]]" + give[2]);
+            if (!pickPlayer.get(give[1]) && !pickPlayer.get(give[2])) {
+                for (Map.Entry<String, String> x : pairTokens.entrySet()) {
+                    players.add(x.getKey());
+                    players.add(x.getValue());
+                    String playerOneNickname = UserModel.getUserByUsername(userByToken(x.getKey())).getNickname();
+                    String playerTwoNickname = UserModel.getUserByUsername(userByToken(x.getValue())).getNickname();
+                    Player playerOne;
+                    Player playerTwo;
+                    System.out.println(playerOneNickname + "one");
+                    System.out.println(playerTwoNickname + "two");
+                    if (Player.getPlayerByName(playerOneNickname) == null)
+                        playerOne = new Player(playerOneNickname, UserModel.getUserByUsername(userByToken(x.getKey())).userAllDecks.get(UserModel.getUserByUsername(userByToken(x.getKey())).getActiveDeck()), true, Integer.parseInt(give[3]));
+                    else
+                        playerOne = Player.getPlayerByName(playerOneNickname);
+                    if (Player.getPlayerByName(playerTwoNickname) == null)
+                        playerTwo = new Player(playerTwoNickname, UserModel.getUserByUsername(userByToken(x.getValue())).userAllDecks.get(UserModel.getUserByUsername(userByToken(x.getValue())).getActiveDeck()), false, Integer.parseInt(give[3]));
+                    else
+                        playerTwo = Player.getPlayerByName(playerTwoNickname);
+                    players.add(playerOne);
+                    players.add(playerTwo);
+                    players.add(UserModel.getUserByUsername(userByToken(x.getKey())));
+                    players.add(UserModel.getUserByUsername(userByToken(x.getValue())));
+                    players.add(GameMatModel.playerGameMat);
+                    players.add(HandCardZone.allHandCards);
+                    players.add(MonsterZoneCard.allMonsterCards);
+                    players.add(SpellTrapZoneCard.allSpellTrapCards);
+
+                    players.addAll(getObjects());
+                }
+                objectOutputStream.writeUnshared(players);
+                objectOutputStream.flush();
+            }
+            return "continue";
+        }
+        if (input.startsWith("isFind")) {
+            String[] split = input.split(":");
+            if (tokensInLine.get(split[1])) {
+                if (pairTokens.get(split[1]) != null) {
+
+                    return "true:" + pairTokens.get(split[1]);
+                } else {
+                    String[] keys = pairTokens.keySet().toArray(new String[0]);
+                    for (int i = 0; i < keys.length; i++) {
+                        if (pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)).equals(split[1])) {
+
+                            return "true:" + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1);
+                        }
+                    }
+                }
+
+            } else {
+                return "false";
+            }
+        }
+        return "";
+    }
+
+    private static String processInvitationsRequest(String input, ObjectOutputStream objectOutputStream) throws IOException {
         if (input.startsWith("myInvitations")) {
             String[] split = input.split("/");
             objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyInvitations());
@@ -133,188 +232,44 @@ e.printStackTrace();        }
             // UserModel.getUserByUsername(split[1]).removeInvitation(Integer.parseInt(split[2]));
             return "continue";
         }
-        if (input.startsWith("GameMat")) {
-            String[] in = input.split(":");
-            onlineToken = in[1];
-            rivalToken = in[3];
-            ArrayList<Object> objects = (ArrayList<Object>) objectInputStream.readObject();
-            setObject(objects);
-            GameMatController.onlineUser = userByToken(onlineToken);
-            GameMatController.rivalUser = userByToken(rivalToken);
-            String returnValue = GameMatController.commandController(in[2]);
-            objectSend = getObjects();
-            objectOutputStream.writeObject(objectSend);
-            objectOutputStream.flush();
-            return returnValue;
+        return "";
+    }
+
+    private static String processAchievementsRequests(String input, ObjectOutputStream objectOutputStream) throws IOException {
+        if (input.startsWith("chatCup")) {
+            String[] split = input.split("/");
+            UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(split[1]));
+            userModel.addAchievement("chatCup");
+            return "continue";
         }
-        if (input.equals("Scoreboard")) {
-            objectOutputStream.writeObject(MainMenuController.showScoreboard());
+        if (input.startsWith("winCup")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(split[1]).addAchievement("sequentialWin");
+            UserModel.getUserByUsername(split[1]).resetSequentialWin();
+            return "continue";
+        }
+        if (input.startsWith("lostCup")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(split[1]).addAchievement("sequentialLost");
+            UserModel.getUserByUsername(split[1]).resetSequentialLost();
+            return "continue";
+        }
+        if (input.startsWith("achievement")) {
+            String[] split = input.split("/");
+            objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyAchievements());
             objectOutputStream.flush();
             return "continue";
         }
-        if (input.startsWith("findADuelist")) {
-            String[] split = input.split("/");
-            ArrayList<Object> result;
-            if (split[2].equals("1")) {
-                return find(split[1]);
-            } else {
-                return find(split[1]);
-            }
+        return "";
+    }
 
-        }
-        if (input.startsWith("pickPlayer")) {
-            String[] give = input.split(":");
-            ArrayList<Object> players = new ArrayList<>();
-
-            if (!pickPlayer.get(give[1]) && !pickPlayer.get(give[2])) {
-                Random rand = new Random();
-                int n = rand.nextInt(2);
-
-                if (n == 0) {
-                    pickPlayer.put(give[1], true);//first
-                    pickPlayer.put(give[2], false);//second
-                    System.out.println(UserModel.getUserByUsername(userByToken(give[1])).getNickname()+" 1");
-                    System.out.println(UserModel.getUserByUsername(userByToken(give[2])).getNickname()+" 2");
-                    Player player1 = new Player(UserModel.getUserByUsername(userByToken(give[1])).getNickname(), UserModel.getUserByUsername(userByToken(give[1])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[1])).getActiveDeck()), true, Integer.parseInt(give[3]));
-                    Player player2 = new Player(UserModel.getUserByUsername(userByToken(give[2])).getNickname(), UserModel.getUserByUsername(userByToken(give[2])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[2])).getActiveDeck()), false, Integer.parseInt(give[3]));
-                    players.add(give[1]);
-                    players.add(give[2]);
-                    players.add(UserModel.getUserByUsername(userByToken(give[1])));
-                    players.add(UserModel.getUserByUsername(userByToken(give[2])));
-                    players.add(player1);
-                    players.add(player2);
-                    players.addAll(getObjects());
-                    objectOutputStream.writeObject(players);
-                    objectOutputStream.flush();
-
-                    return "continue";
-                } else {
-                    pickPlayer.put(give[1], false);//second rivalUser
-                    pickPlayer.put(give[2], true);//first onlineUser
-                    System.out.println(UserModel.getUserByUsername(userByToken(give[1])).getNickname()+" 3");
-                    System.out.println(UserModel.getUserByUsername(userByToken(give[2])).getNickname()+" 4");
-                    Player player1 = new Player(UserModel.getUserByUsername(userByToken(give[1])).getNickname(), UserModel.getUserByUsername(userByToken(give[1])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[1])).getActiveDeck()), true, Integer.parseInt(give[3]));
-                    Player player2 = new Player(UserModel.getUserByUsername(userByToken(give[2])).getNickname(),  UserModel.getUserByUsername(userByToken(give[2])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[2])).getActiveDeck()), false, Integer.parseInt(give[3]));
-                    players.add(give[2]);
-                    players.add(give[1]);
-                    players.add(UserModel.getUserByUsername(userByToken(give[2])));
-                    players.add(UserModel.getUserByUsername(userByToken(give[1])));
-                    players.add(player1);
-                    players.add(player2);
-                    players.addAll(getObjects());
-                    objectOutputStream.writeObject(players);
-                    objectOutputStream.flush();
-
-                    return "continue";
-                }
-
-
-            } else {
-                if (pickPlayer.get(give[1])) {
-                    pickPlayer.put(give[1], true);//first
-                    pickPlayer.put(give[2], false);//second
-                    System.out.println(UserModel.getUserByUsername(userByToken(give[1])).getNickname()+" 5");
-                    System.out.println(UserModel.getUserByUsername(userByToken(give[2])).getNickname()+" 6");
-                    Player player1 = new Player(UserModel.getUserByUsername(userByToken(give[1])).getNickname(), UserModel.getUserByUsername(userByToken(give[1])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[1])).getActiveDeck()), true, Integer.parseInt(give[3]));
-                    Player player2 = new Player(UserModel.getUserByUsername(userByToken(give[2])).getNickname(), UserModel.getUserByUsername(userByToken(give[2])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[2])).getActiveDeck()), false, Integer.parseInt(give[3]));
-                    players.add(give[1]);
-                    players.add(give[2]);
-                    players.add(UserModel.getUserByUsername(userByToken(give[1])));
-                    players.add(UserModel.getUserByUsername(userByToken(give[2])));
-                    players.add(player1);
-                    players.add(player2);
-                    players.addAll(getObjects());
-                    objectOutputStream.writeObject(players);
-                    objectOutputStream.flush();
-
-
-                } else if (pickPlayer.get(give[2])) {
-                    pickPlayer.put(give[1], false);//second rivalUser
-                    pickPlayer.put(give[2], true);//first onlineUser
-                    System.out.println(UserModel.getUserByUsername(userByToken(give[1])).getNickname()+" 7");
-                    System.out.println(UserModel.getUserByUsername(userByToken(give[2])).getNickname()+"  8");
-
-                    Player player1 = new Player(UserModel.getUserByUsername(userByToken(give[2])).getNickname(), UserModel.getUserByUsername(userByToken(give[2])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[2])).getActiveDeck()), true, Integer.parseInt(give[3]));
-                    Player player2 = new Player(UserModel.getUserByUsername(userByToken(give[1])).getNickname(), UserModel.getUserByUsername(userByToken(give[1])).userAllDecks.get(UserModel.getUserByUsername(userByToken(give[1])).getActiveDeck()), false, Integer.parseInt(give[3]));
-                    players.add(give[2]);
-                    players.add(give[1]);
-                    players.add(UserModel.getUserByUsername(userByToken(give[2])));
-                    players.add(UserModel.getUserByUsername(userByToken(give[1])));
-                    players.add(player1);
-                    players.add(player2);
-                    players.addAll(getObjects());
-                    objectOutputStream.writeObject(players);
-                    objectOutputStream.flush();
-
-
-                }
-                return "continue";
-
-            }
-        }
-        if (input.startsWith("match")) {
-//            String[] split = input.split("/");
-//            UserModel rivalUser = UserModel.getUserByUsername(split[2]);
-//            System.out.println(rivalUser.getNickname());
-//            System.out.println(FindADuelist.oneRoundPlayerTwo.size());
-//            System.out.println(FindADuelist.oneRoundPlayer.size());
-//            if (FindADuelist.oneRoundPlayer.contains(rivalUser.getOwnToken())) {
-//                System.out.println(rivalUser.getNickname() + "first");
-//                rivalUser.setRivalToken(split[1]);
-//                objectOutputStream.writeObject(rivalUser);
-//                objectOutputStream.flush();
-//                FindADuelist.oneRoundPlayer.remove(rivalUser.getOwnToken());
-//                FindADuelist.oneRoundPlayer.remove(split[1]);
-//                return "success";
-//            }
-//            else if (FindADuelist.oneRoundPlayerTwo.contains(rivalUser.getOwnToken())) {
-//                System.out.println(rivalUser.getNickname() + "sec");
-//                rivalUser.setRivalToken(split[1]);
-//                objectOutputStream.writeObject(rivalUser);
-//                objectOutputStream.flush();
-//                FindADuelist.oneRoundPlayerTwo.remove(rivalUser.getRivalToken());
-//                FindADuelist.oneRoundPlayerTwo.remove(split[1]);
-//                return "success";
-//            }
-//            else {
-//                return "fail";
-//            }
-        }
-        if (input.equals("PlayWithAI")) {
-
-        }
-        if (input.startsWith("isFind")) {
-            String[] split = input.split(":");
-            if (tokensInLine.get(split[1])) {
-                if (pairTokens.get(split[1]) != null) {
-                    System.out.println("rivalToken:  " + pairTokens.get(split[1]));
-                    return "true:" + pairTokens.get(split[1]);
-                } else {
-                    String[] keys = pairTokens.keySet().toArray(new String[0]);
-                    for (int i = 0; i < keys.length; i++) {
-                        if (pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)).equals(split[1])) {
-                            System.out.println("rivalToken:  " + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1));
-                            return "true:" + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1);
-                        }
-                    }
-                }
-
-            } else {
-                return "false";
-            }
-        }
-
-        if (input.startsWith("cancelGame")) {
-            String[] split = input.split("/");
-            //    FindADuelist.waitingPlayerToken.remove(split[1]);
-        }
+    private static String processChatroomRequests(String input, ObjectOutputStream objectOutputStream) throws IOException {
         if (input.startsWith("chat")) {
             ChatController.newChat(input, objectOutputStream);
             return ChatRoom.getPinMessage();
         }
         if (input.startsWith("pinMessage")) {
             String[] split = input.split("/");
-            System.out.println(split[1]);
             ChatRoom.setPinMessage(split[1]);
             return "continue";
         }
@@ -331,53 +286,16 @@ e.printStackTrace();        }
             objectOutputStream.flush();
             return "continue";
         }
-        if (input.startsWith("duel")) {
-            String[] split = input.split("/");
-            System.out.println(split[1]);
-            if (split[1].equals("q")) {
-                objectOutputStream.writeObject(UserModel.getUserByUsername("w"));
-                objectOutputStream.flush();
-                return getTokenByUsername("w");
-            } else {
-                objectOutputStream.writeObject(UserModel.getUserByUsername("q"));
-                objectOutputStream.flush();
-                return getTokenByUsername("q");
-            }
-        }
         if (input.equals("numberOfOnlineUser")) {
-            System.out.println(RegisterAndLoginController.allOnlineUsers.size());
             return String.valueOf(RegisterAndLoginController.allOnlineUsers.size());
         }
-        return "==";
-    }
-
-    private static HashMap<String, Boolean> tokensInLine;
-    private static HashMap<String, Boolean> pickPlayer;
-    private static HashMap<String, String> pairTokens;
-
-    private static String find(String myToken) {
-        tokensInLine.put(myToken, false);
-        String[] tokens = tokensInLine.keySet().toArray(new String[0]);
-        for (String token : tokens) {
-            if (!tokensInLine.get(token) && !token.equals(myToken)) {
-                tokensInLine.put(token, true);
-                tokensInLine.put(myToken, true);
-                pairTokens.put(myToken, token);
-                pickPlayer.put(myToken, false);
-                pickPlayer.put(token, false);
-                System.out.println("rivalToken:  " + token);///
-                return token;
-            }
-        }
-        return "failed";
+        return "";
     }
 
     public static String getTokenByUsername(String username) {
-        for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet()) {
-            if (eachUser.getValue().equals(username)) {
+        for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet())
+            if (eachUser.getValue().equals(username))
                 return eachUser.getKey();
-            }
-        }
         return null;
     }
 
@@ -396,38 +314,41 @@ e.printStackTrace();        }
     }
 
     private static void setObject(ArrayList<Object> objects) {
-        GameMatModel.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (GameMatModel) objects.get(0));
-        HandCardZone.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (HandCardZone) objects.get(1));
-        MonsterZoneCard.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (MonsterZoneCard) objects.get(2));
-        Player.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (Player) objects.get(3));
-        SpellTrapZoneCard.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (SpellTrapZoneCard) objects.get(4));
+        System.out.println(userByToken(onlineToken)+" ,,");
+        System.out.println(onlineToken);
+        System.out.println(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname());
+        GameMatModel.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (GameMatModel) objects.get(0));
+        HandCardZone.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (List<HandCardZone>) objects.get(1));
+        MonsterZoneCard.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (Map<Integer, MonsterZoneCard>) objects.get(2));
+        Player.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (Player) objects.get(3));
+        SpellTrapZoneCard.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (Map<Integer, SpellTrapZoneCard>) objects.get(4));
         UserModel.setObject((UserModel) objects.get(5));
 
-        GameMatModel.setObject(userByToken(rivalToken), (GameMatModel) objects.get(6));
-        HandCardZone.setObject(userByToken(rivalToken), (HandCardZone) objects.get(7));
-        MonsterZoneCard.setObject(userByToken(rivalToken), (MonsterZoneCard) objects.get(8));
-        Player.setObject(userByToken(rivalToken), (Player) objects.get(9));
-        SpellTrapZoneCard.setObject(userByToken(rivalToken), (SpellTrapZoneCard) objects.get(10));
+        GameMatModel.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (GameMatModel) objects.get(6));
+        HandCardZone.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (List<HandCardZone>) objects.get(7));
+        MonsterZoneCard.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (Map<Integer, MonsterZoneCard>) objects.get(8));
+        Player.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (Player) objects.get(9));
+        SpellTrapZoneCard.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (Map<Integer, SpellTrapZoneCard>) objects.get(10));
         UserModel.setObject((UserModel) objects.get(11));
     }
 
     private static ArrayList<Object> getObjects() {
         ArrayList<Object> objects = new ArrayList<>();
-        System.out.println(GameMatModel.getGameMatByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken))+" ===");
-        objects.add(GameMatModel.getGameMatByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(HandCardZone.getHandCardZoneByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(MonsterZoneCard.getMonsterZoneCardByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(Player.getPlayerByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(UserModel.getUserByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
+        objects.add(GameMatModel.getGameMatByNickname(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(HandCardZone.getAllHandCardZoneByName(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(MonsterZoneCard.getAllMonstersByPlayerName(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(Player.getPlayerByName(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(SpellTrapZoneCard.getAllSpellTrapByPlayerName(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(UserModel.getUserByNickname(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
 
-        objects.add(GameMatModel.getGameMatByNickname(userByToken(rivalToken)));
-        objects.add(HandCardZone.getHandCardZoneByName(userByToken(rivalToken)));
-        objects.add(MonsterZoneCard.getMonsterZoneCardByName(userByToken(rivalToken)));
-        objects.add(Player.getPlayerByName(userByToken(rivalToken)));
-        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(userByToken(rivalToken)));
-        objects.add(UserModel.getUserByNickname(userByToken(rivalToken)));
+        objects.add(GameMatModel.getGameMatByNickname(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(HandCardZone.getAllHandCardZoneByName(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(MonsterZoneCard.getAllMonstersByPlayerName(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(Player.getPlayerByName(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(SpellTrapZoneCard.getAllSpellTrapByPlayerName(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(UserModel.getUserByNickname(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
         return objects;
 
     }
+
 }

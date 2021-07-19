@@ -10,6 +10,7 @@ import java.util.*;
 public class SpellTrapZoneCard  implements Serializable {
 
 
+    private static final long serialVersionUID = 7040057291040638025L;
     private final String playerNickname;
     private final String spellTrapName;
     private final String secondName;
@@ -21,7 +22,7 @@ public class SpellTrapZoneCard  implements Serializable {
     private boolean isSetInThisTurn;
     public final Map<String, Integer> relatedMonsterAddress = new HashMap<>();
     public static final Map<String, Map<Integer, SpellTrapZoneCard>> allSpellTrapCards = new HashMap<>();
-    private static HashMap<String, SpellTrapZoneCard> objects = new HashMap<>();
+//    private static HashMap<String, SpellTrapZoneCard> objects = new HashMap<>();
 
     public SpellTrapZoneCard(String playerNickname, String spellTrapName, String mode) {
         this.playerNickname = playerNickname;
@@ -37,11 +38,10 @@ public class SpellTrapZoneCard  implements Serializable {
         }
         this.address = getNewSpellAddress(playerNickname);
         allSpellTrapCards.get(playerNickname).put(address, this);
-        objects.put(playerNickname, this);
     }
 
-    public static void setObject(String playerNickname,SpellTrapZoneCard spellTrapZoneCard){
-        objects.put(playerNickname,spellTrapZoneCard);
+    public static void setObject(String playerNickname,Map<Integer, SpellTrapZoneCard> spellTrapZoneCard) {
+allSpellTrapCards.put(playerNickname,spellTrapZoneCard);
     }
     public String getSpellTrapName() {
         return spellTrapName;
@@ -215,7 +215,7 @@ public class SpellTrapZoneCard  implements Serializable {
                 allSpellTrapCards.get(playerNickname).get(i).setIsSetInThisTurn(false);
     }
 
-    public static SpellTrapZoneCard getSpellTrapZoneCardByName(String playerNickname) {
-        return objects.get(playerNickname);
-    }
+//    public static SpellTrapZoneCard getSpellTrapZoneCardByName(String playerNickname) {
+//        return objects.get(playerNickname);
+//    }
 }

@@ -1,11 +1,8 @@
 package controller;
-
-import model.Card;
-import model.ShopModel;
-import model.UserModel;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import model.*;
+import view.ShopView;
+import java.util.*;
+import java.util.regex.*;
 
 
 public class ShopController {
@@ -53,9 +50,9 @@ public class ShopController {
     public static String shopBuy(String cardName,String token) {
         int cardPrice = ShopModel.getCardPriceByName(cardName);
         UserModel user = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
-       if(Card.getCardsByName(cardName).mojoodi==0){
-           return ("card is sold out ");
-       }
+        if(Card.getCardsByName(cardName).mojoodi==0){
+            return ("card is sold out ");
+        }
         if (!Card.getCardsByName(cardName).isAvailable){
             return ("card is not available");
         }
@@ -67,5 +64,6 @@ public class ShopController {
         Card.getCardsByName(cardName).mojoodi=Card.getCardsByName(cardName).mojoodi-1;
         return ("your shopping was successful!");
     }
+
 
 }
