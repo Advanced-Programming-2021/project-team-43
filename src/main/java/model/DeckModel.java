@@ -1,12 +1,12 @@
 package model;
 import controller.*;
-
 import java.io.Serializable;
 import java.util.*;
 
 
 public class DeckModel implements Serializable {
 
+    private static final long serialVersionUID = -5970003736951981446L;
     private final String deckName;
     private int mainAllCardNumber = 0;
     private int sideAllCardNumber = 0;

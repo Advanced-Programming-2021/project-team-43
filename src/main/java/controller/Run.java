@@ -3,6 +3,7 @@ import model.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.zone.ZoneOffsetTransition;
 import java.util.*;
 
 
@@ -11,21 +12,19 @@ public class Run {
     public static Object objectSend;
     public static String onlineToken;
     public static String rivalToken;
-    private static HashMap<String, Boolean> tokensInLine = new HashMap<>();
-    private static HashMap<String, String> pairTokens = new HashMap<>();
-    private static HashMap<String, Boolean> pickPlayer = new HashMap<>();
+    private static final HashMap<String, Boolean> tokensInLine = new HashMap<>();
+    private static final HashMap<String, String> pairTokens = new HashMap<>();
+    private static final HashMap<String, Boolean> pickPlayer = new HashMap<>();
 
 
     public static void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(1227);
-            tokensInLine = new HashMap<>();
-            pairTokens = new HashMap<>();
+            ServerSocket serverSocket = new ServerSocket(1111);
             while (true) {
                 Socket socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -63,6 +62,12 @@ public class Run {
 
     private static String process(String input, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         String result = "";
+        if (input.equals("logout")) {
+            System.out.println("jjjjjjjjjjjjjjjjj");
+            String[] split = input.split("/");
+            RegisterAndLoginController.allOnlineUsers.remove(split[1]);
+            return "==";
+        }
         if (input.startsWith("M")){
             return MainMenuController.findMatcher(input);
         }
@@ -101,6 +106,8 @@ public class Run {
             return result;
         if (input.startsWith("GameMat")) {
             String[] in = input.split(":");
+            System.out.println(in[1]+" nn");
+            System.out.println(in[3]+" ss");
             onlineToken = in[1];
             rivalToken = in[3];
             ArrayList<Object> objects = (ArrayList<Object>) objectInputStream.readObject();
@@ -112,6 +119,11 @@ public class Run {
             objectOutputStream.writeObject(objectSend);
             objectOutputStream.flush();
             return returnValue;
+        }
+        if (input.startsWith("cancel")) {
+            String[] split = input.split("/");
+            tokensInLine.remove(split[1]);
+            return "continue";
         }
         return "==";
     }
@@ -139,6 +151,10 @@ public class Run {
         }
         if (input.startsWith("pickPlayer")) {
             String[] give = input.split(":");
+            //
+            onlineToken = give[1];
+            rivalToken = give[2];
+            //
             ArrayList<Object> players = new ArrayList<>();
             System.out.println(give[1] + "]]]" + give[2]);
             if (!pickPlayer.get(give[1]) && !pickPlayer.get(give[2])) {
@@ -167,8 +183,9 @@ public class Run {
                     players.add(HandCardZone.allHandCards);
                     players.add(MonsterZoneCard.allMonsterCards);
                     players.add(SpellTrapZoneCard.allSpellTrapCards);
+
+                    players.addAll(getObjects());
                 }
-                System.out.println(players.size() + "size");
                 objectOutputStream.writeUnshared(players);
                 objectOutputStream.flush();
             }
@@ -178,11 +195,13 @@ public class Run {
             String[] split = input.split(":");
             if (tokensInLine.get(split[1])) {
                 if (pairTokens.get(split[1]) != null) {
+
                     return "true:" + pairTokens.get(split[1]);
                 } else {
                     String[] keys = pairTokens.keySet().toArray(new String[0]);
                     for (int i = 0; i < keys.length; i++) {
                         if (pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)).equals(split[1])) {
+
                             return "true:" + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1);
                         }
                     }
@@ -253,9 +272,17 @@ public class Run {
     }
 
     private static String processChatroomRequests(String input, ObjectOutputStream objectOutputStream) throws IOException {
+        if (input.startsWith("getPinMessage")) {
+            return ChatRoom.getPinMessage();
+        }
+        if (input.startsWith("chatRecord")) {
+            String[] split = input.split("/");
+            UserModel.getUserByUsername(userByToken(split[2])).setChatRecords(Integer.parseInt(split[1]));
+            return "continue";
+        }
         if (input.startsWith("chat")) {
             ChatController.newChat(input, objectOutputStream);
-            return ChatRoom.getPinMessage();
+            return "continue";
         }
         if (input.startsWith("pinMessage")) {
             String[] split = input.split("/");
@@ -275,8 +302,15 @@ public class Run {
             objectOutputStream.flush();
             return "continue";
         }
+        if (input.startsWith("reply")) {
+            String[] split = input.split("\n");
+            String[] name = split[0].split("-");
+            String[] message = split[1].split("/");
+            ChatRoom.getChat(UserModel.getUserByUsername(name[1]), message[0]).setReplyMessage(message[1]);
+            return "continue";
+        }
         if (input.equals("numberOfOnlineUser")) {
-            return String.valueOf(RegisterAndLoginController.allOnlineUsers.size());
+            return RegisterAndLoginController.allOnlineUsers.size() + "/" + ChatRoom.getPinMessage();
         }
         return "";
     }
@@ -303,38 +337,40 @@ public class Run {
     }
 
     private static void setObject(ArrayList<Object> objects) {
-        GameMatModel.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (GameMatModel) objects.get(0));
-        HandCardZone.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (HandCardZone) objects.get(1));
-        MonsterZoneCard.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (MonsterZoneCard) objects.get(2));
-        Player.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (Player) objects.get(3));
-        SpellTrapZoneCard.setObject(RegisterAndLoginController.allOnlineUsers.get(onlineToken), (SpellTrapZoneCard) objects.get(4));
+        System.out.println(userByToken(onlineToken)+" ,,");
+        System.out.println(onlineToken);
+        System.out.println(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname());
+        GameMatModel.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (GameMatModel) objects.get(0));
+        HandCardZone.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (List<HandCardZone>) objects.get(1));
+        MonsterZoneCard.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (Map<Integer, MonsterZoneCard>) objects.get(2));
+        Player.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (Player) objects.get(3));
+        SpellTrapZoneCard.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (Map<Integer, SpellTrapZoneCard>) objects.get(4));
         UserModel.setObject((UserModel) objects.get(5));
 
-        GameMatModel.setObject(userByToken(rivalToken), (GameMatModel) objects.get(6));
-        HandCardZone.setObject(userByToken(rivalToken), (HandCardZone) objects.get(7));
-        MonsterZoneCard.setObject(userByToken(rivalToken), (MonsterZoneCard) objects.get(8));
-        Player.setObject(userByToken(rivalToken), (Player) objects.get(9));
-        SpellTrapZoneCard.setObject(userByToken(rivalToken), (SpellTrapZoneCard) objects.get(10));
+        GameMatModel.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (GameMatModel) objects.get(6));
+        HandCardZone.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (List<HandCardZone>) objects.get(7));
+        MonsterZoneCard.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (Map<Integer, MonsterZoneCard>) objects.get(8));
+        Player.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (Player) objects.get(9));
+        SpellTrapZoneCard.setObject(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname(), (Map<Integer, SpellTrapZoneCard>) objects.get(10));
         UserModel.setObject((UserModel) objects.get(11));
     }
 
     private static ArrayList<Object> getObjects() {
         ArrayList<Object> objects = new ArrayList<>();
-        objects.add(GameMatModel.getGameMatByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(HandCardZone.getHandCardZoneByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(MonsterZoneCard.getMonsterZoneCardByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(Player.getPlayerByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
-        objects.add(UserModel.getUserByNickname(RegisterAndLoginController.allOnlineUsers.get(onlineToken)));
+        objects.add(GameMatModel.getGameMatByNickname(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(HandCardZone.getAllHandCardZoneByName(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(MonsterZoneCard.getAllMonstersByPlayerName(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(Player.getPlayerByName(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(SpellTrapZoneCard.getAllSpellTrapByPlayerName(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
+        objects.add(UserModel.getUserByNickname(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname()));
 
-        objects.add(GameMatModel.getGameMatByNickname(userByToken(rivalToken)));
-        objects.add(HandCardZone.getHandCardZoneByName(userByToken(rivalToken)));
-        objects.add(MonsterZoneCard.getMonsterZoneCardByName(userByToken(rivalToken)));
-        objects.add(Player.getPlayerByName(userByToken(rivalToken)));
-        objects.add(SpellTrapZoneCard.getSpellTrapZoneCardByName(userByToken(rivalToken)));
-        objects.add(UserModel.getUserByNickname(userByToken(rivalToken)));
+        objects.add(GameMatModel.getGameMatByNickname(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(HandCardZone.getAllHandCardZoneByName(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(MonsterZoneCard.getAllMonstersByPlayerName(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(Player.getPlayerByName(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(SpellTrapZoneCard.getAllSpellTrapByPlayerName(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
+        objects.add(UserModel.getUserByNickname(UserModel.getUserByUsername(userByToken(rivalToken)).getNickname()));
         return objects;
-
     }
 
 }

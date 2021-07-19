@@ -1,11 +1,7 @@
 package controller;
-
 import model.*;
-import view.MainMenuView;
-
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 
 
 public class MainMenuController {
@@ -15,14 +11,11 @@ public class MainMenuController {
     private static Matcher matcher;
 
     public static String findMatcher(String command) {
-
-
         if (getMatcher(command, "^M(.+?)menu \\s*exit$").find() || getMatcher(command, "^m \\s*ex$").find()) {
             RegisterAndLoginController.allOnlineUsers.remove(matcher.group(1));
             return "continue";
         }
         if (getMatcher(command, "^M(.+?)user \\s*logout$").find()) {
-
             RegisterAndLoginController.allOnlineUsers.remove(matcher.group(1));
             return ("user logged out successfully!");
         }
@@ -87,7 +80,5 @@ public class MainMenuController {
         score.removeIf(userModel -> userModel.getUsername().equals("AI"));
         return score;
     }
-
-
 
 }

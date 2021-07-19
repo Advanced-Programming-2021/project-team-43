@@ -8,24 +8,17 @@ public class Card {
     protected String cardModel;
     protected String description;
     protected int price;
-    protected String secondName;
     protected static HashMap<String, Card> cards = new HashMap<>();
     public boolean isAvailable;
-    public int mojoodi ;
-
-    public Card(String cardName, String cardModel, String description, int price,String secondName) {
+    public int amount;
+    public Card(String cardName, String cardModel, String description, int price) {
         this.cardName = cardName;
         this.cardModel = cardModel;
         this.description = description;
         this.price = price;
-        this.secondName=secondName;
-        isAvailable=true;
-        mojoodi=10;
         cards.put(cardName, this);
-    }
-
-    public String getSecondName() {
-        return secondName;
+        isAvailable=true;
+        amount =10;
     }
 
     public String getDescription() {

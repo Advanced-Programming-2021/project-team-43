@@ -1,12 +1,10 @@
 package model;
 import view.GameMatView;
-
 import java.io.Serializable;
 import java.util.*;
 
 
 public class GameMatModel implements Serializable  {
-
 
     private static final long serialVersionUID = 4332241639684751838L;
     private Phase phase;
@@ -130,6 +128,7 @@ public class GameMatModel implements Serializable  {
         return false;
     }
     public static GameMatView gameMatView;
+
     public void showGraveyard() {
         if (graveyard.isEmpty())
             gameMatView.showInput("Graveyard Empty");

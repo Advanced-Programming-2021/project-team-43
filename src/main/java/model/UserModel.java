@@ -1,6 +1,5 @@
 package model;
 import controller.Json;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +18,7 @@ public class UserModel implements Serializable {
     private String ownToken;
     private String rivalToken;
     private boolean isOnline;
+    private int chatRecords = 0;
     private int sequentialWin = 0;
     private int sequentialLost = 0;
     private final HashMap<String, Integer> myAchievements = new HashMap<>();
@@ -202,10 +202,12 @@ public class UserModel implements Serializable {
 
     public void addSequentialWin() {
         sequentialWin++;
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void resetSequentialWin() {
         sequentialWin = 0;
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public int getSequentialWin() {
@@ -214,14 +216,25 @@ public class UserModel implements Serializable {
 
     public void addSequentialLost() {
         sequentialLost++;
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public void resetSequentialLost() {
         sequentialLost = 0;
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public int getSequentialLost() {
         return sequentialLost;
+    }
+
+    public int getChatRecords() {
+        return chatRecords;
+    }
+
+    public void setChatRecords(int chatRecords) {
+        this.chatRecords = chatRecords;
+        Json.writeUserModelInfo(UserModel.allUsersInfo,UserModel.allUsernames,UserModel.allUsersNicknames);
     }
 
     public boolean isUserHaveCard(String cardName) {

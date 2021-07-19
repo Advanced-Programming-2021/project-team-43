@@ -1,12 +1,9 @@
 package controller;
-
-import model.ChatRoom;
-import model.UserModel;
-
+import model.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 
 public class ChatController {
 
@@ -32,10 +29,9 @@ public class ChatController {
 
 
     public static void editChat(String input) {
+        System.out.println(input);
         String[] split = input.split("/");
-        ChatRoom.getChat(UserModel.getUserByNickname(split[2]), split[1]).editChat(split[3]);
-        System.out.println(ChatRoom.getChat(UserModel.getUserByNickname(split[2]), split[3]).getMessage());
+        ChatRoom.getChat(UserModel.getUserByUsername(split[2]), split[1]).editChat(split[3]);
     }
-
 
 }
