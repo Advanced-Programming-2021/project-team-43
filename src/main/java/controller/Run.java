@@ -60,6 +60,7 @@ public class Run {
                             if (output.equals("continue")){
                                 continue;
                             }
+                            System.out.println(output);
                             dataOutputStream.writeUTF(output);
 
                             dataOutputStream.flush();

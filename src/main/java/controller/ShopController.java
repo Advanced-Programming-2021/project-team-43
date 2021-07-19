@@ -19,11 +19,13 @@ public class ShopController {
         if ((matcher = getMatcher(command, "^S (.+?)shop buy (.+?)$")).find() || (matcher = getMatcher(command, "^s\\s+b\\s+(.+?)$")).find()) {
             return shopBuy(matcher.group(2),matcher.group(1));
         }
-
-        if ((matcher = getMatcher(command, "^S c (.+?) m (.+)$")).find() || (matcher = getMatcher(command, "^s\\s+b\\s+(.+?)$")).find()) {
-            return taghirMojoodi(matcher.group(1), Integer.parseInt(matcher.group(2)));
+        if ((matcher = getMatcher(command, "^S (.+?)shop sell (.+?)$")).find() || (matcher = getMatcher(command, "^s\\s+b\\s+(.+?)$")).find()) {
+            return shopSell(matcher.group(2),matcher.group(1));
         }
-        if ((matcher = getMatcher(command, "^S c (.+?) setAvailable$")).find() || (matcher = getMatcher(command, "^s\\s+b\\s+(.+?)$")).find()) {
+        if ((matcher = getMatcher(command, "^S c (.+?) m (.+)$")).find() || (matcher = getMatcher(command, "^s\\s+b\\s+(.+?)$")).find()) {
+            return changeAmount(matcher.group(1), Integer.parseInt(matcher.group(2)));
+        }
+        if ((matcher = getMatcher(command, "^S c (.+?)setAvailable$")).find() || (matcher = getMatcher(command, "^s\\s+b\\s+(.+?)$")).find()) {
             return setAvailable(matcher.group(1));
         }
         if ((matcher = getMatcher(command, "^S c (.+?) setUnAvailable$")).find() || (matcher = getMatcher(command, "^s\\s+b\\s+(.+?)$")).find()) {
@@ -37,8 +39,8 @@ public class ShopController {
         return pattern.matcher(command);
     }
 
-    public static String taghirMojoodi(String cardName ,int mojoodi)  {
-        Card.getCardsByName(cardName).mojoodi=mojoodi;
+    public static String changeAmount(String cardName , int amount)  {
+        Card.getCardsByName(cardName).amount =amount;
         return "chang is successful";
     }
     public static String setAvailable(String cardName){
@@ -53,7 +55,7 @@ public class ShopController {
     public static String shopBuy(String cardName,String token) {
         int cardPrice = ShopModel.getCardPriceByName(cardName);
         UserModel user = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
-       if(Card.getCardsByName(cardName).mojoodi==0){
+       if(Card.getCardsByName(cardName).amount ==0){
            return ("card is sold out ");
        }
         if (!Card.getCardsByName(cardName).isAvailable){
@@ -64,8 +66,19 @@ public class ShopController {
         }
         user.changeUserCoin(-1 * cardPrice);
         user.addCardToUserAllCards(cardName);
-        Card.getCardsByName(cardName).mojoodi=Card.getCardsByName(cardName).mojoodi-1;
+        Card.getCardsByName(cardName).amount =Card.getCardsByName(cardName).amount -1;
         return ("your shopping was successful!");
     }
 
+    public static String shopSell(String cardName,String token) {
+        int cardPrice = ShopModel.getCardPriceByName(cardName);
+        UserModel user = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
+        if (!user.userAllCards.containsKey(cardName)) {
+            return ("you don't have this card");
+        }
+        user.changeUserCoin( 3*cardPrice/4);
+        user.removeCardFromUserAllCards(cardName);
+        Card.getCardsByName(cardName).amount =Card.getCardsByName(cardName).amount +1;
+        return ("your selling was successful!");
+    }
 }
