@@ -20,10 +20,10 @@ public class GameMatController {
     private static int counterOne = 0;
     private static Phase currentPhase;
     private static int counterTwo = 0;
-    public static String message = "";
-    public static String sideMsg = "";
-    public static String sideMsg2 = "";
-    public static String error = "";
+    public static String message = " ";
+    public static String sideMsg = " ";
+    public static String sideMsg2 = " ";
+    public static String error = " ";
     public static boolean isNewTurn;
     private static String cardNameAnswer;
     public static GameMatView gameMatView;
@@ -32,8 +32,6 @@ public class GameMatController {
     private static String effectName;
 
     public static int run(String firstPlayer, String secondPlayer) {
-     //  onlineUser = firstPlayer;
-       // rivalUser = secondPlayer;
 
         message = "The game starts!\nits " + onlineUser + "’s turn";
         sideMsg = "phase: " + Phase.Draw_Phase;
@@ -117,6 +115,7 @@ public class GameMatController {
 
         if (getMatcher(command, "^next\\s+phase$").find() || getMatcher(command, "^n\\s+p$").find()) {
             changePhase(currentPhase);
+            System.out.println(sideMsg2+"  :sideMsg2");
             return message + "@" + sideMsg + "@" + sideMsg2;
         }
 

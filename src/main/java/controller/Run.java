@@ -13,16 +13,19 @@ public class Run {
     public static Object objectSend;
     public static String onlineToken;
     public static String rivalToken;
-    private static HashMap<String, Boolean> tokensInLine = new HashMap<>();
-    private static HashMap<String, String> pairTokens = new HashMap<>();
-    private static HashMap<String, Boolean> pickPlayer = new HashMap<>();
+      private static HashMap<String, Boolean> tokensInLine;
+    private static HashMap<String, Boolean> tokensInLine3= new HashMap<>();
+    private static HashMap<String, String> pairTokens= new HashMap<>();
+    private static HashMap<String, Boolean> pickPlayer= new HashMap<>();
 
 
     public static void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(1227);
             tokensInLine = new HashMap<>();
-            pairTokens = new HashMap<>();
+//            tokensInLine3 = new HashMap<>();
+//            pairTokens = new HashMap<>();
+//            pickPlayer = new HashMap<>();
             while (true) {
                 Socket socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
@@ -103,8 +106,6 @@ public class Run {
             return result;
         if (input.startsWith("GameMat")) {
             String[] in = input.split(":");
-            System.out.println(in[1]+" nn");
-            System.out.println(in[3]+" ss");
             onlineToken = in[1];
             rivalToken = in[3];
             ArrayList<Object> objects = (ArrayList<Object>) objectInputStream.readObject();
@@ -120,7 +121,7 @@ public class Run {
         return "==";
     }
 
-    private static String find(String myToken) {
+    private static String find1(String myToken) {
         tokensInLine.put(myToken, false);
         String[] tokens = tokensInLine.keySet().toArray(new String[0]);
         for (String token : tokens) {
@@ -130,6 +131,26 @@ public class Run {
                 pairTokens.put(myToken, token);
                 pickPlayer.put(myToken, false);
                 pickPlayer.put(token, false);
+
+                return token;
+            }
+        }
+        return "failed";
+    }
+
+    private static String find3(String myToken) {
+        tokensInLine3.put(myToken, false);
+        String[] tokens = tokensInLine3.keySet().toArray(new String[0]);
+        for (String token : tokens) {
+            if (!tokensInLine3.get(token) && !token.equals(myToken)) {
+                tokensInLine3.put(token, true);
+                tokensInLine3.put(myToken, true);
+                System.out.println(token+" token");
+                System.out.println(myToken+" myToken");
+                pairTokens.put(myToken, token);
+                pickPlayer.put(myToken, false);
+                pickPlayer.put(token, false);
+
                 return token;
             }
         }
@@ -139,7 +160,11 @@ public class Run {
     private static synchronized String processFindDuelistRequests(String input, ObjectOutputStream objectOutputStream) throws IOException {
         if (input.startsWith("findADuelist")) {
             String[] split = input.split("/");
-            return find(split[1]);
+            if (split[2].equals("1")) {
+                return find1(split[1]);
+            } else if (split[2].equals("3")) {
+                return find3(split[1]);
+            }
         }
         if (input.startsWith("pickPlayer")) {
             String[] give = input.split(":");
@@ -148,7 +173,6 @@ public class Run {
             rivalToken = give[2];
             //
             ArrayList<Object> players = new ArrayList<>();
-            System.out.println(give[1] + "]]]" + give[2]);
             if (!pickPlayer.get(give[1]) && !pickPlayer.get(give[2])) {
                 for (Map.Entry<String, String> x : pairTokens.entrySet()) {
                     players.add(x.getKey());
@@ -157,8 +181,7 @@ public class Run {
                     String playerTwoNickname = UserModel.getUserByUsername(userByToken(x.getValue())).getNickname();
                     Player playerOne;
                     Player playerTwo;
-                    System.out.println(playerOneNickname + "one");
-                    System.out.println(playerTwoNickname + "two");
+                    System.out.println(give[3]+" round");
                     if (Player.getPlayerByName(playerOneNickname) == null)
                         playerOne = new Player(playerOneNickname, UserModel.getUserByUsername(userByToken(x.getKey())).userAllDecks.get(UserModel.getUserByUsername(userByToken(x.getKey())).getActiveDeck()), true, Integer.parseInt(give[3]));
                     else
@@ -185,23 +208,48 @@ public class Run {
         }
         if (input.startsWith("isFind")) {
             String[] split = input.split(":");
-            if (tokensInLine.get(split[1])) {
-                if (pairTokens.get(split[1]) != null) {
-
-                    return "true:" + pairTokens.get(split[1]);
-                } else {
-                    String[] keys = pairTokens.keySet().toArray(new String[0]);
-                    for (int i = 0; i < keys.length; i++) {
-                        if (pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)).equals(split[1])) {
-
-                            return "true:" + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1);
+            if (split[2].equals("1")) {
+                if (tokensInLine.get(split[1])) {
+                    if (pairTokens.get(split[1]) != null) {
+              tokensInLine.remove(split[1]);
+                tokensInLine.remove(pairTokens.get(split[1]));
+                        return "true:" + pairTokens.get(split[1]);
+                    } else {
+                        String[] keys = pairTokens.keySet().toArray(new String[0]);
+                        for (int i = 0; i < keys.length; i++) {
+                            if (pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)).equals(split[1])) {
+                                tokensInLine.remove(split[1]);
+                                tokensInLine.remove(pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)));
+                                return "true:" + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1);
+                            }
                         }
                     }
-                }
 
-            } else {
-                return "false";
+                } else {
+                    return "false";
+                }
+            } else if (split[2].equals("3")) {
+                if (tokensInLine3.get(split[1])) {
+                    if (pairTokens.get(split[1]) != null) {
+                        tokensInLine3.remove(split[1]);
+                        tokensInLine3.remove(pairTokens.get(split[1]));
+                        return "true:" + pairTokens.get(split[1]);
+                    } else {
+                        String[] keys = pairTokens.keySet().toArray(new String[0]);
+                        for (int i = 0; i < keys.length; i++) {
+                            if (pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)).equals(split[1])) {
+                                tokensInLine3.remove(split[1]);
+                                tokensInLine3.remove(pairTokens.get( Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)));
+                                return "true:" + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1);
+                            }
+                        }
+                    }
+
+                } else {
+                    return "false";
+                }
             }
+
         }
         return "";
     }
@@ -314,9 +362,7 @@ public class Run {
     }
 
     private static void setObject(ArrayList<Object> objects) {
-        System.out.println(userByToken(onlineToken)+" ,,");
-        System.out.println(onlineToken);
-        System.out.println(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname());
+
         GameMatModel.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (GameMatModel) objects.get(0));
         HandCardZone.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (List<HandCardZone>) objects.get(1));
         MonsterZoneCard.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (Map<Integer, MonsterZoneCard>) objects.get(2));
