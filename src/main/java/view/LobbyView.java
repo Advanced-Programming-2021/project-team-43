@@ -242,9 +242,7 @@ public class LobbyView extends Application {
                         RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token+":"+1);
                         RegisterAndLoginView.dataOutputStream.flush();
                         String[] answer2 = RegisterAndLoginView.dataInputStream.readUTF().split(":");
-                        System.out.println(answer2[0]+" an2");
                         if (answer2[0].equals("true")) {
-                            System.out.println("ffffffffffffffffffffffffffffffffff");
                             RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer2[1] + ":" + 1);
                             RegisterAndLoginView.dataOutputStream.flush();
                             ArrayList<Object> answer3 = (ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject();
@@ -255,6 +253,11 @@ public class LobbyView extends Application {
                             UserModel userOne = (UserModel) answer3.get(4);
                             UserModel userTwo = (UserModel) answer3.get(5);
                             ///
+
+                            if(userTwo.getNickname().equals(MainMenuController.username)){
+                                MainMenuController.username2 = userOne.getNickname();
+
+                            }else
                             MainMenuController.username2 = userTwo.getNickname();
                             //
                             UserModel.setObject(userOne);
@@ -293,6 +296,13 @@ public class LobbyView extends Application {
                     Player playerTwo = (Player) answer3.get(3);
                     UserModel userOne = (UserModel) answer3.get(4);
                     UserModel userTwo = (UserModel) answer3.get(5);
+                    ///
+                    if(userTwo.getNickname().equals(MainMenuController.username)){
+                        MainMenuController.username2 = userOne.getNickname();
+
+                    }else
+                        MainMenuController.username2 = userTwo.getNickname();
+                    //
                     UserModel.setObject(userOne);
                     UserModel.setObject(userTwo);
                     Player.setObject(userOne.getNickname(), playerOne);
@@ -341,7 +351,11 @@ public class LobbyView extends Application {
                             UserModel userOne = (UserModel) answer3.get(4);
                             UserModel userTwo = (UserModel) answer3.get(5);
                             ///
-                            MainMenuController.username2 = userTwo.getNickname();
+                            if(userTwo.getNickname().equals(MainMenuController.username)){
+                                MainMenuController.username2 = userOne.getNickname();
+
+                            }else
+                                MainMenuController.username2 = userTwo.getNickname();
                             //
                             UserModel.setObject(userOne);
                             UserModel.setObject(userTwo);
@@ -379,6 +393,13 @@ public class LobbyView extends Application {
                     Player playerTwo = (Player) answer3.get(3);
                     UserModel userOne = (UserModel) answer3.get(4);
                     UserModel userTwo = (UserModel) answer3.get(5);
+                    ///
+                    if(userTwo.getNickname().equals(MainMenuController.username)){
+                        MainMenuController.username2 = userOne.getNickname();
+
+                    }else
+                        MainMenuController.username2 = userTwo.getNickname();
+                    //
                     UserModel.setObject(userOne);
                     UserModel.setObject(userTwo);
                     Player.setObject(userOne.getNickname(), playerOne);
