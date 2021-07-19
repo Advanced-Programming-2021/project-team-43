@@ -29,45 +29,50 @@
                 <Font name="Bodoni MT" size="50.0" />
             </font>
         </Label>
-      <VBox alignment="CENTER" layoutX="69.0" layoutY="212.0" prefHeight="318.0" prefWidth="196.0" spacing="10.0">
-         <children>
-              <Button fx:id="duelBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Duel" prefHeight="21.0" prefWidth="167.0" text="Duel" textAlignment="CENTER">
-               <font>
-                  <Font name="Bodoni MT" size="20.0" />
-               </font>
-            </Button>
-              <Button fx:id="profileBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Profile" prefHeight="21.0" prefWidth="167.0" text="Profile">
-                  <font>
-                      <Font name="Bodoni MT" size="20.0" />
-                  </font>
-            </Button>
-              <Button fx:id="shopBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Shop" prefHeight="21.0" prefWidth="167.0" text="Shop">
-               <font>
-                  <Font name="Bodoni MT" size="20.0" />
-               </font>
-            </Button>
-              <Button fx:id="deckBtn" focusTraversable="false" mnemonicParsing="false" onAction="#Deck" prefHeight="21.0" prefWidth="167.0" text="Deck">
-               <font>
-                  <Font name="Bodoni MT" size="20.0" />
-               </font>
-            </Button>
-              <Button fx:id="scoreboardBtn" focusTraversable="false" mnemonicParsing="false" onAction="#Scoreboard" prefHeight="21.0" prefWidth="167.0" text="Scoreboard">
-               <font>
-                  <Font name="Bodoni MT" size="20.0" />
-               </font>
-            </Button>
-            <Button fx:id="cardBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#card" prefHeight="21.0" prefWidth="167.0" text="Card" textAlignment="CENTER">
-               <font>
-                  <Font name="Bodoni MT" size="20.0" />
-               </font>
-            </Button>
-              <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#LogOut" prefHeight="21.0" prefWidth="167.0" text="Log out">
-               <font>
-                  <Font name="Bodoni MT" size="20.0" />
-               </font>
-            </Button>
-         </children>
-      </VBox>
+        <VBox alignment="CENTER" layoutX="69.0" layoutY="212.0" prefHeight="318.0" prefWidth="196.0" spacing="10.0">
+            <children>
+                <Button fx:id="duelBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Duel" prefHeight="21.0" prefWidth="167.0" text="Duel" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+                <Button fx:id="profileBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Profile" prefHeight="21.0" prefWidth="167.0" text="Profile">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+                <Button fx:id="shopBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#Shop" prefHeight="21.0" prefWidth="167.0" text="Shop">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+                <Button fx:id="deckBtn" focusTraversable="false" mnemonicParsing="false" onAction="#Deck" prefHeight="21.0" prefWidth="167.0" text="Deck">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+                <Button fx:id="scoreboardBtn" focusTraversable="false" mnemonicParsing="false" onAction="#Scoreboard" prefHeight="21.0" prefWidth="167.0" text="Scoreboard">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+                <Button fx:id="cardBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#card" prefHeight="21.0" prefWidth="167.0" text="Card" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+                <Button fx:id="lobbyBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#lobby" prefHeight="21.0" prefWidth="167.0" text="Lobby" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+                <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#LogOut" prefHeight="21.0" prefWidth="167.0" text="Log out">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Button>
+            </children>
+        </VBox>
     </children>
     <opaqueInsets>
         <Insets />

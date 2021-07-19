@@ -1,11 +1,7 @@
 package controller;
 import model.*;
 import view.RegisterAndLoginView;
-import view.ShopView;
-
 import java.io.IOException;
-import java.util.*;
-import java.util.regex.*;
 
 
 public class ShopController {
@@ -29,6 +25,22 @@ public class ShopController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public static String setAvailable(String cardName) {
+        return null;
+    }
+
+    public static String setUnavailable(String cardName) {
+        return null;
+    }
+
+    public static String changeAmount(String cardName, int amount) {
+        return null;
+    }
+
+    public static String sell(String cardName){
         return null;
     }
 

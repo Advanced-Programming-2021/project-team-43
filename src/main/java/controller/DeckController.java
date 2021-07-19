@@ -1,13 +1,11 @@
 package controller;
-
-import model.DeckModel;
-import model.UserModel;
-import view.RegisterAndLoginView;
-
+import view.*;
+import model.*;
 import java.io.IOException;
 
 
 public class DeckController {
+
 
     public static void setActivate(String deckName) {
         try {
@@ -89,8 +87,7 @@ public class DeckController {
     public static void removeCardFromMainDeck(String cardName, String deckName) {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("D " + MainMenuController.token + "deck rm-card --card " + cardName + " --deck " + deckName);
-            RegisterAndLoginView.dataInputStream.readUTF();
-            String string =RegisterAndLoginView.dataInputStream.readUTF();
+            String string = RegisterAndLoginView.dataInputStream.readUTF();
             if (MainMenuController.isSuccessful(string)){
                 UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).removeCardFromMain(cardName);
             }
@@ -103,7 +100,6 @@ public class DeckController {
     public static void removeCardFromSideDeck(String cardName, String deckName) {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("D " + MainMenuController.token + "deck rm-card --card " + cardName + " --deck " + deckName + " --side");
-            RegisterAndLoginView.dataInputStream.readUTF();
             String string =RegisterAndLoginView.dataInputStream.readUTF();
             if (MainMenuController.isSuccessful(string)){
                 UserModel.getUserByUsername(MainMenuController.username).userAllDecks.get(deckName).removeCardFromSide(cardName);
@@ -113,9 +109,5 @@ public class DeckController {
         }
 
     }
-
-
-
-
 
 }

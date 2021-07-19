@@ -1,7 +1,10 @@
 package controller;
 import model.UserModel;
-import java.util.ArrayList;
-
+import view.RegisterAndLoginView;
+import java.io.IOException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainMenuController {
@@ -45,51 +48,49 @@ public class MainMenuController {
     }
 
     public static String changeNickname(String nickname) {
-        if (UserModel.isRepeatedNickname(nickname))
-            return "user with nickname " + nickname + " already exists";
-        else {
-            UserModel.getUserByUsername(username).changeNickname(nickname);
-            return "nickname changed successfully!";
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("profile"+token+" change --nickname "+nickname);
+            String input=RegisterAndLoginView.dataInputStream.readUTF();
+            if(isSuccessful(input)) {
+                UserModel.getUserByUsername(username).changeNickname(nickname);
+            }
+            return input;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public static String changePassword(String currentPassword, String newPassword) {
-        if (!UserModel.getUserByUsername(username).getPassword().equals(currentPassword))
-            return "current password is invalid";
-        else if (currentPassword.equals(newPassword))
-            return "please enter a new password";
-        else {
-            UserModel.getUserByUsername(username).changePassword(newPassword);
-            return "password changed successfully!";
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("profile"+token+" change --password --new "+newPassword+" --current "+currentPassword);
+            String input=RegisterAndLoginView.dataInputStream.readUTF();
+            if(isSuccessful(input)) {
+                UserModel.getUserByUsername(username).changePassword(newPassword);
+            }
+            return input ;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
+
     }
 
-    public static ArrayList<String> showScoreboard() {
-        String[] keysUsers;
-        String temp;
-        keysUsers = UserModel.allUsernames.toArray(new String[0]);
-        for (int x = 0; x < keysUsers.length; x++) {
-            for (int y = x + 1; y < keysUsers.length; y++) {
-                if (UserModel.getUserByUsername(keysUsers[x]).getUserScore() < UserModel.getUserByUsername(keysUsers[y]).getUserScore()) {
-                    temp = keysUsers[y];
-                    keysUsers[y] = keysUsers[x];
-                    keysUsers[x] = temp;
-                }
-                if (UserModel.getUserByUsername(keysUsers[x]).getUserScore() == UserModel.getUserByUsername(keysUsers[y]).getUserScore()) {
-                    if (keysUsers[x].compareToIgnoreCase(keysUsers[y]) > 0) {
-                        temp = keysUsers[x];
-                        keysUsers[x] = keysUsers[y];
-                        keysUsers[y] = temp;
-                    }
-                }
-            }
+    public static boolean isSuccessful(String string){
+        Pattern pattern=Pattern.compile("success");
+        System.out.println(string);
+        Matcher matcher=pattern.matcher(string);
+        return matcher.find();
+    }
+
+    public static ArrayList<UserModel> showScoreboard() {
+        ArrayList<UserModel> scoreboard = new ArrayList<>();
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("Scoreboard");
+            scoreboard = (ArrayList<UserModel>) RegisterAndLoginView.objectInputStream.readObject();
+        } catch (Exception ignored) {
         }
-        ArrayList<String> arrayList = new ArrayList<>();
-        for (String keysUser : keysUsers) {
-            if (keysUser.equals("AI")) continue;
-            arrayList.add(keysUser);
-        }
-        return arrayList;
+        return scoreboard;
     }
 
 }

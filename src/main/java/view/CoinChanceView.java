@@ -51,13 +51,6 @@ public class CoinChanceView extends Application {
 
     @FXML
     public void initialize() {
-        try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("CoinChance:" + MainMenuController.token);
-            RegisterAndLoginView.dataOutputStream.flush();
-            winnerUsername = RegisterAndLoginView.dataInputStream.readUTF();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         KeyFrame flashEnd = new KeyFrame(new Duration(2000), new KeyValue(btnN.opacityProperty(), 0.0));
         KeyFrame flashStart = new KeyFrame(new Duration(4000), new KeyValue(btnN.opacityProperty(), 1.0));
         new Timeline(flashEnd, flashStart).play();

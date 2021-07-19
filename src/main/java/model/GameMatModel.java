@@ -11,14 +11,17 @@ public class GameMatModel implements Serializable  {
     public String fieldZone = "";
     private int numberOfDeadMonsterThisTurn = 0;
     public final List<String> graveyard = new ArrayList<>();
-    public static final Map<String, GameMatModel> playerGameMat = new HashMap<>();
+    public static HashMap<String, GameMatModel> playerGameMat = new HashMap<>();
+    private static final long serialVersionUID = 4332241639684751838L;
 
     public GameMatModel (String playerNickname) {
         this.phase = Phase.Draw_Phase;
         playerGameMat.put(playerNickname, this);
     }
+
     public static void setObject(String playerNickName,GameMatModel gameMatModel){
         playerGameMat.put(playerNickName,gameMatModel);
+        System.out.println("csxsxsxsxsxsxsxsxsxsxsxsxsxs");
     }
 
     public List<String> getGraveyard() {

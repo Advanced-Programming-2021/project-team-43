@@ -1,5 +1,7 @@
 package view;
+
 import controller.GameMatController;
+import controller.MainMenuController;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -108,8 +110,8 @@ public class GameMatView extends Application {
     private int rivalMonsterAddress = 0;
     public MenuItem menuItem = new MenuItem();
     private int selectedCardAddress;
-    private Player onlinePlayer;
-    private Player rivalPlayer;
+    private Player onlinePlayer=Player.getPlayerByName(MainMenuController.username);
+    private Player rivalPlayer=Player.getPlayerByName(MainMenuController.username2);
     private GameMatModel ownGameMat;
     private GameMatModel rivalGameMat;
     private boolean isGameOver;
@@ -137,8 +139,10 @@ public class GameMatView extends Application {
     }
 
     public void initialize() {
+        System.out.println("first initialise");
         mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_ANY);
+
             public void handle(KeyEvent ke) {
                 if (keyComb.match(ke)) {
                     messagePane.setVisible(true);
@@ -147,12 +151,7 @@ public class GameMatView extends Application {
                     isVBoxVisible = true;
                     haveQuestion = false;
                     clickOnPane();
-                    okBtn.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            okBtn();
-                        }
-                    });
+                    okBtn.setOnAction(actionEvent -> okBtn());
                 }
             }
         });
@@ -162,6 +161,9 @@ public class GameMatView extends Application {
         Background background = new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false)));
         boardPane.setBackground(background);
         setUpImagesInArray();
+        System.out.println(".....................................");
+        System.out.println(UserModel.getUserByNickname(GameMatController.onlineUser).getImageUrl());
+        System.out.println(UserModel.getUserByNickname(GameMatController.rivalUser).getImageUrl());
         onlineUserAvatarImg.setImage((new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(GameMatController.onlineUser).getImageUrl())).toExternalForm())));
         rivalUserAvatarImg.setImage((new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByNickname(GameMatController.rivalUser).getImageUrl())).toExternalForm())));
         rivalUserNameLbl.setText("username: " + UserModel.getUserByNickname(GameMatController.rivalUser).getUsername() + "\nnickname: " + GameMatController.rivalUser);
@@ -174,124 +176,124 @@ public class GameMatView extends Application {
     }
 
     public void showMyChoices() {
-        choiceImage = new Image(Objects.requireNonNull(getClass().getResource("/images/plain.jpg")).toExternalForm());
-        String cardModel = Card.getCardsByName(ShowCardsView.getNameByImage(selectedCardImage.getImage())).getCardModel();
-        if (cardModel.equals("Monster")) {
-            for (ImageView imageView : allOwnMonstersZone)
-                if (imageView.getImage() == null)
-                    imageView.setImage(choiceImage);
+            choiceImage = new Image(Objects.requireNonNull(getClass().getResource("/images/plain.jpg")).toExternalForm());
+            String cardModel = Card.getCardsByName(ShowCardsView.getNameByImage(selectedCardImage.getImage())).getCardModel();
+            if (cardModel.equals("Monster")) {
+                for (ImageView imageView : allOwnMonstersZone)
+                    if (imageView.getImage() == null)
+                        imageView.setImage(choiceImage);
+            } else if ((cardModel.equals("Spell") && SpellCard.getSpellCardByName(ShowCardsView.getNameByImage(selectedCardImage.getImage())).getIcon().equals("Field"))) {
+                if (ownField.getImage() == null)
+                    ownField.setImage(choiceImage);
+            } else {
+                for (ImageView imageView : allOwnSpellTrapZone)
+                    if (imageView.getImage() == null)
+                        imageView.setImage(choiceImage);
+            }
         }
-        else if ((cardModel.equals("Spell") && SpellCard.getSpellCardByName(ShowCardsView.getNameByImage(selectedCardImage.getImage())).getIcon().equals("Field"))) {
-            if (ownField.getImage() == null)
-                ownField.setImage(choiceImage);
-        }
-        else {
-            for (ImageView imageView : allOwnSpellTrapZone)
-                if (imageView.getImage() == null)
-                    imageView.setImage(choiceImage);
-        }
-    }
+
 
     public void clearMyChoices() {
-        for (ImageView imageView : allOwnMonstersZone) {
-            if (imageView.getImage() != null)
-                if (imageView.getImage().equals(choiceImage))
-                    imageView.setImage(null);
-        }
-        for (ImageView imageView : allOwnSpellTrapZone) {
-            if (imageView.getImage() != null)
-                if (imageView.getImage().equals(choiceImage))
-                    imageView.setImage(null);
-        }
-        if (ownField.getImage() != null && ownField.getImage().equals(choiceImage)) {
-            ownField.setImage(null);
-        }
+            for (ImageView imageView : allOwnMonstersZone) {
+                if (imageView.getImage() != null)
+                    if (imageView.getImage().equals(choiceImage))
+                        imageView.setImage(null);
+            }
+            for (ImageView imageView : allOwnSpellTrapZone) {
+                if (imageView.getImage() != null)
+                    if (imageView.getImage().equals(choiceImage))
+                        imageView.setImage(null);
+            }
+            if (ownField.getImage() != null && ownField.getImage().equals(choiceImage)) {
+                ownField.setImage(null);
+            }
+
     }
 
     public void showGameBoard() {
-        if (counter == 0 && GameMatController.onlineUser.equals("AI")) {
-            try {
-                counter++;
-                AI();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-        } else {
-            counter = 0;
-        }
-        onlinePlayer = Player.getPlayerByName(GameMatController.onlineUser);
-        if (Player.isOneRound)
-            roundLbl.setText("Round: 1");
-        else {
-            if (GameMatController.round == 3)
-                roundLbl.setText("Round: 1");
-            else if (GameMatController.round == 2)
-                roundLbl.setText("Round: 2");
-            else
-                roundLbl.setText("Round: 3");
-        }
-        ownGameMat = GameMatModel.getGameMatByNickname(GameMatController.onlineUser);
-        rivalPlayer = Player.getPlayerByName(GameMatController.rivalUser);
-        rivalGameMat = GameMatModel.getGameMatByNickname(GameMatController.rivalUser);
-        rivalUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(GameMatController.rivalUser).getLifePoint());
-        onlineUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(GameMatController.onlineUser).getLifePoint());
-        rivalUserLpLbl.setTextFill(Color.rgb(rivalUserRedOpacity, 255 - rivalUserRedOpacity, 0));
-        onlineUserLpLbl.setTextFill(Color.rgb(onlineUserRedOpacity, 255 - onlineUserRedOpacity, 0));
-        onlineHbox.getChildren().clear();
-        ArrayList<HandCardZone> onlineHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(GameMatController.onlineUser);
-        setOwnMonsterImageNull();
-        setOwnHand(onlineHand);
-        rivalHbox.getChildren().clear();
-        ArrayList<HandCardZone> rivalHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(GameMatController.rivalUser);
-        setRivalHand(rivalHand);
-        rivalDeckSize.setText(String.valueOf(rivalPlayer.getNumberOfMainDeckCards()));
-        onlineDeckSize.setText(String.valueOf(onlinePlayer.getNumberOfMainDeckCards()));
-        clickOnOwnMonster();
-        dragAndDropHandCard();
-        setRivalMonsterImageNull();
-        clickOnRivalMonster();
-        dragAndDropMonster();
-        clickOnOwnSpell();
-        clickOnRivalSpell();
-        fieldSpell();
-        showGraveyard();
-        if (GameMatController.isNewTurn) {
-            GameMatController.isNewTurn = false;
-            GameMatController.round--;
-            try {
-                new PickFirstPlayerView().start(gameMatStage);
+            if (counter == 0 && GameMatController.onlineUser.equals("AI")) {
+                try {
+                    counter++;
+                    AI();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                counter = 0;
             }
-            catch (Exception ignored) {
+            onlinePlayer = Player.getPlayerByName(GameMatController.onlineUser);
+            if (Player.isOneRound)
+                roundLbl.setText("Round: 1");
+            else {
+                if (GameMatController.round == 3)
+                    roundLbl.setText("Round: 1");
+                else if (GameMatController.round == 2)
+                    roundLbl.setText("Round: 2");
+                else
+                    roundLbl.setText("Round: 3");
+            }
+            ownGameMat = GameMatModel.getGameMatByNickname(GameMatController.onlineUser);
+            rivalPlayer = Player.getPlayerByName(GameMatController.rivalUser);
+            rivalGameMat = GameMatModel.getGameMatByNickname(GameMatController.rivalUser);
+            rivalUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(GameMatController.rivalUser).getLifePoint());
+            onlineUserLpLbl.setText("LifePoint: " + Player.getPlayerByName(GameMatController.onlineUser).getLifePoint());
+            rivalUserLpLbl.setTextFill(Color.rgb(rivalUserRedOpacity, 255 - rivalUserRedOpacity, 0));
+            onlineUserLpLbl.setTextFill(Color.rgb(onlineUserRedOpacity, 255 - onlineUserRedOpacity, 0));
+            onlineHbox.getChildren().clear();
+            ArrayList<HandCardZone> onlineHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(GameMatController.onlineUser);
+            setOwnMonsterImageNull();
+            setOwnHand(onlineHand);
+            rivalHbox.getChildren().clear();
+            ArrayList<HandCardZone> rivalHand = (ArrayList<HandCardZone>) HandCardZone.allHandCards.get(GameMatController.rivalUser);
+            setRivalHand(rivalHand);
+            rivalDeckSize.setText(String.valueOf(rivalPlayer.getNumberOfMainDeckCards()));
+            onlineDeckSize.setText(String.valueOf(onlinePlayer.getNumberOfMainDeckCards()));
+            clickOnOwnMonster();
+            dragAndDropHandCard();
+            setRivalMonsterImageNull();
+            clickOnRivalMonster();
+            dragAndDropMonster();
+            clickOnOwnSpell();
+            clickOnRivalSpell();
+            fieldSpell();
+            showGraveyard();
+            if (GameMatController.isNewTurn) {
+                GameMatController.isNewTurn = false;
+                GameMatController.round--;
+                try {
+                    new PickFirstPlayerView().start(gameMatStage);
+                } catch (Exception ignored) {
+
             }
         }
     }
 
     public void clickOnOwnMonster() {
-        for (int i = 0; i < MonsterZoneCard.allMonsterCards.get(onlinePlayer.getNickname()).size(); i++) {
-            MonsterZoneCard monsterZoneCard = MonsterZoneCard.allMonsterCards.get(onlinePlayer.getNickname()).get(i + 1);
-            ImageView imageView;
-            if (monsterZoneCard != null) {
-                if (monsterZoneCard.getMode().equals("OO")) {
-                    imageView = ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName());
-                    imageView.setFitWidth(87);
-                    imageView.setFitHeight(111);
 
-                } else if (monsterZoneCard.getMode().equals("DH")) {
-                    imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
-                    imageView.setFitWidth(87);
-                    imageView.setFitHeight(111);
+            for (int i = 0; i < MonsterZoneCard.allMonsterCards.get(onlinePlayer.getNickname()).size(); i++) {
+                MonsterZoneCard monsterZoneCard = MonsterZoneCard.allMonsterCards.get(onlinePlayer.getNickname()).get(i + 1);
+                ImageView imageView;
+                if (monsterZoneCard != null) {
+                    if (monsterZoneCard.getMode().equals("OO")) {
+                        imageView = ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName());
+                        imageView.setFitWidth(87);
+                        imageView.setFitHeight(111);
 
-                } else {
-                    imageView = ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName());
-                    allOwnMonstersZone.get(i).setRotate(90);
-                    imageView.setFitWidth(87);
-                    imageView.setFitHeight(111);
-                }
-                int finalI = i + 1;
-                allOwnMonstersZone.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
+                    } else if (monsterZoneCard.getMode().equals("DH")) {
+                        imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
+                        imageView.setFitWidth(87);
+                        imageView.setFitHeight(111);
+
+                    } else {
+                        imageView = ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName());
+                        allOwnMonstersZone.get(i).setRotate(90);
+                        imageView.setFitWidth(87);
+                        imageView.setFitHeight(111);
+                    }
+                    int finalI = i + 1;
+                    allOwnMonstersZone.get(i).setOnMouseClicked(mouseEvent -> {
                         GameMatController.selectMonsterCard(finalI, true);
                         selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName()).getImage());
                         selectedCardImage.setFitHeight(280);
@@ -301,134 +303,142 @@ public class GameMatView extends Application {
                         changeToABtn.setVisible(true);
                         changeToDBtn.setVisible(true);
                         ownMonsterAddressResponse.add(finalI);
-                    }
-                });
-                allOwnMonstersZone.get(i).setImage(imageView.getImage());
+                    });
+                    allOwnMonstersZone.get(i).setImage(imageView.getImage());
+                }
             }
         }
-    }
+
 
     public void clickOnRivalMonster() {
-        for (int i = 0; i < MonsterZoneCard.allMonsterCards.get(rivalPlayer.getNickname()).size(); i++) {
-            allRivalMonstersZone.get(i).setImage(null);
-            MonsterZoneCard monsterZoneCard = MonsterZoneCard.allMonsterCards.get(rivalPlayer.getNickname()).get(i + 1);
-            ImageView imageView;
-            if (monsterZoneCard != null) {
-                if (monsterZoneCard.getMode().equals("OO")) {
-                    imageView = ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName());
-                    imageView.setFitWidth(87);
-                    imageView.setFitHeight(111);
-                } else if (monsterZoneCard.getMode().equals("DH")) {
-                    imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
-                    imageView.setFitWidth(87);
-                    imageView.setFitHeight(111);
-                } else {
-                    imageView = ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName());
-                    allRivalMonstersZone.get(i).setRotate(90);
-                    imageView.setFitWidth(87);
-                    imageView.setFitHeight(111);
-                }
-                int finalI = i + 1;
-                allRivalMonstersZone.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        GameMatController.selectMonsterCard(finalI, false);
-                        rivalMonsterAddress = finalI;
-                        selectedCardAddress = finalI;
-                        selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName()).getImage());
-                        selectedCardImage.setFitHeight(280);
-                        selectedCardImage.setFitWidth(210);
-                        if (monsterZoneCard.getMode().equals("DH")) {
-                            selectedCardImage.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
-                        }
-                        rivalMonsterAddressResponse.add(finalI);
+
+            for (int i = 0; i < MonsterZoneCard.allMonsterCards.get(rivalPlayer.getNickname()).size(); i++) {
+                allRivalMonstersZone.get(i).setImage(null);
+                MonsterZoneCard monsterZoneCard = MonsterZoneCard.allMonsterCards.get(rivalPlayer.getNickname()).get(i + 1);
+                ImageView imageView;
+                if (monsterZoneCard != null) {
+                    if (monsterZoneCard.getMode().equals("OO")) {
+                        imageView = ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName());
+                        imageView.setFitWidth(87);
+                        imageView.setFitHeight(111);
+                    } else if (monsterZoneCard.getMode().equals("DH")) {
+                        imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
+                        imageView.setFitWidth(87);
+                        imageView.setFitHeight(111);
+                    } else {
+                        imageView = ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName());
+                        allRivalMonstersZone.get(i).setRotate(90);
+                        imageView.setFitWidth(87);
+                        imageView.setFitHeight(111);
                     }
-                });
-                allRivalMonstersZone.get(i).setImage(imageView.getImage());
+                    int finalI = i + 1;
+                    allRivalMonstersZone.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            GameMatController.selectMonsterCard(finalI, false);
+                            rivalMonsterAddress = finalI;
+                            selectedCardAddress = finalI;
+                            selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(monsterZoneCard.getMonsterName()).getImage());
+                            selectedCardImage.setFitHeight(280);
+                            selectedCardImage.setFitWidth(210);
+                            if (monsterZoneCard.getMode().equals("DH")) {
+                                selectedCardImage.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
+                            }
+                            rivalMonsterAddressResponse.add(finalI);
+                        }
+                    });
+                    allRivalMonstersZone.get(i).setImage(imageView.getImage());
+                }
             }
         }
-    }
+
 
     public void clickOnOwnSpell() {
-        for (int i = 0; i < SpellTrapZoneCard.allSpellTrapCards.get(onlinePlayer.getNickname()).size(); i++) {
-            SpellTrapZoneCard spellTrapZoneCard = SpellTrapZoneCard.allSpellTrapCards.get(onlinePlayer.getNickname()).get(i + 1);
-            ImageView imageView;
-            if (spellTrapZoneCard.getMode().equals("O"))
-                imageView = ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName());
-            else
-                imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
-            imageView.setFitWidth(87);
-            imageView.setFitHeight(111);
-            int finalI = i + 1;
-            allOwnSpellTrapZone.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    GameMatController.selectSpellCard(finalI, true);
-                    selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName()).getImage());
-                    selectedCardImage.setFitHeight(280);
-                    selectedCardImage.setFitWidth(210);
-                    selectedCardAddress = finalI;
-                    ownSpellAddressResponse.add(finalI);
-                    activateBtn.setVisible(true);
-                }
-            });
-            allOwnSpellTrapZone.get(i).setImage(imageView.getImage());
+
+            for (int i = 0; i < SpellTrapZoneCard.allSpellTrapCards.get(onlinePlayer.getNickname()).size(); i++) {
+                SpellTrapZoneCard spellTrapZoneCard = SpellTrapZoneCard.allSpellTrapCards.get(onlinePlayer.getNickname()).get(i + 1);
+                ImageView imageView;
+                if (spellTrapZoneCard.getMode().equals("O"))
+                    imageView = ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName());
+                else
+                    imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
+                imageView.setFitWidth(87);
+                imageView.setFitHeight(111);
+                int finalI = i + 1;
+                allOwnSpellTrapZone.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        GameMatController.selectSpellCard(finalI, true);
+                        selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName()).getImage());
+                        selectedCardImage.setFitHeight(280);
+                        selectedCardImage.setFitWidth(210);
+                        selectedCardAddress = finalI;
+                        ownSpellAddressResponse.add(finalI);
+                        activateBtn.setVisible(true);
+                    }
+                });
+                allOwnSpellTrapZone.get(i).setImage(imageView.getImage());
+            }
         }
-    }
+
 
     public void clickOnRivalSpell() {
-        for (int i = 0; i < SpellTrapZoneCard.allSpellTrapCards.get(rivalPlayer.getNickname()).size(); i++) {
-            SpellTrapZoneCard spellTrapZoneCard = SpellTrapZoneCard.allSpellTrapCards.get(rivalPlayer.getNickname()).get(i + 1);
-            ImageView imageView;
-            if (spellTrapZoneCard.getMode().equals("O"))
-                imageView = ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName());
-            else
-                imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
-            imageView.setFitWidth(87);
-            imageView.setFitHeight(111);
-            int finalI = i + 1;
-            allRivalSpellTrapZone.get(i).setOnMouseClicked(new EventHandler<>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    GameMatController.selectSpellCard(finalI, false);
-                    selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName()).getImage());
-                    selectedCardImage.setFitHeight(280);
-                    selectedCardImage.setFitWidth(210);
-                    selectedCardAddress = finalI;
-                    if (spellTrapZoneCard.getMode().equals("E")) {
-                        selectedCardImage.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
+
+            for (int i = 0; i < SpellTrapZoneCard.allSpellTrapCards.get(rivalPlayer.getNickname()).size(); i++) {
+                SpellTrapZoneCard spellTrapZoneCard = SpellTrapZoneCard.allSpellTrapCards.get(rivalPlayer.getNickname()).get(i + 1);
+                ImageView imageView;
+                if (spellTrapZoneCard.getMode().equals("O"))
+                    imageView = ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName());
+                else
+                    imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
+                imageView.setFitWidth(87);
+                imageView.setFitHeight(111);
+                int finalI = i + 1;
+                allRivalSpellTrapZone.get(i).setOnMouseClicked(new EventHandler<>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        GameMatController.selectSpellCard(finalI, false);
+                        selectedCardImage.setImage(ShowCardsView.getCardImageViewByName(spellTrapZoneCard.getSpellTrapName()).getImage());
+                        selectedCardImage.setFitHeight(280);
+                        selectedCardImage.setFitWidth(210);
+                        selectedCardAddress = finalI;
+                        if (spellTrapZoneCard.getMode().equals("E")) {
+                            selectedCardImage.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
+                        }
+                        rivalSpellAddressResponse.add(finalI);
                     }
-                    rivalSpellAddressResponse.add(finalI);
-                }
-            });
-            allRivalSpellTrapZone.get(i).setImage(imageView.getImage());
+                });
+                allRivalSpellTrapZone.get(i).setImage(imageView.getImage());
+            }
         }
-    }
+
 
     public void setOwnHand(ArrayList<HandCardZone> onlineHand) {
-        for (int i = 0; i < onlineHand.size(); i++) {
-            ImageView imageView = new ImageView(ShowCardsView.getCardImageByName(onlineHand.get(i).getCardName()));
-            imageView.setFitHeight(77);
-            imageView.setFitWidth(85);
-            int finalI = i;
-            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    clearMyChoices();
-                    GameMatController.selectHandCard(finalI);
-                    selectedCardImage.setImage(imageView.getImage());
-                    selectedCardImage.setFitHeight(280);
-                    selectedCardImage.setFitWidth(210);
-                    selectedCardAddress = finalI;
-                    showMyChoices();
-                }
-            });
-            onlineHbox.getChildren().add(imageView);
+
+            for (int i = 0; i < onlineHand.size(); i++) {
+                ImageView imageView = new ImageView(ShowCardsView.getCardImageByName(onlineHand.get(i).getCardName()));
+                imageView.setFitHeight(77);
+                imageView.setFitWidth(85);
+                int finalI = i;
+                imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        clearMyChoices();
+                        GameMatController.selectHandCard(finalI);
+                        selectedCardImage.setImage(imageView.getImage());
+                        selectedCardImage.setFitHeight(280);
+                        selectedCardImage.setFitWidth(210);
+                        selectedCardAddress = finalI;
+                        showMyChoices();
+                    }
+                });
+                onlineHbox.getChildren().add(imageView);
+            }
+            onlineHbox.setAlignment(Pos.CENTER);
         }
-        onlineHbox.setAlignment(Pos.CENTER);
-    }
 
     public void setRivalHand(ArrayList<HandCardZone> rivalHand) {
+
         for (int i = 0; i < rivalHand.size(); i++) {
             ImageView imageView = new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm());
             imageView.setFitHeight(77);
@@ -516,8 +526,7 @@ public class GameMatView extends Application {
             rivalField.setImage(null);
             boardImg = new Image(Objects.requireNonNull(getClass().getResource("/images/gameboard/g7.jpg")).toExternalForm());
             boardPane.setBackground(new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false))));
-        }
-        else {
+        } else {
             String field = rivalGameMat.getFieldZone();
             String[] split = field.split("/");
             if (split[1].equals("O")) {
@@ -540,16 +549,14 @@ public class GameMatView extends Application {
                         boardPane.setBackground(new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false))));
                         break;
                 }
-            }
-            else
+            } else
                 rivalField.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
         }
         if (ownGameMat.getFieldZone().isEmpty()) {
             ownField.setImage(null);
             boardImg = new Image(Objects.requireNonNull(getClass().getResource("/images/gameboard/g7.jpg")).toExternalForm());
             boardPane.setBackground(new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false))));
-        }
-        else {
+        } else {
             String field = ownGameMat.getFieldZone();
             String[] split = field.split("/");
             if (split[1].equals("O")) {
@@ -572,8 +579,7 @@ public class GameMatView extends Application {
                         boardPane.setBackground(new Background(new BackgroundImage(boardImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(1, 1, true, true, false, false))));
                         break;
                 }
-            }
-            else
+            } else
                 ownField.setImage(new ImageView(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/back2.jpg")).toExternalForm()).getImage());
         }
     }
@@ -622,8 +628,7 @@ public class GameMatView extends Application {
             if (kind.equals("Monster")) {
                 setBtn.setVisible(true);
                 summonBtn.setVisible(true);
-            }
-            else if (kind.equals("Trap") || (kind.equals("Spell") && finalIcon.equals("Quick-play")))
+            } else if (kind.equals("Trap") || (kind.equals("Spell") && finalIcon.equals("Quick-play")))
                 set();
             else if (kind.equals("Spell")) {
                 setBtn.setVisible(true);
@@ -719,7 +724,7 @@ public class GameMatView extends Application {
         GameMatController.error = "";
         selectedCardImage.setImage(null);
         if (phaseLbl.getText().equals("phase: " + Phase.End_Phase + "\nI end my turn!\n")) {
-          //  start(gameMatStage); not rotate the mat
+            //  start(gameMatStage); not rotate the mat
             phaseLbl.setText(GameMatController.sideMsg2);
         }
         setBtn.setVisible(false);
@@ -819,11 +824,9 @@ public class GameMatView extends Application {
         int result = GameMatController.attack(rivalMonsterAddress, GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
             endGame();
-        }
-        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound()== 1 && rivalPlayer.getLifePoint() == 0)) {
+        } else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
             endGame();
-        }
-        else {
+        } else {
             messagePane.setVisible(true);
             popUpMessageLbl.setText(GameMatController.message);
             if (!popUpMessageLbl.getText().equals("you can’t attack with this card") && !popUpMessageLbl.getText().equals("your card is not in an attack mode") && !popUpMessageLbl.getText().equals("this card already attacked")
@@ -838,8 +841,7 @@ public class GameMatView extends Application {
                 GameMatController.isNewTurn = false;
                 try {
                     new PickFirstPlayerView().start(gameMatStage);
-                }
-                catch (Exception ignored) {
+                } catch (Exception ignored) {
                 }
                 return;
             }
@@ -851,11 +853,9 @@ public class GameMatView extends Application {
         int result = GameMatController.attackDirect(GameMatModel.getGameMatByNickname(GameMatController.onlineUser).getPhase());
         if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
             endGame();
-        }
-        else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
+        } else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
             endGame();
-        }
-        else {
+        } else {
             messagePane.setVisible(true);
             popUpMessageLbl.setText(GameMatController.message);
             GameMatController.message = "";
@@ -871,8 +871,7 @@ public class GameMatView extends Application {
                 GameMatController.isNewTurn = false;
                 try {
                     new PickFirstPlayerView().start(gameMatStage);
-                }
-                catch (Exception ignored) {
+                } catch (Exception ignored) {
                 }
                 return;
             }
@@ -918,7 +917,7 @@ public class GameMatView extends Application {
     public void activateEffect() {
         clearMyChoices();
         if (activeEffect.equals("Man-Eater Bug") && !rivalMonsterAddressResponse.isEmpty()) {
-           // MonsterEffect.manEaterBug(selectedCardAddress, rivalMonsterAddressResponse.get(0));
+            // MonsterEffect.manEaterBug(selectedCardAddress, rivalMonsterAddressResponse.get(0));
             rivalMonsterAddressResponse.clear();
             ownMonsterAddressResponse.clear();
             activateBtn.setVisible(false);
@@ -971,8 +970,8 @@ public class GameMatView extends Application {
     }
 
     public void okBtn() {
-        String command =answerTxt.getText().trim();
-        GameMatController.commandController(command , this);
+        String command = answerTxt.getText().trim();
+        GameMatController.commandController(command, this);
         messagePane.setVisible(false);
         showGameBoard();
     }

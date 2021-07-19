@@ -78,7 +78,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="answerTxt" layoutX="157.0" layoutY="167.0" />
-                  <Button fx:id="okBtn" layoutX="82.0" layoutY="166.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="39.0" text="Ok" onAction="#okBtn"/>
+                  <Button fx:id="okBtn" layoutX="82.0" layoutY="166.0" mnemonicParsing="false" onAction="#okBtn" prefHeight="27.0" prefWidth="39.0" text="Ok" />
                   <Button fx:id="cancelBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="167.0" mnemonicParsing="false" text="Cancel" />
                   <Label fx:id="popUpMessageLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="88.0" prefWidth="418.0" textAlignment="CENTER" textFill="RED" wrapText="true">
                      <font>
@@ -152,19 +152,6 @@
                   <Font name="Bodoni MT" size="19.0" />
                </font>
             </Label>
-            <ScrollPane layoutX="3.0" layoutY="551.0" prefHeight="103.0" prefWidth="316.0">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="315.0" style="-fx-background-color: #b7c2cf;">
-                     <children>
-                        <Button focusTraversable="false" layoutY="55.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="51.0" text="Send">
-                           <font>
-                              <Font name="Bodoni MT" size="12.0" />
-                           </font></Button>
-                        <TextField focusTraversable="false" layoutX="52.0" layoutY="55.0" prefHeight="26.0" prefWidth="223.0" promptText="message" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </ScrollPane>
             <ImageView fx:id="settingBtn" fitHeight="27.0" fitWidth="33.0" layoutX="278.0" layoutY="14.0" onMouseClicked="#pressPauseBtn" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/setting.jpg" />

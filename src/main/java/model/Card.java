@@ -11,17 +11,17 @@ public class Card {
     protected String secondName;
     protected static HashMap<String, Card> cards = new HashMap<>();
     public boolean isAvailable;
-    public int mojoodi ;
-    public Card(String cardName, String cardModel, String description, int price,String secondName) {
+    public HashMap<String,Integer> mojoodi = new HashMap<>();
+
+    public Card(String cardName, String cardModel, String description, int price, String secondName) {
         this.cardName = cardName;
         this.cardModel = cardModel;
         this.description = description;
         this.price = price;
         this.secondName=secondName;
-        isAvailable=true;
-        mojoodi=10;
-
         cards.put(cardName, this);
+        isAvailable=true;
+        mojoodi.put(cardName,10);
     }
 
     public String getSecondName() {

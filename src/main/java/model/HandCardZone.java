@@ -1,3 +1,4 @@
+
 package model;
 
 import view.GameMatView;
@@ -8,12 +9,13 @@ import java.util.*;
 
 public class HandCardZone  implements Serializable {
 
+    private static final long serialVersionUID = -3055268570262552120L;
     private final String playerNickname;
     private final String cardName;
     private int address;
     private final String kind;
     public static Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
-    private static HashMap<String, HandCardZone> objects = new HashMap<>();
+//    private static HashMap<String, HandCardZone> objects = new HashMap<>();
 
     public HandCardZone(String playerNickname, String cardName) {
         this.playerNickname = playerNickname;
@@ -21,11 +23,10 @@ public class HandCardZone  implements Serializable {
         this.address = allHandCards.get(playerNickname).size();
         this.kind = Card.getCardsByName(cardName).getCardModel();
         allHandCards.get(playerNickname).add(address, this);
-        objects.put(playerNickname, this);
     }
 
-    public static void setObject(String playerNickname, HandCardZone handCardZone) {
-        objects.put(playerNickname, handCardZone);
+    public static void setObject(String playerNickname, List<HandCardZone> handCardZone) {
+        allHandCards.put(playerNickname,handCardZone);
     }
 
     public String getCardName() {
@@ -116,7 +117,7 @@ public class HandCardZone  implements Serializable {
         return -1;
     }
 
-    public static HandCardZone getHandCardZoneByName(String playerNickname) {
-        return objects.get(playerNickname);
+    public static List<HandCardZone> getAllHandCardZoneByName(String playerNickname) {
+        return allHandCards.get(playerNickname);
     }
 }
