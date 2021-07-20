@@ -343,19 +343,20 @@ public class LobbyView extends Application {
     public void send() {
         if (!rivalNameTxt.getText().equals("")) {
             try {
-
                 RegisterAndLoginView.dataOutputStream.writeUTF("sendInvitation:" + MainMenuController.token + ":" + rivalNameTxt.getText());
                 RegisterAndLoginView.dataOutputStream.flush();
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
-                System.out.println(answer + " cc");///
                 while (true) {
                     RegisterAndLoginView.dataOutputStream.writeUTF("isAccepted:" + MainMenuController.token + ":" + rivalNameTxt.getText());
                     RegisterAndLoginView.dataOutputStream.flush();
                     String result = RegisterAndLoginView.dataInputStream.readUTF();
+                    if ((result.startsWith("refused"))) {
+                        new MainMenuView().start(lobbyStage);
+                        break;
+                    }
                     if (result.startsWith("true")) {
-                        String[] splitResult=result.split(":");
-                        System.out.println(result+" reeeeeee");
-                        split1=splitResult[1];
+                        String[] splitResult = result.split(":");
+                        split1 = splitResult[1];
                         set();
                         break;
                     }
@@ -411,11 +412,9 @@ public class LobbyView extends Application {
     }
 
     public void accept(MouseEvent mouseEvent) throws Exception {
-        System.out.println("hehe");
         RegisterAndLoginView.dataOutputStream.writeUTF("acceptInvitation:" + MainMenuController.token + ":" + split1);
         RegisterAndLoginView.dataOutputStream.flush();
         String ss = RegisterAndLoginView.dataInputStream.readUTF();
-        System.out.println(ss + "  2");
         /////////////////////////
 
 
@@ -456,7 +455,10 @@ public class LobbyView extends Application {
     }
 
 
-    public void refuse(MouseEvent mouseEvent) {
-
+    public void refuse(MouseEvent mouseEvent) throws Exception {
+        RegisterAndLoginView.dataOutputStream.writeUTF("refuseInvitation:" + MainMenuController.token + ":" + split1);
+        RegisterAndLoginView.dataOutputStream.flush();
+        String ss = RegisterAndLoginView.dataInputStream.readUTF();
+        new MainMenuView().start(lobbyStage);
     }
 }
