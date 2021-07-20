@@ -1,67 +1,45 @@
 package view;
 
-import controller.GameMatController;
-import controller.MainMenuController;
-import controller.RegisterAndLoginController;
+import controller.*;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.*;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 
 public class LobbyView extends Application {
 
-    public Button sendBtn;
-    public TextField messageTxt;
-    public VBox messageVBox;
     public AnchorPane lobbyPane;
-    public ScrollPane scrollPane;
     public Label findDuelistLbl;
     public RadioButton oneRoundBtn;
     public RadioButton threeRoundBtn;
-    public Label headLbl;
-    public Label pinHeadLbl;
-    public ImageView userImage;
-    public Label infoLbl;
-    public AnchorPane userPane;
     public Label duelWithAILbl;
     public Label messageLbl;
     public Button cancelBtn;
-    public TextField rivalUsernameTxt;
-    public Label matchLbl;
-    private int whichLbl;
-    public MessageBox focusedMessageBox;
-    private static int messageCounter = 0;
-    public static Label focusedLbl;
-    private static int messageX = 457;
-    private static int messageY = 673;
-    public static LobbyView lobbyView;
-    public static String pinnedMessage;
-    public static int chatRecord = 0;
-    public static int nextRecord = 5;
-    public static MediaPlayer note;
-    public static int roundNumberRequested;
-    public static ArrayList<MessageBox> allMassages = new ArrayList<>();
+    public Label errorLbl;
+    public Button sendBtn;
+    public TextField rivalNameTxt;
+    public VBox vBox;
+    public Label invitationLbl;
+    public Button acceptBtn;
+    public Button refuseBtn;
+    private HBox focusedHBox;
+    private int whichInvitation;
     public static Stage lobbyStage;
+    private boolean isCanceled;
+    private static String split1 = "";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -72,160 +50,7 @@ public class LobbyView extends Application {
     }
 
     public void initialize() {
-        messageVBox.setOnMouseEntered(mouseEvent -> {
-            try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("numberOfOnlineUser");
-                RegisterAndLoginView.dataOutputStream.flush();
-                headLbl.setText(RegisterAndLoginView.dataInputStream.readUTF());
-            } catch (Exception ignored) {
-            }
-        });
-
-    }
-
-    public void updateOnline() {
-
-    }
-
-    public void sendMessage() throws IOException, ClassNotFoundException {
-        Object obj;
-        if (sendBtn.getText().equals("Send")) {
-            if (!messageTxt.getText().isEmpty()) {
-                String message = messageTxt.getText();
-                new ChatRoom(UserModel.getUserByUsername(MainMenuController.username), message);
-                RegisterAndLoginView.dataOutputStream.writeUTF("chat/" + MainMenuController.username + "/" + message);
-                RegisterAndLoginView.dataOutputStream.flush();
-                obj = RegisterAndLoginView.objectInputStream.readObject();
-                String pin = RegisterAndLoginView.dataInputStream.readUTF();
-                System.out.println(pin + "pinMessage");
-                ChatRoom.setPinMessage(pin);
-                ChatRoom.setObject((ArrayList<ChatRoom>) obj);
-                updateChats();
-                chatRecord++;
-            }
-        } else if (sendBtn.getText().equals("Edit")) {
-            String[] split = focusedMessageBox.getMessageLbl().getText().split("\n");
-            RegisterAndLoginView.dataOutputStream.writeUTF("edit/" + split[1] + "/" + focusedMessageBox.getSender().getNickname() + "/" + messageTxt.getText());
-            RegisterAndLoginView.dataOutputStream.flush();
-            focusedLbl.setText("(" + focusedMessageBox.getSender().getNickname() + ")\n" + messageTxt.getText());
-            sendBtn.setText("Send");
-            messageTxt.clear();
-        } else {
-            RegisterAndLoginView.dataOutputStream.writeUTF("reply/" + focusedMessageBox.getMessageLbl().getText());
-            RegisterAndLoginView.dataOutputStream.flush();
-            System.out.println(focusedMessageBox.getMessageLbl().getText());
-            focusedMessageBox.getChatRoom().setReplyMessage(messageTxt.getText());
-            focusedMessageBox.setReplyLbl(messageTxt.getText());
-            sendBtn.setText("Send");
-            messageTxt.clear();
-        }
-        if (chatRecord == nextRecord) {
-            nextRecord *= 3;
-            RegisterAndLoginView.dataOutputStream.writeUTF("chatCup/" + MainMenuController.token);
-            RegisterAndLoginView.dataOutputStream.flush();
-            chatCup();
-        }
-    }
-
-    public void chatCup() {
-        Stage stage = new Stage();
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setPrefWidth(480);
-        anchorPane.setPrefHeight(300);
-        anchorPane.setStyle("-fx-background-color: #2a0002");
-        ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/cup3.jpg")).toExternalForm())));
-        Label label = new Label("Congrats! You won the Chat Cup!");
-        label.setFont(new Font("Bodoni MT", 20));
-        label.setTextFill(Color.rgb(255, 229, 0));
-        label.setLayoutX(110);
-        label.setLayoutY(270);
-        imageView.setLayoutX(110);
-        imageView.setLayoutY(10);
-        anchorPane.getChildren().addAll(imageView, label);
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
-        stage.setResizable(false);
-        stage.setTitle("Achievement");
-        stage.setScene(new Scene(anchorPane));
-        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/bonus.wav")).toExternalForm());
-        note = new MediaPlayer(media);
-        note.setAutoPlay(true);
-        stage.show();
-    }
-
-    public void updateChats() {
-        messageVBox.getChildren().clear();
-        for (ChatRoom eachChat : ChatRoom.getAllChats()) {
-            String message = eachChat.getMessage();
-            MessageBox messageBox = new MessageBox(eachChat.getSender(), message, eachChat);
-            messageVBox.getChildren().add(messageBox.getHBox());
-            lobbyPane.getChildren().add(messageBox.getOptionVBox());
-            setUpActions(messageBox);
-            messageTxt.clear();
-            allMassages.add(messageBox);
-        }
-        pinHeadLbl.setText(ChatRoom.getPinMessage());
-    }
-
-    public void clickOnDeleteLbl(MessageBox messageBox) {
-        messageBox.getOptionVBox().getChildren().get(0).setOnMouseClicked(mouseEvent -> {
-            try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("delete/" + messageBox.getMessageLbl().getText() + "/" + messageBox.getSender().getNickname());
-                RegisterAndLoginView.dataOutputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            messageVBox.getChildren().remove(messageBox.getHBox());
-        });
-    }
-
-    public void clickOnEditLbl(MessageBox messageBox) {
-        messageBox.getOptionVBox().getChildren().get(1).setOnMouseClicked(mouseEvent -> {
-            sendBtn.setText("Edit");
-            focusedMessageBox = messageBox;
-            focusedLbl = messageBox.getMessageLbl();
-        });
-    }
-
-    public void clickOnReplyLbl(MessageBox messageBox) {
-        messageBox.getOptionVBox().getChildren().get(2).setOnMouseClicked(mouseEvent -> {
-            sendBtn.setText("Reply");
-            focusedLbl = messageBox.getMessageLbl();
-            focusedMessageBox = messageBox;
-        });
-    }
-
-    public void clickOnPinLbl(MessageBox messageBox) {
-        messageBox.getOptionVBox().getChildren().get(3).setOnMouseClicked(mouseEvent -> {
-            String pinMessage = messageBox.getMessageLbl().getText();
-            try {
-                String[] split = pinMessage.split("\n");
-                RegisterAndLoginView.dataOutputStream.writeUTF("pinMessage/" + split[1]);
-                RegisterAndLoginView.dataOutputStream.flush();
-                ChatRoom.setPinMessage(split[1]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            pinHeadLbl.setText(ChatRoom.getPinMessage());
-        });
-    }
-
-    public void clickOnAvatar(MessageBox messageBox) {
-        messageBox.getAvatar().setOnMouseEntered(mouseEvent -> {
-            userImage.setImage(messageBox.getAvatar().getImage());
-            infoLbl.setText("Username: " + messageBox.getSender().getUsername() + "\nNickname: " + messageBox.getSender().getNickname() + "\nScore: " + messageBox.getSender().getUserScore());
-            userPane.setVisible(true);
-        });
-        messageBox.getAvatar().setOnMouseExited(mouseEvent -> {
-            userPane.setVisible(false);
-        });
-    }
-
-    public void setUpActions(MessageBox messageBox) {
-        clickOnDeleteLbl(messageBox);
-        clickOnEditLbl(messageBox);
-        clickOnReplyLbl(messageBox);
-        clickOnPinLbl(messageBox);
-        clickOnAvatar(messageBox);
+        ///showInvitations();
     }
 
     public void findADuelist() {
@@ -236,12 +61,15 @@ public class LobbyView extends Application {
                 RegisterAndLoginView.dataOutputStream.writeUTF("findADuelist/" + MainMenuController.token + "/" + 1);
                 RegisterAndLoginView.dataOutputStream.flush();
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
+
                 if (answer.equals("failed")) {
                     System.out.println("failed  ss");
-                    while (true) {
-                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token+":"+1);
+                    while (!isCanceled) {
+                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token + ":" + 1);
                         RegisterAndLoginView.dataOutputStream.flush();
                         String[] answer2 = RegisterAndLoginView.dataInputStream.readUTF().split(":");
+
+
                         if (answer2[0].equals("true")) {
                             RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer2[1] + ":" + 1);
                             RegisterAndLoginView.dataOutputStream.flush();
@@ -254,11 +82,11 @@ public class LobbyView extends Application {
                             UserModel userTwo = (UserModel) answer3.get(5);
                             ///
 
-                            if(userTwo.getNickname().equals(MainMenuController.username)){
+                            if (userTwo.getNickname().equals(MainMenuController.username)) {
                                 MainMenuController.username2 = userOne.getNickname();
 
-                            }else
-                            MainMenuController.username2 = userTwo.getNickname();
+                            } else
+                                MainMenuController.username2 = userTwo.getNickname();
                             //
                             UserModel.setObject(userOne);
                             UserModel.setObject(userTwo);
@@ -284,6 +112,12 @@ public class LobbyView extends Application {
                         }
 
                     }
+                } else if (answer.startsWith("invitation")) {
+                    String[] split = answer.split(":");
+
+                    invitationLbl.setText(split[2] + " has requested to play with you, do you want too?");
+                    split1 = split[1];
+
                 } else {
                     System.out.println("success");
 
@@ -297,10 +131,10 @@ public class LobbyView extends Application {
                     UserModel userOne = (UserModel) answer3.get(4);
                     UserModel userTwo = (UserModel) answer3.get(5);
                     ///
-                    if(userTwo.getNickname().equals(MainMenuController.username)){
+                    if (userTwo.getNickname().equals(MainMenuController.username)) {
                         MainMenuController.username2 = userOne.getNickname();
 
-                    }else
+                    } else
                         MainMenuController.username2 = userTwo.getNickname();
                     //
                     UserModel.setObject(userOne);
@@ -336,10 +170,11 @@ public class LobbyView extends Application {
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 if (answer.equals("failed")) {
                     System.out.println("failed  ss");
-                    while (true) {
-                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token+":"+3);
+                    while (!isCanceled) {
+                        RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token + ":" + 3);
                         RegisterAndLoginView.dataOutputStream.flush();
                         String[] answer2 = RegisterAndLoginView.dataInputStream.readUTF().split(":");
+                        cancelBtn.setVisible(true);
                         if (answer2[0].equals("true")) {
                             RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + answer2[1] + ":" + 3);
                             RegisterAndLoginView.dataOutputStream.flush();
@@ -351,10 +186,10 @@ public class LobbyView extends Application {
                             UserModel userOne = (UserModel) answer3.get(4);
                             UserModel userTwo = (UserModel) answer3.get(5);
                             ///
-                            if(userTwo.getNickname().equals(MainMenuController.username)){
+                            if (userTwo.getNickname().equals(MainMenuController.username)) {
                                 MainMenuController.username2 = userOne.getNickname();
 
-                            }else
+                            } else
                                 MainMenuController.username2 = userTwo.getNickname();
                             //
                             UserModel.setObject(userOne);
@@ -381,6 +216,11 @@ public class LobbyView extends Application {
                         }
 
                     }
+                } else if (answer.startsWith("invitation")) {
+                    String[] split = answer.split(":");
+                    invitationLbl.setText(split[2] + " has requested to play with you, do you want too?");
+                    split1 = split[1];
+
                 } else {
                     System.out.println("success");
 
@@ -394,10 +234,10 @@ public class LobbyView extends Application {
                     UserModel userOne = (UserModel) answer3.get(4);
                     UserModel userTwo = (UserModel) answer3.get(5);
                     ///
-                    if(userTwo.getNickname().equals(MainMenuController.username)){
+                    if (userTwo.getNickname().equals(MainMenuController.username)) {
                         MainMenuController.username2 = userOne.getNickname();
 
-                    }else
+                    } else
                         MainMenuController.username2 = userTwo.getNickname();
                     //
                     UserModel.setObject(userOne);
@@ -423,7 +263,6 @@ public class LobbyView extends Application {
             }
 
 
-
             ////
         } else {
             messageLbl.setText("Please choose a Round!");
@@ -444,24 +283,180 @@ public class LobbyView extends Application {
         }
     }
 
-    ////////////
     public void cancel() {
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("cancelGame/" + MainMenuController.token);
             messageLbl.setText("Canceled Successfully!");
-            messageLbl.setCursor(Cursor.DEFAULT);
+            // messageLbl.setCursor(Cursor.DEFAULT);
+            isCanceled = true;
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
-
+        isCanceled = false;
     }
-///////////////////////
 
-    public void goToInvitations() throws Exception {
-        new InvitationView().start(lobbyStage);
+//    public void showInvitations() {
+//        HashMap<Integer, String> myInvitations = null;
+//        try {
+//            RegisterAndLoginView.dataOutputStream.writeUTF("myInvitations/" + MainMenuController.username);
+//            RegisterAndLoginView.dataOutputStream.flush();
+//            myInvitations = (HashMap<Integer, String>) RegisterAndLoginView.objectInputStream.readObject();
+//        } catch (Exception ignored) {
+//        }
+//        if (myInvitations != null) {
+//            for (Map.Entry<Integer, String> eachOne : myInvitations.entrySet()) {
+//                Label label = new Label("Hi! " + MainMenuController.username + ", I dare to challenge you!\nDuel with me to see who the King is!\n" + eachOne.getValue() + ":)");
+//                Button accept = new Button("Accept");
+//                Button reject = new Button("Reject");
+//                accept.setFocusTraversable(false);
+//                reject.setFocusTraversable(false);
+//                HBox hBox = new HBox();
+//                hBox.setSpacing(5);
+//                hBox.getChildren().addAll(label, accept, reject);
+//                focusedHBox = hBox;
+//                whichInvitation = eachOne.getKey();
+//                vBox.getChildren().add(hBox);
+//                buttonActions(accept, reject);
+//            }
+//        }
+//    }
+
+    public void buttonActions(Button accept, Button reject) {
+        accept.setOnMouseClicked(mouseEvent -> {
+            vBox.getChildren().remove(focusedHBox);
+            try {
+                RegisterAndLoginView.dataOutputStream.writeUTF("acceptInvitation/" + MainMenuController.username + "/" + whichInvitation);
+                RegisterAndLoginView.dataOutputStream.flush();
+            } catch (Exception ignored) {
+            }
+        });
+        reject.setOnMouseClicked(mouseEvent -> {
+            vBox.getChildren().remove(focusedHBox);
+            try {
+                RegisterAndLoginView.dataOutputStream.writeUTF("rejectInvitation/" + MainMenuController.username + "/" + whichInvitation);
+                RegisterAndLoginView.dataOutputStream.flush();
+            } catch (Exception ignored) {
+            }
+        });
+    }
+
+    public void send() {
+        if (!rivalNameTxt.getText().equals("")) {
+            try {
+
+                RegisterAndLoginView.dataOutputStream.writeUTF("sendInvitation:" + MainMenuController.token + ":" + rivalNameTxt.getText());
+                RegisterAndLoginView.dataOutputStream.flush();
+                String answer = RegisterAndLoginView.dataInputStream.readUTF();
+                System.out.println(answer + " cc");///
+                while (true) {
+                    RegisterAndLoginView.dataOutputStream.writeUTF("isAccepted:" + MainMenuController.token + ":" + rivalNameTxt.getText());
+                    RegisterAndLoginView.dataOutputStream.flush();
+                    String result = RegisterAndLoginView.dataInputStream.readUTF();
+                    if (result.startsWith("true")) {
+                        String[] splitResult=result.split(":");
+                        System.out.println(result+" reeeeeee");
+                        split1=splitResult[1];
+                        set();
+                        break;
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    private void set() throws Exception {
+        RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + split1 + ":" + 1);
+        RegisterAndLoginView.dataOutputStream.flush();
+        ArrayList<Object> answer3 = (ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject();
+        GameMatController.onlineToken = (String) answer3.get(0);
+        GameMatController.rivalToken = (String) answer3.get(1);
+        Player playerOne = (Player) answer3.get(2);
+        Player playerTwo = (Player) answer3.get(3);
+        UserModel userOne = (UserModel) answer3.get(4);
+        UserModel userTwo = (UserModel) answer3.get(5);
+        ///
+        if (userTwo.getNickname().equals(MainMenuController.username)) {
+            MainMenuController.username2 = userOne.getNickname();
+
+        } else
+            MainMenuController.username2 = userTwo.getNickname();
+        //
+        UserModel.setObject(userOne);
+        UserModel.setObject(userTwo);
+        Player.setObject(userOne.getNickname(), playerOne);
+        Player.setObject(userTwo.getNickname(), playerTwo);
+        GameMatController.onlineUser = userOne.getNickname();
+        GameMatController.rivalUser = userTwo.getNickname();
+        GameMatModel.playerGameMat = (HashMap<String, GameMatModel>) answer3.get(6);
+        HandCardZone.allHandCards = (Map<String, List<HandCardZone>>) answer3.get(7);
+        MonsterZoneCard.allMonsterCards = (Map<String, Map<Integer, MonsterZoneCard>>) answer3.get(8);
+        SpellTrapZoneCard.allSpellTrapCards = (Map<String, Map<Integer, SpellTrapZoneCard>>) answer3.get(9);
+        /////////
+        ArrayList<Object> newArray = new ArrayList<>();
+        for (int i = 10; i < 22; i++) {
+            newArray.add(answer3.get(i));
+        }
+        GameMatController.setObjects(newArray);
+        /////
+        new GameMatView().start(lobbyStage);
+    }
+
+    public void refresh() {
+        //showInvitations();
     }
 
     public void back() throws Exception {
         new MainMenuView().start(lobbyStage);
     }
 
+    public void accept(MouseEvent mouseEvent) throws Exception {
+        System.out.println("hehe");
+        RegisterAndLoginView.dataOutputStream.writeUTF("acceptInvitation:" + MainMenuController.token + ":" + split1);
+        RegisterAndLoginView.dataOutputStream.flush();
+        String ss = RegisterAndLoginView.dataInputStream.readUTF();
+        System.out.println(ss + "  2");
+        /////////////////////////
+
+
+        RegisterAndLoginView.dataOutputStream.writeUTF("pickPlayer:" + MainMenuController.token + ":" + split1 + ":" + 1);
+        RegisterAndLoginView.dataOutputStream.flush();
+        ArrayList<Object> answer3 = (ArrayList<Object>) RegisterAndLoginView.objectInputStream.readObject();
+        GameMatController.onlineToken = (String) answer3.get(0);
+        GameMatController.rivalToken = (String) answer3.get(1);
+        Player playerOne = (Player) answer3.get(2);
+        Player playerTwo = (Player) answer3.get(3);
+        UserModel userOne = (UserModel) answer3.get(4);
+        UserModel userTwo = (UserModel) answer3.get(5);
+        ///
+        if (userTwo.getNickname().equals(MainMenuController.username)) {
+            MainMenuController.username2 = userOne.getNickname();
+
+        } else
+            MainMenuController.username2 = userTwo.getNickname();
+        //
+        UserModel.setObject(userOne);
+        UserModel.setObject(userTwo);
+        Player.setObject(userOne.getNickname(), playerOne);
+        Player.setObject(userTwo.getNickname(), playerTwo);
+        GameMatController.onlineUser = userOne.getNickname();
+        GameMatController.rivalUser = userTwo.getNickname();
+        GameMatModel.playerGameMat = (HashMap<String, GameMatModel>) answer3.get(6);
+        HandCardZone.allHandCards = (Map<String, List<HandCardZone>>) answer3.get(7);
+        MonsterZoneCard.allMonsterCards = (Map<String, Map<Integer, MonsterZoneCard>>) answer3.get(8);
+        SpellTrapZoneCard.allSpellTrapCards = (Map<String, Map<Integer, SpellTrapZoneCard>>) answer3.get(9);
+        /////////
+        ArrayList<Object> newArray = new ArrayList<>();
+        for (int i = 10; i < 22; i++) {
+            newArray.add(answer3.get(i));
+        }
+        GameMatController.setObjects(newArray);
+        /////
+        new GameMatView().start(lobbyStage);
+    }
+
+
+    public void refuse(MouseEvent mouseEvent) {
+
+    }
 }
