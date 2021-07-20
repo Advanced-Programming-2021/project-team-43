@@ -18,6 +18,7 @@ public class Run {
     private static HashMap<String, Boolean> tokensInLine3;
     private static HashMap<String, String> pairTokens;
     private static HashMap<String, Boolean> pickPlayer;
+    private static HashMap<String, Boolean> refused;
 
 
     public static void run() {
@@ -28,6 +29,7 @@ public class Run {
             pairTokens = new HashMap<>();
             pickPlayer = new HashMap<>();
             invitation = new HashMap<>();
+            refused = new HashMap<>();
             while (true) {
                 Socket socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
@@ -121,32 +123,39 @@ public class Run {
         if (input.startsWith("sendInvitation")) {
             String[] split = input.split(":");
             invitation.put(split[1], split[2]);
+            refused.put(split[1], true);
 
             return "ss";
         }
         if (input.startsWith("acceptInvitation")) {
             String[] split = input.split(":");
             pairTokens.put(split[1], split[2]);
-            pickPlayer.put(split[1],false);
-            pickPlayer.put(split[2],false);
+            pickPlayer.put(split[1], false);
+            pickPlayer.put(split[2], false);
             return "ss2";
+        }
+        if (input.startsWith("refuseInvitation")) {
+            String[] refuse = input.split(":");
+            refused.put(refuse[2], false);
+            return "sd";
+
         }
         if (input.startsWith("isAccepted")) {
             String[] split = input.split(":");
+            if (refused.get(split[1])) {
+                if (pairTokens.containsKey(split[1]) && userByToken(pairTokens.get(split[1])).equals(split[2])) {
+                    return "true:" + pairTokens.containsKey(split[1]);
+                } else {
+                    String[] keys = pairTokens.keySet().toArray(new String[0]);
+                    for (int i = 0; i < keys.length; i++) {
+                        if (pairTokens.get(keys[i]).equals(split[1]) && userByToken(keys[i]).equals(split[2])) {
+                            return "true:" + keys[i];
+                        }
 
-            if (pairTokens.containsKey(split[1]) && userByToken(pairTokens.get(split[1])).equals(split[2])) {
-                return "true:"+pairTokens.containsKey(split[1]);
-            } else {
-                String[] keys = pairTokens.keySet().toArray(new String[0]);
-                for (int i = 0; i < keys.length; i++) {
-                    if (pairTokens.get(keys[i]).equals(split[1]) && userByToken(keys[i]).equals(split[2])) {
-                        return "true:"+keys[i];
                     }
-
                 }
-            }
-            return "false";
-
+                return "false";
+            } else return "refused";
 
         }
         return "==";
