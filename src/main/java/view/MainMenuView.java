@@ -34,9 +34,9 @@ public class MainMenuView extends Application {
     public Button logoutBtn;
     public Button lobbyBtn;
     public Button tvBtn;
-    public static MediaPlayer note;
     public Button auctionBtn;
     public Button chatroomBtn;
+    public static MediaPlayer note;
 
 
     @Override

@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<AnchorPane prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AuctionView">
-
+<AnchorPane fx:id="auctionPane" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AuctionView">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="14.0" prefHeight="78.0" prefWidth="166.0" text="Auctions" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="34.0" />
+         </font>
+      </Label>
+      <Button layoutX="889.0" layoutY="685.0" mnemonicParsing="false" onAction="#back" text="Back">
+         <font>
+            <Font name="Bodoni MT" size="17.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="cardImg" fitHeight="489.0" fitWidth="386.0" layoutX="307.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="cardNameLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="341.0" layoutY="606.0" prefHeight="72.0" prefWidth="317.0" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="22.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="58.0" fitWidth="68.0" layoutX="693.0" layoutY="332.0" onMouseClicked="#nextCard" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/nextBtn.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="58.0" fitWidth="68.0" layoutX="249.0" layoutY="332.0" onMouseClicked="#previousCard" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+         <image>
+            <Image url="@../images/nextBtn.jpg" />
+         </image>
+      </ImageView>
+   </children>
 </AnchorPane>

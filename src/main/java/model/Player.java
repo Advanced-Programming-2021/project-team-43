@@ -25,7 +25,7 @@ public class Player  implements Serializable {
     private final List<Integer> allLifePoints = new ArrayList<>();
     public static final Map<String, Player> allPlayers = new HashMap<>();
     private static int randomCardNumber;
-    public static boolean isOneRound;
+    public boolean isOneRound;
 
     public Player(String nickname, DeckModel activeDeck, boolean isYourTurn, int numberOfRound) {
         this.nickname = nickname;
@@ -124,6 +124,10 @@ public class Player  implements Serializable {
 
     public boolean getIsYourTurn() {
         return isYourTurn;
+    }
+
+    public boolean getIsOneRound() {
+        return isOneRound;
     }
 
     public void setIsYourTurn(boolean isYourTurn) {

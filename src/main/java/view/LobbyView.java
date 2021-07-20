@@ -52,7 +52,6 @@ public class LobbyView extends Application {
                 RegisterAndLoginView.dataOutputStream.flush();
                 String answer = RegisterAndLoginView.dataInputStream.readUTF();
                 if (answer.equals("failed")) {
-                    System.out.println("failed  ss");
                     while (true) {
                         RegisterAndLoginView.dataOutputStream.writeUTF("isFind:" + MainMenuController.token+":"+1);
                         RegisterAndLoginView.dataOutputStream.flush();
@@ -248,13 +247,17 @@ public class LobbyView extends Application {
     public void playWithAI() {
         if (oneRoundBtn.isSelected()) {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("PlayWithAI");
+                RegisterAndLoginView.dataOutputStream.writeUTF("PlayWithAI/1");
+                RegisterAndLoginView.dataOutputStream.flush();
             } catch (Exception ignored) {
             }
-
         }
         else if (threeRoundBtn.isSelected()) {
-
+            try {
+                RegisterAndLoginView.dataOutputStream.writeUTF("PlayWithAI/3");
+                RegisterAndLoginView.dataOutputStream.flush();
+            } catch (Exception ignored) {
+            }
         }
         else {
             messageLbl.setText("Please choose a Round!");
@@ -273,7 +276,7 @@ public class LobbyView extends Application {
     public void showInvitations() {
         HashMap<Integer, String> myInvitations = null;
         try {
-            RegisterAndLoginView.dataOutputStream.writeUTF("myInvitations/" + MainMenuController.username);
+            RegisterAndLoginView.dataOutputStream.writeUTF("myInvitations/" + MainMenuController.token);
             RegisterAndLoginView.dataOutputStream.flush();
             myInvitations = (HashMap<Integer, String>) RegisterAndLoginView.objectInputStream.readObject();
         } catch (Exception ignored) {
@@ -300,7 +303,7 @@ public class LobbyView extends Application {
         accept.setOnMouseClicked(mouseEvent -> {
             vBox.getChildren().remove(focusedHBox);
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("acceptInvitation/" + MainMenuController.username + "/" + whichInvitation);
+                RegisterAndLoginView.dataOutputStream.writeUTF("acceptInvitation/" + MainMenuController.token + "/" + whichInvitation);
                 RegisterAndLoginView.dataOutputStream.flush();
             } catch (Exception ignored) {
             }
@@ -308,7 +311,7 @@ public class LobbyView extends Application {
         reject.setOnMouseClicked(mouseEvent -> {
             vBox.getChildren().remove(focusedHBox);
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("rejectInvitation/" + MainMenuController.username + "/" + whichInvitation);
+                RegisterAndLoginView.dataOutputStream.writeUTF("rejectInvitation/" + MainMenuController.token + "/" + whichInvitation);
                 RegisterAndLoginView.dataOutputStream.flush();
             } catch (Exception ignored) {
             }
@@ -318,7 +321,7 @@ public class LobbyView extends Application {
     public void send() {
         if (!rivalNameTxt.getText().equals("")) {
             try {
-                RegisterAndLoginView.dataOutputStream.writeUTF("sendInvitation/" + MainMenuController.username + "/" + rivalNameTxt.getText());
+                RegisterAndLoginView.dataOutputStream.writeUTF("sendInvitation/" + MainMenuController.token + "/" + rivalNameTxt.getText());
                 RegisterAndLoginView.dataOutputStream.flush();
                 String result = RegisterAndLoginView.dataInputStream.readUTF();
                 errorLbl.setText(result);
