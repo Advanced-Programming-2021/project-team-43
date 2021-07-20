@@ -204,7 +204,7 @@ public class ShopView extends Application {
     }
 
     public void pressSellBtn() {
-        messageLbl.setText(ShopController.sell(ShowCardsView.getNameByImage(cardImages.get(imageCounter))));
+        messageLbl.setText(ShopController.shopSell(ShowCardsView.getNameByImage(cardImages.get(imageCounter))));
         moneyLbl.setText("Coin: " + user.getUserCoin());
         moneyLbl.setTextFill(Color.rgb(255, coinLblOpacity, 0));
         coinLblOpacity += 10;
