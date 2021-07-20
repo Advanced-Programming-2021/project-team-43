@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="shopPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="shop" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShopView">
+<AnchorPane fx:id="shopPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1002.0" styleClass="shop" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShopView">
    <children>
       <ImageView fx:id="cardImgView" fitHeight="375.0" fitWidth="278.0" layoutX="44.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="previousBtn" fitHeight="30.0" fitWidth="30.0" layoutX="12.0" layoutY="217.0" onMouseClicked="#pressPreviousBtn" pickOnBounds="true" preserveRatio="true" rotate="180.0">
@@ -50,7 +50,7 @@
             <Font name="Bodoni MT" size="16.0" />
          </font>
       </Button>
-      <VBox fx:id="cardsVBox" layoutX="390.0" layoutY="17.0" prefHeight="726.0" prefWidth="571.0" visible="false" />
+      <VBox fx:id="cardsVBox" layoutX="390.0" layoutY="17.0" prefHeight="726.0" prefWidth="367.0" visible="false" />
       <Button fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="27.0" layoutY="675.0" mnemonicParsing="false" onAction="#pressBackBtn" text="Back">
          <font>
             <Font name="Bodoni MT" size="18.0" />
@@ -72,6 +72,29 @@
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="50.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="243.0" layoutY="482.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="94.0" text="Sell" onAction="#pressSellBtn">
+         <font>
+            <Font name="Bodoni MT" size="19.0" />
+         </font></Button>
+      <TextField fx:id="amountTxt" layoutX="757.0" layoutY="31.0" promptText="amount" />
+      <Button fx:id="setAvailable" layoutX="822.0" layoutY="133.0" mnemonicParsing="false" onAction="#pressAvailableBtn" prefHeight="27.0" prefWidth="124.0" text="Set Available">
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font></Button>
+      <Button fx:id="setUnAvailableBtn" layoutX="822.0" layoutY="175.0" mnemonicParsing="false" onAction="#pressUnavailableBtn" text="Set UnAvailable">
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="changeBtn" layoutX="914.0" layoutY="30.0" mnemonicParsing="false" onAction="#pressChangeBtn" text="Change">
+         <font>
+            <Font name="Bodoni MT" size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="errorLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="740.0" layoutY="71.0" prefHeight="46.0" prefWidth="240.0" textAlignment="CENTER" textFill="#ddff00">
+         <font>
+            <Font name="Bodoni MT" size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
