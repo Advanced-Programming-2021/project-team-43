@@ -5,6 +5,7 @@ import model.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.zone.ZoneOffsetTransition;
 import java.util.*;
 
 
@@ -13,19 +14,20 @@ public class Run {
     public static Object objectSend;
     public static String onlineToken;
     public static String rivalToken;
-      private static HashMap<String, Boolean> tokensInLine;
-    private static HashMap<String, Boolean> tokensInLine3= new HashMap<>();
-    private static HashMap<String, String> pairTokens= new HashMap<>();
-    private static HashMap<String, Boolean> pickPlayer= new HashMap<>();
+    private static HashMap<String, Boolean> tokensInLine;
+    private static HashMap<String, Boolean> tokensInLine3;
+    private static HashMap<String, String> pairTokens;
+    private static HashMap<String, Boolean> pickPlayer;
 
 
     public static void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(1227);
+            ServerSocket serverSocket = new ServerSocket(7777);
             tokensInLine = new HashMap<>();
-//            tokensInLine3 = new HashMap<>();
-//            pairTokens = new HashMap<>();
-//            pickPlayer = new HashMap<>();
+            tokensInLine3 = new HashMap<>();
+            pairTokens = new HashMap<>();
+            pickPlayer = new HashMap<>();
+            invitation = new HashMap<>();
             while (true) {
                 Socket socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
@@ -87,9 +89,7 @@ public class Run {
         result = processAchievementsRequests(input, objectOutputStream);
         if (!result.equals(""))
             return result;
-        result = processInvitationsRequest(input, objectOutputStream);
-        if (!result.equals(""))
-            return result;
+
         if (input.equals("Scoreboard")) {
             objectOutputStream.writeObject(MainMenuController.showScoreboard());
             objectOutputStream.flush();
@@ -118,11 +118,53 @@ public class Run {
             objectOutputStream.flush();
             return returnValue;
         }
+        if (input.startsWith("sendInvitation")) {
+            String[] split = input.split(":");
+            invitation.put(split[1], split[2]);
+
+            return "ss";
+        }
+        if (input.startsWith("acceptInvitation")) {
+            String[] split = input.split(":");
+            pairTokens.put(split[1], split[2]);
+            pickPlayer.put(split[1],false);
+            pickPlayer.put(split[2],false);
+            return "ss2";
+        }
+        if (input.startsWith("isAccepted")) {
+            String[] split = input.split(":");
+
+            if (pairTokens.containsKey(split[1]) && userByToken(pairTokens.get(split[1])).equals(split[2])) {
+                return "true:"+pairTokens.containsKey(split[1]);
+            } else {
+                String[] keys = pairTokens.keySet().toArray(new String[0]);
+                for (int i = 0; i < keys.length; i++) {
+                    if (pairTokens.get(keys[i]).equals(split[1]) && userByToken(keys[i]).equals(split[2])) {
+                        return "true:"+keys[i];
+                    }
+
+                }
+            }
+            return "false";
+
+
+        }
         return "==";
     }
 
+    private static HashMap<String, String> invitation;//ownToken rivalName
+
     private static String find1(String myToken) {
         tokensInLine.put(myToken, false);
+
+        String[] requestedTokens = invitation.keySet().toArray(new String[0]);
+        for (int i = 0; i < requestedTokens.length; i++) {
+            if (invitation.get(requestedTokens[i]).equals(userByToken(myToken))) {
+                return "invitation:" + requestedTokens[i] + ":" + userByToken(requestedTokens[i]);
+
+            }
+
+        }
         String[] tokens = tokensInLine.keySet().toArray(new String[0]);
         for (String token : tokens) {
             if (!tokensInLine.get(token) && !token.equals(myToken)) {
@@ -140,13 +182,21 @@ public class Run {
 
     private static String find3(String myToken) {
         tokensInLine3.put(myToken, false);
+        String[] requestedTokens = invitation.keySet().toArray(new String[0]);
+        for (int i = 0; i < requestedTokens.length; i++) {
+            if (invitation.get(requestedTokens[i]).equals(userByToken(myToken))) {
+                return "invitation:" + requestedTokens[i] + ":" + userByToken(requestedTokens[i]);
+
+            }
+
+        }
         String[] tokens = tokensInLine3.keySet().toArray(new String[0]);
         for (String token : tokens) {
             if (!tokensInLine3.get(token) && !token.equals(myToken)) {
                 tokensInLine3.put(token, true);
                 tokensInLine3.put(myToken, true);
-                System.out.println(token+" token");
-                System.out.println(myToken+" myToken");
+                System.out.println(token + " token");
+                System.out.println(myToken + " myToken");
                 pairTokens.put(myToken, token);
                 pickPlayer.put(myToken, false);
                 pickPlayer.put(token, false);
@@ -181,7 +231,7 @@ public class Run {
                     String playerTwoNickname = UserModel.getUserByUsername(userByToken(x.getValue())).getNickname();
                     Player playerOne;
                     Player playerTwo;
-                    System.out.println(give[3]+" round");
+                    System.out.println(give[3] + " round");
                     if (Player.getPlayerByName(playerOneNickname) == null)
                         playerOne = new Player(playerOneNickname, UserModel.getUserByUsername(userByToken(x.getKey())).userAllDecks.get(UserModel.getUserByUsername(userByToken(x.getKey())).getActiveDeck()), true, Integer.parseInt(give[3]));
                     else
@@ -211,8 +261,8 @@ public class Run {
             if (split[2].equals("1")) {
                 if (tokensInLine.get(split[1])) {
                     if (pairTokens.get(split[1]) != null) {
-              tokensInLine.remove(split[1]);
-                tokensInLine.remove(pairTokens.get(split[1]));
+                        tokensInLine.remove(split[1]);
+                        tokensInLine.remove(pairTokens.get(split[1]));
                         return "true:" + pairTokens.get(split[1]);
                     } else {
                         String[] keys = pairTokens.keySet().toArray(new String[0]);
@@ -239,7 +289,7 @@ public class Run {
                         for (int i = 0; i < keys.length; i++) {
                             if (pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)).equals(split[1])) {
                                 tokensInLine3.remove(split[1]);
-                                tokensInLine3.remove(pairTokens.get( Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)));
+                                tokensInLine3.remove(pairTokens.get(Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1)));
                                 return "true:" + Arrays.toString(keys).substring(1, Arrays.toString(keys).length() - 1);
                             }
                         }
@@ -250,35 +300,6 @@ public class Run {
                 }
             }
 
-        }
-        return "";
-    }
-
-    private static String processInvitationsRequest(String input, ObjectOutputStream objectOutputStream) throws IOException {
-        if (input.startsWith("myInvitations")) {
-            String[] split = input.split("/");
-            objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyInvitations());
-            objectOutputStream.flush();
-            return "continue";
-        }
-        if (input.startsWith("sendInvitation")) {
-            String[] split = input.split("/");
-            if (UserModel.getUserByUsername(split[2]) == null)
-                return "Wrong Username!";
-            else {
-                UserModel.getUserByUsername(split[2]).addInvitation(split[1]);
-                return "Send Successfully!";
-            }
-        }
-        if (input.startsWith("rejectInvitation")) {
-            String[] split = input.split("/");
-            UserModel.getUserByUsername(split[1]).removeInvitation(Integer.parseInt(split[2]));
-            return "continue";
-        }
-        if (input.startsWith("acceptInvitation")) {
-            String[] split = input.split("/");
-            // UserModel.getUserByUsername(split[1]).removeInvitation(Integer.parseInt(split[2]));
-            return "continue";
         }
         return "";
     }
