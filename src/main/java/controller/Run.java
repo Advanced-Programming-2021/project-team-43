@@ -22,9 +22,6 @@ public class Run {
         try {
             ServerSocket serverSocket = new ServerSocket(1227);
             tokensInLine = new HashMap<>();
-//            tokensInLine3 = new HashMap<>();
-//            pairTokens = new HashMap<>();
-//            pickPlayer = new HashMap<>();
             while (true) {
                 Socket socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
@@ -130,7 +127,6 @@ public class Run {
                 pairTokens.put(myToken, token);
                 pickPlayer.put(myToken, false);
                 pickPlayer.put(token, false);
-
                 return token;
             }
         }
@@ -180,7 +176,7 @@ public class Run {
                     String playerTwoNickname = UserModel.getUserByUsername(userByToken(x.getValue())).getNickname();
                     Player playerOne;
                     Player playerTwo;
-                    System.out.println(give[3]+" round");
+                    System.out.println(give[3] + "round");
                     if (Player.getPlayerByName(playerOneNickname) == null)
                         playerOne = new Player(playerOneNickname, UserModel.getUserByUsername(userByToken(x.getKey())).userAllDecks.get(UserModel.getUserByUsername(userByToken(x.getKey())).getActiveDeck()), true, Integer.parseInt(give[3]));
                     else
@@ -256,22 +252,22 @@ public class Run {
     private static String processInvitationsRequest(String input, ObjectOutputStream objectOutputStream) throws IOException {
         if (input.startsWith("myInvitations")) {
             String[] split = input.split("/");
-            objectOutputStream.writeUnshared(UserModel.getUserByUsername(split[1]).getMyInvitations());
+            objectOutputStream.writeUnshared(UserModel.getUserByUsername(userByToken(split[1])).getMyInvitations());
             objectOutputStream.flush();
             return "continue";
         }
         if (input.startsWith("sendInvitation")) {
             String[] split = input.split("/");
-            if (UserModel.getUserByUsername(split[2]) == null)
+            if (UserModel.getUserByUsername(userByToken(split[2])) == null)
                 return "Wrong Username!";
             else {
-                UserModel.getUserByUsername(split[2]).addInvitation(split[1]);
+                UserModel.getUserByUsername(userByToken(split[2])).addInvitation(split[1]);
                 return "Send Successfully!";
             }
         }
         if (input.startsWith("rejectInvitation")) {
             String[] split = input.split("/");
-            UserModel.getUserByUsername(split[1]).removeInvitation(Integer.parseInt(split[2]));
+            UserModel.getUserByUsername(userByToken(split[1])).removeInvitation(Integer.parseInt(split[2]));
             return "continue";
         }
         if (input.startsWith("acceptInvitation")) {
@@ -361,7 +357,6 @@ public class Run {
     }
 
     private static void setObject(ArrayList<Object> objects) {
-
         GameMatModel.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (GameMatModel) objects.get(0));
         HandCardZone.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (List<HandCardZone>) objects.get(1));
         MonsterZoneCard.setObject(UserModel.getUserByUsername(userByToken(onlineToken)).getNickname(), (Map<Integer, MonsterZoneCard>) objects.get(2));

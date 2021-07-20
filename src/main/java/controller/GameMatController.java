@@ -1732,7 +1732,7 @@ public class GameMatController {
         Player loserPlayer = Player.getPlayerByName(loserNickname);
         UserModel.getUserByUsername(winnerUsername).changeUserScore(1000);
         winnerPlayer.changeNumberOfWin();
-        if (Player.isOneRound) {
+        if (Player.getPlayerByName(onlineUser).isOneRound) {
             message = "The Duel is Over!\n" + winnerUsername + " won the game and the score is: 1000-0";
             UserModel.getUserByUsername(winnerUsername).changeUserCoin(1000 + winnerPlayer.getLifePoint());
             UserModel.getUserByUsername(loserUsername).changeUserCoin(100);
