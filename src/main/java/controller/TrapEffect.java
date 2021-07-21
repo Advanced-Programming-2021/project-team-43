@@ -5,6 +5,7 @@ import java.util.*;
 
 public class TrapEffect {
 
+
     public static int magicCylinder(String onlineUser, String rivalUser, MonsterZoneCard ownMonster, SpellTrapZoneCard trapCard) {
         if (!ringOfDefenseEffect(rivalUser, onlineUser) && ownMonster != null) {
             Player.getPlayerByName(rivalUser).changeLifePoint(-1 * ownMonster.getAttack());

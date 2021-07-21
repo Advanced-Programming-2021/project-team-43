@@ -58,6 +58,7 @@ public class MonsterEffect {
     }
 
 
+
     public static int manEaterBug(int ownMonsterAddress, int rivalMonsterAddress) {
         MonsterZoneCard ownMonsterCard = MonsterZoneCard.getMonsterCardByAddress(ownMonsterAddress, GameMatController.onlineUser);
         if (!ownMonsterCard.getMode().equals("DH") && !ownMonsterCard.getIsEffectUsed()) {

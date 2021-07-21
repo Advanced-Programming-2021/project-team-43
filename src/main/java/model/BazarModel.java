@@ -23,6 +23,7 @@ public class BazarModel implements Serializable {
         UserModel.all.add(this);
     }
 
+
     public void end() {
         if (bestCustomer.equals(seller)) {
             UserModel.getUserByUsername(seller).addCardToUserAllCards(cardName);

@@ -65,6 +65,7 @@ public class SpellTrapZoneCard implements Serializable {
     }
 
 
+
     public int getAddress() {
         return address;
     }

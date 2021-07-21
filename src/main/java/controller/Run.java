@@ -358,20 +358,44 @@ public class Run {
 
     private static String processChatroomRequests(String input, ObjectOutputStream objectOutputStream) throws IOException {
         if (input.startsWith("chat")) {
-            ChatController.newChat(input, objectOutputStream);
-            return ChatRoom.getPinMessage();
+            String[] split = input.split("/");
+            new ChatRoom(UserModel.getUserByUsername(Run.userByToken(split[1])), split[2]);
+            UserModel.getUserByUsername(Run.userByToken(split[1])).setChatRecords(Integer.parseInt(split[3]));
+            List<ChatRoom> allChats = ChatRoom.getAllChats();
+            objectOutputStream.writeUnshared(allChats);
+            objectOutputStream.flush();
+            return "continue";
+        }
+        if (input.startsWith("pinAndChatRecord")) {
+            String[] split = input.split("/");
+            String pin = ChatRoom.getPinMessage();
+            int record = UserModel.getUserByUsername(userByToken(split[1])).getChatRecords();
+            if (pin.equals("")) {
+                return "!!/" + record;
+            }
+            else {
+                return pin + "/" + record;
+            }
         }
         if (input.startsWith("pinMessage")) {
             String[] split = input.split("/");
             ChatRoom.setPinMessage(split[1]);
             return "continue";
         }
+        if (input.startsWith("reply")) {
+            String[] split = input.split("/");
+            ChatRoom.getChat(UserModel.getUserByUsername(split[3]), split[1]).setReplyMessage(split[2]);
+            return "continue";
+        }
         if (input.startsWith("delete")) {
-            ChatController.deleteChat(input);
+            String[] split = input.split("/");
+            String[] message = split[1].split("\n");
+            ChatRoom.getChat(UserModel.getUserByNickname(split[2]), message[1]).deleteChat();
             return "continue";
         }
         if (input.startsWith("edit")) {
-            ChatController.editChat(input);
+            String[] split = input.split("/");
+            ChatRoom.getChat(UserModel.getUserByUsername(split[2]), split[1]).editChat(split[3]);
             return "continue";
         }
         if (input.startsWith("allOnlineUsers")) {
@@ -384,6 +408,7 @@ public class Run {
         }
         return "";
     }
+
 
     public static String getTokenByUsername(String username) {
         for (Map.Entry<String, String> eachUser : RegisterAndLoginController.allOnlineUsers.entrySet())

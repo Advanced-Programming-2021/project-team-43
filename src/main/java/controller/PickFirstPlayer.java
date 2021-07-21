@@ -60,6 +60,7 @@ public class PickFirstPlayer {
         return player2;
     }
 
+
     public static String ply1 = MainMenuController.username;
     public static String ply2 = MainMenuController.username2;
 

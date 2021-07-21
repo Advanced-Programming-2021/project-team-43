@@ -29,6 +29,7 @@ public class GameMatModel implements Serializable  {
     }
 
 
+
     public void startNewGame() {
         this.phase = Phase.Draw_Phase;
         removeFromFieldZone();

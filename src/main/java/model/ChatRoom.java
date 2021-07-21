@@ -54,6 +54,7 @@ public class ChatRoom implements Serializable {
         return null;
     }
 
+
     public static ArrayList<ChatRoom> getAllChats() {
         return allChats;
     }

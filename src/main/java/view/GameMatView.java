@@ -13,3 +13,4 @@ public class GameMatView {
         System.out.println(input);
     }
 }
+

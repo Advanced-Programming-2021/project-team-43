@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class MonsterCard extends Card {
 
+
     private int level;
     private String monsterType;
     private int attack;

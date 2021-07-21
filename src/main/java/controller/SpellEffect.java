@@ -13,6 +13,7 @@ public class SpellEffect {
     public static String spellMessage = "";
 
 
+
     public static int normalEffectController(SpellTrapZoneCard ownSpell, String onlineUser, String rivalUser) {
         String spellName = ownSpell.getSecondName();
         Player player = Player.getPlayerByName(onlineUser);

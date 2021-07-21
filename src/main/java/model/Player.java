@@ -51,6 +51,7 @@ public class Player  implements Serializable {
 
 
 
+
     public static void setObject(String playerNickName, Player player) {
         if (!allPlayers.containsKey(playerNickName))
             allPlayers.put(playerNickName, player);

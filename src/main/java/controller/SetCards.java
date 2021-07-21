@@ -5,6 +5,7 @@ import java.io.*;
 
 public class SetCards {
 
+
     public static void readingCSVFileMonster() {
         int counter = 0;
         String filePath = "Monster.csv";

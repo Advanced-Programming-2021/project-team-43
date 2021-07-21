@@ -12,6 +12,7 @@ public class ChatController {
         return null;
     }
 
+
     public static void newChat(String input, ObjectOutputStream objectOutputStream) throws IOException {
         String[] split = input.split("/");
         System.out.println(input);

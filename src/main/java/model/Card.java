@@ -24,6 +24,7 @@ public class Card {
         cards.put(cardName, this);
     }
 
+
     public String getSecondName() {
         return secondName;
     }

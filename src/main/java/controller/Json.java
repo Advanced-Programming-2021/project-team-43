@@ -12,6 +12,7 @@ import java.util.*;
 public class Json {
 
 
+
     public static void writeUserModelInfo(HashMap<String, UserModel> allUsersInfo, ArrayList<String> allUsernames, ArrayList<String> allUsersNicknames) {
         try {
             FileWriter writerInfo = new FileWriter("jsonUsersInfo.txt");

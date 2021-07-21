@@ -17,6 +17,7 @@ public class SpellCard extends Card {
     }
 
 
+
     public static HashMap<String, SpellCard> getSpellCards() {
         return spellCards;
     }

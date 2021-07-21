@@ -50,6 +50,7 @@ public class MonsterZoneCard  implements Serializable {
         allEffectiveSpell.put(playerNickname,add);
     }
 
+
     public static void setObject(String playerNickname, Map<Integer, MonsterZoneCard> monsterZoneCard) {
       allMonsterCards.put(playerNickname,monsterZoneCard);
     }
