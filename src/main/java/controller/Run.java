@@ -64,6 +64,11 @@ public class Run {
 
     private static String process(String input, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         String result = "";
+        if (input.startsWith("logout")) {
+            String[] split = input.split("/");
+            RegisterAndLoginController.allOnlineUsers.remove(split[1]);
+            return "continue";
+        }
         if (input.startsWith("M")) {
             return MainMenuController.findMatcher(input);
         }
