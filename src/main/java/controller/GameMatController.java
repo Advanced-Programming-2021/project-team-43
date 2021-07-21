@@ -133,6 +133,7 @@ public class GameMatController {
         return pattern.matcher(command);
     }
 
+
     public static void AI() {
         currentPhase = GameMatModel.getGameMatByNickname(onlineUser).getPhase();
         if (currentPhase.equals(Phase.Draw_Phase)) {
