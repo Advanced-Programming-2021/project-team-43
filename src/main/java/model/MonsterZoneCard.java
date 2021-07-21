@@ -309,7 +309,6 @@ public class MonsterZoneCard  implements Serializable {
             }
         }
     }
-//    public static MonsterZoneCard getMonsterZoneCardByName(String playerNickname){
-//        return objects.get(playerNickname);
-//    }
+
+
 }

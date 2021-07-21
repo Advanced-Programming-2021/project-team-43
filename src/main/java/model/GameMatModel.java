@@ -156,6 +156,7 @@ public class GameMatModel implements Serializable  {
         fieldZone = split[0] + "/" + mode;
     }
 
+
     public void removeFromFieldZone() {
         fieldZone = "";
     }
