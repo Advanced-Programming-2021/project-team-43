@@ -23,7 +23,7 @@ public class Run {
 
     public static void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(7777);
+            ServerSocket serverSocket = new ServerSocket(1122);
             tokensInLine = new HashMap<>();
             tokensInLine3 = new HashMap<>();
             pairTokens = new HashMap<>();

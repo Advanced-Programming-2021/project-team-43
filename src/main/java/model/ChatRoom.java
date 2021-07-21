@@ -1,22 +1,21 @@
 package model;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+
 
 public class ChatRoom implements Serializable {
 
-    private static final long serialVersionUID = -8870642557353150985L;
     private final UserModel sender;
     private String message;
-    private static String pinMessage;
-    private static ArrayList<ChatRoom> allChats = new ArrayList<>();
+    private String replyMessage = "";
+    private static String pinMessage = "";
+    private static final ArrayList<ChatRoom> allChats = new ArrayList<>();
+    private static final long serialVersionUID = -8870642557353150985L;
 
 
     public ChatRoom(UserModel userModel, String message) {
         this.sender = userModel;
         this.message = message;
-        pinMessage = "";
         allChats.add(this);
     }
 
@@ -32,6 +31,14 @@ public class ChatRoom implements Serializable {
         message = newMessage;
     }
 
+    public String getReplyMessage() {
+        return replyMessage;
+    }
+
+    public void setReplyMessage(String replyMessage) {
+        this.replyMessage = replyMessage;
+    }
+
     public static void setPinMessage(String message) {
         pinMessage = message;
     }
@@ -39,7 +46,6 @@ public class ChatRoom implements Serializable {
     public static String getPinMessage() {
         return pinMessage;
     }
-
 
     public static ChatRoom getChat(UserModel userModel, String message) {
         for (ChatRoom allChat : allChats)

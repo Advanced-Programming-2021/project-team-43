@@ -1,15 +1,7 @@
 package controller;
-
-import model.Card;
-import model.DeckModel;
-import model.ShopModel;
-import model.UserModel;
-import controller.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import model.*;
+import java.util.*;
+import java.util.regex.*;
 
 
 public class RegisterAndLoginController {
