@@ -116,7 +116,8 @@ public class MessageBox {
     }
 
     public void setUpReplyLbl(ChatRoom chatRoom) {
-        System.out.println(chatRoom.getReplyMessage());
+//        System.out.println(chatRoom.getMessage());
+//        System.out.println(chatRoom.getReplyMessage() + "[[[[[");
         replyMessage = new Label(chatRoom.getReplyMessage());
         replyMessage.setVisible(false);
         replyMessage.setPrefWidth(300);
