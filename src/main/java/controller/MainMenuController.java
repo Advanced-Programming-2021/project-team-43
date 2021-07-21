@@ -85,7 +85,6 @@ public class MainMenuController {
 
     public static void logout() {
         try {
-            System.out.println("[[[[[[[[[[[");
             RegisterAndLoginView.dataOutputStream.writeUTF("logout/" + token);
             RegisterAndLoginView.dataOutputStream.flush();
         } catch (Exception ignored) {
