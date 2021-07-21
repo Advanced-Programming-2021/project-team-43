@@ -1,10 +1,7 @@
 package view;
-import controller.DeckController;
-import controller.GameMatController;
-import controller.MainMenuController;
+import controller.*;
 import javafx.application.Application;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -38,7 +35,6 @@ public class EditDeckView extends Application {
     public List<Image> cardImages = new ArrayList<>();
     private int cardCounter = 0;
     private String deckName;
-    private int numberOfBoughtCard = 0;
     private final UserModel user = UserModel.getUserByUsername(MainMenuController.username);
     private final HashMap<String, Integer> myBoughtCards = new HashMap<>();
     private static Stage editDeckStage;
@@ -64,7 +60,6 @@ public class EditDeckView extends Application {
             for (Map.Entry<String, Integer> eachCard : myBoughtCards.entrySet()) {
                 cardName = eachCard.getKey();
                 cardImages.add(ShowCardsView.getCardImageByName(cardName));
-                numberOfBoughtCard += eachCard.getValue();
             }
             boughtCardImgView.setImage(cardImages.get(0));
             cardAmountLbl.setText("Amount: " + myBoughtCards.get(ShowCardsView.getNameByImage(cardImages.get(0))));
@@ -78,6 +73,7 @@ public class EditDeckView extends Application {
     }
 
     public void fillMainCardDeck() {
+        RegisterAndLoginController.updateUser(MainMenuController.token);
         HashMap<String, Integer> mainDeckCards = new HashMap<>(user.userAllDecks.get(deckName).cardsInMainDeck);
         for (Map.Entry<String, Integer> entry : mainDeckCards.entrySet()) {
             for (int j = 0; j < entry.getValue(); j++) {
@@ -154,63 +150,56 @@ public class EditDeckView extends Application {
     }
 
     public void addToMainDeck() {
-        user.userAllDecks.get(deckName).addCardToMain(ShowCardsView.getNameByImage(cardImages.get(cardCounter)));
-        DeckController.addCardToMainDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
-        ImageView imageView = new ImageView(cardImages.get(cardCounter));
-        imageView.setFitWidth(70);
-        imageView.setFitHeight(80);
-        mainDeckPane.getChildren().add(imageView);
-        mainDeckPane.getChildren().get(mainCardCounter).setLayoutY(mainCardY);
-        mainDeckPane.getChildren().get(mainCardCounter).setLayoutX(mainCardX);
-        mainCardCounter++;
-        mainCardX += 50;
-        if (mainCardX >= 600) {
-            mainCardY += 80;
-            mainCardX = 0;
-        }
+        String s= DeckController.addCardToMainDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
+        if(MainMenuController.isSuccessful(s)){
+            ImageView imageView = new ImageView(cardImages.get(cardCounter));
+            imageView.setFitWidth(70);
+            imageView.setFitHeight(80);
+            mainDeckPane.getChildren().add(imageView);
+            mainDeckPane.getChildren().get(mainCardCounter).setLayoutY(mainCardY);
+            mainDeckPane.getChildren().get(mainCardCounter).setLayoutX(mainCardX);
+            mainCardCounter++;
+            mainCardX += 50;
+            if (mainCardX >= 600) {
+                mainCardY += 80;
+                mainCardX = 0;
+            }}
     }
 
     public void addToSideDeck() {
-        user.userAllDecks.get(deckName).addCardToSide(ShowCardsView.getNameByImage(cardImages.get(cardCounter)));
-        DeckController.addCardToSideDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
-        ImageView imageView = new ImageView(cardImages.get(cardCounter));
-        imageView.setFitWidth(70);
-        imageView.setFitHeight(80);
-        sideDeckPane.getChildren().add(imageView);
-        sideDeckPane.getChildren().get(sideCardCounter).setLayoutY(sideCardY);
-        sideDeckPane.getChildren().get(sideCardCounter).setLayoutX(sideCardX);
-        sideCardX += 50;
-        if (sideCardX >= 600) {
-            sideCardY += 80;
-            sideCardX = 0;
-        }
-        sideCardCounter++;
-    }
+        String s =DeckController.addCardToSideDeck(ShowCardsView.getNameByImage(cardImages.get(cardCounter)), deckName);
+        if(MainMenuController.isSuccessful(s)){
+            ImageView imageView = new ImageView(cardImages.get(cardCounter));
+            imageView.setFitWidth(70);
+            imageView.setFitHeight(80);
+            sideDeckPane.getChildren().add(imageView);
+            sideDeckPane.getChildren().get(sideCardCounter).setLayoutY(sideCardY);
+            sideDeckPane.getChildren().get(sideCardCounter).setLayoutX(sideCardX);
+            sideCardX += 50;
+            if (sideCardX >= 600) {
+                sideCardY += 80;
+                sideCardX = 0;
+            }
+            sideCardCounter++;
+        }}
 
     public void clickOnCards() {
         for (Node child : mainDeckPane.getChildren()) {
-            child.setOnMouseClicked(new EventHandler<>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    ImageView imageView = (ImageView) child;
-                    selectedCard = "main " + ShowCardsView.getNameByImage(imageView.getImage());
-                    selectedCardImage = imageView;
-                    deleteCard();
-                }
+            child.setOnMouseClicked(mouseEvent -> {
+                ImageView imageView = (ImageView) child;
+                selectedCard = "main " + ShowCardsView.getNameByImage(imageView.getImage());
+                selectedCardImage = imageView;
+                deleteCard();
             });
         }
         for (Node child : sideDeckPane.getChildren()) {
-            child.setOnMouseClicked(new EventHandler<>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    ImageView imageView = (ImageView) child;
-                    selectedCard = "side " + ShowCardsView.getNameByImage(imageView.getImage());
-                    selectedCardImage = imageView;
-                    deleteCard();
-                }
+            child.setOnMouseClicked(mouseEvent -> {
+                ImageView imageView = (ImageView) child;
+                selectedCard = "side " + ShowCardsView.getNameByImage(imageView.getImage());
+                selectedCardImage = imageView;
+                deleteCard();
             });
         }
-
     }
 
     public void implementDragAndDropToMain(ImageView imageView) {
@@ -223,12 +212,9 @@ public class EditDeckView extends Application {
         });
         mainDeckPane.setOnDragOver(Event::consume);
         imageView.setOnDragEntered(Event::consume);
-        mainDeckPane.setOnDragExited(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                addToMainDeck();
-                dragEvent.consume();
-            }
+        mainDeckPane.setOnDragExited(dragEvent -> {
+            addToMainDeck();
+            dragEvent.consume();
         });
         mainDeckPane.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
@@ -249,12 +235,9 @@ public class EditDeckView extends Application {
         });
         sideDeckPane.setOnDragOver(Event::consume);
         imageView.setOnDragEntered(Event::consume);
-        sideDeckPane.setOnDragExited(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                addToSideDeck();
-                dragEvent.consume();
-            }
+        sideDeckPane.setOnDragExited(dragEvent -> {
+            addToSideDeck();
+            dragEvent.consume();
         });
         sideDeckPane.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();

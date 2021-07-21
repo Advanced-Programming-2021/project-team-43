@@ -9,6 +9,7 @@ import java.util.*;
 
 public class SpellTrapZoneCard implements Serializable {
 
+
     private static final long serialVersionUID = 7040057291040638025L;
     private final String playerNickname;
     private final String spellTrapName;

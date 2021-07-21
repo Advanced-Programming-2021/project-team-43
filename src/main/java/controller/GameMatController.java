@@ -84,21 +84,21 @@ public class GameMatController {
 
     }
 
-   public static void setObjects(ArrayList<Object> objects) {
-       GameMatModel.setObject(MainMenuController.username, (GameMatModel) objects.get(0));
-       HandCardZone.setObject(MainMenuController.username, (List<HandCardZone>) objects.get(1));
-       MonsterZoneCard.setObject(MainMenuController.username, ( Map<Integer, MonsterZoneCard>) objects.get(2));
-       Player.setObject(MainMenuController.username, (Player) objects.get(3));
-       SpellTrapZoneCard.setObject(MainMenuController.username, ( Map<Integer, SpellTrapZoneCard>) objects.get(4));
-       UserModel.setObject((UserModel) objects.get(5));
+    public static void setObjects(ArrayList<Object> objects) {
+        GameMatModel.setObject(MainMenuController.username, (GameMatModel) objects.get(0));
+        HandCardZone.setObject(MainMenuController.username, (List<HandCardZone>) objects.get(1));
+        MonsterZoneCard.setObject(MainMenuController.username, ( Map<Integer, MonsterZoneCard>) objects.get(2));
+        Player.setObject(MainMenuController.username, (Player) objects.get(3));
+        SpellTrapZoneCard.setObject(MainMenuController.username, ( Map<Integer, SpellTrapZoneCard>) objects.get(4));
+        UserModel.setObject((UserModel) objects.get(5));
 
-       GameMatModel.setObject(MainMenuController.username2, (GameMatModel) objects.get(6));
-       HandCardZone.setObject(MainMenuController.username2, (List<HandCardZone>) objects.get(7));
-       MonsterZoneCard.setObject(MainMenuController.username2, ( Map<Integer, MonsterZoneCard>) objects.get(8));
-       Player.setObject(MainMenuController.username2, (Player) objects.get(9));
-       SpellTrapZoneCard.setObject(MainMenuController.username2, ( Map<Integer, SpellTrapZoneCard>) objects.get(10));
-       UserModel.setObject((UserModel) objects.get(11));
-   }
+        GameMatModel.setObject(MainMenuController.username2, (GameMatModel) objects.get(6));
+        HandCardZone.setObject(MainMenuController.username2, (List<HandCardZone>) objects.get(7));
+        MonsterZoneCard.setObject(MainMenuController.username2, ( Map<Integer, MonsterZoneCard>) objects.get(8));
+        Player.setObject(MainMenuController.username2, (Player) objects.get(9));
+        SpellTrapZoneCard.setObject(MainMenuController.username2, ( Map<Integer, SpellTrapZoneCard>) objects.get(10));
+        UserModel.setObject((UserModel) objects.get(11));
+    }
 
 
 
@@ -663,6 +663,5 @@ public class GameMatController {
 //        }
 //        return 0;
 //    }
-
 
 }

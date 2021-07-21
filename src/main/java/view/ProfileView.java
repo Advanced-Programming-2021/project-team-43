@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import model.UserModel;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -29,12 +31,13 @@ public class ProfileView extends Application {
     public TextField newPasswordTxt;
     public ImageView nextBtn;
     public ImageView previousBtn;
-    public AnchorPane achievementPane;
+    public AnchorPane chatCupPane;
+    public AnchorPane sequentialWinPane;
+    public AnchorPane sequentialLostPane1;
     private UserModel user;
     private final Image[] profileImages = new Image[32];
     private static int imageCounter = 0;
     private static Stage profileStage;
-    public static ProfileView profileView;
 
 
     @Override
@@ -52,6 +55,41 @@ public class ProfileView extends Application {
         profileImg.setImage(new Image(Objects.requireNonNull(getClass().getResource(UserModel.getUserByUsername(MainMenuController.username).getImageUrl())).toExternalForm()));
         usernameLbl.setText(user.getUsername());
         nicknameTxt.setText(user.getNickname());
+        try {
+            RegisterAndLoginView.dataOutputStream.writeUTF("achievement/" + MainMenuController.username);
+            RegisterAndLoginView.dataOutputStream.flush();
+            HashMap<String, Integer> achievements = (HashMap<String, Integer>) RegisterAndLoginView.objectInputStream.readObject();
+            for (Map.Entry<String, Integer> eachOne : achievements.entrySet()) {
+                switch (eachOne.getKey()) {
+                    case "chatCup":
+                        for (int i = 0; i < eachOne.getValue(); i++) {
+                            ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/cup3.jpg")).toExternalForm())));
+                            imageView.setFitHeight(100);
+                            imageView.setFitWidth(100);
+                            chatCupPane.getChildren().add(imageView);
+                        }
+                        break;
+                    case "sequentialWin":
+                        for (int i = 0; i < eachOne.getValue(); i++) {
+                            ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/cup1.jpg")).toExternalForm())));
+                            imageView.setFitHeight(100);
+                            imageView.setFitWidth(100);
+                            chatCupPane.getChildren().add(imageView);
+                        }
+                        break;
+                    case "sequentialLost":
+                        for (int i = 0; i < eachOne.getValue(); i++) {
+                            ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/cup5.jpg")).toExternalForm())));
+                            imageView.setFitHeight(100);
+                            imageView.setFitWidth(100);
+                            chatCupPane.getChildren().add(imageView);
+                        }
+                        break;
+                }
+            }
+
+        } catch (Exception ignored) {
+        }
     }
 
     public void pressChangeNickname() {
@@ -95,11 +133,6 @@ public class ProfileView extends Application {
 
     public void pressBack() throws Exception {
         new MainMenuView().start(profileStage);
-    }
-
-    public void addChatCountAchievement() {
-        //achievementPane.getChildren().add(imageView);
-
     }
 
 }

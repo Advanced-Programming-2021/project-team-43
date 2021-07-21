@@ -26,7 +26,6 @@ import java.util.Objects;
 public class MainMenuView extends Application {
 
     private static Stage stage;
-    public Button duelBtn;
     public Button profileBtn;
     public Button shopBtn;
     public Button deckBtn;
@@ -35,6 +34,8 @@ public class MainMenuView extends Application {
     public Button logoutBtn;
     public Button lobbyBtn;
     public Button tvBtn;
+    public Button auctionBtn;
+    public Button chatroomBtn;
     public static MediaPlayer note;
 
 
@@ -56,6 +57,7 @@ public class MainMenuView extends Application {
             RegisterAndLoginView.dataOutputStream.flush();
             UserModel.getUserByUsername(MainMenuController.username).resetSequentialLost();
         }
+        stage.setOnCloseRequest(windowEvent -> MainMenuController.logout());
     }
 
     public void sequentialWinCup() {
@@ -109,29 +111,30 @@ public class MainMenuView extends Application {
     }
 
     public void initialize() {
-        setFrame(duelBtn);
         setFrame(profileBtn);
         setFrame(shopBtn);
         setFrame(deckBtn);
         setFrame(scoreboardBtn);
         setFrame(cardBtn);
         setFrame(lobbyBtn);
-        //setFrame(tvBtn);
+        setFrame(tvBtn);
         setFrame(logoutBtn);
+        setFrame(auctionBtn);
+        setFrame(chatroomBtn);
     }
 
     public void setFrame(Button button) {
-      //  KeyFrame duelEnd = new KeyFrame(new Duration(2000), new KeyValue(button.opacityProperty(), 0.0));
+        KeyFrame duelEnd = new KeyFrame(new Duration(2000), new KeyValue(button.opacityProperty(), 0.0));
         KeyFrame duelStart = new KeyFrame(new Duration(4000), new KeyValue(button.opacityProperty(), 1.0));
-    //    new Timeline(duelEnd, duelStart).play();
+        new Timeline(duelEnd, duelStart).play();
     }
 
     public void Profile() throws Exception {
         new ProfileView().start(stage);
     }
 
-    public void Duel() throws Exception {
-        new Duel().start(stage);
+    public void Chatroom() throws Exception {
+        (ChatRoomView.chatRoomView = new ChatRoomView()).start(stage);
     }
 
     public void Deck() throws Exception {
@@ -152,7 +155,11 @@ public class MainMenuView extends Application {
     }
 
     public void lobby() throws Exception {
-        (LobbyView.lobbyView = new LobbyView()).start(stage);
+        new LobbyView().start(stage);
+    }
+
+    public void auction() throws Exception {
+        new AuctionView().start(stage);
     }
 
     public void TV() throws Exception {
@@ -160,6 +167,7 @@ public class MainMenuView extends Application {
     }
 
     public void LogOut() throws Exception {
+        MainMenuController.logout();
         new RegisterAndLoginView().start(stage);
     }
 

@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.DeckModel;
 import model.UserModel;
 import java.util.*;
@@ -59,7 +60,6 @@ public class DeckView extends Application {
     }
 
     public void initialize() {
-
         deckImgView.setFitWidth(231);
         deckImgView.setFitHeight(292);
         isActiveCheckBox.setOnAction(new EventHandler<>() {
@@ -102,38 +102,29 @@ public class DeckView extends Application {
         }
         fillMainCardPane(getDeckNameByNumber(deckCounter));
         fillSideCardDeck(getDeckNameByNumber(deckCounter));
-        deckInfoLbl.setOnMouseClicked(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                whichDeckName = getDeckNameByNumber(deckCounter);
-                try {
-                    new EditDeckView().start(deckStage);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        deckInfoLbl.setOnMouseClicked(mouseEvent -> {
+            whichDeckName = getDeckNameByNumber(deckCounter);
+            try {
+                new EditDeckView().start(deckStage);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
-        deckInfoLbl.setOnMouseEntered(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                allMainCardsPane.get(deckCounter).setVisible(true);
-                allMainCardsPane.get(deckCounter).setLayoutX(340);
-                allMainCardsPane.get(deckCounter).setLayoutY(7);
-                deckPane.getChildren().add(allMainCardsPane.get(deckCounter));
-                allSideCardsPane.get(deckCounter).setVisible(true);
-                allSideCardsPane.get(deckCounter).setLayoutX(342);
-                allSideCardsPane.get(deckCounter).setLayoutY(444);
-                deckPane.getChildren().add(allSideCardsPane.get(deckCounter));
-            }
+        deckInfoLbl.setOnMouseEntered(mouseEvent -> {
+            allMainCardsPane.get(deckCounter).setVisible(true);
+            allMainCardsPane.get(deckCounter).setLayoutX(340);
+            allMainCardsPane.get(deckCounter).setLayoutY(7);
+            deckPane.getChildren().add(allMainCardsPane.get(deckCounter));
+            allSideCardsPane.get(deckCounter).setVisible(true);
+            allSideCardsPane.get(deckCounter).setLayoutX(342);
+            allSideCardsPane.get(deckCounter).setLayoutY(444);
+            deckPane.getChildren().add(allSideCardsPane.get(deckCounter));
         });
-        deckInfoLbl.setOnMouseExited(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                allMainCardsPane.get(deckCounter).setVisible(false);
-                allSideCardsPane.get(deckCounter).setVisible(false);
-                deckPane.getChildren().remove(allMainCardsPane.get(deckCounter));
-                deckPane.getChildren().remove(allSideCardsPane.get(deckCounter));
-            }
+        deckInfoLbl.setOnMouseExited(mouseEvent -> {
+            allMainCardsPane.get(deckCounter).setVisible(false);
+            allSideCardsPane.get(deckCounter).setVisible(false);
+            deckPane.getChildren().remove(allMainCardsPane.get(deckCounter));
+            deckPane.getChildren().remove(allSideCardsPane.get(deckCounter));
         });
         if (user.getActiveDeck().equals(getDeckNameByNumber(deckCounter))) {
             deckImgView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/yugioh_Cards/activeBack.jpg")).toExternalForm()));

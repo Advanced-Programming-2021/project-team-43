@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="lobbyPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LobbyView">
+    <children>
+        <AnchorPane layoutX="589.0" layoutY="14.0" prefHeight="278.0" prefWidth="235.0">
+            <children>
+                <Label fx:id="findDuelistLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="88.0" onMouseClicked="#findADuelist" prefHeight="39.0" prefWidth="139.0" text="Find Me A Duelist" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="17.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="14.0" prefHeight="29.0" prefWidth="116.0" text="New Game" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="20.0" />
+                    </font>
+                </Label>
+                <RadioButton fx:id="oneRoundBtn" focusTraversable="false" layoutX="33.0" layoutY="61.0" mnemonicParsing="false" text="1 Round">
+                    <font>
+                        <Font name="Bodoni MT" size="14.0" />
+                    </font>
+                    <toggleGroup>
+                        <ToggleGroup fx:id="x" />
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="threeRoundBtn" focusTraversable="false" layoutX="136.0" layoutY="61.0" mnemonicParsing="false" text="3 Round" toggleGroup="$x">
+                    <font>
+                        <Font name="Bodoni MT" size="14.0" />
+                    </font>
+                </RadioButton>
+                <Label fx:id="duelWithAILbl" alignment="CENTER" contentDisplay="CENTER" layoutX="66.0" layoutY="140.0" onMouseClicked="#playWithAI" prefHeight="30.0" prefWidth="104.0" text="Duel with AI" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="17.0" />
+                    </font>
+                </Label>
+                <Label fx:id="messageLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="182.0" prefHeight="39.0" prefWidth="235.0" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="15.0" />
+                    </font>
+                </Label>
+                <Button fx:id="cancelBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="74.0" layoutY="230.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="87.0" text="Cancel">
+                    <font>
+                        <Font name="Bodoni MT" size="16.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+
+        <Button focusTraversable="false" layoutX="867.0" layoutY="676.0" mnemonicParsing="false" onAction="#back" prefHeight="35.0" prefWidth="80.0" text="Back">
+            <font>
+                <Font name="Bodoni MT" size="18.0" />
+            </font>
+        </Button>
+        <VBox fx:id="vBox" layoutX="14.0" prefHeight="457.0" prefWidth="468.0" spacing="15.0">
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="82.0" prefWidth="469.0" text="Lets Play!" textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="66.0" />
+                    </font>
+                </Label>
+                <Label fx:id="invitationLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="571.0" layoutY="380.0" prefHeight="106.0" prefWidth="467.0" text=" " textAlignment="CENTER">
+                    <font>
+                        <Font name="Bodoni MT" size="22.0" />
+                    </font>
+                </Label>
+                <Button fx:id="acceptBtn"  layoutX="681.0" layoutY="518.0" onMouseClicked="#accept" text="accept">
+                    <font>
+                        <Font name="Bodoni MT" size="15.0" />
+                    </font>
+                </Button>
+                <Button fx:id="refuseBtn" focusTraversable="false" layoutX="681.0" layoutY="518.0" mnemonicParsing="false" onMouseClicked="#refuse" text="refuse">
+                    <font>
+                        <Font name="Bodoni MT" size="15.0" />
+                    </font>
+                </Button>
+            </children>
+        </VBox>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="571.0" layoutY="380.0" prefHeight="52.0" prefWidth="270.0" text="Want to send an Invitation?" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT" size="22.0" />
+            </font>
+        </Label>
+        <Button fx:id="sendBtn" focusTraversable="false" layoutX="681.0" layoutY="518.0" mnemonicParsing="false" onMouseClicked="#send" text="Send">
+            <font>
+                <Font name="Bodoni MT" size="15.0" />
+            </font>
+        </Button>
+        <TextField fx:id="rivalNameTxt" focusTraversable="false" layoutX="616.0" layoutY="465.0" promptText="rival username">
+            <font>
+                <Font name="Bodoni MT" size="14.0" />
+            </font>
+        </TextField>
+        <Label fx:id="errorLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="565.0" layoutY="565.0" prefHeight="61.0" prefWidth="283.0" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT" size="17.0" />
+            </font>
+        </Label>
+        <ImageView fitHeight="35.0" fitWidth="31.0" layoutX="420.0" layoutY="30.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/refresh.png" />
+            </image>
+        </ImageView>
+    </children>
+</AnchorPane>

@@ -1,6 +1,5 @@
 
 package model;
-
 import view.GameMatView;
 
 import java.io.Serializable;
@@ -120,4 +119,5 @@ public class HandCardZone  implements Serializable {
     public static List<HandCardZone> getAllHandCardZoneByName(String playerNickname) {
         return allHandCards.get(playerNickname);
     }
+
 }

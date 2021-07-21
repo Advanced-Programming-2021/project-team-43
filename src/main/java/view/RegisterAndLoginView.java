@@ -1,6 +1,7 @@
 package view;
 import controller.*;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.*;
 import java.io.*;
 import java.net.Socket;
@@ -42,7 +44,7 @@ public class RegisterAndLoginView extends Application {
 
     public static void main(String[] args) {
         try {
-            socket = new Socket("localhost", 1227);
+            socket = new Socket("localhost", 1122);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());

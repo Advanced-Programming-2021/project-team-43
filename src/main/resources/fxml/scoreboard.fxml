@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="reza" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="scoreboard" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Scoreboard">
     <children>
-        <Button fx:id="back" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="34.0" layoutY="665.0" mnemonicParsing="false" onAction="#Back" prefHeight="36.0" prefWidth="79.0" style="-fx-background-color: #ff9900;" text="Back">
-         <font>
-            <Font name="Bodoni MT" size="17.0" />
-         </font></Button>
-      <AnchorPane fx:id="scorePane" layoutX="285.0" layoutY="286.0" prefHeight="442.0" prefWidth="432.0" />
+        <Button fx:id="back" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="34.0" layoutY="665.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="79.0" style="-fx-background-color: #ff9900;" text="Back">
+            <font>
+                <Font name="Bodoni MT" size="17.0" />
+            </font></Button>
+        <AnchorPane fx:id="scorePane" layoutX="285.0" layoutY="286.0" prefHeight="442.0" prefWidth="432.0" />
+        <ImageView fitHeight="54.0" fitWidth="29.0" layoutX="720.0" layoutY="250.0" onMouseClicked="#refreshPage" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/refresh.png" />
+            </image>
+            <effect>
+                <InnerShadow choke="0.19" height="59.13" radius="14.2825" width="0.0" />
+            </effect>
+        </ImageView>
     </children>
 </AnchorPane>

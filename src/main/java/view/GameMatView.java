@@ -24,10 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class GameMatView extends Application {
@@ -207,8 +204,9 @@ public class GameMatView extends Application {
         }
 
     }
-
+public static GameMatView gameMatView;
     public void showGameBoard() {
+        System.out.println("cccccccccccccccccccccccccccccccc");
         if (counter == 0 && rivalName.equals("AI")) {
             try {
                 counter++;
@@ -221,7 +219,7 @@ public class GameMatView extends Application {
             counter = 0;
         }
         onlinePlayer = Player.getPlayerByName(onlineName);
-        if (Player.isOneRound)
+        if (Player.getPlayerByName(onlineName).isOneRound)
             roundLbl.setText("Round: 1");
         else {
             if (GameMatController.round == 3)
@@ -821,7 +819,7 @@ public class GameMatView extends Application {
     public void attack() {
         clearMyChoices();
         int result = GameMatController.attack(rivalMonsterAddress, GameMatModel.getGameMatByNickname(onlineName).getPhase());
-        if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
+        if ((onlinePlayer.getLifePoint() == 0 && Player.getPlayerByName(onlineName).isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.getPlayerByName(onlineName).isOneRound)) {
             endGame();
         } else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
             endGame();
@@ -850,7 +848,7 @@ public class GameMatView extends Application {
 
     public void attackDirect() {
         int result = GameMatController.attackDirect(GameMatModel.getGameMatByNickname(onlineName).getPhase());
-        if ((onlinePlayer.getLifePoint() == 0 && Player.isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.isOneRound)) {
+        if ((onlinePlayer.getLifePoint() == 0 && Player.getPlayerByName(onlineName).isOneRound) || (rivalPlayer.getLifePoint() == 0 && Player.getPlayerByName(onlineName).isOneRound)) {
             endGame();
         } else if ((onlinePlayer.getNumberOfRound() == 1 && onlinePlayer.getLifePoint() == 0) || (rivalPlayer.getNumberOfRound() == 1 && rivalPlayer.getLifePoint() == 0)) {
             endGame();

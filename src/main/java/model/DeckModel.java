@@ -1,6 +1,5 @@
 package model;
 import controller.*;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -12,6 +11,7 @@ public class DeckModel implements Serializable {
     private int sideAllCardNumber = 0;
     public HashMap<String, Integer> cardsInMainDeck = new HashMap<>();
     public HashMap<String, Integer> cardsInSideDeck = new HashMap<>();
+    private static final long serialVersionUID = -5970003736951981446L;
 
     public DeckModel(String deckName) {
         this.deckName = deckName;

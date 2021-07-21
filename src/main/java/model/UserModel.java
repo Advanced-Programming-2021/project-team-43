@@ -1,9 +1,9 @@
 package model;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class UserModel implements Serializable {
 
@@ -16,6 +16,7 @@ public class UserModel implements Serializable {
     private String activeDeck;
     private String rivalToken;
     private boolean isOnline;
+    private int chatRecords = 0;
     private int sequentialWin = 0;
     private int sequentialLost = 0;
     private final HashMap<String, Integer> myAchievements = new HashMap<>();
@@ -47,7 +48,6 @@ public class UserModel implements Serializable {
     }
 
     public static void setObject(UserModel userModel){
-        System.out.println(userModel+" nnnnnnnnnnn");
         allUsersInfo.put(userModel.getUsername(), userModel);
     }
 
@@ -79,7 +79,6 @@ public class UserModel implements Serializable {
         return rivalToken;
     }
 
-
     public boolean getIsOnline() {
         return isOnline;
     }
@@ -87,7 +86,6 @@ public class UserModel implements Serializable {
     public void setIsOnline(boolean isOnline) {
         this.isOnline = isOnline;
     }
-
 
     public HashMap<String, Integer> getUserAllCards() {
         return userAllCards;
@@ -178,6 +176,14 @@ public class UserModel implements Serializable {
 
     public int getSequentialLost() {
         return sequentialWin;
+    }
+
+    public int getChatRecords() {
+        return chatRecords;
+    }
+
+    public void setChatRecords(int chatRecords) {
+        this.chatRecords = chatRecords;
     }
 
     public boolean isUserHaveCard(String cardName) {

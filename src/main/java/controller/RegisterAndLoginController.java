@@ -16,6 +16,7 @@ public class RegisterAndLoginController {
             return "Please fill the nickname field!";
         if (password.isEmpty())
             return "Please fill the password filed!";
+
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("R user create --username " + username + " --nickname " + nickname + " --password " + password + " --imageURL " + imageUrl);
             return RegisterAndLoginView.dataInputStream.readUTF();
@@ -30,15 +31,18 @@ public class RegisterAndLoginController {
             return "Please fill the username field!";
         if (password.isEmpty())
             return "Please fill the password filed!";
+
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("R user login --username " + username + " --password " + password);
             String output = RegisterAndLoginView.dataInputStream.readUTF();
+            System.out.println("Output:" + output);
             Pattern pattern = Pattern.compile("user logged in successfully!(.+)");
             Matcher matcher = pattern.matcher(output);
             if (matcher.find()) {
                 MainMenuController.token = matcher.group(1);
                 MainMenuController.username = username;
                 updateUser(matcher.group(1));
+
                 return "User logged in successfully!";
             }
             return output;
@@ -53,7 +57,9 @@ public class RegisterAndLoginController {
             RegisterAndLoginView.dataOutputStream.writeUTF(MainMenuController.token);
             RegisterAndLoginView.dataOutputStream.flush();
             Object object = RegisterAndLoginView.objectInputStream.readObject();
+            System.out.println((UserModel)object);
             UserModel userModel = (UserModel) object;
+
             if (UserModel.allUsersInfo.containsKey(userModel.getUsername())) {
                 UserModel.allUsersInfo.replace(userModel.getUsername(), userModel);
             } else {
@@ -69,11 +75,15 @@ public class RegisterAndLoginController {
             RegisterAndLoginView.dataOutputStream.writeUTF("1010"+MainMenuController.token);
             RegisterAndLoginView.dataOutputStream.flush();
             Object object = RegisterAndLoginView.objectInputStream.readObject();
-            HashMap<String, DeckModel> hashMap = (HashMap<String, DeckModel>) object;
+            HashMap  <String, DeckModel> hashMap = (HashMap<String, DeckModel>) object;
+            System.out.println(hashMap.size());
+
             UserModel.getUserByUsername(MainMenuController.username).userAllDecks= (HashMap<String, DeckModel>) object;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 }

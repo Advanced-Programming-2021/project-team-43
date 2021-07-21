@@ -38,7 +38,6 @@ public class GameOverView extends Application {
     }
 
     public void initialize() {
-        System.out.println(GameMatController.message);
         resultLbl.setText(GameMatController.message);
     }
 }

@@ -38,6 +38,7 @@ public class ShopView extends Application {
     public Button setAvailable;
     public TextField amountTxt;
     public Label errorLbl;
+    public TextField priceTxt;
     private boolean isShowBtnPressed;
     private UserModel user;
     private final List<Image> cardImages = new ArrayList<>();
@@ -48,14 +49,6 @@ public class ShopView extends Application {
     public Button searchBtn;
     private static int coinLblOpacity;
 
-    public static String getCommand() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine().trim();
-    }
-
-    public static void showInput(String input) {
-        System.out.println(input);
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -121,6 +114,14 @@ public class ShopView extends Application {
         messageLbl.setText("");
     }
 
+    public void addToAuction() {
+        if (!priceTxt.getText().equals("")) {
+            //priceTxt.getText() : ghemati ke vared karde
+            //inja mozayeda ro besaz
+            String cardName = ShowCardsView.getNameByImage(cardImages.get(imageCounter));//inam esme carti ke entekhab karde
+        }
+    }
+
     public void pressBuyBtn() {
         String cardName = ShowCardsView.getNameByImage(cardImages.get(imageCounter));
         String message = ShopController.shopBuy(cardName);
@@ -177,11 +178,6 @@ public class ShopView extends Application {
         imageCounter = 0;
         cardInfoCounter = 0;
         new MainMenuView().start(shopStage);
-    }
-
-    public static void resetFields() {
-        cardInfoCounter = 0;
-        imageCounter = 0;
     }
 
     public void search() {
