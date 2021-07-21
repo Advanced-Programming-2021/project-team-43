@@ -37,10 +37,14 @@ public class Auction2View extends Application {
     }
 
     public void offer() {
-           //in tabe vaghti gheymat mored nazr ro type mikone vaghti dokme ziresh ro mizane in sedazade meshe
+        //in tabe vaghti gheymat mored nazr ro type mikone vaghti dokme ziresh ro mizane in sedazade meshe
         ///gheymati ke type carde
         //caraii ke bayad anjam bedi
-        BazarController.newOffer(AuctionView.cardNameClicked, Integer.parseInt(yourPriceTxt.getText()));
+        String a =BazarController.newOffer(AuctionView.cardNameClicked, Integer.parseInt(yourPriceTxt.getText()));
+    if (a.equals("null")){
+        System.out.println("1212 null");
+        AuctionView.cardNameClicked.bestPrice=Integer.parseInt(yourPriceTxt.getText());
+    }
     }
 
     public void back() throws Exception {

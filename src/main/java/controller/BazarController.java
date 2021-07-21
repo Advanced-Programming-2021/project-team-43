@@ -32,26 +32,31 @@ public class BazarController {
     //pisNahad gheymat baraye 1 mozayede
     // dar inja bala tar boodan gheymat check shavad
     public static String newOffer(BazarModel bazarModel, int newPrice) {
+        updateBazar();
+        bazarModel=UserModel.all.get(bazarModel.bazarCode);
         if (UserModel.getUserByUsername(MainMenuController.username).getUserCoin() < newPrice) {
+
             return "not enough money!";
         }
         if (bazarModel.bestPrice >= newPrice) {
+            System.out.println("Low"+bazarModel.bestPrice);
             return "this offer is low";
         }
         try {
+
             RegisterAndLoginView.dataOutputStream.writeUTF("BB " + MainMenuController.token + " f " + bazarModel.bazarCode + " f " + newPrice);
             String string = RegisterAndLoginView.dataInputStream.readUTF();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        updateBazar();
+        return "null";
     }
     public static void updateBazar(){
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("1020315");
             UserModel.all=(ArrayList<BazarModel>) RegisterAndLoginView.objectInputStream.readUnshared();
-            System.out.println(UserModel.all.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
