@@ -37,17 +37,17 @@
             <Font name="Bodoni MT" size="18.0" />
         </font>
     </Label>
-    <AnchorPane fx:id="userPane" layoutX="602.0" layoutY="424.0" prefHeight="172.0" prefWidth="235.0">
+    <AnchorPane fx:id="userPane" layoutX="571.0" layoutY="126.0" prefHeight="230.0" prefWidth="353.0">
         <children>
-            <ImageView fx:id="userImage" fitHeight="101.0" fitWidth="94.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="infoLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="108.0" layoutY="12.0" prefHeight="88.0" prefWidth="116.0" textAlignment="CENTER" wrapText="true">
+            <ImageView fx:id="userImage" fitHeight="122.0" fitWidth="116.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="infoLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="148.0" layoutY="14.0" prefHeight="135.0" prefWidth="194.0" textAlignment="CENTER" wrapText="true">
                 <font>
-                    <Font name="Bodoni MT" size="15.0" />
+                    <Font name="Bodoni MT" size="19.0" />
                 </font>
             </Label>
         </children>
     </AnchorPane>
-   <Button alignment="CENTER" contentDisplay="CENTER" layoutX="888.0" layoutY="675.0" mnemonicParsing="false" onAction="#back" text="Back" textAlignment="CENTER">
+   <Button alignment="CENTER" contentDisplay="CENTER" layoutX="888.0" layoutY="675.0" mnemonicParsing="false" onAction="#back" prefHeight="35.0" prefWidth="80.0" text="Back" textAlignment="CENTER">
       <font>
          <Font name="Bodoni MT" size="18.0" />
       </font>

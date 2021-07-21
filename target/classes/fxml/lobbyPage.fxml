@@ -50,9 +50,9 @@
             </children>
         </AnchorPane>
 
-        <Button focusTraversable="false" layoutX="895.0" layoutY="672.0" mnemonicParsing="false" onAction="#back" prefHeight="30.0" prefWidth="67.0" text="Back">
+        <Button focusTraversable="false" layoutX="867.0" layoutY="676.0" mnemonicParsing="false" onAction="#back" prefHeight="35.0" prefWidth="80.0" text="Back">
             <font>
-                <Font name="Bodoni MT" size="15.0" />
+                <Font name="Bodoni MT" size="18.0" />
             </font>
         </Button>
         <VBox fx:id="vBox" layoutX="14.0" prefHeight="744.0" prefWidth="468.0" spacing="15.0">
@@ -64,22 +64,22 @@
                 </Label>
             </children>
         </VBox>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="571.0" layoutY="376.0" prefHeight="52.0" prefWidth="270.0" text="Want to send an Invitation?" textAlignment="CENTER">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="571.0" layoutY="380.0" prefHeight="52.0" prefWidth="270.0" text="Want to send an Invitation?" textAlignment="CENTER">
             <font>
                 <Font name="Bodoni MT" size="22.0" />
             </font>
         </Label>
-        <Button fx:id="sendBtn" focusTraversable="false" layoutX="680.0" layoutY="499.0" mnemonicParsing="false" onMouseClicked="#send" text="Send">
+        <Button fx:id="sendBtn" focusTraversable="false" layoutX="681.0" layoutY="518.0" mnemonicParsing="false" onMouseClicked="#send" text="Send">
             <font>
                 <Font name="Bodoni MT" size="15.0" />
             </font>
         </Button>
-        <TextField fx:id="rivalNameTxt" focusTraversable="false" layoutX="615.0" layoutY="454.0" promptText="rival username">
+        <TextField fx:id="rivalNameTxt" focusTraversable="false" layoutX="616.0" layoutY="465.0" promptText="rival username">
             <font>
                 <Font name="Bodoni MT" size="14.0" />
             </font>
         </TextField>
-        <Label fx:id="errorLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="564.0" layoutY="539.0" prefHeight="61.0" prefWidth="283.0" textAlignment="CENTER">
+        <Label fx:id="errorLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="565.0" layoutY="565.0" prefHeight="61.0" prefWidth="283.0" textAlignment="CENTER">
             <font>
                 <Font name="Bodoni MT" size="17.0" />
             </font>
