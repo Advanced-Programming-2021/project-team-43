@@ -93,6 +93,7 @@ public class DeckModel implements Serializable {
         return "invalid";
     }
 
+
     public  List<String> getArrayMain(){
         List<String>List= new ArrayList<>();
         String [] key = cardsInMainDeck.keySet().toArray(new String[0]);

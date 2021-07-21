@@ -28,6 +28,7 @@ public class GameMatModel implements Serializable  {
         return graveyard;
     }
 
+
     public void startNewGame() {
         this.phase = Phase.Draw_Phase;
         removeFromFieldZone();

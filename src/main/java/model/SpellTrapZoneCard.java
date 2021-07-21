@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.*;
 
 
-public class SpellTrapZoneCard  implements Serializable {
+public class SpellTrapZoneCard implements Serializable {
 
 
     private static final long serialVersionUID = 7040057291040638025L;
@@ -40,9 +40,10 @@ public class SpellTrapZoneCard  implements Serializable {
         allSpellTrapCards.get(playerNickname).put(address, this);
     }
 
-    public static void setObject(String playerNickname,Map<Integer, SpellTrapZoneCard> spellTrapZoneCard) {
-allSpellTrapCards.put(playerNickname,spellTrapZoneCard);
+    public static void setObject(String playerNickname, Map<Integer, SpellTrapZoneCard> spellTrapZoneCard) {
+        allSpellTrapCards.put(playerNickname, spellTrapZoneCard);
     }
+
     public String getSpellTrapName() {
         return spellTrapName;
     }
@@ -62,6 +63,7 @@ allSpellTrapCards.put(playerNickname,spellTrapZoneCard);
     public String getIcon() {
         return icon;
     }
+
 
     public int getAddress() {
         return address;

@@ -16,6 +16,7 @@ public class SpellCard extends Card {
         spellCards.put(cardName, this);
     }
 
+
     public static HashMap<String, SpellCard> getSpellCards() {
         return spellCards;
     }

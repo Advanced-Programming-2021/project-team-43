@@ -54,6 +54,7 @@ public class MonsterZoneCard  implements Serializable {
       allMonsterCards.put(playerNickname,monsterZoneCard);
     }
 
+
     public String getMonsterName() {
         return monsterName;
     }

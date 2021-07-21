@@ -16,6 +16,7 @@ public class TrapCard extends Card {
         trapCards.put(cardName, this);
     }
 
+
     public String getCardName() {
         return cardName;
     }
