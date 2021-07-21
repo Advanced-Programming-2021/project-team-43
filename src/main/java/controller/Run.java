@@ -24,8 +24,8 @@ public class Run {
                     try {
                         dataInputStream = new DataInputStream(socket.getInputStream());
                         dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                        objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
-                        objectInputStream=new ObjectInputStream(socket.getInputStream());
+                        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                        objectInputStream = new ObjectInputStream(socket.getInputStream());
                         while (true) {
                             String input = dataInputStream.readUTF();
                             System.out.println(input);
@@ -34,11 +34,15 @@ public class Run {
                                 getUserByToken(input);
                                 continue;
                             }
-                            Pattern pattern =Pattern.compile("^1010(.+?)$");
+                            Pattern pattern = Pattern.compile("^1010(.+?)$");
                             Matcher matcher = pattern.matcher(input);
-                            if (matcher.find()){
-                                System.out.println("find"+matcher.group(1));
+                            if (matcher.find()) {
+                                System.out.println("find" + matcher.group(1));
                                 getAllUserDeck(matcher.group(1));
+                                continue;
+                            }
+                            if (input.equals("1020315")) {
+                                updateBazar();
                                 continue;
                             }
                             if (input.startsWith("R")) {
@@ -48,16 +52,19 @@ public class Run {
                             if (input.startsWith("D")) {
                                 output = DeckController.run(input);
                             }
-                            if (input.startsWith("M")){
+                            if (input.startsWith("M")) {
                                 output = MainMenuController.findMatcher(input);
                             }
-                            if (input.startsWith("S")){
+                            if (input.startsWith("S")) {
                                 output = ShopController.run(input);
                             }
-                            if (input.startsWith("profile")){
-                                output=MainMenuController.profile(input);
+                            if (input.startsWith("profile")) {
+                                output = MainMenuController.profile(input);
                             }
-                            if (output.equals("continue")){
+                            if (input.startsWith("BB")) {
+                                output = BazarController.findMatcher(input);
+                            }
+                            if (output.equals("continue")) {
                                 continue;
                             }
                             System.out.println(output);
@@ -78,16 +85,26 @@ public class Run {
 
     public static void getUserByToken(String token) throws IOException {
 
-            UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
-            objectOutputStream.writeObject(userModel);
-            objectOutputStream.flush();
+        UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
+        objectOutputStream.writeObject(userModel);
+        objectOutputStream.flush();
 
     }
+
     public static void getAllUserDeck(String token) throws IOException {
 
         UserModel userModel = UserModel.getUserByUsername(RegisterAndLoginController.allOnlineUsers.get(token));
         objectOutputStream.writeObject(userModel.userAllDecks);
         objectOutputStream.flush();
+    }
+
+    public static void updateBazar() {
+        try {
+            objectOutputStream.writeUnshared(UserModel.all);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1,21 +1,24 @@
 package model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BazarModel {
-    public static ArrayList<BazarModel> all = new ArrayList<>();
+public class BazarModel implements Serializable {
     public String cardName;
     public String seller;
     public String bestCustomer;
     public int bestPrice;
-
+    public int bazarCode;
     public BazarModel(String cardName, String seller, int firstPrice) {
         this.cardName = cardName;
         this.seller = seller;
         bestPrice = firstPrice;
         bestCustomer = seller;
+        bazarCode = UserModel.bazarCounter;
+        UserModel.bazarCounter++;
         UserModel.getUserByUsername(seller).removeCardFromUserAllCards(cardName);
+        UserModel.all.add(this);
     }
 
     public void end() {
