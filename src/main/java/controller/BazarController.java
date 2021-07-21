@@ -43,11 +43,15 @@ public class BazarController {
     }
 
     public static void newOffer(String bazarCode, String customer , int newPrice){
+
         BazarModel bazarModel = UserModel.all.get(Integer.parseInt(bazarCode));
-        if (bazarModel.bazarCode!=(Integer.parseInt(bazarCode))){
-            System.out.println("na na no");
+        if (bazarModel.bestPrice >= newPrice) {
+            System.out.println("kar nakard");
+            return ;
         }
+        System.out.println("gheymtat ghadim"+bazarModel.bestPrice);
         bazarModel.changeCustomer(customer,newPrice);
+        System.out.println("gheymtat jadid "+bazarModel.bestPrice);
     }
 }
 
