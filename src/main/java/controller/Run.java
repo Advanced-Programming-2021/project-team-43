@@ -21,6 +21,7 @@ public class Run {
     private static HashMap<String, Boolean> refused;
 
 
+
     public static void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(1122);
@@ -72,6 +73,7 @@ public class Run {
 
     private static String process(String input, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         String result = "";
+
         if (input.startsWith("logout")) {
             String[] split = input.split("/");
             RegisterAndLoginController.allOnlineUsers.remove(split[1]);
@@ -162,6 +164,14 @@ public class Run {
                 return "false";
             } else return "refused";
 
+        }
+        if (input.equals("1020315")) {
+            objectOutputStream.writeUnshared(UserModel.all);
+            objectOutputStream.flush();
+            return "continue";
+        }
+        if (input.startsWith("BB")) {
+            return BazarController.findMatcher(input);
         }
         return "==";
     }
