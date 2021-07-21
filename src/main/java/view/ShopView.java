@@ -38,6 +38,7 @@ public class ShopView extends Application {
     public Button setAvailable;
     public TextField amountTxt;
     public Label errorLbl;
+    public TextField priceTxt;
     private boolean isShowBtnPressed;
     private UserModel user;
     private final List<Image> cardImages = new ArrayList<>();
@@ -111,6 +112,14 @@ public class ShopView extends Application {
         priceLbl.setText("Price: " + Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(imageCounter))).getPrice());
         buyBtn.setDisable(Card.getCardsByName(ShowCardsView.getNameByImage(cardImages.get(imageCounter))).getPrice() > user.getUserCoin());
         messageLbl.setText("");
+    }
+
+    public void addToAuction() {
+        if (!priceTxt.getText().equals("")) {
+            //priceTxt.getText() : ghemati ke vared karde
+            //inja mozayeda ro besaz
+            String cardName = ShowCardsView.getNameByImage(cardImages.get(imageCounter));//inam esme carti ke entekhab karde
+        }
     }
 
     public void pressBuyBtn() {
