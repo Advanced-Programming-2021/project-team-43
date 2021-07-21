@@ -1,4 +1,5 @@
 package view;
+import controller.BazarController;
 import controller.MainMenuController;
 import controller.RegisterAndLoginController;
 import javafx.animation.KeyFrame;
@@ -159,6 +160,7 @@ public class MainMenuView extends Application {
     }
 
     public void auction() throws Exception {
+        BazarController.updateBazar();
         new AuctionView().start(stage);
     }
 

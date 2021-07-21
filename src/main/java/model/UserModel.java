@@ -28,6 +28,8 @@ public class UserModel implements Serializable {
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
     public static ArrayList <String> importedCards;
     private static final long serialVersionUID = 4778925288210528972L;
+    public static ArrayList<BazarModel> all = new ArrayList<>();
+    public static int bazarCounter;
 
 
     public UserModel(String username, String password, String nickname, String imageUrl) {

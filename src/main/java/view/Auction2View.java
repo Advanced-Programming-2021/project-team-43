@@ -1,4 +1,5 @@
 package view;
+import controller.BazarController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,16 +29,22 @@ public class Auction2View extends Application {
     }
 
     public void initialize() {
-        cardImg.setImage(ShowCardsView.getCardImageByName(AuctionView.cardNameClicked));
-        cardNameLbl.setText(AuctionView.cardNameClicked);
+        cardImg.setImage(ShowCardsView.getCardImageByName(AuctionView.cardNameClicked.cardName));
+        cardNameLbl.setText(AuctionView.cardNameClicked.cardName);
+        bestPriceLbl.setText(String.valueOf(AuctionView.cardNameClicked.bestPrice));
         /////////cardPriceLbl.setText("gheymat card ro bezar inja esmesh card az AuctionView.cardNameClicked in be dast miad");
         //bestPriceLbl.setText("balatarin gheymat ro bezar");
     }
 
     public void offer() {
         //in tabe vaghti gheymat mored nazr ro type mikone vaghti dokme ziresh ro mizane in sedazade meshe
-        yourPriceTxt.getText();///gheymati ke type carde
+        ///gheymati ke type carde
         //caraii ke bayad anjam bedi
+        String a =BazarController.newOffer(AuctionView.cardNameClicked, Integer.parseInt(yourPriceTxt.getText()));
+        if (a.equals("null")){
+            System.out.println("1212 null");
+            AuctionView.cardNameClicked.bestPrice=Integer.parseInt(yourPriceTxt.getText());
+        }
     }
 
     public void back() throws Exception {

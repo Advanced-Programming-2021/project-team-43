@@ -1,4 +1,6 @@
 package view;
+
+import controller.BazarController;
 import controller.MainMenuController;
 import controller.ShopController;
 import javafx.application.Application;
@@ -17,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Card;
 import model.UserModel;
+
 import java.util.*;
 
 
@@ -118,7 +121,9 @@ public class ShopView extends Application {
         if (!priceTxt.getText().equals("")) {
             //priceTxt.getText() : ghemati ke vared karde
             //inja mozayeda ro besaz
+
             String cardName = ShowCardsView.getNameByImage(cardImages.get(imageCounter));//inam esme carti ke entekhab karde
+            messageLbl.setText(BazarController.newBazar(cardName, Integer.parseInt(priceTxt.getText())));
         }
     }
 
@@ -186,7 +191,7 @@ public class ShopView extends Application {
             messageLbl.setText("Invalid name to search");
         } else if (Card.getCardsByName(nameToSearch) == null) {
             messageLbl.setText("There is no card with this name");
-        }else {
+        } else {
             cardImgView.setImage(ShowCardsView.getCardImageByName(nameToSearch));
             priceLbl.setText("Price: " + Card.getCardsByName(nameToSearch).getPrice());
             buyBtn.setDisable(Card.getCardsByName(nameToSearch).getPrice() > user.getUserCoin());
@@ -213,7 +218,7 @@ public class ShopView extends Application {
     }
 
     public void pressSellBtn() {
-        messageLbl.setText(ShopController.sell(ShowCardsView.getNameByImage(cardImages.get(imageCounter))));
+        messageLbl.setText(ShopController.shopSell(ShowCardsView.getNameByImage(cardImages.get(imageCounter))));
         moneyLbl.setText("Coin: " + user.getUserCoin());
         moneyLbl.setTextFill(Color.rgb(255, coinLblOpacity, 0));
         coinLblOpacity += 10;
