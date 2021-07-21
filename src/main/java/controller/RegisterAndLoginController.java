@@ -34,27 +34,17 @@ public class RegisterAndLoginController {
             userModel.setActiveDeck("AILevel1");
         }
         new ShopModel(Card.getCards());
-
-
         return findMatcher(input);
-
-
     }
 
     public static String findMatcher(String command) {
         Matcher matcher;
         if ((matcher = getMatcher(command, "^R user login --username (.+?) --password (.+?)$")).find()) {
-            loginInGame(matcher.group(1), matcher.group(2));
-
             return loginInGame(matcher.group(1), matcher.group(2));
         }
-
         if ((matcher = getMatcher(command, "^R user create --username (.+?) --nickname (.+?) --password (.+?) --imageURL (.+?)$")).find()) {
-
             return registerInGame(matcher.group(1), matcher.group(2), matcher.group(3),matcher.group(4));
-
         }
-
         return null;
 
     }
@@ -67,11 +57,9 @@ public class RegisterAndLoginController {
     public static String registerInGame(String username, String nickname, String password,String imageURL) {
         if (UserModel.isRepeatedUsername(username)) {
             return ("user with username " + username + " already exists");
-
         }
         if (UserModel.isRepeatedNickname(nickname)) {
             return ("user with nickname " + nickname + " already exists");
-
         }
         new UserModel(username, password, nickname ,imageURL);
         return ("user created successfully!");
