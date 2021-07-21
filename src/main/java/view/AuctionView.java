@@ -1,4 +1,5 @@
 package view;
+import controller.BazarController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.BazarModel;
 import model.Card;
+import model.UserModel;
 
 import java.util.*;
 
@@ -38,7 +40,10 @@ public class AuctionView extends Application {
     }
 
     public void initialize() {
-        ArrayList<BazarModel> allCardName = BazarModel.all;//esme cartaii ke hastan in array ro por kon ba oona
+        System.out.println(UserModel.all.size());
+        ArrayList<BazarModel> allCardName = UserModel.all;//esme cartaii ke hastan in array ro por kon ba oona
+      if (allCardName.size()!=0){
+          System.out.println("12");
         for (BazarModel eachCard : allCardName) {
             cardImages.add(ShowCardsView.getCardImageByName(eachCard.cardName));
             cardInfo.add(eachCard);
@@ -56,7 +61,7 @@ public class AuctionView extends Application {
             } catch (Exception ignored) {
             }
         });
-    }
+    }}
 
     public void nextCard() {
         if (cardCounter != cardImages.size() - 1)

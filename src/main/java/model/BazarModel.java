@@ -1,24 +1,43 @@
 package model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.Date;
 
-public class BazarModel {
-    public static ArrayList<BazarModel> all=new ArrayList<>();
+import java.io.Serializable;
+
+import java.util.ArrayList;
+
+public class BazarModel implements Serializable {
     public String cardName;
     public String seller;
     public String bestCustomer;
     public int bestPrice;
-    public Date date=new Date();
-    public BazarModel(String cardName,String seller ,int firstPrice  ){
-        this.cardName=cardName;
-        this.seller=seller;
-        bestPrice=firstPrice;
-        bestCustomer=seller;
-
+    public int bazarCode;
+    public BazarModel(String cardName, String seller, int firstPrice) {
+        this.cardName = cardName;
+        this.seller = seller;
+        bestPrice = firstPrice;
+        bestCustomer = seller;
+        bazarCode = UserModel.bazarCounter;
+        UserModel.bazarCounter++;
+        UserModel.getUserByUsername(seller).removeCardFromUserAllCards(cardName);
     }
+
+    public void end() {
+        if (bestCustomer.equals(seller)) {
+            UserModel.getUserByUsername(seller).addCardToUserAllCards(cardName);
+            return;
+        }
+        UserModel.getUserByUsername(bestCustomer).addCardToUserAllCards(cardName);
+        UserModel.getUserByUsername(seller).changeUserCoin(bestPrice);
+    }
+
+    public void changeCustomer(String customer, int price) {
+        if (!bestCustomer.equals(seller)) {
+            UserModel.getUserByUsername(bestCustomer).changeUserCoin(bestPrice);
+        }
+        bestCustomer = customer;
+        bestPrice = price;
+        UserModel.getUserByUsername(bestCustomer).changeUserCoin(bestPrice * -1);
+    }
+
 
 }

@@ -1,4 +1,6 @@
+
 package view;
+import controller.BazarController;
 import controller.MainMenuController;
 import controller.RegisterAndLoginController;
 import javafx.animation.KeyFrame;
@@ -9,23 +11,34 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import model.UserModel;
 import java.util.Objects;
-
 
 
 public class MainMenuView extends Application {
 
     private static Stage stage;
-    public Button duelBtn;
     public Button profileBtn;
     public Button shopBtn;
     public Button deckBtn;
     public Button scoreboardBtn;
     public Button cardBtn;
     public Button logoutBtn;
+    public Button lobbyBtn;
+    public Button tvBtn;
+    public Button auctionBtn;
+    public Button chatroomBtn;
+    public static MediaPlayer note;
 
 
     @Override
@@ -34,38 +47,84 @@ public class MainMenuView extends Application {
         stage = primaryStage;
         stage.setScene(new Scene(root));
         stage.show();
+
+    }
+
+    public void sequentialWinCup() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setPrefWidth(480);
+        anchorPane.setPrefHeight(300);
+        anchorPane.setStyle("-fx-background-color: #2a0002");
+        ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/cup1.jpg")).toExternalForm())));
+        Label label = new Label("Congrats! You won the Sequential Win Cup!");
+        label.setFont(new Font("Bodoni MT", 20));
+        label.setTextFill(Color.rgb(255, 229, 0));
+        label.setLayoutX(110);
+        label.setLayoutY(270);
+        imageView.setLayoutX(110);
+        imageView.setLayoutY(10);
+        anchorPane.getChildren().addAll(imageView, label);
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
+        stage.setResizable(false);
+        stage.setTitle("Achievement");
+        stage.setScene(new Scene(anchorPane));
+        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/bonus.wav")).toExternalForm());
+        note = new MediaPlayer(media);
+        note.setAutoPlay(true);
+        stage.show();
+    }
+
+    public void sequentialLostCup() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setPrefWidth(480);
+        anchorPane.setPrefHeight(300);
+        anchorPane.setStyle("-fx-background-color: #2a0002");
+        ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getResource("/images/cup5.jpg")).toExternalForm())));
+        Label label = new Label("Congrats! You won the Sequential Lost Cup!");
+        label.setFont(new Font("Bodoni MT", 20));
+        label.setTextFill(Color.rgb(255, 229, 0));
+        label.setLayoutX(110);
+        label.setLayoutY(270);
+        imageView.setLayoutX(110);
+        imageView.setLayoutY(10);
+        anchorPane.getChildren().addAll(imageView, label);
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/logo.jpg")).toExternalForm()));
+        stage.setResizable(false);
+        stage.setTitle("Achievement");
+        stage.setScene(new Scene(anchorPane));
+        Media media = new Media(Objects.requireNonNull(this.getClass().getResource("/sounds/bonus.wav")).toExternalForm());
+        note = new MediaPlayer(media);
+        note.setAutoPlay(true);
+        stage.show();
     }
 
     public void initialize() {
-        KeyFrame duelEnd = new KeyFrame(new Duration(2000), new KeyValue(duelBtn.opacityProperty(), 0.0));
-        KeyFrame duelStart = new KeyFrame(new Duration(4000), new KeyValue(duelBtn.opacityProperty(), 1.0));
+        setFrame(profileBtn);
+        setFrame(shopBtn);
+        setFrame(deckBtn);
+        setFrame(scoreboardBtn);
+        setFrame(cardBtn);
+        setFrame(lobbyBtn);
+        setFrame(tvBtn);
+        setFrame(logoutBtn);
+        setFrame(auctionBtn);
+        setFrame(chatroomBtn);
+    }
+
+    public void setFrame(Button button) {
+        KeyFrame duelEnd = new KeyFrame(new Duration(2000), new KeyValue(button.opacityProperty(), 0.0));
+        KeyFrame duelStart = new KeyFrame(new Duration(4000), new KeyValue(button.opacityProperty(), 1.0));
         new Timeline(duelEnd, duelStart).play();
-        KeyFrame proEnd = new KeyFrame(new Duration(2000), new KeyValue(profileBtn.opacityProperty(), 0.0));
-        KeyFrame proStart = new KeyFrame(new Duration(4000), new KeyValue(profileBtn.opacityProperty(), 1.0));
-        new Timeline(proEnd, proStart).play();
-        KeyFrame shopEnd = new KeyFrame(new Duration(2000), new KeyValue(shopBtn.opacityProperty(), 0.0));
-        KeyFrame shopStart = new KeyFrame(new Duration(4000), new KeyValue(shopBtn.opacityProperty(), 1.0));
-        new Timeline(shopEnd, shopStart).play();
-        KeyFrame deckEnd = new KeyFrame(new Duration(2000), new KeyValue(deckBtn.opacityProperty(), 0.0));
-        KeyFrame deckStart = new KeyFrame(new Duration(4000), new KeyValue(deckBtn.opacityProperty(), 1.0));
-        new Timeline(deckEnd, deckStart).play();
-        KeyFrame scoreEnd = new KeyFrame(new Duration(2000), new KeyValue(scoreboardBtn.opacityProperty(), 0.0));
-        KeyFrame scoreStart = new KeyFrame(new Duration(4000), new KeyValue(scoreboardBtn.opacityProperty(), 1.0));
-        new Timeline(scoreEnd, scoreStart).play();
-        KeyFrame cardEnd = new KeyFrame(new Duration(2000), new KeyValue(cardBtn.opacityProperty(), 0.0));
-        KeyFrame cardStart = new KeyFrame(new Duration(4000), new KeyValue(cardBtn.opacityProperty(), 1.0));
-        new Timeline(cardEnd, cardStart).play();
-        KeyFrame logEnd = new KeyFrame(new Duration(2000), new KeyValue(logoutBtn.opacityProperty(), 0.0));
-        KeyFrame logStart = new KeyFrame(new Duration(4000), new KeyValue(logoutBtn.opacityProperty(), 1.0));
-        new Timeline(logEnd, logStart).play();
     }
 
     public void Profile() throws Exception {
         new ProfileView().start(stage);
     }
 
-    public void Duel() throws Exception {
-        new Duel().start(stage);
+    public void Chatroom() throws Exception {
+
     }
 
     public void Deck() throws Exception {
@@ -83,6 +142,19 @@ public class MainMenuView extends Application {
 
     public void card() throws Exception {
         new StartClass().start(stage);
+    }
+
+    public void lobby() throws Exception {
+
+    }
+
+    public void auction() throws Exception {
+        BazarController.updateBazar();
+       new AuctionView().start(stage);
+    }
+
+    public void TV() throws Exception {
+
     }
 
     public void LogOut() throws Exception {

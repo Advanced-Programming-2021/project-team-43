@@ -1,4 +1,5 @@
 package model;
+
 import controller.MainMenuController;
 import controller.RegisterAndLoginController;
 
@@ -22,7 +23,9 @@ public class UserModel implements Serializable {
     public static HashMap<String, UserModel> allUsersInfo = new HashMap<>();
     public static ArrayList<String> allUsernames = new ArrayList<>();
     public static ArrayList<String> allUsersNicknames = new ArrayList<>();
-    public static ArrayList <String> importedCards;
+    public static ArrayList<String> importedCards;
+    public static ArrayList<BazarModel> all = new ArrayList<>();
+    public static int bazarCounter;
 
     public UserModel(String username, String password, String nickname, String imageUrl) {
         this.username = username;
@@ -31,7 +34,7 @@ public class UserModel implements Serializable {
         this.userScore = 0;
         this.userCoin = 100000;
         this.imageUrl = imageUrl;
-        this.activeDeck="";
+        this.activeDeck = "";
         allUsernames.add(username);
         allUsersNicknames.add(nickname);
         allUsersInfo.put(username, this);
@@ -161,14 +164,15 @@ public class UserModel implements Serializable {
         return false;
     }
 
-    public static UserModel getUserByNickname(String nickname){
+    public static UserModel getUserByNickname(String nickname) {
         for (Map.Entry<String, UserModel> eachUser : allUsersInfo.entrySet())
-            if(eachUser.getValue().getNickname().equals(nickname))
+            if (eachUser.getValue().getNickname().equals(nickname))
                 return eachUser.getValue();
         return null;
     }
-   public String toString(){
-        return "username:"+username+" decksize"+userAllDecks.size() +"  number "+allUsersInfo.size();
-   }
+
+    public String toString() {
+        return "username:" + username + " decksize" + userAllDecks.size() + "  number " + allUsersInfo.size();
+    }
 
 }

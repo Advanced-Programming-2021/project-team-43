@@ -72,21 +72,21 @@
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="243.0" layoutY="482.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="94.0" text="Sell" onAction="#pressSellBtn">
+      <Button focusTraversable="false" layoutX="243.0" layoutY="482.0" mnemonicParsing="false" onAction="#pressSellBtn" prefHeight="30.0" prefWidth="94.0" text="Sell">
          <font>
             <Font name="Bodoni MT" size="19.0" />
          </font></Button>
       <TextField fx:id="amountTxt" layoutX="757.0" layoutY="31.0" promptText="amount" />
-      <Button fx:id="setAvailable" layoutX="822.0" layoutY="133.0" mnemonicParsing="false" onAction="#pressAvailableBtn" prefHeight="27.0" prefWidth="124.0" text="Set Available">
+      <Button fx:id="setAvailable" focusTraversable="false" layoutX="822.0" layoutY="133.0" mnemonicParsing="false" onAction="#pressAvailableBtn" prefHeight="27.0" prefWidth="124.0" text="Set Available">
          <font>
             <Font name="Bodoni MT" size="15.0" />
          </font></Button>
-      <Button fx:id="setUnAvailableBtn" layoutX="822.0" layoutY="175.0" mnemonicParsing="false" onAction="#pressUnavailableBtn" text="Set UnAvailable">
+      <Button fx:id="setUnAvailableBtn" focusTraversable="false" layoutX="822.0" layoutY="175.0" mnemonicParsing="false" onAction="#pressUnavailableBtn" text="Set UnAvailable">
          <font>
             <Font name="Bodoni MT" size="15.0" />
          </font>
       </Button>
-      <Button fx:id="changeBtn" layoutX="914.0" layoutY="30.0" mnemonicParsing="false" onAction="#pressChangeBtn" text="Change">
+      <Button fx:id="changeBtn" focusTraversable="false" layoutX="914.0" layoutY="30.0" mnemonicParsing="false" onAction="#pressChangeBtn" text="Change">
          <font>
             <Font name="Bodoni MT" size="14.0" />
          </font>
@@ -96,5 +96,11 @@
             <Font name="Bodoni MT" size="20.0" />
          </font>
       </Label>
+      <Button focusTraversable="false" layoutX="834.0" layoutY="315.0" mnemonicParsing="false" text="Add To Auction" onAction="#addToAuction">
+         <font>
+            <Font name="Bodoni MT" size="14.0" />
+         </font>
+      </Button>
+      <TextField fx:id="priceTxt" layoutX="812.0" layoutY="262.0" promptText="price" />
    </children>
 </AnchorPane>
