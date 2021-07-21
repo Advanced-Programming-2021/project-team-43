@@ -41,6 +41,7 @@ public class ExportCardView extends Application {
         stage.show();
     }
 
+
     @FXML
     TextField cardName;
     @FXML

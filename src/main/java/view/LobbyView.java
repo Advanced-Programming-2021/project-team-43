@@ -455,6 +455,7 @@ public class LobbyView extends Application {
     }
 
 
+
     public void refuse(MouseEvent mouseEvent) throws Exception {
         RegisterAndLoginView.dataOutputStream.writeUTF("refuseInvitation:" + MainMenuController.token + ":" + split1);
         RegisterAndLoginView.dataOutputStream.flush();

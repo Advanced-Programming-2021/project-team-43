@@ -23,6 +23,7 @@ public class Pause extends Application {
     @FXML
     Slider volume;
 
+
     @Override
     public void start(Stage stg) throws Exception {
         realStage = stg;

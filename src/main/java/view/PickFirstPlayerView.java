@@ -16,6 +16,7 @@ public class PickFirstPlayerView extends Application {
     public static String ply1 = MainMenuController.username;
     public static String ply2 = MainMenuController.username2;
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         String answer = "";

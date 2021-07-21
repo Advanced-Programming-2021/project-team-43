@@ -26,6 +26,7 @@ public class Duel extends Application {
     public Label text;
     public TextField number;
 
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/duel.fxml")));

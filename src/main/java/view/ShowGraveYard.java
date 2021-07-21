@@ -26,6 +26,7 @@ public class ShowGraveYard extends Application {
     public AnchorPane pane;
     public Label number;
 
+
     @Override
     public void start(Stage stg) throws Exception {
         Stage stage1 = new Stage();
