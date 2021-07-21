@@ -33,6 +33,7 @@ import java.util.Objects;
 public class ImportCardView extends Application {
 
 
+
     @Override
     public void start(Stage stg) throws Exception {
         Stage stage = new Stage();

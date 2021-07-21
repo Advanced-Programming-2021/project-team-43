@@ -18,6 +18,7 @@ import java.util.Objects;
 public class InvitationView extends Application {
 
 
+
     public VBox vBox;
     public Button sendBtn;
     public TextField rivalNameTxt;

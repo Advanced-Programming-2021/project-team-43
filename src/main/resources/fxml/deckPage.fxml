@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane fx:id="deckPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="deck" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DeckView">
    <children>
       <ImageView fx:id="previousBtn" fitHeight="26.0" fitWidth="30.0" layoutX="8.0" layoutY="234.0" onMouseClicked="#previousDeck" pickOnBounds="true" preserveRatio="true" rotate="180.0">

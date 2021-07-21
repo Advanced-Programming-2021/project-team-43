@@ -15,6 +15,7 @@ public class MonsterCard extends Card {
     private static HashMap<String, MonsterCard> allMonsters = new HashMap<>();
 
 
+
     public MonsterCard(String attribute, String name, int level, String MonsterType, int attack, int defend,
                        String cardModel, String cardType, boolean isScanner, String description, int price,String secondName) {
         super(name, cardModel, description, price,secondName);

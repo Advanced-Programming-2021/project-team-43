@@ -23,6 +23,7 @@ import java.util.Random;
 
 public class RegisterAndLoginView extends Application {
 
+
     public TextField registerUsernameTxt;
     public TextField registerNicknameTxt;
     public PasswordField registerPassword;

@@ -28,6 +28,7 @@ public class TrapCard extends Card {
         return status;
     }
 
+
     public static HashMap<String, TrapCard> getTrapCards() {
         return trapCards;
     }

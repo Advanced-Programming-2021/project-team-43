@@ -32,6 +32,7 @@ public class UserModel implements Serializable {
     public static int bazarCounter;
 
 
+
     public UserModel(String username, String password, String nickname, String imageUrl) {
         this.username = username;
         this.password = password;

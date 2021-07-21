@@ -47,6 +47,7 @@ public class Auction2View extends Application {
         }
     }
 
+
     public void back() throws Exception {
         new AuctionView().start(auctionStage);
     }

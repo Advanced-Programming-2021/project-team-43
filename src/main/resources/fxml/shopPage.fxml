@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane fx:id="shopPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1002.0" styleClass="shop" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShopView">
    <children>
       <ImageView fx:id="cardImgView" fitHeight="375.0" fitWidth="278.0" layoutX="44.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true" />

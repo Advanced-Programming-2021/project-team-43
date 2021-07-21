@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GameOverView">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="184.0" prefWidth="472.0" text="Game Over" textAlignment="CENTER" textFill="RED">

@@ -85,4 +85,5 @@ public class AuctionView extends Application {
         new MainMenuView().start(auctionStage);
     }
 
+
 }

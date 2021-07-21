@@ -297,6 +297,7 @@ public class Player  implements Serializable {
         GameMatModel.getGameMatByNickname(nickname).resetNumberOfDeadMonsterThisTurn();
     }
 
+
     public static Player getPlayerByName(String playerNickname) {
         return allPlayers.get(playerNickname);
     }

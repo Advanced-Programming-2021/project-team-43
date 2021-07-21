@@ -116,7 +116,8 @@ public class MessageBox {
     }
 
     public void setUpReplyLbl(ChatRoom chatRoom) {
-        System.out.println(chatRoom.getReplyMessage());
+//        System.out.println(chatRoom.getMessage());
+//        System.out.println(chatRoom.getReplyMessage() + "[[[[[");
         replyMessage = new Label(chatRoom.getReplyMessage());
         replyMessage.setVisible(false);
         replyMessage.setPrefWidth(300);
@@ -171,6 +172,7 @@ public class MessageBox {
         optionVBox.setLayoutY(hBox.getLayoutY() + 30);
         optionVBox.setLayoutX(hBox.getLayoutX() + 30);
     }
+
 
     public static MessageBox getMessageBoxByIndex(int index) {
         return allMassages.get(index);

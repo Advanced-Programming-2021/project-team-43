@@ -6,6 +6,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="mainMenu" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenuView">
     <children>
         <Label layoutX="43.0" layoutY="28.0" prefHeight="96.0" prefWidth="248.0" text="Main Menu">

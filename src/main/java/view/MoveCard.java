@@ -22,6 +22,7 @@ public class MoveCard extends Transition {
     }
 
 
+
     @Override
     protected void interpolate(double v) {
         if (firstImageView != null)

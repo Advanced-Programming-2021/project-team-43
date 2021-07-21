@@ -21,6 +21,7 @@ import java.util.Objects;
 
 public class ProfileView extends Application {
 
+
     public Label usernameLbl;
     public TextField nicknameTxt;
     public ImageView profileImg;

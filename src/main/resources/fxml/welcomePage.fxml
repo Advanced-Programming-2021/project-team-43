@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="welcomeB" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginView">
    <children>
       <Button alignment="CENTER" contentDisplay="CENTER" layoutX="622.0" layoutY="560.0" mnemonicParsing="false" onAction="#gotToLoginPage" prefHeight="46.0" prefWidth="140.0" style="-fx-background-color: #ec1c24;" text="Login" textFill="WHITE">

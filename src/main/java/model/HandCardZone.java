@@ -16,6 +16,7 @@ public class HandCardZone  implements Serializable {
     public static Map<String, List<HandCardZone>> allHandCards = new HashMap<>();
 //    private static HashMap<String, HandCardZone> objects = new HashMap<>();
 
+
     public HandCardZone(String playerNickname, String cardName) {
         this.playerNickname = playerNickname;
         this.cardName = cardName;

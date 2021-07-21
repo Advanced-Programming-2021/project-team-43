@@ -3,6 +3,7 @@ import model.*;
 import java.io.*;
 
 
+
 public class SetCards {
 
     public static void readingCSVFileMonster() {

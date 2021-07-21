@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane fx:id="mainPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="show" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShowCardsView">
    <children>
       <ScrollPane fx:id="monsterPane" layoutX="151.0" layoutY="116.0" prefHeight="450.0" prefWidth="300.0">

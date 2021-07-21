@@ -98,6 +98,7 @@ public class Scoreboard extends Application {
     }
 
 
+
     public void refreshPage() {
         showScoreboard();
     }

@@ -17,6 +17,7 @@ import java.util.*;
 
 public class ShowCardsView extends Application {
 
+
     public static Stage cardStage;
     private static final Map<String, ImageView> allCards = new HashMap<>();
     private static final Map<String, Image> allCardImage = new HashMap<>();

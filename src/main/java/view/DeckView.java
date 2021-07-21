@@ -27,6 +27,7 @@ import java.util.*;
 public class DeckView extends Application {
 
 
+
     public ImageView previousBtn;
     public ImageView nextBtn;
     public AnchorPane deckPane;

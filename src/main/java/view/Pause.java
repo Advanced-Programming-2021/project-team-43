@@ -24,6 +24,7 @@ public class Pause extends Application {
     Slider volume;
 
 
+
     @Override
     public void start(Stage stg) throws Exception {
         realStage = stg;

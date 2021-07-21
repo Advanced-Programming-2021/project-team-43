@@ -42,4 +42,5 @@ public class BazarModel implements Serializable {
     }
 
 
+
 }

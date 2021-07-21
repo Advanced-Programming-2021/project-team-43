@@ -91,6 +91,7 @@ public class MainMenuController {
         }
     }
 
+
     public static ArrayList<UserModel> showScoreboard() {
         ArrayList<UserModel> scoreboard = new ArrayList<>();
         try {

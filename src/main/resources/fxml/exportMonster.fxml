@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane fx:id="pane1" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="exportMonster" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ExportCardView">
     <Button focusTraversable="false" layoutX="234.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#exportCard" prefHeight="31.0" prefWidth="114.0" text="Export" textFill="#b92b2b">
         <cursor>

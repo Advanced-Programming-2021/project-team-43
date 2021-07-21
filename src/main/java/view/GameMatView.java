@@ -29,6 +29,7 @@ import java.util.*;
 
 public class GameMatView extends Application {
 
+
     public static Stage gameMatStage;
     public AnchorPane mainPane;
     public AnchorPane boardPane;

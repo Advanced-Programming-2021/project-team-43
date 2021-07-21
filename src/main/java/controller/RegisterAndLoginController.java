@@ -70,6 +70,7 @@ public class RegisterAndLoginController {
         }
     }
 
+
     public static void updateUserDecks(){
         try {
             RegisterAndLoginView.dataOutputStream.writeUTF("1010"+MainMenuController.token);

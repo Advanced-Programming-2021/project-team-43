@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane prefHeight="750.0" prefWidth="1000.0" styleClass="login" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegisterAndLoginView">
    <children>
       <VBox alignment="CENTER" layoutX="142.0" layoutY="195.0" prefHeight="115.0" prefWidth="287.0" spacing="10.0">

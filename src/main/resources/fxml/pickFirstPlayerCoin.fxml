@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane fx:id="pane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="coin" stylesheets="@design.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CoinChanceView">
    <children>
       <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="274.0" layoutY="248.0" prefHeight="131.0" prefWidth="451.0" textAlignment="CENTER" textFill="#00ff59" textOverrun="WORD_ELLIPSIS" visible="false" wrapText="true">

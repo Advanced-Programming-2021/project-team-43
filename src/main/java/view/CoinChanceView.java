@@ -50,6 +50,7 @@ public class CoinChanceView extends Application {
     }
 
 
+
     @FXML
     public void initialize() {
         KeyFrame flashEnd = new KeyFrame(new Duration(2000), new KeyValue(btnN.opacityProperty(), 0.0));

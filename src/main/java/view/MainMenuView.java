@@ -173,4 +173,5 @@ public class MainMenuView extends Application {
         new RegisterAndLoginView().start(stage);
     }
 
+
 }

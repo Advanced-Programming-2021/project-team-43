@@ -44,6 +44,7 @@ public class Card {
         return price;
     }
 
+
     public static HashMap<String, Card> getCards() {
         return cards;
     }

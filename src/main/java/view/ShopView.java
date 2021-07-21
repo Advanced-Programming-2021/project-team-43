@@ -217,6 +217,7 @@ public class ShopView extends Application {
         }
     }
 
+
     public void pressSellBtn() {
         messageLbl.setText(ShopController.shopSell(ShowCardsView.getNameByImage(cardImages.get(imageCounter))));
         moneyLbl.setText("Coin: " + user.getUserCoin());

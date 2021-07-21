@@ -19,6 +19,7 @@ public class ShopModel {
         return 0;
     }
 
+
     public static HashMap<String,Integer> getCardInfo() {
         return (HashMap<String, Integer>) cardInfo;
     }

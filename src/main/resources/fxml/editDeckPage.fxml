@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane fx:id="editDeckPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" styleClass="editDeck" stylesheets="@../images/background/background.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EditDeckView">
    <children>
       <ImageView fx:id="boughtCardImgView" fitHeight="348.0" fitWidth="244.0" layoutX="27.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />

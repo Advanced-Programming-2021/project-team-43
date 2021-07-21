@@ -1,15 +1,14 @@
 package view;
 import controller.MainMenuController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -59,13 +58,27 @@ public class ChatRoomView extends Application {
             try {
                 RegisterAndLoginView.dataOutputStream.writeUTF("numberOfOnlineUser");
                 RegisterAndLoginView.dataOutputStream.flush();
-                String[] split = RegisterAndLoginView.dataInputStream.readUTF().split("/");
-                headLbl.setText(split[0]);
-                pinHeadLbl.setText(split[1]);
+                headLbl.setText( RegisterAndLoginView.dataInputStream.readUTF());
             } catch (Exception ignored) {
             }
         });
-        chatRecord = UserModel.getUserByUsername(MainMenuController.username).getChatRecords();
+        chatRoomPane.setOnMouseClicked(mouseEvent -> {
+            try {
+                RegisterAndLoginView.dataOutputStream.writeUTF("pinAndChatRecord/" + MainMenuController.token);
+                RegisterAndLoginView.dataOutputStream.flush();
+                String result = RegisterAndLoginView.dataInputStream.readUTF();
+                String[] split = result.split("/");
+                if (result.startsWith("!!")) {
+                    ChatRoom.setPinMessage("");
+                }
+                else {
+                    ChatRoom.setPinMessage(split[0]);
+                }
+                chatRecord = Integer.parseInt(split[1]);
+                pinHeadLbl.setText(ChatRoom.getPinMessage());
+            } catch (Exception ignored) {
+            }
+        });
         if (chatRecord != 0)
             nextRecord = chatRecord * 3;
         else
@@ -78,17 +91,15 @@ public class ChatRoomView extends Application {
             if (!messageTxt.getText().isEmpty()) {
                 String message = messageTxt.getText();
                 new ChatRoom(UserModel.getUserByUsername(MainMenuController.username), message);
-                RegisterAndLoginView.dataOutputStream.writeUTF("chat/" + MainMenuController.username + "/" + message);
+                RegisterAndLoginView.dataOutputStream.writeUTF("chat/" + MainMenuController.token + "/" + message + "/" + chatRecord);
                 RegisterAndLoginView.dataOutputStream.flush();
-                obj = RegisterAndLoginView.objectInputStream.readObject();
-                ChatRoom.setObject((ArrayList<ChatRoom>)obj);
+                ChatRoom.setObject((ArrayList<ChatRoom>)RegisterAndLoginView.objectInputStream.readObject());
                 updateChats();
                 chatRecord++;
             }
         }
         else if (sendBtn.getText().equals("Edit")) {
             String[] split = focusedMessageBox.getMessageLbl().getText().split("\n");
-            System.out.println(focusedMessageBox.getMessageLbl().getText());
             RegisterAndLoginView.dataOutputStream.writeUTF("edit/" + split[1] + "/" + focusedMessageBox.getSender().getNickname() + "/" + messageTxt.getText());
             RegisterAndLoginView.dataOutputStream.flush();
             focusedLbl.setText("-" + focusedMessageBox.getSender().getNickname() + "-\n" + messageTxt.getText());
@@ -96,7 +107,9 @@ public class ChatRoomView extends Application {
             messageTxt.clear();
         }
         else {
-            RegisterAndLoginView.dataOutputStream.writeUTF("reply/" + focusedMessageBox.getMessageLbl().getText() + "/" + messageTxt.getText());
+            String[] message = focusedMessageBox.getMessageLbl().getText().split("\n");
+            String[] split = message[0].split("-");
+            RegisterAndLoginView.dataOutputStream.writeUTF("reply/" + message[1] + "/" + messageTxt.getText() + "/" + split[1]);
             RegisterAndLoginView.dataOutputStream.flush();
             focusedMessageBox.getChatRoom().setReplyMessage(messageTxt.getText());
             focusedMessageBox.setReplyLbl(messageTxt.getText());
@@ -105,12 +118,8 @@ public class ChatRoomView extends Application {
         }
         if (chatRecord == nextRecord) {
             nextRecord *= 3;
-            RegisterAndLoginView.dataOutputStream.writeUTF("chatCup/" + MainMenuController.token);
-            RegisterAndLoginView.dataOutputStream.flush();
             chatCup();
         }
-        RegisterAndLoginView.dataOutputStream.writeUTF("chatRecord/" + chatRecord + "/" + MainMenuController.token);
-        RegisterAndLoginView.dataOutputStream.flush();
     }
 
     public void chatCup() {
@@ -142,7 +151,7 @@ public class ChatRoomView extends Application {
         messageVBox.getChildren().clear();
         int counter = 1;
         for (ChatRoom eachChat : ChatRoom.getAllChats()) {
-            if (counter == 15)
+            if (counter == 16)
                 break;
             String message = eachChat.getMessage();
             MessageBox messageBox = new MessageBox(eachChat.getSender(), message, eachChat);

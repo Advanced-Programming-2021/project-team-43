@@ -13,6 +13,7 @@ import java.util.regex.*;
 
 public class GameMatController {
 
+
     public static String selectedOwnCard = "";
     public static String selectedRivalCard = "";
     public static String onlineUser = MainMenuController.username;

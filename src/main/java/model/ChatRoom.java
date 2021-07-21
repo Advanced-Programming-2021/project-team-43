@@ -77,6 +77,7 @@ public class ChatRoom implements Serializable {
 
 
 
+
     public static String getPinMessage() {
         return pinMessage;
     }

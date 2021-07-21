@@ -19,6 +19,7 @@ import java.util.*;
 
 public class EditDeckView extends Application {
 
+
     public ImageView boughtCardImgView;
     public ImageView nextCardBtn;
     public ImageView previousCardBtn;

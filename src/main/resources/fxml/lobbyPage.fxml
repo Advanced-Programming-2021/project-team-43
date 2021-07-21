@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane fx:id="lobbyPane" maxHeight="760.0" maxWidth="1000.0" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LobbyView">
     <children>
         <AnchorPane layoutX="589.0" layoutY="14.0" prefHeight="278.0" prefWidth="235.0">

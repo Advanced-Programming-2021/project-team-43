@@ -42,6 +42,7 @@ public class ExportCardView extends Application {
     }
 
 
+
     @FXML
     TextField cardName;
     @FXML

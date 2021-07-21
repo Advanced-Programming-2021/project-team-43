@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <AnchorPane fx:id="auctionPane" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AuctionView">
     <children>
         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="14.0" prefHeight="78.0" prefWidth="166.0" text="Auctions" textAlignment="CENTER">

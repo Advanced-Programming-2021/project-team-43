@@ -23,6 +23,8 @@ public class StartClass extends Application {
         stage.show();
     }
 
+
+
     public void export() throws Exception {
         new ShowCardsView().start(stage);
         new ExportCardView().start(stage);
