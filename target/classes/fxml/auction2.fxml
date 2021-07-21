@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Auction2View">
+    <children>
+        <ImageView fx:id="cardImg" fitHeight="445.0" fitWidth="296.0" layoutX="43.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" />
+        <Label fx:id="cardNameLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="456.0" layoutY="64.0" prefHeight="54.0" prefWidth="170.0" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT" size="20.0" />
+            </font>
+        </Label>
+        <Label fx:id="cardPriceLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="456.0" layoutY="134.0" prefHeight="54.0" prefWidth="170.0" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT" size="20.0" />
+            </font>
+        </Label>
+        <Label fx:id="bestPriceLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="456.0" layoutY="204.0" prefHeight="54.0" prefWidth="170.0" textAlignment="CENTER">
+            <font>
+                <Font name="Bodoni MT" size="20.0" />
+            </font>
+        </Label>
+        <Button layoutX="858.0" layoutY="657.0" mnemonicParsing="false" onAction="#back" text="Back">
+            <font>
+                <Font name="Bodoni MT" size="17.0" />
+            </font>
+        </Button>
+        <TextField fx:id="yourPriceTxt" layoutX="467.0" layoutY="380.0" promptText="your price">
+            <font>
+                <Font name="Bodoni MT" size="15.0" />
+            </font>
+        </TextField>
+        <Button layoutX="527.0" layoutY="436.0" mnemonicParsing="false" onAction="#offer" prefHeight="20.0" prefWidth="72.0" text="Offer">
+            <font>
+                <Font name="Bodoni MT" size="17.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

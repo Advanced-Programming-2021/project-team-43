@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TVView">
+    <TabPane layoutX="15.0" layoutY="14.0" prefHeight="648.0" prefWidth="968.0" tabClosingPolicy="UNAVAILABLE">
+        <Tab text="Live" />
+        <Tab text="Replay" />
+        <Tab text="Best Games" />
+    </TabPane>
+    <Button focusTraversable="false" layoutX="886.0" layoutY="671.0" mnemonicParsing="false" onAction="#back" text="Back">
+        <font>
+            <Font name="Bodoni MT" size="17.0" />
+        </font>
+    </Button>
+</AnchorPane>
